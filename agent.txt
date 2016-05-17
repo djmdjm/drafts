@@ -9,7 +9,7 @@ Expires: November 18, 2016
 
 
                            SSH Agent Protocol
-                     draft-ietf-xml2rfc-template-06
+                       draft-miller-ssh-agent-00
 
 Abstract
 
@@ -65,24 +65,25 @@ Table of Contents
    3.  Protocol Overview . . . . . . . . . . . . . . . . . . . . . .   3
    4.  Protocol Messages . . . . . . . . . . . . . . . . . . . . . .   3
      4.1.  Generic server responses  . . . . . . . . . . . . . . . .   3
-     4.2.  Adding keys to the agent  . . . . . . . . . . . . . . . .   3
+     4.2.  Adding keys to the agent  . . . . . . . . . . . . . . . .   4
        4.2.1.  DSA keys  . . . . . . . . . . . . . . . . . . . . . .   4
        4.2.2.  ECDSA keys  . . . . . . . . . . . . . . . . . . . . .   5
        4.2.3.  ED25519 keys  . . . . . . . . . . . . . . . . . . . .   5
-       4.2.4.  RSA keys  . . . . . . . . . . . . . . . . . . . . . .   5
+       4.2.4.  RSA keys  . . . . . . . . . . . . . . . . . . . . . .   6
        4.2.5.  Adding keys from a token  . . . . . . . . . . . . . .   6
        4.2.6.  Key Constraints . . . . . . . . . . . . . . . . . . .   7
          4.2.6.1.  Key lifetime constraint . . . . . . . . . . . . .   7
          4.2.6.2.  Key confirmation constraint . . . . . . . . . . .   7
-     4.3.  Removing keys from the agent  . . . . . . . . . . . . . .   7
+     4.3.  Removing keys from the agent  . . . . . . . . . . . . . .   8
      4.4.  Requesting a list of keys . . . . . . . . . . . . . . . .   8
      4.5.  Private key operations  . . . . . . . . . . . . . . . . .   9
-     4.6.  Locking and unlocking an agent  . . . . . . . . . . . . .   9
+     4.6.  Locking and unlocking an agent  . . . . . . . . . . . . .  10
      4.7.  Extension mechanism . . . . . . . . . . . . . . . . . . .  10
+       4.7.1.  Query extension . . . . . . . . . . . . . . . . . . .  11
    5.  Protocol numbers  . . . . . . . . . . . . . . . . . . . . . .  11
      5.1.  Message numbers . . . . . . . . . . . . . . . . . . . . .  11
-     5.2.  Reserved message numbers  . . . . . . . . . . . . . . . .  11
-     5.3.  Constraint identifiers  . . . . . . . . . . . . . . . . .  11
+     5.2.  Reserved message numbers  . . . . . . . . . . . . . . . .  12
+     5.3.  Constraint identifiers  . . . . . . . . . . . . . . . . .  12
    6.  Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .  12
    7.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  12
    8.  Security Considerations . . . . . . . . . . . . . . . . . . .  12
@@ -104,8 +105,7 @@ Table of Contents
    implements a simple protocol and presents a smaller attack surface
    than a key loaded into a full SSH server or client.
 
-   This agent protocol is already widely used and a de-facto standard,
-   having been implemented by a number of popular SSH clients and
+
 
 
 
@@ -114,6 +114,8 @@ Miller                  Expires November 18, 2016               [Page 2]
 Internet-Draft              Abbreviated Title                   May 2016
 
 
+   This agent protocol is already widely used and a de-facto standard,
+   having been implemented by a number of popular SSH clients and
    servers for many years.  The purpose of this document is to describe
    the protocol as it has been implemented.
 
@@ -157,11 +159,9 @@ Internet-Draft              Abbreviated Title                   May 2016
    SSH_AGENT_FAILURE messages are also sent in reply to requests with
    unknown types.
 
-4.2.  Adding keys to the agent
 
-   Keys may be added to the agent using the SSH_AGENTC_ADD_IDENTITY or
-   SSH_AGENTC_ADD_ID_CONSTRAINED messages.  The latter variant allows
-   adding keys with optional constraints on their usage.
+
+
 
 
 
@@ -169,6 +169,12 @@ Miller                  Expires November 18, 2016               [Page 3]
 
 Internet-Draft              Abbreviated Title                   May 2016
 
+
+4.2.  Adding keys to the agent
+
+   Keys may be added to the agent using the SSH_AGENTC_ADD_IDENTITY or
+   SSH_AGENTC_ADD_ID_CONSTRAINED messages.  The latter variant allows
+   adding keys with optional constraints on their usage.
 
    The generic format for the key SSH_AGENTC_ADD_IDENTITY message is:
 
@@ -206,6 +212,20 @@ Internet-Draft              Abbreviated Title                   May 2016
    "constraints" field is only present for the
    SSH_AGENTC_ADD_ID_CONSTRAINED message.
 
+
+
+
+
+
+
+
+
+
+Miller                  Expires November 18, 2016               [Page 4]
+
+Internet-Draft              Abbreviated Title                   May 2016
+
+
        byte                    SSH_AGENTC_ADD_IDENTITY or
                                SSH_AGENTC_ADD_ID_CONSTRAINED
        string                  "ssh-dss"
@@ -216,15 +236,6 @@ Internet-Draft              Abbreviated Title                   May 2016
        mpint                   x
        string                  comment
        constraint[]            constraints
-
-
-
-
-
-Miller                  Expires November 18, 2016               [Page 4]
-
-Internet-Draft              Abbreviated Title                   May 2016
-
 
    The "p", "q", "g" values are the DSA domain parameters. "y" and "x"
    are the public and private keys respectively.  These values are as
@@ -264,6 +275,13 @@ Internet-Draft              Abbreviated Title                   May 2016
        string                  comment
        constraint[]            constraints
 
+
+
+Miller                  Expires November 18, 2016               [Page 5]
+
+Internet-Draft              Abbreviated Title                   May 2016
+
+
    The values "ENC(A)" and "k" are the Ed25519 public and private values
    respectively.  Both are defined by [I-D.josefsson-eddsa-ed25519].
 
@@ -273,14 +291,6 @@ Internet-Draft              Abbreviated Title                   May 2016
    may be added to the agent using the following message.  The "key
    constraints" field is only present for the
    SSH_AGENTC_ADD_ID_CONSTRAINED message.
-
-
-
-
-Miller                  Expires November 18, 2016               [Page 5]
-
-Internet-Draft              Abbreviated Title                   May 2016
-
 
        byte                    SSH_AGENTC_ADD_IDENTITY or
                                SSH_AGENTC_ADD_ID_CONSTRAINED
@@ -320,6 +330,14 @@ Internet-Draft              Abbreviated Title                   May 2016
 
    Typically only the public components of any keys supported on a
    hardware token will be loaded into an agent so, strictly speaking,
+
+
+
+Miller                  Expires November 18, 2016               [Page 6]
+
+Internet-Draft              Abbreviated Title                   May 2016
+
+
    this message really arranges future private key operations to be
    delegated to the hardware token in question.
 
@@ -328,15 +346,6 @@ Internet-Draft              Abbreviated Title                   May 2016
    SSH_AGENT_FAILURE if no keys were found.  The agent should also
    return SSH_AGENT_FAILURE if the token "id" was not recognised or if
    the agent doesn't support token-hosted keys at all.
-
-
-
-
-
-Miller                  Expires November 18, 2016               [Page 6]
-
-Internet-Draft              Abbreviated Title                   May 2016
-
 
 4.2.6.  Key Constraints
 
@@ -378,6 +387,13 @@ Internet-Draft              Abbreviated Title                   May 2016
    example, the agent could present a confirmation dialog before
    completing a signature operation.
 
+
+
+Miller                  Expires November 18, 2016               [Page 7]
+
+Internet-Draft              Abbreviated Title                   May 2016
+
+
        byte                    SSH_AGENT_CONSTRAIN_LIFETIME
        uint32                  seconds
 
@@ -386,13 +402,6 @@ Internet-Draft              Abbreviated Title                   May 2016
    A client may request that an agent remove all keys that it stores:
 
        byte                    SSH_AGENTC_REMOVE_ALL_IDENTITIES
-
-
-
-Miller                  Expires November 18, 2016               [Page 7]
-
-Internet-Draft              Abbreviated Title                   May 2016
-
 
    On receipt of such a message, an agent shall delete all keys that it
    is holding and reply with SSH_AGENT_SUCCESS.
@@ -433,6 +442,14 @@ Internet-Draft              Abbreviated Title                   May 2016
 
    The agent shall reply with a message with the following preamble.
 
+
+
+
+Miller                  Expires November 18, 2016               [Page 8]
+
+Internet-Draft              Abbreviated Title                   May 2016
+
+
        byte                    SSH_AGENT_IDENTITIES_ANSWER
        uint32                  nkeys
 
@@ -441,14 +458,6 @@ Internet-Draft              Abbreviated Title                   May 2016
 
        string                  key blob
        string                  comment
-
-
-
-
-Miller                  Expires November 18, 2016               [Page 8]
-
-Internet-Draft              Abbreviated Title                   May 2016
-
 
    Where "key blob" is the wire encoding of the public key and "comment"
    is a human-readable comment encoded as a UTF-8 string.
@@ -488,15 +497,6 @@ Internet-Draft              Abbreviated Title                   May 2016
    Where "key blob" is the wire encoding of the public key and "comment"
    is a human-readable comment encoded as a UTF-8 string.
 
-4.6.  Locking and unlocking an agent
-
-   The agent protocol supports requesting that an agent temporarily lock
-   itself with a passphrase.  When locked an agent should suspend
-   processing of sensitive operations (private key operations at the
-   very least) until it has been unlocked with the same passphrase.
-
-   The following message requests agent locking
-
 
 
 
@@ -505,6 +505,15 @@ Miller                  Expires November 18, 2016               [Page 9]
 
 Internet-Draft              Abbreviated Title                   May 2016
 
+
+4.6.  Locking and unlocking an agent
+
+   The agent protocol supports requesting that an agent temporarily lock
+   itself with a passphrase.  When locked an agent should suspend
+   processing of sensitive operations (private key operations at the
+   very least) until it has been unlocked with the same passphrase.
+
+   The following message requests agent locking
 
        byte                    SSH_AGENTC_LOCK
        string                  passphrase
@@ -530,9 +539,9 @@ Internet-Draft              Abbreviated Title                   May 2016
    vendor-specific and experimental messages to be sent via the agent
    protocol.x Extension requests fromcw the client consist of:
 
-       byte SSH_AGENTC_EXTENSION
-       string extension type
-       byte[] extension contents
+       byte                    SSH_AGENTC_EXTENSION
+       string                  extension type
+       byte[]                  extension contents
 
    The extension type indicates the type of the extension message.  No
    standard extensions are currently defined.  Implementation-specific
@@ -544,6 +553,15 @@ Internet-Draft              Abbreviated Title                   May 2016
    reply with an empty SSH_AGENT_FAILURE message.  This reply is also
    sent by agents that do not support the extension mechanism at all.
 
+
+
+
+
+Miller                  Expires November 18, 2016              [Page 10]
+
+Internet-Draft              Abbreviated Title                   May 2016
+
+
    The contents of successful extension reply messages are specific to
    the extension type.  Extension requests may return SSH_AGENT_SUCCESS
    on success or some other extension-specific message.
@@ -553,14 +571,16 @@ Internet-Draft              Abbreviated Title                   May 2016
    standard SSH_AGENT_FAILURE message.  This allows failed requests to
    be distinguised from the extension not being supported.
 
+4.7.1.  Query extension
 
+   A single, optional extension request "query" is defined to allow a
+   client to query which, if any, extensions are supported by an agent.
 
+   If an agent supports the "query" extension is should reply with a
+   list of supported extension names.
 
-
-Miller                  Expires November 18, 2016              [Page 10]
-
-Internet-Draft              Abbreviated Title                   May 2016
-
+       byte                    SSH_AGENT_SUCCESS
+       string[]                extension type
 
 5.  Protocol numbers
 
@@ -591,6 +611,13 @@ Internet-Draft              Abbreviated Title                   May 2016
        SSH_AGENT_IDENTITIES_ANSWER                     12
        SSH_AGENT_SIGN_RESPONSE                         14
 
+
+
+Miller                  Expires November 18, 2016              [Page 11]
+
+Internet-Draft              Abbreviated Title                   May 2016
+
+
 5.2.  Reserved message numbers
 
    Message and reply numbers from 192-255 (inclusive) are reserved for
@@ -609,14 +636,6 @@ Internet-Draft              Abbreviated Title                   May 2016
 
        SSH_AGENT_CONSTRAIN_LIFETIME                    1
        SSH_AGENT_CONSTRAIN_CONFIRM                     2
-
-
-
-
-Miller                  Expires November 18, 2016              [Page 11]
-
-Internet-Draft              Abbreviated Title                   May 2016
-
 
 6.  Acknowledgements
 
@@ -645,6 +664,16 @@ Internet-Draft              Abbreviated Title                   May 2016
               National Institute of Standards and Technology, "Digital
               Signature Standard (DSS)", FIPS PUB 186-4, July 2013.
 
+
+
+
+
+
+Miller                  Expires November 18, 2016              [Page 12]
+
+Internet-Draft              Abbreviated Title                   May 2016
+
+
    [I-D.bjh21-ssh-ed25519]
               Harris, B., "Ed25519 public key algorithm for the Secure
               Shell (SSH) protocol", draft-bjh21-ssh-ed25519-02 (work in
@@ -667,13 +696,6 @@ Internet-Draft              Abbreviated Title                   May 2016
               Transport Layer Protocol", RFC 4253, DOI 10.17487/RFC4253,
               January 2006, <http://www.rfc-editor.org/info/rfc4253>.
 
-
-
-Miller                  Expires November 18, 2016              [Page 12]
-
-Internet-Draft              Abbreviated Title                   May 2016
-
-
    [RFC5656]  Stebila, D. and J. Green, "Elliptic Curve Algorithm
               Integration in the Secure Shell Transport Layer", RFC
               5656, DOI 10.17487/RFC5656, December 2009,
@@ -686,28 +708,6 @@ Author's Address
 
    Email: djm@openssh.com
    URI:   http://www.openssh.com/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

@@ -28,7 +28,7 @@
 <?rfc subcompact="no" ?>
 <!-- keep one blank line between list items -->
 <!-- end of list of popular I-D processing instructions -->
-<rfc category="info" docName="draft-ietf-xml2rfc-template-06" ipr="trust200902">
+<rfc category="info" docName="draft-miller-ssh-agent-00" ipr="trust200902">
  <!-- category values: std, bcp, info, exp, and historic
     ipr values: trust200902, noModificationTrust200902, noDerivativesTrust200902,
        or pre5378Trust200902
@@ -636,9 +636,9 @@
 			the client consist of:
 			</t>
 			<figure><artwork>
-    byte SSH_AGENTC_EXTENSION
-    string extension type
-    byte[] extension contents
+    byte                    SSH_AGENTC_EXTENSION
+    string                  extension type
+    byte[]                  extension contents
 			</artwork></figure>
 			<t>
 			The extension type indicates the type of the
@@ -672,6 +672,25 @@
 			distinguised from the extension not being
 			supported.
 			</t>
+			<section title="Query extension">
+				<t>
+				A single, optional extension request
+				<spanx style="verb">query</spanx>
+				is defined to allow a client to query
+				which, if any, extensions are supported
+				by an agent.
+				</t>
+				<t>
+				If an agent supports the
+				<spanx style="verb">query</spanx>
+				extension is should reply with
+				a list of supported extension names.
+				</t>
+				<figure><artwork>
+    byte                    SSH_AGENT_SUCCESS
+    string[]                extension type
+				</artwork></figure>
+			</section>
 		</section>
 	</section>
 	<section title="Protocol numbers">
