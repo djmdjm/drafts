@@ -535,23 +535,23 @@ Internet-Draft              Abbreviated Title                   May 2016
 
 4.7.  Extension mechanism
 
-   The agent protocol includes an extension mechanism that allows
-   vendor-specific and experimental messages to be sent via the agent
-   protocol.x Extension requests fromcw the client consist of:
+   The agent protocol includes an optional extension mechanism that
+   allows vendor-specific and experimental messages to be sent via the
+   agent protocol.  Extension requests from the client consist of:
 
        byte                    SSH_AGENTC_EXTENSION
        string                  extension type
        byte[]                  extension contents
 
-   The extension type indicates the type of the extension message.  No
-   standard extensions are currently defined.  Implementation-specific
-   extensions should be suffixed by the implementation domain following
-   the extension naming scheme defined in Section 4.2 of [RFC4251], e.g.
-   "foo@example.com".
+   The extension type indicates the type of the extension message as a
+   UTF-8 string.  Implementation-specific extensions should be suffixed
+   by the implementation domain following the extension naming scheme
+   defined in Section 4.2 of [RFC4251], e.g.  "foo@example.com".
 
    An agent that does not support extensions of the supplied type must
    reply with an empty SSH_AGENT_FAILURE message.  This reply is also
    sent by agents that do not support the extension mechanism at all.
+
 
 
 

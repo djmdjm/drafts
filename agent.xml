@@ -629,10 +629,10 @@
 		</section>
 		<section title="Extension mechanism">
 			<t>
-			The agent protocol includes an extension
+			The agent protocol includes an optional extension
 			mechanism that allows vendor-specific and
 			experimental messages to be sent via the
-			agent protocol.x  Extension requests fromcw
+			agent protocol.  Extension requests from
 			the client consist of:
 			</t>
 			<figure><artwork>
@@ -642,8 +642,8 @@
 			</artwork></figure>
 			<t>
 			The extension type indicates the type of the
-			extension message. No standard extensions are
-			currently defined. Implementation-specific
+			extension message as a UTF-8 string.
+			Implementation-specific
 			extensions should be suffixed by the
 			implementation domain following the extension
 			naming scheme defined in Section 4.2 of
