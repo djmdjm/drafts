@@ -74,6 +74,7 @@ Table of Contents
        4.2.6.  Key Constraints . . . . . . . . . . . . . . . . . . .   7
          4.2.6.1.  Key lifetime constraint . . . . . . . . . . . . .   7
          4.2.6.2.  Key confirmation constraint . . . . . . . . . . .   8
+         4.2.6.3.  Constraint extensions . . . . . . . . . . . . . .   8
      4.3.  Removing keys from the agent  . . . . . . . . . . . . . .   8
      4.4.  Requesting a list of keys . . . . . . . . . . . . . . . .   9
      4.5.  Private key operations  . . . . . . . . . . . . . . . . .   9
@@ -85,14 +86,14 @@ Table of Contents
      5.2.  Reserved message numbers  . . . . . . . . . . . . . . . .  12
      5.3.  Constraint identifiers  . . . . . . . . . . . . . . . . .  12
    6.  Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .  12
-   7.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  12
-   8.  Security Considerations . . . . . . . . . . . . . . . . . . .  12
+   7.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  13
+   8.  Security Considerations . . . . . . . . . . . . . . . . . . .  13
    9.  Normative References  . . . . . . . . . . . . . . . . . . . .  13
-   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .  13
+   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .  14
 
 1.  Introduction
 
-   Secure Shell (SSH) is protocol for secure remote connections and
+   Secure Shell (SSH) is a protocol for secure remote connections and
    login over untrusted networks.  It supports multiple authentication
    mechanisms, including public key authentication.  This document
    describes the protocol for interacting with an agent that holds
@@ -104,7 +105,6 @@ Table of Contents
    loading and unwrapping them at each use.  Moreover, the agent
    implements a simple protocol and presents a smaller attack surface
    than a key loaded into a full SSH server or client.
-
 
 
 
@@ -401,8 +401,20 @@ Internet-Draft              Abbreviated Title                   May 2016
    example, the agent could present a confirmation dialog before
    completing a signature operation.
 
-       byte                    SSH_AGENT_CONSTRAIN_LIFETIME
-       uint32                  seconds
+       byte                    SSH_AGENT_CONSTRAIN_CONFIRM
+
+4.2.6.3.  Constraint extensions
+
+   Agents may implement experimental or private-use constraints through
+   a extension constraint that supports named constraints.
+
+       byte                    SSH_AGENT_CONSTRAIN_EXTENSION
+       string                  extension name
+       byte[]                  extension-specific details
+
+   The extension name MUST consist of a UTF-8 string suffixed by the
+   implementation domain following the naming scheme defined in
+   Section 4.2 of [RFC4251], e.g.  "foo@example.com".
 
 4.3.  Removing keys from the agent
 
@@ -428,6 +440,16 @@ Internet-Draft              Abbreviated Title                   May 2016
 
    Smartcard keys may be removed using:
 
+
+
+
+
+
+Miller                  Expires November 20, 2016               [Page 8]
+
+Internet-Draft              Abbreviated Title                   May 2016
+
+
        byte                    SSH_AGENTC_REMOVE_SMARTCARD_KEY
        string                  reader id
        string                  PIN
@@ -439,16 +461,6 @@ Internet-Draft              Abbreviated Title                   May 2016
 
    An agent shall reply with SSH_AGENT_SUCCESS if the key was deleted or
    SSH_AGENT_FAILURE if it was not found.
-
-
-
-
-
-
-Miller                  Expires November 20, 2016               [Page 8]
-
-Internet-Draft              Abbreviated Title                   May 2016
-
 
 4.4.  Requesting a list of keys
 
@@ -485,6 +497,15 @@ Internet-Draft              Abbreviated Title                   May 2016
    "data" is the data to be signed and "flags" are optional signature
    flags (none are defined, so this value should be zero usually).
 
+
+
+
+
+Miller                  Expires November 20, 2016               [Page 9]
+
+Internet-Draft              Abbreviated Title                   May 2016
+
+
    If the agent is unable or unwilling to generate the signature (e.g.
    because it doesn't have the specified key, or the user refused
    confirmation of a constrained key), it must reply with a
@@ -497,23 +518,8 @@ Internet-Draft              Abbreviated Title                   May 2016
 
    The signature format is specific to the algorithm of the key type in
    use.  SSH protocol signature formats are defined in [RFC4253] for
-
-
-
-
-Miller                  Expires November 20, 2016               [Page 9]
-
-Internet-Draft              Abbreviated Title                   May 2016
-
-
    "ssh-rsa" and "ssh-dss" keys, in [RFC5656] for "ecdsa-sha2-*" keys
    and in [I-D.bjh21-ssh-ed25519] for "ssh-ed25519" keys.
-
-       string                  key blob
-       string                  comment
-
-   Where "key blob" is the wire encoding of the public key and "comment"
-   is a human-readable comment encoded as a UTF-8 string.
 
 4.6.  Locking and unlocking an agent
 
@@ -539,7 +545,7 @@ Internet-Draft              Abbreviated Title                   May 2016
    used to lock it then it should unlock and reply with
    SSH_AGENT_SUCCESS.  If the agent is unlocked or if the the passphrase
    does not match it should reply with SSH_AGENT_FAILURE.  An agent
-   should take countermeasures against brute-force guessing attacks
+   SHOULD take countermeasures against brute-force guessing attacks
    against the passphrase.
 
 4.7.  Extension mechanism
@@ -548,12 +554,6 @@ Internet-Draft              Abbreviated Title                   May 2016
    allows vendor-specific and experimental messages to be sent via the
    agent protocol.  Extension requests from the client consist of:
 
-       byte                    SSH_AGENTC_EXTENSION
-       string                  extension type
-       byte[]                  extension contents
-
-   The extension type indicates the type of the extension message as a
-   UTF-8 string.  Implementation-specific extensions should be suffixed
 
 
 
@@ -562,10 +562,16 @@ Miller                  Expires November 20, 2016              [Page 10]
 Internet-Draft              Abbreviated Title                   May 2016
 
 
+       byte                    SSH_AGENTC_EXTENSION
+       string                  extension type
+       byte[]                  extension contents
+
+   The extension type indicates the type of the extension message as a
+   UTF-8 string.  Implementation-specific extensions should be suffixed
    by the implementation domain following the extension naming scheme
    defined in Section 4.2 of [RFC4251], e.g.  "foo@example.com".
 
-   An agent that does not support extensions of the supplied type must
+   An agent that does not support extensions of the supplied type MUST
    reply with an empty SSH_AGENT_FAILURE message.  This reply is also
    sent by agents that do not support the extension mechanism at all.
 
@@ -596,6 +602,22 @@ Internet-Draft              Abbreviated Title                   May 2016
    The following numbers are used for requests from the client to the
    agent.
 
+
+
+
+
+
+
+
+
+
+
+
+Miller                  Expires November 20, 2016              [Page 11]
+
+Internet-Draft              Abbreviated Title                   May 2016
+
+
        SSH_AGENTC_REQUEST_IDENTITIES                  11
        SSH_AGENTC_SIGN_REQUEST                        13
        SSH_AGENTC_ADD_IDENTITY                        17
@@ -609,15 +631,6 @@ Internet-Draft              Abbreviated Title                   May 2016
        SSH_AGENTC_ADD_SMARTCARD_KEY_CONSTRAINED       26
        SSH_AGENTC_EXTENSION                           27
 
-
-
-
-
-Miller                  Expires November 20, 2016              [Page 11]
-
-Internet-Draft              Abbreviated Title                   May 2016
-
-
    The following numbers are used for replies from the agent to the
    client.
 
@@ -629,13 +642,10 @@ Internet-Draft              Abbreviated Title                   May 2016
 
 5.2.  Reserved message numbers
 
-   Message and reply numbers from 192-255 (inclusive) are reserved for
-   private use.
-
    The following message numbers are reserved for implementations that
    implement support for the legacy SSH protocol version 1: 1-4, 7-9 and
-   24 (inclusive).  These message numbers may be used by an
-   implementation supporting the legacy protocol but must not be reused
+   24 (inclusive).  These message numbers MAY be used by an
+   implementation supporting the legacy protocol but MUST NOT be reused
    otherwise.
 
 5.3.  Constraint identifiers
@@ -645,12 +655,24 @@ Internet-Draft              Abbreviated Title                   May 2016
 
        SSH_AGENT_CONSTRAIN_LIFETIME                    1
        SSH_AGENT_CONSTRAIN_CONFIRM                     2
+       SSH_AGENT_CONSTRAIN_EXTENSION                   3
 
 6.  Acknowledgements
 
    This protocol was designed and first implemented by Markus Friedl,
    based on a similar protocol for an agent to support the legacy SSH
    version 1 by Tatu Ylonen.
+
+   Thanks to Simon Tatham who reviewed and helped improve this document.
+
+
+
+
+
+Miller                  Expires November 20, 2016              [Page 12]
+
+Internet-Draft              Abbreviated Title                   May 2016
+
 
 7.  IANA Considerations
 
@@ -666,13 +688,6 @@ Internet-Draft              Abbreviated Title                   May 2016
    Consequence of attack: steal keys vs steal use of keys
 
    Implementation advice: sandbox, disallow debugger access, etc.
-
-
-
-Miller                  Expires November 20, 2016              [Page 12]
-
-Internet-Draft              Abbreviated Title                   May 2016
-
 
 9.  Normative References
 
@@ -707,6 +722,14 @@ Internet-Draft              Abbreviated Title                   May 2016
               5656, DOI 10.17487/RFC5656, December 2009,
               <http://www.rfc-editor.org/info/rfc5656>.
 
+
+
+
+Miller                  Expires November 20, 2016              [Page 13]
+
+Internet-Draft              Abbreviated Title                   May 2016
+
+
 Author's Address
 
    Damien Miller
@@ -725,4 +748,37 @@ Author's Address
 
 
 
-Miller                  Expires November 20, 2016              [Page 13]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Miller                  Expires November 20, 2016              [Page 14]

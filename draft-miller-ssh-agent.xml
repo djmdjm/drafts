@@ -448,6 +448,28 @@
     byte                    SSH_AGENT_CONSTRAIN_CONFIRM
 					</artwork></figure>
 				</section>
+				<section title="Constraint extensions">
+					<t>
+					Agents may implement experimental
+					or private-use constraints through
+					a extension constraint that supports
+					named constraints.
+					</t>
+					<figure><artwork>
+    byte                    SSH_AGENT_CONSTRAIN_EXTENSION
+    string                  extension name
+    byte[]                  extension-specific details
+					</artwork></figure>
+					<t>
+					The extension name MUST consist of
+					a UTF-8 string suffixed by the
+					implementation domain following
+					the naming scheme defined in
+					Section 4.2 of
+					<xref target="RFC4251" />,
+					e.g.  "foo@example.com".
+					</t>
+				</section>
 			</section>
 		</section>
 			<section title="Removing keys from the agent">
@@ -726,10 +748,6 @@
 		</section>
 		<section title="Reserved message numbers">
 			<t>
-			Message and reply numbers from 192-255 (inclusive)
-			are reserved for private use.
-			</t>
-			<t>
 			The following message numbers are reserved
 			for implementations that implement support for
 			the legacy SSH protocol version 1:
@@ -748,6 +766,7 @@
 			<figure><artwork>
     SSH_AGENT_CONSTRAIN_LIFETIME                    1
     SSH_AGENT_CONSTRAIN_CONFIRM                     2
+    SSH_AGENT_CONSTRAIN_EXTENSION                   3
 			</artwork></figure>
 		</section>
 	</section>
