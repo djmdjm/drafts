@@ -291,15 +291,24 @@
     byte                    SSH_AGENTC_ADD_IDENTITY or
                             SSH_AGENTC_ADD_ID_CONSTRAINED
     string                  "ssh-ed25519"
-    mpint                   ENC(A)
-    mpint                   k
+    string                  ENC(A)
+    string                  k || ENC(A)
     string                  comment
     constraint[]            constraints
 				</artwork></figure>
 				<t>
-				The values "ENC(A)" and "k" are the
-				Ed25519 public and private values
-				respectively. Both are defined by
+				The first value is the 32 byte Ed25519
+				public key
+				<spanx style="verb">ENC(A)</spanx>.
+				The second value is a concatenation of
+				the 32 byte private key
+				<spanx style="verb">k</spanx> and
+				32 byte public
+				<spanx style="verb">ENC(A)</spanx> key.
+				The contents and interpretation of the
+				<spanx style="verb">ENC(A)</spanx>
+				and <spanx style="verb">k</spanx> values are
+				defined by
 				<xref target="I-D.josefsson-eddsa-ed25519" />.
 				</t>
 			</section>
