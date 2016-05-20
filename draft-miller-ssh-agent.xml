@@ -865,7 +865,7 @@
 		</t>
 		<t>
 		Since being able to access an agent is usually sufficient
-		to perform private key operations, it is also critically
+		to perform private key operations, it is critically
 		important that the agent only be exposed to its owner.
 		</t>
 		<t>
