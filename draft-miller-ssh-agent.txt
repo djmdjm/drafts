@@ -4,8 +4,8 @@
 
 Internet Engineering Task Force                                D. Miller
 Internet-Draft                                                   OpenSSH
-Intended status: Informational                              May 19, 2016
-Expires: November 20, 2016
+Intended status: Informational                              May 20, 2016
+Expires: November 21, 2016
 
 
                            SSH Agent Protocol
@@ -31,7 +31,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on November 20, 2016.
+   This Internet-Draft will expire on November 21, 2016.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Miller                  Expires November 20, 2016               [Page 1]
+Miller                  Expires November 21, 2016               [Page 1]
 
 Internet-Draft              Abbreviated Title                   May 2016
 
@@ -83,13 +83,15 @@ Table of Contents
        4.7.1.  Query extension . . . . . . . . . . . . . . . . . . .  11
    5.  Protocol numbers  . . . . . . . . . . . . . . . . . . . . . .  11
      5.1.  Message numbers . . . . . . . . . . . . . . . . . . . . .  11
-     5.2.  Reserved message numbers  . . . . . . . . . . . . . . . .  12
-     5.3.  Constraint identifiers  . . . . . . . . . . . . . . . . .  12
+       5.1.1.  Reserved message numbers  . . . . . . . . . . . . . .  12
+     5.2.  Constraint identifiers  . . . . . . . . . . . . . . . . .  12
    6.  Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .  12
    7.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  13
+     7.1.  SSH agent protocol numbers  . . . . . . . . . . . . . . .  13
+     7.2.  SSH constraint numbers  . . . . . . . . . . . . . . . . .  13
    8.  Security Considerations . . . . . . . . . . . . . . . . . . .  13
-   9.  Normative References  . . . . . . . . . . . . . . . . . . . .  13
-   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .  14
+   9.  Normative References  . . . . . . . . . . . . . . . . . . . .  14
+   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .  15
 
 1.  Introduction
 
@@ -103,16 +105,17 @@ Table of Contents
 
    Holding keys in an agent offers usability and security advantages to
    loading and unwrapping them at each use.  Moreover, the agent
-   implements a simple protocol and presents a smaller attack surface
-   than a key loaded into a full SSH server or client.
 
 
 
 
-Miller                  Expires November 20, 2016               [Page 2]
+Miller                  Expires November 21, 2016               [Page 2]
 
 Internet-Draft              Abbreviated Title                   May 2016
 
+
+   implements a simple protocol and presents a smaller attack surface
+   than a key loaded into a full SSH server or client.
 
    This agent protocol is already widely used and a de-facto standard,
    having been implemented by a number of popular SSH clients and
@@ -162,10 +165,7 @@ Internet-Draft              Abbreviated Title                   May 2016
 
 
 
-
-
-
-Miller                  Expires November 20, 2016               [Page 3]
+Miller                  Expires November 21, 2016               [Page 3]
 
 Internet-Draft              Abbreviated Title                   May 2016
 
@@ -221,7 +221,7 @@ Internet-Draft              Abbreviated Title                   May 2016
 
 
 
-Miller                  Expires November 20, 2016               [Page 4]
+Miller                  Expires November 21, 2016               [Page 4]
 
 Internet-Draft              Abbreviated Title                   May 2016
 
@@ -277,7 +277,7 @@ Internet-Draft              Abbreviated Title                   May 2016
 
 
 
-Miller                  Expires November 20, 2016               [Page 5]
+Miller                  Expires November 21, 2016               [Page 5]
 
 Internet-Draft              Abbreviated Title                   May 2016
 
@@ -325,7 +325,7 @@ Internet-Draft              Abbreviated Title                   May 2016
        string                  PIN
        constraint[]            constraints
 
-   Here "id" is an opaque identitier for the hardware token and "PIN" is
+   Here "id" is an opaque identifier for the hardware token and "PIN" is
    an optional password on PIN to unlock the key.  The interpretation of
    "id" is not defined by the protocol but is left solely up to the
    agent.
@@ -333,7 +333,7 @@ Internet-Draft              Abbreviated Title                   May 2016
 
 
 
-Miller                  Expires November 20, 2016               [Page 6]
+Miller                  Expires November 21, 2016               [Page 6]
 
 Internet-Draft              Abbreviated Title                   May 2016
 
@@ -389,7 +389,7 @@ Internet-Draft              Abbreviated Title                   May 2016
 
 
 
-Miller                  Expires November 20, 2016               [Page 7]
+Miller                  Expires November 21, 2016               [Page 7]
 
 Internet-Draft              Abbreviated Title                   May 2016
 
@@ -445,7 +445,7 @@ Internet-Draft              Abbreviated Title                   May 2016
 
 
 
-Miller                  Expires November 20, 2016               [Page 8]
+Miller                  Expires November 21, 2016               [Page 8]
 
 Internet-Draft              Abbreviated Title                   May 2016
 
@@ -501,7 +501,7 @@ Internet-Draft              Abbreviated Title                   May 2016
 
 
 
-Miller                  Expires November 20, 2016               [Page 9]
+Miller                  Expires November 21, 2016               [Page 9]
 
 Internet-Draft              Abbreviated Title                   May 2016
 
@@ -524,29 +524,30 @@ Internet-Draft              Abbreviated Title                   May 2016
 4.6.  Locking and unlocking an agent
 
    The agent protocol supports requesting that an agent temporarily lock
-   itself with a passphrase.  When locked an agent should suspend
+   itself with a pass-phrase.  When locked an agent should suspend
    processing of sensitive operations (private key operations at the
-   very least) until it has been unlocked with the same passphrase.
+   very least) until it has been unlocked with the same pass-phrase.
 
    The following message requests agent locking
 
        byte                    SSH_AGENTC_LOCK
        string                  passphrase
 
-   The agent shall reply with SSH_AGENT_SUCCESS if locked successfuly or
-   SSH_AGENT_FAILURE otherwise (e.g. if the agent was already locked).
+   The agent shall reply with SSH_AGENT_SUCCESS if locked successfully
+   or SSH_AGENT_FAILURE otherwise (e.g. if the agent was already
+   locked).
 
    The following message requests unlocking an agent:
 
        byte                    SSH_AGENTC_UNLOCK
        string                  passphrase
 
-   If the agent is already locked and the passphrase matches the one
+   If the agent is already locked and the pass-phrase matches the one
    used to lock it then it should unlock and reply with
-   SSH_AGENT_SUCCESS.  If the agent is unlocked or if the the passphrase
-   does not match it should reply with SSH_AGENT_FAILURE.  An agent
-   SHOULD take countermeasures against brute-force guessing attacks
-   against the passphrase.
+   SSH_AGENT_SUCCESS.  If the agent is unlocked or if the the pass-
+   phrase does not match it should reply with SSH_AGENT_FAILURE.  An
+   agent SHOULD take countermeasures against brute-force guessing
+   attacks against the pass-phrase.
 
 4.7.  Extension mechanism
 
@@ -556,8 +557,7 @@ Internet-Draft              Abbreviated Title                   May 2016
 
 
 
-
-Miller                  Expires November 20, 2016              [Page 10]
+Miller                  Expires November 21, 2016              [Page 10]
 
 Internet-Draft              Abbreviated Title                   May 2016
 
@@ -579,10 +579,10 @@ Internet-Draft              Abbreviated Title                   May 2016
    the extension type.  Extension requests may return SSH_AGENT_SUCCESS
    on success or some other extension-specific message.
 
-   Extension failure should be signalled using the
+   Extension failure should be signaled using the
    SSH_AGENT_EXTENSION_FAILURE code - extensions should not use the
    standard SSH_AGENT_FAILURE message.  This allows failed requests to
-   be distinguised from the extension not being supported.
+   be distinguished from the extension not being supported.
 
 4.7.1.  Query extension
 
@@ -613,7 +613,7 @@ Internet-Draft              Abbreviated Title                   May 2016
 
 
 
-Miller                  Expires November 20, 2016              [Page 11]
+Miller                  Expires November 21, 2016              [Page 11]
 
 Internet-Draft              Abbreviated Title                   May 2016
 
@@ -640,7 +640,7 @@ Internet-Draft              Abbreviated Title                   May 2016
        SSH_AGENT_IDENTITIES_ANSWER                     12
        SSH_AGENT_SIGN_RESPONSE                         14
 
-5.2.  Reserved message numbers
+5.1.1.  Reserved message numbers
 
    The following message numbers are reserved for implementations that
    implement support for the legacy SSH protocol version 1: 1-4, 7-9 and
@@ -648,9 +648,9 @@ Internet-Draft              Abbreviated Title                   May 2016
    implementation supporting the legacy protocol but MUST NOT be reused
    otherwise.
 
-5.3.  Constraint identifiers
+5.2.  Constraint identifiers
 
-   The foilowing numbers are used to identify key constraints.  These
+   The following numbers are used to identify key constraints.  These
    are only used in key constraints and are not sent as message numbers.
 
        SSH_AGENT_CONSTRAIN_LIFETIME                    1
@@ -669,25 +669,77 @@ Internet-Draft              Abbreviated Title                   May 2016
 
 
 
-Miller                  Expires November 20, 2016              [Page 12]
+Miller                  Expires November 21, 2016              [Page 12]
 
 Internet-Draft              Abbreviated Title                   May 2016
 
 
 7.  IANA Considerations
 
-   XXXXXX = will we need an IANA registry?  (I think we will, but I
-   haven't got around to writing this bit).
+   This protocol requires two registries be established, one for message
+   numbers and one for constraints.
+
+7.1.  SSH agent protocol numbers
+
+   This registry, titled "SSH agent protocol numbers" records the
+   message numbers for client requests and agent responses.  Its initial
+   state should consist of the numbers and reservations defined in
+   Section 5.1.  Future message number allocations require specification
+   in the form of an RFC (RFC Required).
+
+7.2.  SSH constraint numbers
+
+   This registry, titled "SSH constraint numbers" records the message
+   numbers for key use constraints.  Its initial state should consist of
+   the numbers defined in Section 5.2.  Future constraint number
+   allocations require specification in the form of an RFC (RFC
+   Required).
 
 8.  Security Considerations
 
-   XXX need to fill this in.  Things to discuss.
+   The agent is a service that is tasked with retaining and providing
+   controlled access to what are typically long-lived login
+   authentication credentials.  It is by nature a sensitive and trusted
+   software component.  Moreover, the agent protocol itself does not
+   include any authentication or transport security; ability to
+   communicate with an agent is usually sufficient to invoke it to
+   perform private key operations.
 
-   Agent typically exposed to user's account
+   Since being able to access an agent is usually sufficient to perform
+   private key operations, it is also critically important that the
+   agent only be exposed to its owner.
 
-   Consequence of attack: steal keys vs steal use of keys
+   The primary design intention of an agent is that an attacker with
+   unprivileged access to their victim's agent should be prevented from
+   gaining a copy of any keys that have been loaded in to it.  This may
+   not preclude the attacker from stealing use of those keys (e.g. if
+   they have been loaded without a confirmation constraint).
 
-   Implementation advice: sandbox, disallow debugger access, etc.
+   Given this, the agent should, as far as possible, prevent its memory
+   being read by other processes to direct theft of loaded keys.  This
+   typically include disabling debugging interfaces and preventing
+   process memory dumps on abnormal termination.
+
+   Another, more subtle, means by which keys may be stolen are via
+   cryptographic side-channels.  Private key operations may leak
+
+
+
+Miller                  Expires November 21, 2016              [Page 13]
+
+Internet-Draft              Abbreviated Title                   May 2016
+
+
+   information about the contents of keys via differences in timing,
+   power use or by side-effects in the memory subsystems (e.g.  CPU
+   caches) of the host running the agent.  For the case of a local
+   attacker and an agent holding unconstrained keys, the only limit on
+   the number of private key operations the attacker may be able to
+   observe is the rate at which the CPU can perform signatures.  This
+   grants the attacker an almost ideal oracle for side-channel attacks.
+   While a full treatment of side-channel attacks is beyond the scope of
+   this specification, agents SHOULD use cryptographic implementations
+   that are resistant to side-channel attacks.
 
 9.  Normative References
 
@@ -725,7 +777,11 @@ Internet-Draft              Abbreviated Title                   May 2016
 
 
 
-Miller                  Expires November 20, 2016              [Page 13]
+
+
+
+
+Miller                  Expires November 21, 2016              [Page 14]
 
 Internet-Draft              Abbreviated Title                   May 2016
 
@@ -781,4 +837,4 @@ Author's Address
 
 
 
-Miller                  Expires November 20, 2016              [Page 14]
+Miller                  Expires November 21, 2016              [Page 15]

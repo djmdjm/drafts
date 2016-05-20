@@ -363,7 +363,7 @@
     constraint[]            constraints
 				</artwork></figure>
 				<t>
-				Here "id" is an opaque identitier for the
+				Here "id" is an opaque identifier for the
 				hardware token and "PIN" is an optional
 				password on PIN to unlock the key.
 				The interpretation of "id" is not defined
@@ -609,11 +609,11 @@
 			<t>
 			The agent protocol supports requesting that
 			an agent temporarily lock itself with a
-			passphrase. When locked an agent should
+			pass-phrase. When locked an agent should
 			suspend processing of sensitive operations
 			(private key operations at the very least)
 			until it has been unlocked with the same
-			passphrase.
+			pass-phrase.
 			</t>
 			<t>
 			The following message requests agent locking
@@ -624,7 +624,7 @@
 			</artwork></figure>
 			<t>
 			The agent shall reply with SSH_AGENT_SUCCESS
-			if locked successfuly or SSH_AGENT_FAILURE
+			if locked successfully or SSH_AGENT_FAILURE
 			otherwise (e.g. if the agent was already
 			locked).
 			</t>
@@ -638,14 +638,14 @@
 			</artwork></figure>
 			<t>
 			If the agent is already locked and the
-			passphrase matches the one used to lock it
+			pass-phrase matches the one used to lock it
 			then it should unlock and reply with
 			SSH_AGENT_SUCCESS. If the agent is unlocked
-			or if the the passphrase does not match
+			or if the the pass-phrase does not match
 			it should reply with SSH_AGENT_FAILURE.
 			An agent SHOULD take countermeasures against
 			brute-force guessing attacks against the
-			passphrase.
+			pass-phrase.
 			</t>
 		</section>
 		<section title="Extension mechanism">
@@ -686,11 +686,11 @@
 			extension-specific message.
 			</t>
 			<t>
-			Extension failure should be signalled using the
+			Extension failure should be signaled using the
 			SSH_AGENT_EXTENSION_FAILURE code - extensions
 			should not use the standard SSH_AGENT_FAILURE
 			message. This allows failed requests to be
-			distinguised from the extension not being
+			distinguished from the extension not being
 			supported.
 			</t>
 			<section title="Query extension">
@@ -715,7 +715,7 @@
 		</section>
 	</section>
 	<section title="Protocol numbers">
-		<section title="Message numbers">
+		<section anchor="messagenum" title="Message numbers">
 			<t>
 			The following numbers are used for requests from the
 			client to the agent.
@@ -745,21 +745,21 @@
     SSH_AGENT_IDENTITIES_ANSWER                     12
     SSH_AGENT_SIGN_RESPONSE                         14
 			</artwork></figure>
+			<section title="Reserved message numbers">
+				<t>
+				The following message numbers are reserved
+				for implementations that implement support for
+				the legacy SSH protocol version 1:
+				1-4, 7-9 and 24 (inclusive).
+				These message numbers MAY be used by an
+				implementation supporting the legacy protocol
+				but MUST NOT be reused otherwise.
+				</t>
+			</section>
 		</section>
-		<section title="Reserved message numbers">
+		<section anchor="constraintnum" title="Constraint identifiers">
 			<t>
-			The following message numbers are reserved
-			for implementations that implement support for
-			the legacy SSH protocol version 1:
-			1-4, 7-9 and 24 (inclusive).
-			These message numbers MAY be used by an implementation
-			supporting the legacy protocol but MUST NOT be reused
-			otherwise.
-			</t>
-		</section>
-		<section title="Constraint identifiers">
-			<t>
-			The foilowing numbers are used to identify key
+			The following numbers are used to identify key
 			constraints. These are only used in key constraints
 			and are not sent as message numbers.
 			</t>
@@ -771,36 +771,89 @@
 		</section>
 	</section>
 	<section anchor="Acknowledgements" title="Acknowledgements">
-	<t>
-	This protocol was designed and first implemented by Markus Friedl,
-	based on a similar protocol for an agent to support the legacy
-	SSH version 1 by Tatu Ylonen. 
-	</t>
-	<t>
-	Thanks to Simon Tatham <!-- and ... --> who reviewed and helped
-	improve this document.
-	</t>
+		<t>
+		This protocol was designed and first implemented by
+		Markus Friedl, based on a similar protocol for an agent
+		to support the legacy SSH version 1 by Tatu Ylonen. 
+		</t>
+		<t>
+		Thanks to Simon Tatham <!-- and ... --> who reviewed and helped
+		improve this document.
+		</t>
 	</section>
-
 	<section anchor="IANA" title="IANA Considerations">
-	<t>
-	XXXXXX = will we need an IANA registry? (I think we will, but I
-	haven't got around to writing this bit).
-	</t>
+		<t>
+		This protocol requires two registries be established, one for
+		message numbers and one for constraints.
+		</t>
+		<section title="SSH agent protocol numbers">
+			<t>
+			This registry, titled "SSH agent protocol numbers"
+			records the message numbers for client requests and
+			agent responses.
+			Its initial state should consist of the
+			numbers and reservations defined in
+			<xref target="messagenum" />.
+			Future message number allocations require
+			specification in the form of an RFC (RFC Required).
+			</t>
+		</section>
+		<section title="SSH constraint numbers">
+			<t>
+			This registry, titled "SSH constraint numbers"
+			records the message numbers for key use constraints.
+			Its initial state should consist of the
+			numbers defined in <xref target="constraintnum" />.
+			Future constraint number allocations require
+			specification in the form of an RFC (RFC Required).
+			</t>
+		</section>
 	</section>
-
 	<section anchor="Security" title="Security Considerations">
 		<t>
-		XXX need to fill this in. Things to discuss.
+		The agent is a service that
+		is tasked with retaining and providing controlled access to
+		what are typically long-lived login authentication credentials.
+		It is by nature a sensitive and trusted software component.
+		Moreover, the agent protocol itself does not include any
+		authentication or transport security; ability to communicate
+		with an agent is usually sufficient to invoke it to perform
+		private key operations.
 		</t>
 		<t>
-		Agent typically exposed to user's account
+		Since being able to access an agent is usually sufficient
+		to perform private key operations, it is also critically
+		important that the agent only be exposed to its owner.
 		</t>
 		<t>
-		Consequence of attack: steal keys vs steal use of keys
+		The primary design intention of an agent is that an attacker
+		with unprivileged access to their victim's agent should be
+		prevented from gaining a copy of any keys that have been loaded
+		in to it. This may not preclude the attacker from
+		stealing use of those keys (e.g. if they have been loaded
+		without a confirmation constraint).
 		</t>
 		<t>
-		Implementation advice: sandbox, disallow debugger access, etc.
+		Given this, the agent
+		should, as far as possible, prevent its memory being read
+		by other processes to direct theft of loaded keys. 
+		This typically include disabling debugging interfaces and
+		preventing process memory dumps on abnormal termination.
+		</t>
+		<t>
+		Another, more subtle, means by which keys may be stolen are
+		via cryptographic side-channels. Private key operations may
+		leak information about the contents of keys via differences
+		in timing, power use or by side-effects in the memory
+		subsystems (e.g. CPU caches) of the host running the agent. 
+		For the case of a local attacker and an agent holding
+		unconstrained keys, the only limit on the number of private
+		key operations the attacker may be able to observe is the
+		rate at which the CPU can perform signatures. This grants
+		the attacker an almost ideal oracle for side-channel attacks.
+		While a full treatment of side-channel attacks is beyond the
+		scope of this specification, agents SHOULD use cryptographic
+		implementations that are resistant to side-channel attacks.
 		</t>
 	</section>
  </middle>
