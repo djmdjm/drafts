@@ -87,11 +87,11 @@ Table of Contents
      5.2.  Constraint identifiers  . . . . . . . . . . . . . . . . .  12
    6.  Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .  12
    7.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  13
-     7.1.  SSH agent protocol numbers  . . . . . . . . . . . . . . .  13
-     7.2.  SSH constraint numbers  . . . . . . . . . . . . . . . . .  13
-   8.  Security Considerations . . . . . . . . . . . . . . . . . . .  13
-   9.  Normative References  . . . . . . . . . . . . . . . . . . . .  14
-   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .  15
+     7.1.  New registry: SSH agent protocol numbers  . . . . . . . .  13
+     7.2.  New registry: SSH constraint numbers  . . . . . . . . . .  14
+   8.  Security Considerations . . . . . . . . . . . . . . . . . . .  14
+   9.  Normative References  . . . . . . . . . . . . . . . . . . . .  15
+   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .  16
 
 1.  Introduction
 
@@ -126,7 +126,7 @@ Internet-Draft              Abbreviated Title                   May 2016
 
    The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
    "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
-   document are to be interpreted as described in [RFC2119]
+   document are to be interpreted as described in [RFC2119].
 
 3.  Protocol Overview
 
@@ -679,21 +679,72 @@ Internet-Draft              Abbreviated Title                   May 2016
    This protocol requires two registries be established, one for message
    numbers and one for constraints.
 
-7.1.  SSH agent protocol numbers
+7.1.  New registry: SSH agent protocol numbers
 
    This registry, titled "SSH agent protocol numbers" records the
    message numbers for client requests and agent responses.  Its initial
-   state should consist of the numbers and reservations defined in
-   Section 5.1.  Future message number allocations require specification
-   in the form of an RFC (RFC Required).
+   state should consist of the following numbers and reservations.
+   Future message number allocations shall require specification in the
+   form of an RFC (RFC REQUIRED as per [RFC5226]).
 
-7.2.  SSH constraint numbers
+        Number Identifier                               Reference
+        ------ ---------------------------------------- -----------
+             1 reserved                                 Section 5.1
+             2 reserved                                 Section 5.1
+             3 reserved                                 Section 5.1
+             4 reserved                                 Section 5.1
+             5 SSH_AGENT_FAILURE                        Section 5.1
+             6 SSH_AGENT_SUCCESS                        Section 5.1
+             7 reserved                                 Section 5.1
+             8 reserved                                 Section 5.1
+             9 reserved                                 Section 5.1
+            10 reserved                                 Section 5.1
+            11 SSH_AGENTC_REQUEST_IDENTITIES            Section 5.1
+            12 SSH_AGENT_IDENTITIES_ANSWER              Section 5.1
+            13 SSH_AGENTC_SIGN_REQUEST                  Section 5.1
+            14 SSH_AGENT_SIGN_RESPONSE                  Section 5.1
+            15 reserved                                 Section 5.1
+            16 reserved                                 Section 5.1
+            17 SSH_AGENTC_ADD_IDENTITY                  Section 5.1
+            18 SSH_AGENTC_REMOVE_IDENTITY               Section 5.1
+            19 SSH_AGENTC_REMOVE_ALL_IDENTITIES         Section 5.1
+            20 SSH_AGENTC_ADD_SMARTCARD_KEY             Section 5.1
+            21 SSH_AGENTC_REMOVE_SMARTCARD_KEY          Section 5.1
+            22 SSH_AGENTC_LOCK                          Section 5.1
+            23 SSH_AGENTC_UNLOCK                        Section 5.1
+            24 reserved                                 Section 5.1
+            25 SSH_AGENTC_ADD_ID_CONSTRAINED            Section 5.1
+            26 SSH_AGENTC_ADD_SMARTCARD_KEY_CONSTRAINED Section 5.1
+            27 SSH_AGENTC_EXTENSION                     Section 5.1
+            28 SSH_AGENT_EXTENSION_FAILURE              Section 5.1
+
+            Initial registry state: SSH agent protocol numbers
+
+
+
+
+
+
+Miller                  Expires November 21, 2016              [Page 13]
+
+Internet-Draft              Abbreviated Title                   May 2016
+
+
+7.2.  New registry: SSH constraint numbers
 
    This registry, titled "SSH constraint numbers" records the message
    numbers for key use constraints.  Its initial state should consist of
-   the numbers defined in Section 5.2.  Future constraint number
-   allocations require specification in the form of an RFC (RFC
-   Required).
+   the follwing numbers.  Future constraint number allocations shall
+   require specification in the form of an RFC (RFC REQUIRED as per
+   [RFC5226]).
+
+             Number Identifier                    Reference
+             ------ ----------------------------- -----------
+                  1 SSH_AGENT_CONSTRAIN_LIFETIME  Section 5.2
+                  2 SSH_AGENT_CONSTRAIN_CONFIRM   Section 5.2
+                  3 SSH_AGENT_CONSTRAIN_EXTENSION Section 5.2
+
+              Initial registry state: SSH constraint numbers
 
 8.  Security Considerations
 
@@ -722,19 +773,19 @@ Internet-Draft              Abbreviated Title                   May 2016
 
    Another, more subtle, means by which keys may be stolen are via
    cryptographic side-channels.  Private key operations may leak
-
-
-
-Miller                  Expires November 21, 2016              [Page 13]
-
-Internet-Draft              Abbreviated Title                   May 2016
-
-
    information about the contents of keys via differences in timing,
    power use or by side-effects in the memory subsystems (e.g.  CPU
    caches) of the host running the agent.  For the case of a local
    attacker and an agent holding unconstrained keys, the only limit on
    the number of private key operations the attacker may be able to
+
+
+
+Miller                  Expires November 21, 2016              [Page 14]
+
+Internet-Draft              Abbreviated Title                   May 2016
+
+
    observe is the rate at which the CPU can perform signatures.  This
    grants the attacker an almost ideal oracle for side-channel attacks.
    While a full treatment of side-channel attacks is beyond the scope of
@@ -769,6 +820,11 @@ Internet-Draft              Abbreviated Title                   May 2016
               Transport Layer Protocol", RFC 4253, DOI 10.17487/RFC4253,
               January 2006, <http://www.rfc-editor.org/info/rfc4253>.
 
+   [RFC5226]  Narten, T. and H. Alvestrand, "Guidelines for Writing an
+              IANA Considerations Section in RFCs", BCP 26, RFC 5226,
+              DOI 10.17487/RFC5226, May 2008,
+              <http://www.rfc-editor.org/info/rfc5226>.
+
    [RFC5656]  Stebila, D. and J. Green, "Elliptic Curve Algorithm
               Integration in the Secure Shell Transport Layer", RFC
               5656, DOI 10.17487/RFC5656, December 2009,
@@ -781,7 +837,7 @@ Internet-Draft              Abbreviated Title                   May 2016
 
 
 
-Miller                  Expires November 21, 2016              [Page 14]
+Miller                  Expires November 21, 2016              [Page 15]
 
 Internet-Draft              Abbreviated Title                   May 2016
 
@@ -837,4 +893,4 @@ Author's Address
 
 
 
-Miller                  Expires November 21, 2016              [Page 15]
+Miller                  Expires November 21, 2016              [Page 16]

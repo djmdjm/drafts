@@ -5,6 +5,7 @@
 <!ENTITY RFC4253 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4253.xml">
 <!ENTITY RFC5226 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5226.xml">
 <!ENTITY RFC5656 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5656.xml">
+<!ENTITY RFC5226 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5226.xml">
 <!ENTITY I-D.bjh21-ssh-ed25519 SYSTEM "http://xml2rfc.ietf.org/public/rfc/bibxml3/reference.I-D.bjh21-ssh-ed25519.xml">
 <!ENTITY I-D.josefsson-eddsa-ed25519 SYSTEM "http://xml2rfc.ietf.org/public/rfc/bibxml3/reference.I-D.josefsson-eddsa-ed25519.xml">
 ]>
@@ -126,7 +127,7 @@
 		The key words "MUST", "MUST NOT", "REQUIRED", "SHALL",
 		"SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY",
 		and "OPTIONAL" in this document are to be interpreted as
-		described in <xref target="RFC2119" />
+		described in <xref target="RFC2119" />.
 		</t>
 	</section>
 	<section title="Protocol Overview">
@@ -786,27 +787,69 @@
 		This protocol requires two registries be established, one for
 		message numbers and one for constraints.
 		</t>
-		<section title="SSH agent protocol numbers">
+		<section title="New registry: SSH agent protocol numbers">
 			<t>
 			This registry, titled "SSH agent protocol numbers"
 			records the message numbers for client requests and
 			agent responses.
-			Its initial state should consist of the
-			numbers and reservations defined in
-			<xref target="messagenum" />.
-			Future message number allocations require
-			specification in the form of an RFC (RFC Required).
+			Its initial state should consist of the following
+			numbers and reservations.
+			Future message number allocations shall require
+			specification in the form of an RFC
+			(RFC REQUIRED as per <xref target="RFC5226" />).
 			</t>
+<texttable title="Initial registry state: SSH agent protocol numbers" suppress-title="true" style="headers">
+<ttcol align='right'>Number</ttcol>
+<ttcol align='left'>Identifier</ttcol>
+<ttcol align='left'>Reference</ttcol>
+<c>1</c><c>reserved</c><c><xref target="messagenum" /></c>
+<c>2</c><c>reserved</c><c><xref target="messagenum" /></c>
+<c>3</c><c>reserved</c><c><xref target="messagenum" /></c>
+<c>4</c><c>reserved</c><c><xref target="messagenum" /></c>
+<c>5</c><c>SSH_AGENT_FAILURE</c><c><xref target="messagenum" /></c>
+<c>6</c><c>SSH_AGENT_SUCCESS</c><c><xref target="messagenum" /></c>
+<c>7</c><c>reserved</c><c><xref target="messagenum" /></c>
+<c>8</c><c>reserved</c><c><xref target="messagenum" /></c>
+<c>9</c><c>reserved</c><c><xref target="messagenum" /></c>
+<c>10</c><c>reserved</c><c><xref target="messagenum" /></c>
+<c>11</c><c>SSH_AGENTC_REQUEST_IDENTITIES</c><c><xref target="messagenum" /></c>
+<c>12</c><c>SSH_AGENT_IDENTITIES_ANSWER</c><c><xref target="messagenum" /></c>
+<c>13</c><c>SSH_AGENTC_SIGN_REQUEST</c><c><xref target="messagenum" /></c>
+<c>14</c><c>SSH_AGENT_SIGN_RESPONSE</c><c><xref target="messagenum" /></c>
+<c>15</c><c>reserved</c><c><xref target="messagenum" /></c>
+<c>16</c><c>reserved</c><c><xref target="messagenum" /></c>
+<c>17</c><c>SSH_AGENTC_ADD_IDENTITY</c><c><xref target="messagenum" /></c>
+<c>18</c><c>SSH_AGENTC_REMOVE_IDENTITY</c><c><xref target="messagenum" /></c>
+<c>19</c><c>SSH_AGENTC_REMOVE_ALL_IDENTITIES</c><c><xref target="messagenum" /></c>
+<c>20</c><c>SSH_AGENTC_ADD_SMARTCARD_KEY</c><c><xref target="messagenum" /></c>
+<c>21</c><c>SSH_AGENTC_REMOVE_SMARTCARD_KEY</c><c><xref target="messagenum" /></c>
+<c>22</c><c>SSH_AGENTC_LOCK</c><c><xref target="messagenum" /></c>
+<c>23</c><c>SSH_AGENTC_UNLOCK</c><c><xref target="messagenum" /></c>
+<c>24</c><c>reserved</c><c><xref target="messagenum" /></c>
+<c>25</c><c>SSH_AGENTC_ADD_ID_CONSTRAINED</c><c><xref target="messagenum" /></c>
+<c>26</c><c>SSH_AGENTC_ADD_SMARTCARD_KEY_CONSTRAINED</c><c><xref target="messagenum" /></c>
+<c>27</c><c>SSH_AGENTC_EXTENSION</c><c><xref target="messagenum" /></c>
+<c>28</c><c>SSH_AGENT_EXTENSION_FAILURE</c><c><xref target="messagenum" /></c>
+</texttable>
 		</section>
-		<section title="SSH constraint numbers">
+		<section title="New registry: SSH constraint numbers">
 			<t>
 			This registry, titled "SSH constraint numbers"
 			records the message numbers for key use constraints.
 			Its initial state should consist of the
-			numbers defined in <xref target="constraintnum" />.
-			Future constraint number allocations require
-			specification in the form of an RFC (RFC Required).
+			follwing numbers.
+			Future constraint number allocations shall require
+			specification in the form of an RFC
+			(RFC REQUIRED as per <xref target="RFC5226" />).
 			</t>
+<texttable title="Initial registry state: SSH constraint numbers" suppress-title="true" style="headers">
+<ttcol align='right'>Number</ttcol>
+<ttcol align='left'>Identifier</ttcol>
+<ttcol align='left'>Reference</ttcol>
+<c>1</c><c>SSH_AGENT_CONSTRAIN_LIFETIME</c><c><xref target="constraintnum" /></c>
+<c>2</c><c>SSH_AGENT_CONSTRAIN_CONFIRM</c><c><xref target="constraintnum" /></c>
+<c>3</c><c>SSH_AGENT_CONSTRAIN_EXTENSION</c><c><xref target="constraintnum" /></c>
+</texttable>
 		</section>
 	</section>
 	<section anchor="Security" title="Security Considerations">
@@ -866,6 +909,8 @@
 		&RFC4251;
 
 		&RFC4253;
+
+		&RFC5226;
 
 		&RFC5656;
 
