@@ -4,8 +4,8 @@
 
 Internet Engineering Task Force                                D. Miller
 Internet-Draft                                                   OpenSSH
-Intended status: Informational                              May 20, 2016
-Expires: November 21, 2016
+Intended status: Informational                              May 24, 2016
+Expires: November 25, 2016
 
 
                            SSH Agent Protocol
@@ -31,7 +31,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on November 21, 2016.
+   This Internet-Draft will expire on November 25, 2016.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Miller                  Expires November 21, 2016               [Page 1]
+Miller                  Expires November 25, 2016               [Page 1]
 
 Internet-Draft              Abbreviated Title                   May 2016
 
@@ -78,20 +78,23 @@ Table of Contents
      4.3.  Removing keys from the agent  . . . . . . . . . . . . . .   8
      4.4.  Requesting a list of keys . . . . . . . . . . . . . . . .   9
      4.5.  Private key operations  . . . . . . . . . . . . . . . . .   9
+       4.5.1.  Signature flags . . . . . . . . . . . . . . . . . . .  10
      4.6.  Locking and unlocking an agent  . . . . . . . . . . . . .  10
-     4.7.  Extension mechanism . . . . . . . . . . . . . . . . . . .  10
+     4.7.  Extension mechanism . . . . . . . . . . . . . . . . . . .  11
        4.7.1.  Query extension . . . . . . . . . . . . . . . . . . .  11
    5.  Protocol numbers  . . . . . . . . . . . . . . . . . . . . . .  11
-     5.1.  Message numbers . . . . . . . . . . . . . . . . . . . . .  11
+     5.1.  Message numbers . . . . . . . . . . . . . . . . . . . . .  12
        5.1.1.  Reserved message numbers  . . . . . . . . . . . . . .  12
      5.2.  Constraint identifiers  . . . . . . . . . . . . . . . . .  12
-   6.  Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .  12
+     5.3.  Signature flags . . . . . . . . . . . . . . . . . . . . .  13
+   6.  Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .  13
    7.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  13
      7.1.  New registry: SSH agent protocol numbers  . . . . . . . .  13
-     7.2.  New registry: SSH constraint numbers  . . . . . . . . . .  14
-   8.  Security Considerations . . . . . . . . . . . . . . . . . . .  14
-   9.  Normative References  . . . . . . . . . . . . . . . . . . . .  15
-   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .  16
+     7.2.  New registry: SSH agent key constraint numbers  . . . . .  14
+     7.3.  New registry: SSH agent signature flags . . . . . . . . .  15
+   8.  Security Considerations . . . . . . . . . . . . . . . . . . .  15
+   9.  Normative References  . . . . . . . . . . . . . . . . . . . .  16
+   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .  17
 
 1.  Introduction
 
@@ -103,17 +106,16 @@ Table of Contents
    agent via this protocol to perform operations using public and
    private keys held in the agent.
 
-   Holding keys in an agent offers usability and security advantages to
-   loading and unwrapping them at each use.  Moreover, the agent
 
 
 
-
-Miller                  Expires November 21, 2016               [Page 2]
+Miller                  Expires November 25, 2016               [Page 2]
 
 Internet-Draft              Abbreviated Title                   May 2016
 
 
+   Holding keys in an agent offers usability and security advantages to
+   loading and unwrapping them at each use.  Moreover, the agent
    implements a simple protocol and presents a smaller attack surface
    than a key loaded into a full SSH server or client.
 
@@ -159,16 +161,17 @@ Internet-Draft              Abbreviated Title                   May 2016
 
       byte                     SSH_AGENT_FAILURE
 
-   SSH_AGENT_FAILURE messages are also sent in reply to requests with
-   unknown types.
 
 
 
 
-Miller                  Expires November 21, 2016               [Page 3]
+Miller                  Expires November 25, 2016               [Page 3]
 
 Internet-Draft              Abbreviated Title                   May 2016
 
+
+   SSH_AGENT_FAILURE messages are also sent in reply to requests with
+   unknown types.
 
 4.2.  Adding keys to the agent
 
@@ -218,10 +221,7 @@ Internet-Draft              Abbreviated Title                   May 2016
 
 
 
-
-
-
-Miller                  Expires November 21, 2016               [Page 4]
+Miller                  Expires November 25, 2016               [Page 4]
 
 Internet-Draft              Abbreviated Title                   May 2016
 
@@ -263,9 +263,9 @@ Internet-Draft              Abbreviated Title                   May 2016
 4.2.3.  ED25519 keys
 
    Ed25519 keys have key type "ssh-ed25519" and are defined in
-   [I-D.bjh21-ssh-ed25519].  They may be added to the agent using the
-   following message.  The "key constraints" field is only present for
-   the SSH_AGENTC_ADD_ID_CONSTRAINED message.
+   [I-D.ietf-curdle-ssh-ed25519].  They may be added to the agent using
+   the following message.  The "key constraints" field is only present
+   for the SSH_AGENTC_ADD_ID_CONSTRAINED message.
 
        byte                    SSH_AGENTC_ADD_IDENTITY or
                                SSH_AGENTC_ADD_ID_CONSTRAINED
@@ -277,7 +277,7 @@ Internet-Draft              Abbreviated Title                   May 2016
 
 
 
-Miller                  Expires November 21, 2016               [Page 5]
+Miller                  Expires November 25, 2016               [Page 5]
 
 Internet-Draft              Abbreviated Title                   May 2016
 
@@ -285,7 +285,7 @@ Internet-Draft              Abbreviated Title                   May 2016
    The first value is the 32 byte Ed25519 public key "ENC(A)".  The
    second value is a concatenation of the 32 byte private key "k" and 32
    byte public "ENC(A)" key.  The contents and interpretation of the
-   "ENC(A)" and "k" values are defined by [I-D.josefsson-eddsa-ed25519].
+   "ENC(A)" and "k" values are defined by [I-D.irtf-cfrg-eddsa].
 
 4.2.4.  RSA keys
 
@@ -333,7 +333,7 @@ Internet-Draft              Abbreviated Title                   May 2016
 
 
 
-Miller                  Expires November 21, 2016               [Page 6]
+Miller                  Expires November 25, 2016               [Page 6]
 
 Internet-Draft              Abbreviated Title                   May 2016
 
@@ -389,7 +389,7 @@ Internet-Draft              Abbreviated Title                   May 2016
 
 
 
-Miller                  Expires November 21, 2016               [Page 7]
+Miller                  Expires November 25, 2016               [Page 7]
 
 Internet-Draft              Abbreviated Title                   May 2016
 
@@ -433,7 +433,7 @@ Internet-Draft              Abbreviated Title                   May 2016
    Where "key blob" is the standard public key encoding of the key to be
    removed.  SSH protocol key encodings are defined in [RFC4253] for
    "ssh-rsa" and "ssh-dss" keys, in [RFC5656] for "ecdsa-sha2-*" keys
-   and in [I-D.bjh21-ssh-ed25519] for "ssh-ed25519" keys.
+   and in [I-D.ietf-curdle-ssh-ed25519] for "ssh-ed25519" keys.
 
    An agent shall reply with SSH_AGENT_SUCCESS if the key was deleted or
    SSH_AGENT_FAILURE if it was not found.
@@ -445,7 +445,7 @@ Internet-Draft              Abbreviated Title                   May 2016
 
 
 
-Miller                  Expires November 21, 2016               [Page 8]
+Miller                  Expires November 25, 2016               [Page 8]
 
 Internet-Draft              Abbreviated Title                   May 2016
 
@@ -494,14 +494,14 @@ Internet-Draft              Abbreviated Title                   May 2016
        uint32                  flags
 
    Where "key blob" is the key requested to perform the signature,
-   "data" is the data to be signed and "flags" are optional signature
-   flags (none are defined, so this value should be zero usually).
+   "data" is the data to be signed and "flags" is a bitfield containing
+   the bitwise OR of zero or more signature flags (see below).
 
 
 
 
 
-Miller                  Expires November 21, 2016               [Page 9]
+Miller                  Expires November 25, 2016               [Page 9]
 
 Internet-Draft              Abbreviated Title                   May 2016
 
@@ -519,7 +519,16 @@ Internet-Draft              Abbreviated Title                   May 2016
    The signature format is specific to the algorithm of the key type in
    use.  SSH protocol signature formats are defined in [RFC4253] for
    "ssh-rsa" and "ssh-dss" keys, in [RFC5656] for "ecdsa-sha2-*" keys
-   and in [I-D.bjh21-ssh-ed25519] for "ssh-ed25519" keys.
+   and in [I-D.ietf-curdle-ssh-ed25519] for "ssh-ed25519" keys.
+
+4.5.1.  Signature flags
+
+   Two flags are currently defined for signature request messages:
+   SSH_AGENT_RSA_SHA2_256 and SSH_AGENT_RSA_SHA2_512.  These two flags
+   are only valid for "ssh-rsa" keys and request that the agent return a
+   signature using the "rsa-sha2-256" or "rsa-sha2-515" signature
+   methods respectively.  These signature schemes are defined in
+   [I-D.ietf-curdle-rsa-sha2].
 
 4.6.  Locking and unlocking an agent
 
@@ -545,6 +554,14 @@ Internet-Draft              Abbreviated Title                   May 2016
    If the agent is already locked and the pass-phrase matches the one
    used to lock it then it should unlock and reply with
    SSH_AGENT_SUCCESS.  If the agent is unlocked or if the the pass-
+
+
+
+Miller                  Expires November 25, 2016              [Page 10]
+
+Internet-Draft              Abbreviated Title                   May 2016
+
+
    phrase does not match it should reply with SSH_AGENT_FAILURE.  An
    agent SHOULD take countermeasures against brute-force guessing
    attacks against the pass-phrase.
@@ -554,13 +571,6 @@ Internet-Draft              Abbreviated Title                   May 2016
    The agent protocol includes an optional extension mechanism that
    allows vendor-specific and experimental messages to be sent via the
    agent protocol.  Extension requests from the client consist of:
-
-
-
-Miller                  Expires November 21, 2016              [Page 10]
-
-Internet-Draft              Abbreviated Title                   May 2016
-
 
        byte                    SSH_AGENTC_EXTENSION
        string                  extension type
@@ -597,26 +607,21 @@ Internet-Draft              Abbreviated Title                   May 2016
 
 5.  Protocol numbers
 
+
+
+
+
+
+
+Miller                  Expires November 25, 2016              [Page 11]
+
+Internet-Draft              Abbreviated Title                   May 2016
+
+
 5.1.  Message numbers
 
    The following numbers are used for requests from the client to the
    agent.
-
-
-
-
-
-
-
-
-
-
-
-
-Miller                  Expires November 21, 2016              [Page 11]
-
-Internet-Draft              Abbreviated Title                   May 2016
-
 
        SSH_AGENTC_REQUEST_IDENTITIES                  11
        SSH_AGENTC_SIGN_REQUEST                        13
@@ -657,6 +662,29 @@ Internet-Draft              Abbreviated Title                   May 2016
        SSH_AGENT_CONSTRAIN_CONFIRM                     2
        SSH_AGENT_CONSTRAIN_EXTENSION                   3
 
+
+
+
+
+
+
+
+Miller                  Expires November 25, 2016              [Page 12]
+
+Internet-Draft              Abbreviated Title                   May 2016
+
+
+5.3.  Signature flags
+
+   The following numbers may be present in signature request
+   (SSH_AGENTC_SIGN_REQUEST) messages.  These flags for a bit field by
+   taking the logical OR of zero or more flags.
+
+       SSH_AGENT_RSA_SHA2_256                          2
+       SSH_AGENT_RSA_SHA2_512                          4
+
+   The flag value 1 is reserved for historical implementations.
+
 6.  Acknowledgements
 
    This protocol was designed and first implemented by Markus Friedl,
@@ -665,19 +693,11 @@ Internet-Draft              Abbreviated Title                   May 2016
 
    Thanks to Simon Tatham who reviewed and helped improve this document.
 
-
-
-
-
-Miller                  Expires November 21, 2016              [Page 12]
-
-Internet-Draft              Abbreviated Title                   May 2016
-
-
 7.  IANA Considerations
 
-   This protocol requires two registries be established, one for message
-   numbers and one for constraints.
+   This protocol requires three registries be established, one for
+   message numbers, one for constraints and one for signature request
+   flags.
 
 7.1.  New registry: SSH agent protocol numbers
 
@@ -686,6 +706,29 @@ Internet-Draft              Abbreviated Title                   May 2016
    state should consist of the following numbers and reservations.
    Future message number allocations shall require specification in the
    form of an RFC (RFC REQUIRED as per [RFC5226]).
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Miller                  Expires November 25, 2016              [Page 13]
+
+Internet-Draft              Abbreviated Title                   May 2016
+
 
         Number Identifier                               Reference
         ------ ---------------------------------------- -----------
@@ -720,23 +763,13 @@ Internet-Draft              Abbreviated Title                   May 2016
 
             Initial registry state: SSH agent protocol numbers
 
+7.2.  New registry: SSH agent key constraint numbers
 
-
-
-
-
-Miller                  Expires November 21, 2016              [Page 13]
-
-Internet-Draft              Abbreviated Title                   May 2016
-
-
-7.2.  New registry: SSH constraint numbers
-
-   This registry, titled "SSH constraint numbers" records the message
-   numbers for key use constraints.  Its initial state should consist of
-   the follwing numbers.  Future constraint number allocations shall
-   require specification in the form of an RFC (RFC REQUIRED as per
-   [RFC5226]).
+   This registry, titled "SSH agent key constraint numbers" records the
+   message numbers for key use constraints.  Its initial state should
+   consist of the follwing numbers.  Future constraint number
+   allocations shall require specification in the form of an RFC (RFC
+   REQUIRED as per [RFC5226]).
 
              Number Identifier                    Reference
              ------ ----------------------------- -----------
@@ -744,7 +777,33 @@ Internet-Draft              Abbreviated Title                   May 2016
                   2 SSH_AGENT_CONSTRAIN_CONFIRM   Section 5.2
                   3 SSH_AGENT_CONSTRAIN_EXTENSION Section 5.2
 
-              Initial registry state: SSH constraint numbers
+         Initial registry state: SSH agent key constraint numbers
+
+
+
+Miller                  Expires November 25, 2016              [Page 14]
+
+Internet-Draft              Abbreviated Title                   May 2016
+
+
+7.3.  New registry: SSH agent signature flags
+
+   This registry, titled "SSH agent signature flags records the values
+   for signature request (SSH_AGENTC_SIGN_REQUEST) flag values.  Its
+   initial state should consist of the follwing numbers.  Note that as
+   the flags are combined by bitwise OR, all flag values must be powers
+   of two and the maximum available flag value is 0x80000000.
+
+   Future constraint number allocations shall require specification in
+   the form of an RFC (RFC REQUIRED as per [RFC5226]).
+
+                 Number Identifier             Reference
+                 ------ ---------------------- -----------
+                   0x01 reserved               Section 5.3
+                   0x02 SSH_AGENT_RSA_SHA2_256 Section 5.3
+                   0x04 SSH_AGENT_RSA_SHA2_512 Section 5.3
+
+             Initial registry state: SSH agent signature flags
 
 8.  Security Considerations
 
@@ -775,17 +834,17 @@ Internet-Draft              Abbreviated Title                   May 2016
    cryptographic side-channels.  Private key operations may leak
    information about the contents of keys via differences in timing,
    power use or by side-effects in the memory subsystems (e.g.  CPU
-   caches) of the host running the agent.  For the case of a local
-   attacker and an agent holding unconstrained keys, the only limit on
-   the number of private key operations the attacker may be able to
 
 
 
-Miller                  Expires November 21, 2016              [Page 14]
+Miller                  Expires November 25, 2016              [Page 15]
 
 Internet-Draft              Abbreviated Title                   May 2016
 
 
+   caches) of the host running the agent.  For the case of a local
+   attacker and an agent holding unconstrained keys, the only limit on
+   the number of private key operations the attacker may be able to
    observe is the rate at which the CPU can perform signatures.  This
    grants the attacker an almost ideal oracle for side-channel attacks.
    While a full treatment of side-channel attacks is beyond the scope of
@@ -798,14 +857,20 @@ Internet-Draft              Abbreviated Title                   May 2016
               National Institute of Standards and Technology, "Digital
               Signature Standard (DSS)", FIPS PUB 186-4, July 2013.
 
-   [I-D.bjh21-ssh-ed25519]
-              Harris, B., "Ed25519 public key algorithm for the Secure
-              Shell (SSH) protocol", draft-bjh21-ssh-ed25519-02 (work in
-              progress), August 2015.
+   [I-D.ietf-curdle-rsa-sha2]
+              bider, d., "Use of RSA Keys with SHA-2 256 and 512 in
+              Secure Shell (SSH)", draft-ietf-curdle-rsa-sha2-00 (work
+              in progress), March 2016.
 
-   [I-D.josefsson-eddsa-ed25519]
-              Josefsson, S. and N. Moller, "EdDSA and Ed25519", draft-
-              josefsson-eddsa-ed25519-03 (work in progress), May 2015.
+   [I-D.ietf-curdle-ssh-ed25519]
+              Harris, B., "Ed25519 public key algorithm for the Secure
+              Shell (SSH) protocol", draft-ietf-curdle-ssh-ed25519-00
+              (work in progress), May 2016.
+
+   [I-D.irtf-cfrg-eddsa]
+              Josefsson, S. and I. Liusvaara, "Edwards-curve Digital
+              Signature Algorithm (EdDSA)", draft-irtf-cfrg-eddsa-05
+              (work in progress), March 2016.
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119, DOI 10.17487/
@@ -825,22 +890,18 @@ Internet-Draft              Abbreviated Title                   May 2016
               DOI 10.17487/RFC5226, May 2008,
               <http://www.rfc-editor.org/info/rfc5226>.
 
+
+
+
+Miller                  Expires November 25, 2016              [Page 16]
+
+Internet-Draft              Abbreviated Title                   May 2016
+
+
    [RFC5656]  Stebila, D. and J. Green, "Elliptic Curve Algorithm
               Integration in the Secure Shell Transport Layer", RFC
               5656, DOI 10.17487/RFC5656, December 2009,
               <http://www.rfc-editor.org/info/rfc5656>.
-
-
-
-
-
-
-
-
-Miller                  Expires November 21, 2016              [Page 15]
-
-Internet-Draft              Abbreviated Title                   May 2016
-
 
 Author's Address
 
@@ -888,9 +949,4 @@ Author's Address
 
 
 
-
-
-
-
-
-Miller                  Expires November 21, 2016              [Page 16]
+Miller                  Expires November 25, 2016              [Page 17]

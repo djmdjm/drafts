@@ -6,8 +6,9 @@
 <!ENTITY RFC5226 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5226.xml">
 <!ENTITY RFC5656 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5656.xml">
 <!ENTITY RFC5226 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5226.xml">
-<!ENTITY I-D.bjh21-ssh-ed25519 SYSTEM "http://xml2rfc.ietf.org/public/rfc/bibxml3/reference.I-D.bjh21-ssh-ed25519.xml">
-<!ENTITY I-D.josefsson-eddsa-ed25519 SYSTEM "http://xml2rfc.ietf.org/public/rfc/bibxml3/reference.I-D.josefsson-eddsa-ed25519.xml">
+<!ENTITY I-D.ietf-curdle-ssh-ed25519 SYSTEM "http://xml2rfc.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-curdle-ssh-ed25519.xml">
+<!ENTITY I-D.ietf-curdle-rsa-sha2 SYSTEM "http://xml2rfc.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-curdle-rsa-sha2.xml">
+<!ENTITY I-D.irtf-cfrg-eddsa SYSTEM "http://xml2rfc.ietf.org/public/rfc/bibxml3/reference.I-D.irtf-cfrg-eddsa.xml">
 ]>
 <?xml-stylesheet type='text/xsl' href='rfc2629.xslt' ?>
 <?rfc strict="yes" ?>
@@ -282,7 +283,7 @@
 				<t>
 				Ed25519 keys have key type "ssh-ed25519" and are
 				defined in
-				<xref target="I-D.bjh21-ssh-ed25519" />.
+				<xref target="I-D.ietf-curdle-ssh-ed25519" />.
 				They may be added to the agent using the
 				following message. The "key constraints"
 				field is only present for
@@ -310,7 +311,7 @@
 				<spanx style="verb">ENC(A)</spanx>
 				and <spanx style="verb">k</spanx> values are
 				defined by
-				<xref target="I-D.josefsson-eddsa-ed25519" />.
+				<xref target="I-D.irtf-cfrg-eddsa" />.
 				</t>
 			</section>
 			<section title="RSA keys">
@@ -500,7 +501,7 @@
 			<xref target="RFC4253" /> for "ssh-rsa" and
 			"ssh-dss" keys, in <xref target="RFC5656" />
 			for "ecdsa-sha2-*" keys and in
-			<xref target="I-D.bjh21-ssh-ed25519" />
+			<xref target="I-D.ietf-curdle-ssh-ed25519" />
 			for "ssh-ed25519" keys.
 			</t>
 			<t>
@@ -576,9 +577,9 @@
 			<t>
 			Where "key blob" is the key requested to
 			perform the signature, "data" is the data
-			to be signed and "flags" are optional
-			signature flags (none are defined, so
-			this value should be zero usually).
+			to be signed and "flags" is a bitfield
+			containing the bitwise OR of zero or more
+			signature flags (see below).
 			</t>
 			<t>
 			If the agent is unable or unwilling to
@@ -602,9 +603,23 @@
 			<xref target="RFC4253" /> for "ssh-rsa" and
 			"ssh-dss" keys, in <xref target="RFC5656" />
 			for "ecdsa-sha2-*" keys and in
-			<xref target="I-D.bjh21-ssh-ed25519" />
+			<xref target="I-D.ietf-curdle-ssh-ed25519" />
 			for "ssh-ed25519" keys.
 			</t>
+			<section title="Signature flags">
+			<t>
+			Two flags are currently defined for
+			signature request messages:
+			SSH_AGENT_RSA_SHA2_256 and SSH_AGENT_RSA_SHA2_512.
+			These two flags are only valid for
+			"ssh-rsa" keys and request that the agent
+			return a signature using
+			the "rsa-sha2-256" or "rsa-sha2-515"
+			signature methods respectively. These
+			signature schemes are defined in
+			<xref target="I-D.ietf-curdle-rsa-sha2" />.
+			</t>
+			</section>
 		</section>
 		<section title="Locking and unlocking an agent">
 			<t>
@@ -770,6 +785,22 @@
     SSH_AGENT_CONSTRAIN_EXTENSION                   3
 			</artwork></figure>
 		</section>
+		<section anchor="sigflagnum" title="Signature flags">
+			<t>
+			The following numbers may be present in signature
+			request (SSH_AGENTC_SIGN_REQUEST) messages.
+			These flags form a bit field by taking the logical
+			OR of zero or more flags.
+			</t>
+			<figure><artwork>
+    SSH_AGENT_RSA_SHA2_256                          2
+    SSH_AGENT_RSA_SHA2_512                          4
+			</artwork></figure>
+			<t>
+			The flag value 1 is reserved for historical
+			implementations.
+			</t>
+		</section>
 	</section>
 	<section anchor="Acknowledgements" title="Acknowledgements">
 		<t>
@@ -784,8 +815,9 @@
 	</section>
 	<section anchor="IANA" title="IANA Considerations">
 		<t>
-		This protocol requires two registries be established, one for
-		message numbers and one for constraints.
+		This protocol requires three registries be established, one for
+		message numbers, one for constraints and one for
+		signature request flags.
 		</t>
 		<section title="New registry: SSH agent protocol numbers">
 			<t>
@@ -832,9 +864,9 @@
 <c>28</c><c>SSH_AGENT_EXTENSION_FAILURE</c><c><xref target="messagenum" /></c>
 </texttable>
 		</section>
-		<section title="New registry: SSH constraint numbers">
+		<section title="New registry: SSH agent key constraint numbers">
 			<t>
-			This registry, titled "SSH constraint numbers"
+			This registry, titled "SSH agent key constraint numbers"
 			records the message numbers for key use constraints.
 			Its initial state should consist of the
 			follwing numbers.
@@ -842,13 +874,38 @@
 			specification in the form of an RFC
 			(RFC REQUIRED as per <xref target="RFC5226" />).
 			</t>
-<texttable title="Initial registry state: SSH constraint numbers" suppress-title="true" style="headers">
+<texttable title="Initial registry state: SSH agent key constraint numbers" suppress-title="true" style="headers">
 <ttcol align='right'>Number</ttcol>
 <ttcol align='left'>Identifier</ttcol>
 <ttcol align='left'>Reference</ttcol>
 <c>1</c><c>SSH_AGENT_CONSTRAIN_LIFETIME</c><c><xref target="constraintnum" /></c>
 <c>2</c><c>SSH_AGENT_CONSTRAIN_CONFIRM</c><c><xref target="constraintnum" /></c>
 <c>3</c><c>SSH_AGENT_CONSTRAIN_EXTENSION</c><c><xref target="constraintnum" /></c>
+</texttable>
+		</section>
+		<section title="New registry: SSH agent signature flags">
+			<t>
+			This registry, titled "SSH agent signature flags
+			records the values for signature request
+			(SSH_AGENTC_SIGN_REQUEST) flag values.
+			Its initial state should consist of the
+			follwing numbers. Note that as the flags are
+			combined by bitwise OR, all flag values must be
+			powers of two and the maximum available
+			flag value is 0x80000000.
+			</t>
+			<t>
+			Future constraint number allocations shall require
+			specification in the form of an RFC
+			(RFC REQUIRED as per <xref target="RFC5226" />).
+			</t>
+<texttable title="Initial registry state: SSH agent signature flags" suppress-title="true" style="headers">
+<ttcol align='right'>Number</ttcol>
+<ttcol align='left'>Identifier</ttcol>
+<ttcol align='left'>Reference</ttcol>
+<c>0x01</c><c>reserved</c><c><xref target="sigflagnum" /></c>
+<c>0x02</c><c>SSH_AGENT_RSA_SHA2_256</c><c><xref target="sigflagnum" /></c>
+<c>0x04</c><c>SSH_AGENT_RSA_SHA2_512</c><c><xref target="sigflagnum" /></c>
 </texttable>
 		</section>
 	</section>
@@ -914,9 +971,11 @@
 
 		&RFC5656;
 
-		&I-D.bjh21-ssh-ed25519;
+		&I-D.ietf-curdle-ssh-ed25519;
 
-		&I-D.josefsson-eddsa-ed25519;
+		&I-D.ietf-curdle-rsa-sha2;
+
+		&I-D.irtf-cfrg-eddsa;
 
 		<reference anchor="FIPS.186-4">
 			<front>
