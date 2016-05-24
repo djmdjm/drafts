@@ -869,7 +869,7 @@
 			This registry, titled "SSH agent key constraint numbers"
 			records the message numbers for key use constraints.
 			Its initial state should consist of the
-			follwing numbers.
+			following numbers.
 			Future constraint number allocations shall require
 			specification in the form of an RFC
 			(RFC REQUIRED as per <xref target="RFC5226" />).
@@ -889,7 +889,7 @@
 			records the values for signature request
 			(SSH_AGENTC_SIGN_REQUEST) flag values.
 			Its initial state should consist of the
-			follwing numbers. Note that as the flags are
+			following numbers. Note that as the flags are
 			combined by bitwise OR, all flag values must be
 			powers of two and the maximum available
 			flag value is 0x80000000.

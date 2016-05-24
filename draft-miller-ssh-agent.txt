@@ -677,7 +677,7 @@ Internet-Draft              Abbreviated Title                   May 2016
 5.3.  Signature flags
 
    The following numbers may be present in signature request
-   (SSH_AGENTC_SIGN_REQUEST) messages.  These flags for a bit field by
+   (SSH_AGENTC_SIGN_REQUEST) messages.  These flags form a bit field by
    taking the logical OR of zero or more flags.
 
        SSH_AGENT_RSA_SHA2_256                          2
@@ -767,7 +767,7 @@ Internet-Draft              Abbreviated Title                   May 2016
 
    This registry, titled "SSH agent key constraint numbers" records the
    message numbers for key use constraints.  Its initial state should
-   consist of the follwing numbers.  Future constraint number
+   consist of the following numbers.  Future constraint number
    allocations shall require specification in the form of an RFC (RFC
    REQUIRED as per [RFC5226]).
 
@@ -790,7 +790,7 @@ Internet-Draft              Abbreviated Title                   May 2016
 
    This registry, titled "SSH agent signature flags records the values
    for signature request (SSH_AGENTC_SIGN_REQUEST) flag values.  Its
-   initial state should consist of the follwing numbers.  Note that as
+   initial state should consist of the following numbers.  Note that as
    the flags are combined by bitwise OR, all flag values must be powers
    of two and the maximum available flag value is 0x80000000.
 
