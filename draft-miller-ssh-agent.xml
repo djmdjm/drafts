@@ -614,7 +614,7 @@
 			These two flags are only valid for
 			"ssh-rsa" keys and request that the agent
 			return a signature using
-			the "rsa-sha2-256" or "rsa-sha2-515"
+			the "rsa-sha2-256" or "rsa-sha2-512"
 			signature methods respectively. These
 			signature schemes are defined in
 			<xref target="I-D.ietf-curdle-rsa-sha2" />.
