@@ -4,8 +4,8 @@
 
 Internet Engineering Task Force                                D. Miller
 Internet-Draft                                                   OpenSSH
-Intended status: Informational                              May 24, 2016
-Expires: November 25, 2016
+Intended status: Informational                        September 12, 2016
+Expires: March 16, 2017
 
 
                            SSH Agent Protocol
@@ -31,7 +31,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on November 25, 2016.
+   This Internet-Draft will expire on March 16, 2017.
 
 Copyright Notice
 
@@ -53,9 +53,9 @@ Copyright Notice
 
 
 
-Miller                  Expires November 25, 2016               [Page 1]
+Miller                   Expires March 16, 2017                 [Page 1]
 
-Internet-Draft              Abbreviated Title                   May 2016
+Internet-Draft              Abbreviated Title             September 2016
 
 
 Table of Contents
@@ -109,9 +109,9 @@ Table of Contents
 
 
 
-Miller                  Expires November 25, 2016               [Page 2]
+Miller                   Expires March 16, 2017                 [Page 2]
 
-Internet-Draft              Abbreviated Title                   May 2016
+Internet-Draft              Abbreviated Title             September 2016
 
 
    Holding keys in an agent offers usability and security advantages to
@@ -165,9 +165,9 @@ Internet-Draft              Abbreviated Title                   May 2016
 
 
 
-Miller                  Expires November 25, 2016               [Page 3]
+Miller                   Expires March 16, 2017                 [Page 3]
 
-Internet-Draft              Abbreviated Title                   May 2016
+Internet-Draft              Abbreviated Title             September 2016
 
 
    SSH_AGENT_FAILURE messages are also sent in reply to requests with
@@ -221,9 +221,9 @@ Internet-Draft              Abbreviated Title                   May 2016
 
 
 
-Miller                  Expires November 25, 2016               [Page 4]
+Miller                   Expires March 16, 2017                 [Page 4]
 
-Internet-Draft              Abbreviated Title                   May 2016
+Internet-Draft              Abbreviated Title             September 2016
 
 
        byte                    SSH_AGENTC_ADD_IDENTITY or
@@ -277,9 +277,9 @@ Internet-Draft              Abbreviated Title                   May 2016
 
 
 
-Miller                  Expires November 25, 2016               [Page 5]
+Miller                   Expires March 16, 2017                 [Page 5]
 
-Internet-Draft              Abbreviated Title                   May 2016
+Internet-Draft              Abbreviated Title             September 2016
 
 
    The first value is the 32 byte Ed25519 public key "ENC(A)".  The
@@ -333,9 +333,9 @@ Internet-Draft              Abbreviated Title                   May 2016
 
 
 
-Miller                  Expires November 25, 2016               [Page 6]
+Miller                   Expires March 16, 2017                 [Page 6]
 
-Internet-Draft              Abbreviated Title                   May 2016
+Internet-Draft              Abbreviated Title             September 2016
 
 
    Typically only the public components of any keys supported on a
@@ -389,9 +389,9 @@ Internet-Draft              Abbreviated Title                   May 2016
 
 
 
-Miller                  Expires November 25, 2016               [Page 7]
+Miller                   Expires March 16, 2017                 [Page 7]
 
-Internet-Draft              Abbreviated Title                   May 2016
+Internet-Draft              Abbreviated Title             September 2016
 
 
 4.2.6.2.  Key confirmation constraint
@@ -445,9 +445,9 @@ Internet-Draft              Abbreviated Title                   May 2016
 
 
 
-Miller                  Expires November 25, 2016               [Page 8]
+Miller                   Expires March 16, 2017                 [Page 8]
 
-Internet-Draft              Abbreviated Title                   May 2016
+Internet-Draft              Abbreviated Title             September 2016
 
 
        byte                    SSH_AGENTC_REMOVE_SMARTCARD_KEY
@@ -501,9 +501,9 @@ Internet-Draft              Abbreviated Title                   May 2016
 
 
 
-Miller                  Expires November 25, 2016               [Page 9]
+Miller                   Expires March 16, 2017                 [Page 9]
 
-Internet-Draft              Abbreviated Title                   May 2016
+Internet-Draft              Abbreviated Title             September 2016
 
 
    If the agent is unable or unwilling to generate the signature (e.g.
@@ -526,7 +526,7 @@ Internet-Draft              Abbreviated Title                   May 2016
    Two flags are currently defined for signature request messages:
    SSH_AGENT_RSA_SHA2_256 and SSH_AGENT_RSA_SHA2_512.  These two flags
    are only valid for "ssh-rsa" keys and request that the agent return a
-   signature using the "rsa-sha2-256" or "rsa-sha2-515" signature
+   signature using the "rsa-sha2-256" or "rsa-sha2-512" signature
    methods respectively.  These signature schemes are defined in
    [I-D.ietf-curdle-rsa-sha2].
 
@@ -557,9 +557,9 @@ Internet-Draft              Abbreviated Title                   May 2016
 
 
 
-Miller                  Expires November 25, 2016              [Page 10]
+Miller                   Expires March 16, 2017                [Page 10]
 
-Internet-Draft              Abbreviated Title                   May 2016
+Internet-Draft              Abbreviated Title             September 2016
 
 
    phrase does not match it should reply with SSH_AGENT_FAILURE.  An
@@ -613,9 +613,9 @@ Internet-Draft              Abbreviated Title                   May 2016
 
 
 
-Miller                  Expires November 25, 2016              [Page 11]
+Miller                   Expires March 16, 2017                [Page 11]
 
-Internet-Draft              Abbreviated Title                   May 2016
+Internet-Draft              Abbreviated Title             September 2016
 
 
 5.1.  Message numbers
@@ -669,9 +669,9 @@ Internet-Draft              Abbreviated Title                   May 2016
 
 
 
-Miller                  Expires November 25, 2016              [Page 12]
+Miller                   Expires March 16, 2017                [Page 12]
 
-Internet-Draft              Abbreviated Title                   May 2016
+Internet-Draft              Abbreviated Title             September 2016
 
 
 5.3.  Signature flags
@@ -725,9 +725,9 @@ Internet-Draft              Abbreviated Title                   May 2016
 
 
 
-Miller                  Expires November 25, 2016              [Page 13]
+Miller                   Expires March 16, 2017                [Page 13]
 
-Internet-Draft              Abbreviated Title                   May 2016
+Internet-Draft              Abbreviated Title             September 2016
 
 
         Number Identifier                               Reference
@@ -781,9 +781,9 @@ Internet-Draft              Abbreviated Title                   May 2016
 
 
 
-Miller                  Expires November 25, 2016              [Page 14]
+Miller                   Expires March 16, 2017                [Page 14]
 
-Internet-Draft              Abbreviated Title                   May 2016
+Internet-Draft              Abbreviated Title             September 2016
 
 
 7.3.  New registry: SSH agent signature flags
@@ -837,9 +837,9 @@ Internet-Draft              Abbreviated Title                   May 2016
 
 
 
-Miller                  Expires November 25, 2016              [Page 15]
+Miller                   Expires March 16, 2017                [Page 15]
 
-Internet-Draft              Abbreviated Title                   May 2016
+Internet-Draft              Abbreviated Title             September 2016
 
 
    caches) of the host running the agent.  For the case of a local
@@ -893,9 +893,9 @@ Internet-Draft              Abbreviated Title                   May 2016
 
 
 
-Miller                  Expires November 25, 2016              [Page 16]
+Miller                   Expires March 16, 2017                [Page 16]
 
-Internet-Draft              Abbreviated Title                   May 2016
+Internet-Draft              Abbreviated Title             September 2016
 
 
    [RFC5656]  Stebila, D. and J. Green, "Elliptic Curve Algorithm
@@ -949,4 +949,4 @@ Author's Address
 
 
 
-Miller                  Expires November 25, 2016              [Page 17]
+Miller                   Expires March 16, 2017                [Page 17]
