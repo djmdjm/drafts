@@ -143,12 +143,12 @@
 		<t>
 		All values in the agent protocol are encoded using the SSH wire
 		representations specified by <xref target="RFC4251" />.
-		Messages consist of a length and contents. The first byte of
-		the contents always indicates the type of the message.
+		Messages consist of a length, type and contents.
 		</t>
 		<figure><artwork>
-   uint32                   message length
-   byte[message length]     message contents
+   uint32                    message length
+   byte                      message type
+   byte[message length - 1]  message contents
 		</artwork></figure>
 	</section>
 	<section title="Protocol Messages">
