@@ -4,8 +4,8 @@
 
 Internet Engineering Task Force                                D. Miller
 Internet-Draft                                                   OpenSSH
-Intended status: Informational                        September 12, 2016
-Expires: March 16, 2017
+Intended status: Informational                              May 19, 2017
+Expires: November 20, 2017
 
 
                            SSH Agent Protocol
@@ -31,11 +31,11 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on March 16, 2017.
+   This Internet-Draft will expire on November 20, 2017.
 
 Copyright Notice
 
-   Copyright (c) 2016 IETF Trust and the persons identified as the
+   Copyright (c) 2017 IETF Trust and the persons identified as the
    document authors.  All rights reserved.
 
    This document is subject to BCP 78 and the IETF Trust's Legal
@@ -53,9 +53,9 @@ Copyright Notice
 
 
 
-Miller                   Expires March 16, 2017                 [Page 1]
+Miller                  Expires November 20, 2017               [Page 1]
 
-Internet-Draft              Abbreviated Title             September 2016
+Internet-Draft              Abbreviated Title                   May 2017
 
 
 Table of Contents
@@ -109,9 +109,9 @@ Table of Contents
 
 
 
-Miller                   Expires March 16, 2017                 [Page 2]
+Miller                  Expires November 20, 2017               [Page 2]
 
-Internet-Draft              Abbreviated Title             September 2016
+Internet-Draft              Abbreviated Title                   May 2017
 
 
    Holding keys in an agent offers usability and security advantages to
@@ -139,12 +139,12 @@ Internet-Draft              Abbreviated Title             September 2016
    response to a client request.  Replies are sent in order.
 
    All values in the agent protocol are encoded using the SSH wire
-   representations specified by [RFC4251].  Messages consist of a length
-   and contents.  The first byte of the contents always indicates the
-   type of the message.
+   representations specified by [RFC4251].  Messages consist of a
+   length, type and contents.
 
-      uint32                   message length
-      byte[message length]     message contents
+      uint32                    message length
+      byte                      message type
+      byte[message length - 1]  message contents
 
 4.  Protocol Messages
 
@@ -165,9 +165,9 @@ Internet-Draft              Abbreviated Title             September 2016
 
 
 
-Miller                   Expires March 16, 2017                 [Page 3]
+Miller                  Expires November 20, 2017               [Page 3]
 
-Internet-Draft              Abbreviated Title             September 2016
+Internet-Draft              Abbreviated Title                   May 2017
 
 
    SSH_AGENT_FAILURE messages are also sent in reply to requests with
@@ -221,9 +221,9 @@ Internet-Draft              Abbreviated Title             September 2016
 
 
 
-Miller                   Expires March 16, 2017                 [Page 4]
+Miller                  Expires November 20, 2017               [Page 4]
 
-Internet-Draft              Abbreviated Title             September 2016
+Internet-Draft              Abbreviated Title                   May 2017
 
 
        byte                    SSH_AGENTC_ADD_IDENTITY or
@@ -277,9 +277,9 @@ Internet-Draft              Abbreviated Title             September 2016
 
 
 
-Miller                   Expires March 16, 2017                 [Page 5]
+Miller                  Expires November 20, 2017               [Page 5]
 
-Internet-Draft              Abbreviated Title             September 2016
+Internet-Draft              Abbreviated Title                   May 2017
 
 
    The first value is the 32 byte Ed25519 public key "ENC(A)".  The
@@ -333,9 +333,9 @@ Internet-Draft              Abbreviated Title             September 2016
 
 
 
-Miller                   Expires March 16, 2017                 [Page 6]
+Miller                  Expires November 20, 2017               [Page 6]
 
-Internet-Draft              Abbreviated Title             September 2016
+Internet-Draft              Abbreviated Title                   May 2017
 
 
    Typically only the public components of any keys supported on a
@@ -389,9 +389,9 @@ Internet-Draft              Abbreviated Title             September 2016
 
 
 
-Miller                   Expires March 16, 2017                 [Page 7]
+Miller                  Expires November 20, 2017               [Page 7]
 
-Internet-Draft              Abbreviated Title             September 2016
+Internet-Draft              Abbreviated Title                   May 2017
 
 
 4.2.6.2.  Key confirmation constraint
@@ -445,9 +445,9 @@ Internet-Draft              Abbreviated Title             September 2016
 
 
 
-Miller                   Expires March 16, 2017                 [Page 8]
+Miller                  Expires November 20, 2017               [Page 8]
 
-Internet-Draft              Abbreviated Title             September 2016
+Internet-Draft              Abbreviated Title                   May 2017
 
 
        byte                    SSH_AGENTC_REMOVE_SMARTCARD_KEY
@@ -501,15 +501,15 @@ Internet-Draft              Abbreviated Title             September 2016
 
 
 
-Miller                   Expires March 16, 2017                 [Page 9]
+Miller                  Expires November 20, 2017               [Page 9]
 
-Internet-Draft              Abbreviated Title             September 2016
+Internet-Draft              Abbreviated Title                   May 2017
 
 
-   If the agent is unable or unwilling to generate the signature (e.g.
-   because it doesn't have the specified key, or the user refused
-   confirmation of a constrained key), it must reply with a
-   SSH_AGENT_FAILURE message.
+   If the agent does not support the requested flags, or is otherwise
+   unable or unwilling to generate the signature (e.g. because it
+   doesn't have the specified key, or the user refused confirmation of a
+   constrained key), it must reply with a SSH_AGENT_FAILURE message.
 
    On success, the agent shall reply with:
 
@@ -557,9 +557,9 @@ Internet-Draft              Abbreviated Title             September 2016
 
 
 
-Miller                   Expires March 16, 2017                [Page 10]
+Miller                  Expires November 20, 2017              [Page 10]
 
-Internet-Draft              Abbreviated Title             September 2016
+Internet-Draft              Abbreviated Title                   May 2017
 
 
    phrase does not match it should reply with SSH_AGENT_FAILURE.  An
@@ -613,9 +613,9 @@ Internet-Draft              Abbreviated Title             September 2016
 
 
 
-Miller                   Expires March 16, 2017                [Page 11]
+Miller                  Expires November 20, 2017              [Page 11]
 
-Internet-Draft              Abbreviated Title             September 2016
+Internet-Draft              Abbreviated Title                   May 2017
 
 
 5.1.  Message numbers
@@ -669,9 +669,9 @@ Internet-Draft              Abbreviated Title             September 2016
 
 
 
-Miller                   Expires March 16, 2017                [Page 12]
+Miller                  Expires November 20, 2017              [Page 12]
 
-Internet-Draft              Abbreviated Title             September 2016
+Internet-Draft              Abbreviated Title                   May 2017
 
 
 5.3.  Signature flags
@@ -725,9 +725,9 @@ Internet-Draft              Abbreviated Title             September 2016
 
 
 
-Miller                   Expires March 16, 2017                [Page 13]
+Miller                  Expires November 20, 2017              [Page 13]
 
-Internet-Draft              Abbreviated Title             September 2016
+Internet-Draft              Abbreviated Title                   May 2017
 
 
         Number Identifier                               Reference
@@ -781,9 +781,9 @@ Internet-Draft              Abbreviated Title             September 2016
 
 
 
-Miller                   Expires March 16, 2017                [Page 14]
+Miller                  Expires November 20, 2017              [Page 14]
 
-Internet-Draft              Abbreviated Title             September 2016
+Internet-Draft              Abbreviated Title                   May 2017
 
 
 7.3.  New registry: SSH agent signature flags
@@ -837,9 +837,9 @@ Internet-Draft              Abbreviated Title             September 2016
 
 
 
-Miller                   Expires March 16, 2017                [Page 15]
+Miller                  Expires November 20, 2017              [Page 15]
 
-Internet-Draft              Abbreviated Title             September 2016
+Internet-Draft              Abbreviated Title                   May 2017
 
 
    caches) of the host running the agent.  For the case of a local
@@ -893,9 +893,9 @@ Internet-Draft              Abbreviated Title             September 2016
 
 
 
-Miller                   Expires March 16, 2017                [Page 16]
+Miller                  Expires November 20, 2017              [Page 16]
 
-Internet-Draft              Abbreviated Title             September 2016
+Internet-Draft              Abbreviated Title                   May 2017
 
 
    [RFC5656]  Stebila, D. and J. Green, "Elliptic Curve Algorithm
@@ -949,4 +949,4 @@ Author's Address
 
 
 
-Miller                   Expires March 16, 2017                [Page 17]
+Miller                  Expires November 20, 2017              [Page 17]
