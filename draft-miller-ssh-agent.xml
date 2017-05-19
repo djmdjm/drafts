@@ -582,7 +582,8 @@
 			signature flags (see below).
 			</t>
 			<t>
-			If the agent is unable or unwilling to
+			If the agent does not support the requested
+			flags, or is otherwise unable or unwilling to
 			generate the signature (e.g. because it
 			doesn't have the specified key, or the user
 			refused confirmation of a constrained
