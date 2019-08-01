@@ -4,12 +4,12 @@
 
 Internet Engineering Task Force                                D. Miller
 Internet-Draft                                                   OpenSSH
-Intended status: Informational                              May 19, 2017
-Expires: November 20, 2017
+Intended status: Informational                        September 30, 2017
+Expires: April 3, 2018
 
 
                            SSH Agent Protocol
-                       draft-miller-ssh-agent-00
+                       draft-miller-ssh-agent-02
 
 Abstract
 
@@ -31,7 +31,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on November 20, 2017.
+   This Internet-Draft will expire on April 3, 2018.
 
 Copyright Notice
 
@@ -53,9 +53,9 @@ Copyright Notice
 
 
 
-Miller                  Expires November 20, 2017               [Page 1]
+Miller                    Expires April 3, 2018                 [Page 1]
 
-Internet-Draft              Abbreviated Title                   May 2017
+Internet-Draft                  SSH Agent                 September 2017
 
 
 Table of Contents
@@ -109,9 +109,9 @@ Table of Contents
 
 
 
-Miller                  Expires November 20, 2017               [Page 2]
+Miller                    Expires April 3, 2018                 [Page 2]
 
-Internet-Draft              Abbreviated Title                   May 2017
+Internet-Draft                  SSH Agent                 September 2017
 
 
    Holding keys in an agent offers usability and security advantages to
@@ -165,9 +165,9 @@ Internet-Draft              Abbreviated Title                   May 2017
 
 
 
-Miller                  Expires November 20, 2017               [Page 3]
+Miller                    Expires April 3, 2018                 [Page 3]
 
-Internet-Draft              Abbreviated Title                   May 2017
+Internet-Draft                  SSH Agent                 September 2017
 
 
    SSH_AGENT_FAILURE messages are also sent in reply to requests with
@@ -221,9 +221,9 @@ Internet-Draft              Abbreviated Title                   May 2017
 
 
 
-Miller                  Expires November 20, 2017               [Page 4]
+Miller                    Expires April 3, 2018                 [Page 4]
 
-Internet-Draft              Abbreviated Title                   May 2017
+Internet-Draft                  SSH Agent                 September 2017
 
 
        byte                    SSH_AGENTC_ADD_IDENTITY or
@@ -277,9 +277,9 @@ Internet-Draft              Abbreviated Title                   May 2017
 
 
 
-Miller                  Expires November 20, 2017               [Page 5]
+Miller                    Expires April 3, 2018                 [Page 5]
 
-Internet-Draft              Abbreviated Title                   May 2017
+Internet-Draft                  SSH Agent                 September 2017
 
 
    The first value is the 32 byte Ed25519 public key "ENC(A)".  The
@@ -333,9 +333,9 @@ Internet-Draft              Abbreviated Title                   May 2017
 
 
 
-Miller                  Expires November 20, 2017               [Page 6]
+Miller                    Expires April 3, 2018                 [Page 6]
 
-Internet-Draft              Abbreviated Title                   May 2017
+Internet-Draft                  SSH Agent                 September 2017
 
 
    Typically only the public components of any keys supported on a
@@ -389,9 +389,9 @@ Internet-Draft              Abbreviated Title                   May 2017
 
 
 
-Miller                  Expires November 20, 2017               [Page 7]
+Miller                    Expires April 3, 2018                 [Page 7]
 
-Internet-Draft              Abbreviated Title                   May 2017
+Internet-Draft                  SSH Agent                 September 2017
 
 
 4.2.6.2.  Key confirmation constraint
@@ -445,9 +445,9 @@ Internet-Draft              Abbreviated Title                   May 2017
 
 
 
-Miller                  Expires November 20, 2017               [Page 8]
+Miller                    Expires April 3, 2018                 [Page 8]
 
-Internet-Draft              Abbreviated Title                   May 2017
+Internet-Draft                  SSH Agent                 September 2017
 
 
        byte                    SSH_AGENTC_REMOVE_SMARTCARD_KEY
@@ -501,9 +501,9 @@ Internet-Draft              Abbreviated Title                   May 2017
 
 
 
-Miller                  Expires November 20, 2017               [Page 9]
+Miller                    Expires April 3, 2018                 [Page 9]
 
-Internet-Draft              Abbreviated Title                   May 2017
+Internet-Draft                  SSH Agent                 September 2017
 
 
    If the agent does not support the requested flags, or is otherwise
@@ -557,9 +557,9 @@ Internet-Draft              Abbreviated Title                   May 2017
 
 
 
-Miller                  Expires November 20, 2017              [Page 10]
+Miller                    Expires April 3, 2018                [Page 10]
 
-Internet-Draft              Abbreviated Title                   May 2017
+Internet-Draft                  SSH Agent                 September 2017
 
 
    phrase does not match it should reply with SSH_AGENT_FAILURE.  An
@@ -613,9 +613,9 @@ Internet-Draft              Abbreviated Title                   May 2017
 
 
 
-Miller                  Expires November 20, 2017              [Page 11]
+Miller                    Expires April 3, 2018                [Page 11]
 
-Internet-Draft              Abbreviated Title                   May 2017
+Internet-Draft                  SSH Agent                 September 2017
 
 
 5.1.  Message numbers
@@ -669,9 +669,9 @@ Internet-Draft              Abbreviated Title                   May 2017
 
 
 
-Miller                  Expires November 20, 2017              [Page 12]
+Miller                    Expires April 3, 2018                [Page 12]
 
-Internet-Draft              Abbreviated Title                   May 2017
+Internet-Draft                  SSH Agent                 September 2017
 
 
 5.3.  Signature flags
@@ -725,9 +725,9 @@ Internet-Draft              Abbreviated Title                   May 2017
 
 
 
-Miller                  Expires November 20, 2017              [Page 13]
+Miller                    Expires April 3, 2018                [Page 13]
 
-Internet-Draft              Abbreviated Title                   May 2017
+Internet-Draft                  SSH Agent                 September 2017
 
 
         Number Identifier                               Reference
@@ -781,9 +781,9 @@ Internet-Draft              Abbreviated Title                   May 2017
 
 
 
-Miller                  Expires November 20, 2017              [Page 14]
+Miller                    Expires April 3, 2018                [Page 14]
 
-Internet-Draft              Abbreviated Title                   May 2017
+Internet-Draft                  SSH Agent                 September 2017
 
 
 7.3.  New registry: SSH agent signature flags
@@ -837,9 +837,9 @@ Internet-Draft              Abbreviated Title                   May 2017
 
 
 
-Miller                  Expires November 20, 2017              [Page 15]
+Miller                    Expires April 3, 2018                [Page 15]
 
-Internet-Draft              Abbreviated Title                   May 2017
+Internet-Draft                  SSH Agent                 September 2017
 
 
    caches) of the host running the agent.  For the case of a local
@@ -859,49 +859,49 @@ Internet-Draft              Abbreviated Title                   May 2017
 
    [I-D.ietf-curdle-rsa-sha2]
               bider, d., "Use of RSA Keys with SHA-2 256 and 512 in
-              Secure Shell (SSH)", draft-ietf-curdle-rsa-sha2-00 (work
-              in progress), March 2016.
+              Secure Shell (SSH)", draft-ietf-curdle-rsa-sha2-10 (work
+              in progress), August 2017.
 
    [I-D.ietf-curdle-ssh-ed25519]
-              Harris, B., "Ed25519 public key algorithm for the Secure
-              Shell (SSH) protocol", draft-ietf-curdle-ssh-ed25519-00
-              (work in progress), May 2016.
+              Harris, B. and L. Velvindron, "Ed25519 public key
+              algorithm for the Secure Shell (SSH) protocol", draft-
+              ietf-curdle-ssh-ed25519-01 (work in progress), August
+              2017.
 
    [I-D.irtf-cfrg-eddsa]
               Josefsson, S. and I. Liusvaara, "Edwards-curve Digital
-              Signature Algorithm (EdDSA)", draft-irtf-cfrg-eddsa-05
-              (work in progress), March 2016.
+              Signature Algorithm (EdDSA)", draft-irtf-cfrg-eddsa-08
+              (work in progress), August 2016.
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
-              Requirement Levels", BCP 14, RFC 2119, DOI 10.17487/
-              RFC2119, March 1997,
-              <http://www.rfc-editor.org/info/rfc2119>.
+              Requirement Levels", BCP 14, RFC 2119,
+              DOI 10.17487/RFC2119, March 1997, <https://www.rfc-
+              editor.org/info/rfc2119>.
 
    [RFC4251]  Ylonen, T. and C. Lonvick, Ed., "The Secure Shell (SSH)
               Protocol Architecture", RFC 4251, DOI 10.17487/RFC4251,
-              January 2006, <http://www.rfc-editor.org/info/rfc4251>.
+              January 2006, <https://www.rfc-editor.org/info/rfc4251>.
 
    [RFC4253]  Ylonen, T. and C. Lonvick, Ed., "The Secure Shell (SSH)
               Transport Layer Protocol", RFC 4253, DOI 10.17487/RFC4253,
-              January 2006, <http://www.rfc-editor.org/info/rfc4253>.
+              January 2006, <https://www.rfc-editor.org/info/rfc4253>.
 
    [RFC5226]  Narten, T. and H. Alvestrand, "Guidelines for Writing an
-              IANA Considerations Section in RFCs", BCP 26, RFC 5226,
-              DOI 10.17487/RFC5226, May 2008,
-              <http://www.rfc-editor.org/info/rfc5226>.
+              IANA Considerations Section in RFCs", RFC 5226,
+              DOI 10.17487/RFC5226, May 2008, <https://www.rfc-
+              editor.org/info/rfc5226>.
 
 
 
-
-Miller                  Expires November 20, 2017              [Page 16]
+Miller                    Expires April 3, 2018                [Page 16]
 
-Internet-Draft              Abbreviated Title                   May 2017
+Internet-Draft                  SSH Agent                 September 2017
 
 
    [RFC5656]  Stebila, D. and J. Green, "Elliptic Curve Algorithm
-              Integration in the Secure Shell Transport Layer", RFC
-              5656, DOI 10.17487/RFC5656, December 2009,
-              <http://www.rfc-editor.org/info/rfc5656>.
+              Integration in the Secure Shell Transport Layer",
+              RFC 5656, DOI 10.17487/RFC5656, December 2009,
+              <https://www.rfc-editor.org/info/rfc5656>.
 
 Author's Address
 
@@ -949,4 +949,4 @@ Author's Address
 
 
 
-Miller                  Expires November 20, 2017              [Page 17]
+Miller                    Expires April 3, 2018                [Page 17]

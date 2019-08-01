@@ -30,14 +30,14 @@
 <?rfc subcompact="no" ?>
 <!-- keep one blank line between list items -->
 <!-- end of list of popular I-D processing instructions -->
-<rfc category="info" docName="draft-miller-ssh-agent-00" ipr="trust200902">
+<rfc category="info" docName="draft-miller-ssh-agent-02" ipr="trust200902">
  <!-- category values: std, bcp, info, exp, and historic
     ipr values: trust200902, noModificationTrust200902, noDerivativesTrust200902,
        or pre5378Trust200902
     you can add the attributes updates="NNNN" and obsoletes="NNNN" 
     they will automatically be output with "(if approved)" -->
 <front>
-	<title abbrev="Abbreviated Title">SSH Agent Protocol</title>
+	<title abbrev="SSH Agent">SSH Agent Protocol</title>
 	<!-- add 'role="editor"' below for the editors if appropriate -->
 	<!-- Another author who claims to be an editor -->
 	<author fullname="Damien Miller" initials="D.J."
