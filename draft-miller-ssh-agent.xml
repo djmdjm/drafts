@@ -783,7 +783,7 @@
 			<figure><artwork>
     SSH_AGENT_CONSTRAIN_LIFETIME                    1
     SSH_AGENT_CONSTRAIN_CONFIRM                     2
-    SSH_AGENT_CONSTRAIN_EXTENSION                   3
+    SSH_AGENT_CONSTRAIN_EXTENSION                   255
 			</artwork></figure>
 		</section>
 		<section anchor="sigflagnum" title="Signature flags">
@@ -881,7 +881,7 @@
 <ttcol align='left'>Reference</ttcol>
 <c>1</c><c>SSH_AGENT_CONSTRAIN_LIFETIME</c><c><xref target="constraintnum" /></c>
 <c>2</c><c>SSH_AGENT_CONSTRAIN_CONFIRM</c><c><xref target="constraintnum" /></c>
-<c>3</c><c>SSH_AGENT_CONSTRAIN_EXTENSION</c><c><xref target="constraintnum" /></c>
+<c>255</c><c>SSH_AGENT_CONSTRAIN_EXTENSION</c><c><xref target="constraintnum" /></c>
 </texttable>
 		</section>
 		<section title="New registry: SSH agent signature flags">
