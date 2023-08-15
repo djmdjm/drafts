@@ -923,13 +923,14 @@
 		<t>
 		Since being able to access an agent is usually sufficient
 		to perform private key operations, it is critically
-		important that the agent only be exposed to its owner.
+		important that the agent only be exposed to its owner and
+		their authorised delegates.
 		</t>
 		<t>
 		The primary design intention of an agent is that an attacker
 		with unprivileged access to their victim's agent should be
 		prevented from gaining a copy of any keys that have been loaded
-		in to it. This may not preclude the attacker from
+		into it. This may not preclude the attacker from
 		stealing use of those keys (e.g. if they have been loaded
 		without a confirmation constraint).
 		</t>
@@ -953,7 +954,9 @@
 		the attacker an almost ideal oracle for side-channel attacks.
 		While a full treatment of side-channel attacks is beyond the
 		scope of this specification, agents SHOULD use cryptographic
-		implementations that are resistant to side-channel attacks.
+		implementations that are resistant to side-channel attacks
+		and MAY take additional measures to hide the actual time
+		spent processing private key operations.
 		</t>
 	</section>
  </middle>
