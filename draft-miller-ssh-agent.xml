@@ -30,7 +30,7 @@
 <?rfc subcompact="no" ?>
 <!-- keep one blank line between list items -->
 <!-- end of list of popular I-D processing instructions -->
-<rfc category="info" docName="draft-miller-ssh-agent-06" ipr="trust200902">
+<rfc category="info" docName="draft-miller-ssh-agent-07" ipr="trust200902">
  <!-- category values: std, bcp, info, exp, and historic
     ipr values: trust200902, noModificationTrust200902, noDerivativesTrust200902,
        or pre5378Trust200902
@@ -144,6 +144,15 @@
 		All values in the agent protocol are encoded using the SSH wire
 		representations specified by <xref target="RFC4251" />.
 		Messages consist of a length, type and contents.
+		</t>
+		<t>
+		Agents MAY implement support for only a subset of operations
+		or available key types, and MAY additionally refuse abitrary
+		operations in particular contexts. For example, an agent may
+		allow only local clients of an agent to add or remove keys, or
+		make particular subsets of keys available to a given client.
+		For this reason, clients of the agent SHOULD be prepared to
+		fail gracefully if any operation is refused.
 		</t>
 		<figure><artwork>
    uint32                    message length
@@ -279,12 +288,12 @@
 				by <xref target="FIPS.186-4" />.
 				</t>
 			</section>
-			<section title="ED25519 keys">
+			<section title="EDDSA keys">
 				<t>
-				Ed25519 keys have key type "ssh-ed25519" and are
-				defined in
-				<xref target="RFC8709" />.
-				They may be added to the agent using the
+				<xref target="RFC8709" /> defines Ed25519 and
+				Ed448 with key type names "ssh-ed25519" and
+				"ssh-ed448" respectively.
+				These may be added to the agent using the
 				following message. The "key constraints"
 				field is only present for
 				the SSH_AGENTC_ADD_ID_CONSTRAINED message.
@@ -292,20 +301,18 @@
 				<figure><artwork>
     byte                    SSH_AGENTC_ADD_IDENTITY or
                             SSH_AGENTC_ADD_ID_CONSTRAINED
-    string                  "ssh-ed25519"
+    string                  "ssh-ed25519" or "ssh-e448"
     string                  ENC(A)
     string                  k || ENC(A)
     string                  comment
     constraint[]            constraints
 				</artwork></figure>
 				<t>
-				The first value is the 32 byte Ed25519
-				public key
+				The first value is the EDDSA public key
 				<spanx style="verb">ENC(A)</spanx>.
 				The second value is a concatenation of
-				the 32 byte private key
-				<spanx style="verb">k</spanx> and
-				32 byte public
+				the private key <spanx style="verb">k</spanx>
+				and the public
 				<spanx style="verb">ENC(A)</spanx> key.
 				The contents and interpretation of the
 				<spanx style="verb">ENC(A)</spanx>

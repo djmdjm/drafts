@@ -4,12 +4,12 @@
 
 Internet Engineering Task Force                              D.J. Miller
 Internet-Draft                                                   OpenSSH
-Intended status: Informational                            15 August 2023
-Expires: 16 February 2024
+Intended status: Informational                            16 August 2023
+Expires: 17 February 2024
 
 
                            SSH Agent Protocol
-                       draft-miller-ssh-agent-05
+                       draft-miller-ssh-agent-07
 
 Abstract
 
@@ -31,7 +31,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 16 February 2024.
+   This Internet-Draft will expire on 17 February 2024.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Miller                  Expires 16 February 2024                [Page 1]
+Miller                  Expires 17 February 2024                [Page 1]
 
 Internet-Draft                  SSH Agent                    August 2023
 
@@ -66,13 +66,13 @@ Table of Contents
    4.  Protocol Messages . . . . . . . . . . . . . . . . . . . . . .   3
      4.1.  Generic server responses  . . . . . . . . . . . . . . . .   3
      4.2.  Adding keys to the agent  . . . . . . . . . . . . . . . .   4
-       4.2.1.  DSA keys  . . . . . . . . . . . . . . . . . . . . . .   4
+       4.2.1.  DSA keys  . . . . . . . . . . . . . . . . . . . . . .   5
        4.2.2.  ECDSA keys  . . . . . . . . . . . . . . . . . . . . .   5
-       4.2.3.  ED25519 keys  . . . . . . . . . . . . . . . . . . . .   5
+       4.2.3.  EDDSA keys  . . . . . . . . . . . . . . . . . . . . .   5
        4.2.4.  RSA keys  . . . . . . . . . . . . . . . . . . . . . .   6
        4.2.5.  Adding keys from a token  . . . . . . . . . . . . . .   6
        4.2.6.  Key Constraints . . . . . . . . . . . . . . . . . . .   7
-         4.2.6.1.  Key lifetime constraint . . . . . . . . . . . . .   7
+         4.2.6.1.  Key lifetime constraint . . . . . . . . . . . . .   8
          4.2.6.2.  Key confirmation constraint . . . . . . . . . . .   8
          4.2.6.3.  Constraint extensions . . . . . . . . . . . . . .   8
      4.3.  Removing keys from the agent  . . . . . . . . . . . . . .   8
@@ -82,7 +82,7 @@ Table of Contents
      4.6.  Locking and unlocking an agent  . . . . . . . . . . . . .  10
      4.7.  Extension mechanism . . . . . . . . . . . . . . . . . . .  11
        4.7.1.  Query extension . . . . . . . . . . . . . . . . . . .  11
-   5.  Protocol numbers  . . . . . . . . . . . . . . . . . . . . . .  11
+   5.  Protocol numbers  . . . . . . . . . . . . . . . . . . . . . .  12
      5.1.  Message numbers . . . . . . . . . . . . . . . . . . . . .  12
        5.1.1.  Reserved message numbers  . . . . . . . . . . . . . .  12
      5.2.  Constraint identifiers  . . . . . . . . . . . . . . . . .  12
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Miller                  Expires 16 February 2024                [Page 2]
+Miller                  Expires 17 February 2024                [Page 2]
 
 Internet-Draft                  SSH Agent                    August 2023
 
@@ -142,6 +142,14 @@ Internet-Draft                  SSH Agent                    August 2023
    representations specified by [RFC4251].  Messages consist of a
    length, type and contents.
 
+   Agents MAY implement support for only a subset of operations or
+   available key types, and MAY additionally refuse abitrary operations
+   in particular contexts.  For example, an agent may allow only local
+   clients of an agent to add or remove keys, or make particular subsets
+   of keys available to a given client.  For this reason, clients of the
+   agent SHOULD be prepared to fail gracefully if any operation is
+   refused.
+
       uint32                    message length
       byte                      message type
       byte[message length - 1]  message contents
@@ -154,21 +162,20 @@ Internet-Draft                  SSH Agent                    August 2023
    to requests from the client.  On success the agent may reply either
    with:
 
+
+
+
+Miller                  Expires 17 February 2024                [Page 3]
+
+Internet-Draft                  SSH Agent                    August 2023
+
+
       byte                     SSH_AGENT_SUCCESS
 
    or a request-specific success message.  On failure, the agent may
    reply with:
 
       byte                     SSH_AGENT_FAILURE
-
-
-
-
-
-Miller                  Expires 16 February 2024                [Page 3]
-
-Internet-Draft                  SSH Agent                    August 2023
-
 
    SSH_AGENT_FAILURE messages are also sent in reply to requests with
    unknown types.
@@ -208,23 +215,23 @@ Internet-Draft                  SSH Agent                    August 2023
    successfully loaded as a result of one of these messages, or
    SSH_AGENT_FAILURE otherwise.
 
+
+
+
+
+
+
+Miller                  Expires 17 February 2024                [Page 4]
+
+Internet-Draft                  SSH Agent                    August 2023
+
+
 4.2.1.  DSA keys
 
    DSA keys have key type "ssh-dss" and are defined in [RFC4253].  They
    may be added to the agent using the following message.  The
    "constraints" field is only present for the
    SSH_AGENTC_ADD_ID_CONSTRAINED message.
-
-
-
-
-
-
-
-Miller                  Expires 16 February 2024                [Page 4]
-
-Internet-Draft                  SSH Agent                    August 2023
-
 
        byte                    SSH_AGENTC_ADD_IDENTITY or
                                SSH_AGENTC_ADD_ID_CONSTRAINED
@@ -260,32 +267,33 @@ Internet-Draft                  SSH Agent                    August 2023
    The values "Q" and "d" are the ECDSA public and private values
    respectively.  Both are defined by [FIPS.186-4].
 
-4.2.3.  ED25519 keys
+4.2.3.  EDDSA keys
 
-   Ed25519 keys have key type "ssh-ed25519" and are defined in
-   [RFC8709].  They may be added to the agent using the following
-   message.  The "key constraints" field is only present for the
-   SSH_AGENTC_ADD_ID_CONSTRAINED message.
+   [RFC8709] defines Ed25519 and Ed448 with key type names "ssh-ed25519"
+   and "ssh-ed448" respectively.  These may be added to the agent using
+   the following message.  The "key constraints" field is only present
+   for the SSH_AGENTC_ADD_ID_CONSTRAINED message.
+
+
+
+
+Miller                  Expires 17 February 2024                [Page 5]
+
+Internet-Draft                  SSH Agent                    August 2023
+
 
        byte                    SSH_AGENTC_ADD_IDENTITY or
                                SSH_AGENTC_ADD_ID_CONSTRAINED
-       string                  "ssh-ed25519"
+       string                  "ssh-ed25519" or "ssh-e448"
        string                  ENC(A)
        string                  k || ENC(A)
        string                  comment
        constraint[]            constraints
 
-
-
-Miller                  Expires 16 February 2024                [Page 5]
-
-Internet-Draft                  SSH Agent                    August 2023
-
-
-   The first value is the 32 byte Ed25519 public key ENC(A).  The second
-   value is a concatenation of the 32 byte private key k and 32 byte
-   public ENC(A) key.  The contents and interpretation of the ENC(A) and
-   k values are defined by [RFC8032].
+   The first value is the EDDSA public key ENC(A).  The second value is
+   a concatenation of the private key k and the public ENC(A) key.  The
+   contents and interpretation of the ENC(A) and k values are defined by
+   [RFC8032].
 
 4.2.4.  RSA keys
 
@@ -319,6 +327,17 @@ Internet-Draft                  SSH Agent                    August 2023
    "constraints" field is only included for the
    SSH_AGENTC_ADD_SMARTCARD_KEY_CONSTRAINED variant of this message.
 
+
+
+
+
+
+
+Miller                  Expires 17 February 2024                [Page 6]
+
+Internet-Draft                  SSH Agent                    August 2023
+
+
        byte                    SSH_AGENTC_ADD_SMARTCARD_KEY or
                                SSH_AGENTC_ADD_SMARTCARD_KEY_CONSTRAINED
        string                  id
@@ -329,14 +348,6 @@ Internet-Draft                  SSH Agent                    August 2023
    an optional password on PIN to unlock the key.  The interpretation of
    "id" is not defined by the protocol but is left solely up to the
    agent.
-
-
-
-
-Miller                  Expires 16 February 2024                [Page 6]
-
-Internet-Draft                  SSH Agent                    August 2023
-
 
    Typically only the public components of any keys supported on a
    hardware token will be loaded into an agent so, strictly speaking,
@@ -373,6 +384,16 @@ Internet-Draft                  SSH Agent                    August 2023
 
    The following constraints are defined.
 
+
+
+
+
+
+Miller                  Expires 17 February 2024                [Page 7]
+
+Internet-Draft                  SSH Agent                    August 2023
+
+
 4.2.6.1.  Key lifetime constraint
 
    This constraint requests that the agent limit the key's lifetime by
@@ -381,18 +402,6 @@ Internet-Draft                  SSH Agent                    August 2023
 
        byte                    SSH_AGENT_CONSTRAIN_LIFETIME
        uint32                  seconds
-
-
-
-
-
-
-
-
-Miller                  Expires 16 February 2024                [Page 7]
-
-Internet-Draft                  SSH Agent                    August 2023
-
 
 4.2.6.2.  Key confirmation constraint
 
@@ -430,6 +439,17 @@ Internet-Draft                  SSH Agent                    August 2023
        byte                    SSH_AGENTC_REMOVE_IDENTITY
        string                  key blob
 
+
+
+
+
+
+
+Miller                  Expires 17 February 2024                [Page 8]
+
+Internet-Draft                  SSH Agent                    August 2023
+
+
    Where "key blob" is the standard public key encoding of the key to be
    removed.  SSH protocol key encodings are defined in [RFC4253] for
    "ssh-rsa" and "ssh-dss" keys, in [RFC5656] for "ecdsa-sha2-*" keys
@@ -439,16 +459,6 @@ Internet-Draft                  SSH Agent                    August 2023
    SSH_AGENT_FAILURE if it was not found.
 
    Smartcard keys may be removed using:
-
-
-
-
-
-
-Miller                  Expires 16 February 2024                [Page 8]
-
-Internet-Draft                  SSH Agent                    August 2023
-
 
        byte                    SSH_AGENTC_REMOVE_SMARTCARD_KEY
        string                  reader id
@@ -488,6 +498,14 @@ Internet-Draft                  SSH Agent                    August 2023
    A client may request the agent perform a private key signature
    operation using the following message:
 
+
+
+
+Miller                  Expires 17 February 2024                [Page 9]
+
+Internet-Draft                  SSH Agent                    August 2023
+
+
        byte                    SSH_AGENTC_SIGN_REQUEST
        string                  key blob
        string                  data
@@ -496,15 +514,6 @@ Internet-Draft                  SSH Agent                    August 2023
    Where "key blob" is the key requested to perform the signature,
    "data" is the data to be signed and "flags" is a bitfield containing
    the bitwise OR of zero or more signature flags (see below).
-
-
-
-
-
-Miller                  Expires 16 February 2024                [Page 9]
-
-Internet-Draft                  SSH Agent                    August 2023
-
 
    If the agent does not support the requested flags, or is otherwise
    unable or unwilling to generate the signature (e.g. because it
@@ -546,6 +555,13 @@ Internet-Draft                  SSH Agent                    August 2023
    or SSH_AGENT_FAILURE otherwise (e.g. if the agent was already
    locked).
 
+
+
+Miller                  Expires 17 February 2024               [Page 10]
+
+Internet-Draft                  SSH Agent                    August 2023
+
+
    The following message requests unlocking an agent:
 
        byte                    SSH_AGENTC_UNLOCK
@@ -554,14 +570,6 @@ Internet-Draft                  SSH Agent                    August 2023
    If the agent is already locked and the pass-phrase matches the one
    used to lock it then it should unlock and reply with
    SSH_AGENT_SUCCESS.  If the agent is unlocked or if the the pass-
-
-
-
-Miller                  Expires 16 February 2024               [Page 10]
-
-Internet-Draft                  SSH Agent                    August 2023
-
-
    phrase does not match it should reply with SSH_AGENT_FAILURE.  An
    agent SHOULD take countermeasures against brute-force guessing
    attacks against the pass-phrase.
@@ -602,21 +610,18 @@ Internet-Draft                  SSH Agent                    August 2023
    If an agent supports the query extension is should reply with a list
    of supported extension names.
 
+
+
+
+Miller                  Expires 17 February 2024               [Page 11]
+
+Internet-Draft                  SSH Agent                    August 2023
+
+
        byte                    SSH_AGENT_SUCCESS
        string[]                extension type
 
 5.  Protocol numbers
-
-
-
-
-
-
-
-Miller                  Expires 16 February 2024               [Page 11]
-
-Internet-Draft                  SSH Agent                    August 2023
-
 
 5.1.  Message numbers
 
@@ -664,12 +669,7 @@ Internet-Draft                  SSH Agent                    August 2023
 
 
 
-
-
-
-
-
-Miller                  Expires 16 February 2024               [Page 12]
+Miller                  Expires 17 February 2024               [Page 12]
 
 Internet-Draft                  SSH Agent                    August 2023
 
@@ -725,7 +725,7 @@ Internet-Draft                  SSH Agent                    August 2023
 
 
 
-Miller                  Expires 16 February 2024               [Page 13]
+Miller                  Expires 17 February 2024               [Page 13]
 
 Internet-Draft                  SSH Agent                    August 2023
 
@@ -781,7 +781,7 @@ Internet-Draft                  SSH Agent                    August 2023
 
 
 
-Miller                  Expires 16 February 2024               [Page 14]
+Miller                  Expires 17 February 2024               [Page 14]
 
 Internet-Draft                  SSH Agent                    August 2023
 
@@ -837,7 +837,7 @@ Internet-Draft                  SSH Agent                    August 2023
 
 
 
-Miller                  Expires 16 February 2024               [Page 15]
+Miller                  Expires 17 February 2024               [Page 15]
 
 Internet-Draft                  SSH Agent                    August 2023
 
@@ -854,11 +854,11 @@ Internet-Draft                  SSH Agent                    August 2023
 
    Since being able to access an agent is usually sufficient to perform
    private key operations, it is critically important that the agent
-   only be exposed to its owner.
+   only be exposed to its owner and their authorised delegates.
 
    The primary design intention of an agent is that an attacker with
    unprivileged access to their victim's agent should be prevented from
-   gaining a copy of any keys that have been loaded in to it.  This may
+   gaining a copy of any keys that have been loaded into it.  This may
    not preclude the attacker from stealing use of those keys (e.g. if
    they have been loaded without a confirmation constraint).
 
@@ -878,7 +878,9 @@ Internet-Draft                  SSH Agent                    August 2023
    grants the attacker an almost ideal oracle for side-channel attacks.
    While a full treatment of side-channel attacks is beyond the scope of
    this specification, agents SHOULD use cryptographic implementations
-   that are resistant to side-channel attacks.
+   that are resistant to side-channel attacks and MAY take additional
+   measures to hide the actual time spent processing private key
+   operations.
 
 9.  Normative References
 
@@ -891,9 +893,7 @@ Internet-Draft                  SSH Agent                    August 2023
 
 
 
-
-
-Miller                  Expires 16 February 2024               [Page 16]
+Miller                  Expires 17 February 2024               [Page 16]
 
 Internet-Draft                  SSH Agent                    August 2023
 
@@ -949,4 +949,4 @@ Author's Address
 
 
 
-Miller                  Expires 16 February 2024               [Page 17]
+Miller                  Expires 17 February 2024               [Page 17]
