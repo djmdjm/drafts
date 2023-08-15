@@ -179,11 +179,11 @@
    byte        SSH_MSG_PONG
    string      data
       ]]>
+      </sourcecode>
       <t>
 	Implementations that support this feature MUST NOT make any reply to
 	a SSH_MSG_PONG message.
       </t>
-      </sourcecode>
       <t>
 	Where the body data is exactly copied from the ping request. A peer MAY
 	elect not to reply to a ping request and MAY implement a limit of the

@@ -153,14 +153,14 @@ Internet-Draft    SSH Transport Protocol Ping Facility       August 2023
       byte        SSH_MSG_PING
       string      data
 
-   Upon receive of a SSH_MSG_PING, the peer SHOULD respond with the
-   reply:
+   Upon receiving this message, an implementation SHOULD reply with a
+   SSH_MSG_PONG that copies the data from the SSH_MSG_PING request.
 
-      byte        SSH_MSG_PING
+      byte        SSH_MSG_PONG
       string      data
 
-
-
+   Implementations that support this feature MUST NOT make any reply to
+   a SSH_MSG_PONG message.
 
 
 
