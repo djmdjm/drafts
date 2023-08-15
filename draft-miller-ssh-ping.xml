@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-model href="rfc7991bis.rnc"?>
+<!DOCTYPE rfc [
+  <!ENTITY nbsp    "&#160;">
+  <!ENTITY zwsp   "&#8203;">
+  <!ENTITY nbhy   "&#8209;">
+  <!ENTITY wj     "&#8288;">
+<!ENTITY RFC2119 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml">
+<!ENTITY RFC4250 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4250.xml">
+<!ENTITY RFC4253 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4253.xml">
+<!ENTITY RFC8308 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.8308.xml">
+<!ENTITY RFC8174 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.8174.xml">
+]>
+<rfc
+  xmlns:xi="http://www.w3.org/2001/XInclude"
+  category="info"
+  docName="draft-miller-ssh-ping-00"
+  ipr="trust200902"
+  obsoletes=""
+  updates=""
+  submissionType="IETF"
+  xml:lang="en"
+  version="3">
+<!-- [REPLACE] 
+       * docName with name of your draft
+     [CHECK] 
+       * category should be one of std, bcp, info, exp, historic
+       * ipr should be one of trust200902, noModificationTrust200902, noDerivativesTrust200902, pre5378Trust200902
+       * updates can be an RFC number as NNNN
+       * obsoletes can be an RFC number as NNNN 
+-->
+  <front>
+    <title>SSH Transport Protocol Ping Facility</title>
+    <seriesInfo name="Internet-Draft" value="draft-miller-ssh-ping-00"/>
+    <author fullname="Damien" initials="D.J." surname="Miller">
+      <!-- [CHECK]
+             * initials should not include an initial for the surname
+             * role="editor" is optional -->
+    <!-- Can have more than one author -->
+      
+    <!-- all of the following elements are optional -->
+      <organization>OpenSSH</organization>
+      <address>
+<!--
+        <postal>
+          <street>Street [REPLACE/DELETE]</street>
+          <city>City [REPLACE/DELETE]</city>
+          <region>Region [REPLACE/DELETE]</region>
+          <code>Postal code [REPLACE/DELETE]</code>
+          <country>Country [REPLACE/DELETE]</country>
+        </postal>        
+        <phone>Phone [REPLACE/DELETE]</phone>
+-->
+        <email>djm@openssh.com</email>  
+        <uri>https://openssh.com</uri>
+      </address>
+    </author>
+   
+    <date year="2023"/>
+    <!-- On draft subbmission:
+         * If only the current year is specified, the current day and month will be used.
+         * If the month and year are both specified and are the current ones, the current day will
+           be used
+         * If the year is not the current one, it is necessary to specify at least a month and day="1" will be used.
+    -->
+
+    <area>General</area>
+    <workgroup>Internet Engineering Task Force</workgroup>
+    <!-- "Internet Engineering Task Force" is fine for individual submissions.  If this element is 
+          not present, the default is "Network Working Group", which is used by the RFC Editor as 
+          a nod to the history of the RFC Series. -->
+
+    <keyword>ssh</keyword>
+    <!-- [REPLACE/DELETE]. Multiple allowed.  Keywords are incorporated into HTML output files for 
+         use by search engines. -->
+
+    <abstract>
+      <t>Abstract [REPLACE]</t>
+    </abstract>
+ 
+  </front>
+
+  <middle>
+    
+    <section>
+      <name>Introduction</name>
+      <t>
+	Secure Shell (SSH) is a suite of protocols that are used for secure
+	remote connections, login and file transfer across untrusted networks.
+	At the core of this protocol suite is the SSH Transport Layer Protocol
+	<xref target="RFC4253" /> which defines an encrypted, message-based
+	tranport that the other protocols build upon.
+      </t>
+      <t>
+	SSH Transport Layer Protocol defines encryption, authentication, key
+	agreement, a packet format and a number of message types to be used
+	by the transport layer itself. This document extends the transport
+	layer protocol with a new pair of messages that implement a ping-like
+	facility that may be used for testing, protocol-level measurement
+	and to mitigate traffic analysisto mitigate traffic analysis.
+      </t>
+      
+      <section>
+        <name>Requirements Language</name>
+        <t>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL",
+          "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT
+          RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be
+          interpreted as described in BCP 14 <xref target="RFC2119"/>
+          <xref target="RFC8174"/> when, and only when, they appear in
+          all capitals, as shown here.</t>
+      </section>
+      <!-- [CHECK] The 'Requirements Language' section is optional -->
+
+    </section>
+    
+    <section>
+      <name>Protocol Overview</name>
+      <t>
+	This document defines a transport-layer ping mechanism 
+	and specifies how support for these messages may be advertised
+	using the <xref target="RFC8308" /> extension negotiation protocol.
+      </t>
+      <t>
+	The ping facility is build around two new transport-layer messages
+	SSH_MSG_PING and SSH_MSG_PONG, representing the request and response
+	respectively.
+      </t>
+    </section>
+    
+    <section>
+      <name>Motivation</name>
+      <t>
+	The SSH suite of protocols currently offers no way to perform a ping
+	operation, specifically sending a sequence of bytes to a peer
+	and having the peer return the same exact byte sequence. This
+	operation is useful for gathering transport latency metrics,
+	validating end-to-end operation of the transport protocol during
+	testing and as a primitive to mitigate traffic analysis.
+      </t>
+      <t>
+	Several close analogues exist. the transport-layer SSH_MSG_IGNORE
+	provides the ability to send data to the peer, but that data is simply
+	dropped and not echoed back. The higher-level SSH Connection Protocol 
+	<xref target="RFC4253" /> defines channel and global requests that
+	may require replies from the peer, and an extension mechanism that
+	allows their arbitrary use without requiring the specification of new
+	protocol numbers. However, all of these requests require textual
+	request names, which removes the possibility of sending minimally-sized
+	ping requests. For example, the shortest possible SSH_MSG_GLOBAL_REQUEST
+	body (using an unintuitive one-character message name) is 10 bytes,
+	whereas the smallest possible SSH_MSG_PING body is only four bytes.
+      </t>
+      <t>
+	This may seem like a trivial difference, but the extra bytes required by
+	the SSH_MSG_GLOBAL_REQUEST means that the minimally-sized message would
+	be larger than the smallest possible SSH_MSG_CHANNEL_DATA packet body
+	of eight bytes, making it less useful when used as a fake keystroke for
+	traffic analysis countermeasures.
+      </t>
+    </section>
+    
+    <section>
+      <name>Messages</name>
+      <t>
+	A transport-layer ping may be requested using the following message:
+      </t>
+      <sourcecode markers="false">
+      <![CDATA[
+   byte        SSH_MSG_PING
+   string      data
+        ]]>
+        </sourcecode>
+      <t>
+	Upon receiving this message, an implementation SHOULD reply with a
+	SSH_MSG_PONG that copies the data from the SSH_MSG_PING request.
+      </t>
+      <sourcecode markers="false">
+      <![CDATA[
+   byte        SSH_MSG_PONG
+   string      data
+      ]]>
+      <t>
+	Implementations that support this feature MUST NOT make any reply to
+	a SSH_MSG_PONG message.
+      </t>
+      </sourcecode>
+      <t>
+	Where the body data is exactly copied from the ping request. A peer MAY
+	elect not to reply to a ping request and MAY implement a limit of the
+	size of data that it is prepared to return. Implementations MUST
+	either return an exact copy of the entire data from the ping request or
+	make no reply at all.
+      </t>
+      <t>
+	SSH_MSG_PING requests MUST be replied to in the order that they were
+	received. If received during key exchange, the implementation MUST
+	either delay its reply until after key exchange has concluded or simply
+	not reply at all.
+      </t>
+    </section>
+    
+    <section anchor="compat">
+      <name>Compatibility</name>
+      <t>
+	Because this defines new transport-layer messages and because
+	<xref target="RFC4253" /> requires that implementations that do not
+	support a given message type must return SSH_MSG_UNIMPLEMENTED. The
+	use of SSH_MSG_PING SHOULD NOT be used unless the peer has negotiated
+	support for it via <xref target="RFC8308" /> SSH_MSG_EXT_INFO.
+	Support for this protocol feature may be advertised using the extension
+	name "ping".
+      </t>
+      <sourcecode markers="false">
+      <![CDATA[
+   string      "ping"
+   string      "0" (version number)
+      ]]>
+      </sourcecode>
+    </section>
+      
+    <section anchor="IANA">
+    <!-- All drafts are required to have an IANA considerations section. See RFC 8126 for a guide.-->
+      <name>IANA Considerations</name>
+      <section title="Additions to existing registries">
+        <section title="Additions SSH Message Numbers">
+	<t>
+	IANA is requested to insert the following entries into the table
+	Message Numbers <xref target="IANA-SSH-MSG" /> under
+	Secure Shell (SSH) Protocol Parameters <xref target="RFC4250" />.
+	</t>
+        <table>
+          <thead>
+            <tr><th>Value</th><th>Message ID</th><th>Reference</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>9</td><td>SSH_MSG_PING</td><td>[This document]</td></tr>
+            <tr><td>10</td><td>SSH_MSG_PONG</td><td>[This document]</td></tr>
+          </tbody>
+        </table>
+        </section>
+        <section title="Additions SSH Extension Names">
+	<t>
+	IANA is requested to insert the following entries into the table
+	Extension Names <xref target="IANA-SSH-EXT" /> under
+	Secure Shell (SSH) Protocol Parameters <xref target="RFC4250" />.
+	</t>
+        <table>
+          <thead>
+            <tr><th>Extension Name</th><th>Reference</th><th>Section</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>ping</td><td>[This document]</td><td><xref target="compat" /></td></tr>
+          </tbody>
+        </table>
+        </section>
+      </section>
+    </section>
+    
+    <section anchor="Security">
+      <!-- All drafts are required to have a security considerations section. See RFC 3552 for a guide. -->
+      <name>Security Considerations</name>
+      <t>This document should not affect the security of the SSH Transport Protocol</t>
+    </section>
+  </middle>
+
+  <back>
+    <references>
+      <name>References</name>
+      <references>
+        <name>Normative References</name>
+	&RFC2119;
+	&RFC4250;
+	&RFC4253;
+	&RFC8308;
+	&RFC8174;
+      </references>
+
+      <references>
+        <name>Informative References</name>
+       
+        <reference anchor="IANA-SSH-MSG" target="https://www.iana.org/assignments/ssh-parameters/">
+          <front>
+            <title>Message Numbers</title>
+            <author>
+              <organization>IANA</organization>
+            </author>
+          </front>
+        </reference>       
+        <reference anchor="IANA-SSH-EXT" target="https://www.iana.org/assignments/ssh-parameters/">
+          <front>
+            <title>Extension Names</title>
+            <author>
+              <organization>IANA</organization>
+            </author>
+          </front>
+        </reference>       
+       
+       
+      </references>
+    </references>
+    
+<!--
+    <section>
+      <name>Appendix 1 [REPLACE/DELETE]</name>
+      <t>This becomes an Appendix [REPLACE]</t>
+    </section>
+    <section anchor="Acknowledgements" numbered="false">
+      <name>Acknowledgements</name>
+      <t>This template uses extracts from templates written by Pekka Savola, Elwyn Davies and 
+        Henrik Levkowetz. [REPLACE]</t>
+    </section>
+    
+    <section anchor="Contributors" numbered="false">
+      <name>Contributors</name>
+      <t>Thanks to all of the contributors. [REPLACE]</t>
+    </section>
+-->
+    
+ </back>
+</rfc>

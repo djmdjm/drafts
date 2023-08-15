@@ -1,0 +1,336 @@
+
+
+
+
+Internet Engineering Task Force                              D.J. Miller
+Internet-Draft                                                   OpenSSH
+Intended status: Informational                            15 August 2023
+Expires: 16 February 2024
+
+
+                  SSH Transport Protocol Ping Facility
+                        draft-miller-ssh-ping-00
+
+Abstract
+
+   Abstract [REPLACE]
+
+Status of This Memo
+
+   This Internet-Draft is submitted in full conformance with the
+   provisions of BCP 78 and BCP 79.
+
+   Internet-Drafts are working documents of the Internet Engineering
+   Task Force (IETF).  Note that other groups may also distribute
+   working documents as Internet-Drafts.  The list of current Internet-
+   Drafts is at https://datatracker.ietf.org/drafts/current/.
+
+   Internet-Drafts are draft documents valid for a maximum of six months
+   and may be updated, replaced, or obsoleted by other documents at any
+   time.  It is inappropriate to use Internet-Drafts as reference
+   material or to cite them other than as "work in progress."
+
+   This Internet-Draft will expire on 16 February 2024.
+
+Copyright Notice
+
+   Copyright (c) 2023 IETF Trust and the persons identified as the
+   document authors.  All rights reserved.
+
+   This document is subject to BCP 78 and the IETF Trust's Legal
+   Provisions Relating to IETF Documents (https://trustee.ietf.org/
+   license-info) in effect on the date of publication of this document.
+   Please review these documents carefully, as they describe your rights
+   and restrictions with respect to this document.  Code Components
+   extracted from this document must include Revised BSD License text as
+   described in Section 4.e of the Trust Legal Provisions and are
+   provided without warranty as described in the Revised BSD License.
+
+
+
+
+
+
+
+
+Miller                  Expires 16 February 2024                [Page 1]
+
+Internet-Draft    SSH Transport Protocol Ping Facility       August 2023
+
+
+Table of Contents
+
+   1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   2
+     1.1.  Requirements Language . . . . . . . . . . . . . . . . . .   2
+   2.  Protocol Overview . . . . . . . . . . . . . . . . . . . . . .   2
+   3.  Motivation  . . . . . . . . . . . . . . . . . . . . . . . . .   3
+   4.  Messages  . . . . . . . . . . . . . . . . . . . . . . . . . .   3
+   5.  Compatibility . . . . . . . . . . . . . . . . . . . . . . . .   4
+   6.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   4
+     6.1.  Additions to existing registries  . . . . . . . . . . . .   4
+       6.1.1.  Additions SSH Message Numbers . . . . . . . . . . . .   4
+       6.1.2.  Additions SSH Extension Names . . . . . . . . . . . .   4
+   7.  Security Considerations . . . . . . . . . . . . . . . . . . .   5
+   8.  References  . . . . . . . . . . . . . . . . . . . . . . . . .   5
+     8.1.  Normative References  . . . . . . . . . . . . . . . . . .   5
+     8.2.  Informative References  . . . . . . . . . . . . . . . . .   5
+   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .   6
+
+1.  Introduction
+
+   Secure Shell (SSH) is a suite of protocols that are used for secure
+   remote connections, login and file transfer across untrusted
+   networks.  At the core of this protocol suite is the SSH Transport
+   Layer Protocol [RFC4253] which defines an encrypted, message-based
+   tranport that the other protocols build upon.
+
+   SSH Transport Layer Protocol defines encryption, authentication, key
+   agreement, a packet format and a number of message types to be used
+   by the transport layer itself.  This document extends the transport
+   layer protocol with a new pair of messages that implement a ping-like
+   facility that may be used for testing, protocol-level measurement and
+   to mitigate traffic analysisto mitigate traffic analysis.
+
+1.1.  Requirements Language
+
+   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
+   "OPTIONAL" in this document are to be interpreted as described in BCP
+   14 [RFC2119] [RFC8174] when, and only when, they appear in all
+   capitals, as shown here.
+
+2.  Protocol Overview
+
+   This document defines a transport-layer ping mechanism and specifies
+   how support for these messages may be advertised using the [RFC8308]
+   extension negotiation protocol.
+
+
+
+
+
+Miller                  Expires 16 February 2024                [Page 2]
+
+Internet-Draft    SSH Transport Protocol Ping Facility       August 2023
+
+
+   The ping facility is build around two new transport-layer messages
+   SSH_MSG_PING and SSH_MSG_PONG, representing the request and response
+   respectively.
+
+3.  Motivation
+
+   The SSH suite of protocols currently offers no way to perform a ping
+   operation, specifically sending a sequence of bytes to a peer and
+   having the peer return the same exact byte sequence.  This operation
+   is useful for gathering transport latency metrics, validating end-to-
+   end operation of the transport protocol during testing and as a
+   primitive to mitigate traffic analysis.
+
+   Several close analogues exist. the transport-layer SSH_MSG_IGNORE
+   provides the ability to send data to the peer, but that data is
+   simply dropped and not echoed back.  The higher-level SSH Connection
+   Protocol [RFC4253] defines channel and global requests that may
+   require replies from the peer, and an extension mechanism that allows
+   their arbitrary use without requiring the specification of new
+   protocol numbers.  However, all of these requests require textual
+   request names, which removes the possibility of sending minimally-
+   sized ping requests.  For example, the shortest possible
+   SSH_MSG_GLOBAL_REQUEST body (using an unintuitive one-character
+   message name) is 10 bytes, whereas the smallest possible SSH_MSG_PING
+   body is only four bytes.
+
+   This may seem like a trivial difference, but the extra bytes required
+   by the SSH_MSG_GLOBAL_REQUEST means that the minimally-sized message
+   would be larger than the smallest possible SSH_MSG_CHANNEL_DATA
+   packet body of eight bytes, making it less useful when used as a fake
+   keystroke for traffic analysis countermeasures.
+
+4.  Messages
+
+   A transport-layer ping may be requested using the following message:
+
+      byte        SSH_MSG_PING
+      string      data
+
+   Upon receive of a SSH_MSG_PING, the peer SHOULD respond with the
+   reply:
+
+      byte        SSH_MSG_PING
+      string      data
+
+
+
+
+
+
+
+Miller                  Expires 16 February 2024                [Page 3]
+
+Internet-Draft    SSH Transport Protocol Ping Facility       August 2023
+
+
+   Where the body data is exactly copied from the ping request.  A peer
+   MAY elect not to reply to a ping request and MAY implement a limit of
+   the size of data that it is prepared to return.  Implementations MUST
+   either return an exact copy of the entire data from the ping request
+   or make no reply at all.
+
+   SSH_MSG_PING requests MUST be replied to in the order that they were
+   received.  If received during key exchange, the implementation MUST
+   either delay its reply until after key exchange has concluded or
+   simply not reply at all.
+
+5.  Compatibility
+
+   Because this defines new transport-layer messages and because
+   [RFC4253] requires that implementations that do not support a given
+   message type must return SSH_MSG_UNIMPLEMENTED.  The use of
+   SSH_MSG_PING SHOULD NOT be used unless the peer has negotiated
+   support for it via [RFC8308] SSH_MSG_EXT_INFO.  Support for this
+   protocol feature may be advertised using the extension name "ping".
+
+      string      "ping"
+      string      "0" (version number)
+
+6.  IANA Considerations
+
+6.1.  Additions to existing registries
+
+6.1.1.  Additions SSH Message Numbers
+
+   IANA is requested to insert the following entries into the table
+   Message Numbers [IANA-SSH-MSG] under Secure Shell (SSH) Protocol
+   Parameters [RFC4250].
+
+                +=======+==============+=================+
+                | Value | Message ID   | Reference       |
+                +=======+==============+=================+
+                | 9     | SSH_MSG_PING | [This document] |
+                +-------+--------------+-----------------+
+                | 10    | SSH_MSG_PONG | [This document] |
+                +-------+--------------+-----------------+
+
+                                 Table 1
+
+6.1.2.  Additions SSH Extension Names
+
+   IANA is requested to insert the following entries into the table
+   Extension Names [IANA-SSH-EXT] under Secure Shell (SSH) Protocol
+   Parameters [RFC4250].
+
+
+
+Miller                  Expires 16 February 2024                [Page 4]
+
+Internet-Draft    SSH Transport Protocol Ping Facility       August 2023
+
+
+             +================+=================+===========+
+             | Extension Name | Reference       | Section   |
+             +================+=================+===========+
+             | ping           | [This document] | Section 5 |
+             +----------------+-----------------+-----------+
+
+                                 Table 2
+
+7.  Security Considerations
+
+   This document should not affect the security of the SSH Transport
+   Protocol
+
+8.  References
+
+8.1.  Normative References
+
+   [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
+              Requirement Levels", BCP 14, RFC 2119,
+              DOI 10.17487/RFC2119, March 1997,
+              <https://www.rfc-editor.org/info/rfc2119>.
+
+   [RFC4250]  Lehtinen, S. and C. Lonvick, Ed., "The Secure Shell (SSH)
+              Protocol Assigned Numbers", RFC 4250,
+              DOI 10.17487/RFC4250, January 2006,
+              <https://www.rfc-editor.org/info/rfc4250>.
+
+   [RFC4253]  Ylonen, T. and C. Lonvick, Ed., "The Secure Shell (SSH)
+              Transport Layer Protocol", RFC 4253, DOI 10.17487/RFC4253,
+              January 2006, <https://www.rfc-editor.org/info/rfc4253>.
+
+   [RFC8308]  Bider, D., "Extension Negotiation in the Secure Shell
+              (SSH) Protocol", RFC 8308, DOI 10.17487/RFC8308, March
+              2018, <https://www.rfc-editor.org/info/rfc8308>.
+
+   [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
+              2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
+              May 2017, <https://www.rfc-editor.org/info/rfc8174>.
+
+8.2.  Informative References
+
+   [IANA-SSH-MSG]
+              IANA, "Message Numbers",
+              <https://www.iana.org/assignments/ssh-parameters/>.
+
+   [IANA-SSH-EXT]
+              IANA, "Extension Names",
+              <https://www.iana.org/assignments/ssh-parameters/>.
+
+
+
+Miller                  Expires 16 February 2024                [Page 5]
+
+Internet-Draft    SSH Transport Protocol Ping Facility       August 2023
+
+
+Author's Address
+
+   Damien
+   OpenSSH
+   Email: djm@openssh.com
+   URI:   https://openssh.com
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Miller                  Expires 16 February 2024                [Page 6]
