@@ -138,10 +138,6 @@ Internet-Draft                  SSH Agent                    August 2023
    response.  At no time does the server send messages except in
    response to a client request.  Replies are sent in order.
 
-   All values in the agent protocol are encoded using the SSH wire
-   representations specified by [RFC4251].  Messages consist of a
-   length, type and contents.
-
    Agents MAY implement support for only a subset of operations or
    available key types, and MAY additionally refuse abitrary operations
    in particular contexts.  For example, an agent may allow only local
@@ -150,11 +146,15 @@ Internet-Draft                  SSH Agent                    August 2023
    agent SHOULD be prepared to fail gracefully if any operation is
    refused.
 
+4.  Protocol Messages
+
+   All values in the agent protocol are encoded using the SSH wire
+   representations specified by [RFC4251].  Messages consist of a
+   length, type and contents.
+
       uint32                    message length
       byte                      message type
       byte[message length - 1]  message contents
-
-4.  Protocol Messages
 
 4.1.  Generic server responses
 

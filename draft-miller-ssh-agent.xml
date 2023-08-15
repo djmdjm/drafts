@@ -30,7 +30,7 @@
 <?rfc subcompact="no" ?>
 <!-- keep one blank line between list items -->
 <!-- end of list of popular I-D processing instructions -->
-<rfc category="info" docName="draft-miller-ssh-agent-07" ipr="trust200902">
+<rfc category="info" docName="draft-miller-ssh-agent-08" ipr="trust200902">
  <!-- category values: std, bcp, info, exp, and historic
     ipr values: trust200902, noModificationTrust200902, noDerivativesTrust200902,
        or pre5378Trust200902
@@ -141,11 +141,6 @@
 		are sent in order.
 		</t>
 		<t>
-		All values in the agent protocol are encoded using the SSH wire
-		representations specified by <xref target="RFC4251" />.
-		Messages consist of a length, type and contents.
-		</t>
-		<t>
 		Agents MAY implement support for only a subset of operations
 		or available key types, and MAY additionally refuse abitrary
 		operations in particular contexts. For example, an agent may
@@ -154,13 +149,18 @@
 		For this reason, clients of the agent SHOULD be prepared to
 		fail gracefully if any operation is refused.
 		</t>
+	</section>
+	<section title="Protocol Messages">
+		<t>
+		All values in the agent protocol are encoded using the SSH wire
+		representations specified by <xref target="RFC4251" />.
+		Messages consist of a length, type and contents.
+		</t>
 		<figure><artwork>
    uint32                    message length
    byte                      message type
    byte[message length - 1]  message contents
 		</artwork></figure>
-	</section>
-	<section title="Protocol Messages">
 		<section title="Generic server responses">
 			<t>
 			The following generic messages may be sent by the server
