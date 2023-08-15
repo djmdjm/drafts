@@ -9,7 +9,7 @@ Expires: 16 February 2024
 
 
                            SSH Agent Protocol
-                       draft-miller-ssh-agent-03
+                       draft-miller-ssh-agent-05
 
 Abstract
 
@@ -263,9 +263,9 @@ Internet-Draft                  SSH Agent                    August 2023
 4.2.3.  ED25519 keys
 
    Ed25519 keys have key type "ssh-ed25519" and are defined in
-   [I-D.ietf-curdle-ssh-ed25519].  They may be added to the agent using
-   the following message.  The "key constraints" field is only present
-   for the SSH_AGENTC_ADD_ID_CONSTRAINED message.
+   [RFC8709].  They may be added to the agent using the following
+   message.  The "key constraints" field is only present for the
+   SSH_AGENTC_ADD_ID_CONSTRAINED message.
 
        byte                    SSH_AGENTC_ADD_IDENTITY or
                                SSH_AGENTC_ADD_ID_CONSTRAINED
@@ -285,7 +285,7 @@ Internet-Draft                  SSH Agent                    August 2023
    The first value is the 32 byte Ed25519 public key ENC(A).  The second
    value is a concatenation of the 32 byte private key k and 32 byte
    public ENC(A) key.  The contents and interpretation of the ENC(A) and
-   k values are defined by [I-D.irtf-cfrg-eddsa].
+   k values are defined by [RFC8032].
 
 4.2.4.  RSA keys
 
@@ -433,7 +433,7 @@ Internet-Draft                  SSH Agent                    August 2023
    Where "key blob" is the standard public key encoding of the key to be
    removed.  SSH protocol key encodings are defined in [RFC4253] for
    "ssh-rsa" and "ssh-dss" keys, in [RFC5656] for "ecdsa-sha2-*" keys
-   and in [I-D.ietf-curdle-ssh-ed25519] for "ssh-ed25519" keys.
+   and in [RFC8709] for "ssh-ed25519" keys.
 
    An agent shall reply with SSH_AGENT_SUCCESS if the key was deleted or
    SSH_AGENT_FAILURE if it was not found.
@@ -519,7 +519,7 @@ Internet-Draft                  SSH Agent                    August 2023
    The signature format is specific to the algorithm of the key type in
    use.  SSH protocol signature formats are defined in [RFC4253] for
    "ssh-rsa" and "ssh-dss" keys, in [RFC5656] for "ecdsa-sha2-*" keys
-   and in [I-D.ietf-curdle-ssh-ed25519] for "ssh-ed25519" keys.
+   and in [RFC8709] for "ssh-ed25519" keys.
 
 4.5.1.  Signature flags
 
@@ -528,7 +528,7 @@ Internet-Draft                  SSH Agent                    August 2023
    are only valid for "ssh-rsa" keys and request that the agent return a
    signature using the "rsa-sha2-256" or "rsa-sha2-512" signature
    methods respectively.  These signature schemes are defined in
-   [I-D.ietf-curdle-rsa-sha2].
+   [RFC8332].
 
 4.6.  Locking and unlocking an agent
 
@@ -898,28 +898,6 @@ Miller                  Expires 16 February 2024               [Page 16]
 Internet-Draft                  SSH Agent                    August 2023
 
 
-   [I-D.ietf-curdle-rsa-sha2]
-              bider, D., "Use of RSA Keys with SHA-256 and SHA-512 in
-              the Secure Shell (SSH) Protocol", Work in Progress,
-              Internet-Draft, draft-ietf-curdle-rsa-sha2-12, 12 October
-              2017, <https://datatracker.ietf.org/doc/html/draft-ietf-
-              curdle-rsa-sha2-12>.
-
-   [I-D.ietf-curdle-ssh-ed25519]
-              Harris, B. and L. Velvindron, "Ed25519 public key
-              algorithm for the Secure Shell (SSH) protocol", Work in
-              Progress, Internet-Draft, draft-ietf-curdle-ssh-
-              ed25519-02, 4 February 2018,
-              <https://datatracker.ietf.org/doc/html/draft-ietf-curdle-
-              ssh-ed25519-02>.
-
-   [I-D.irtf-cfrg-eddsa]
-              Josefsson, S. and I. Liusvaara, "Edwards-Curve Digital
-              Signature Algorithm (EdDSA)", Work in Progress, Internet-
-              Draft, draft-irtf-cfrg-eddsa-08, 19 August 2016,
-              <https://datatracker.ietf.org/doc/html/draft-irtf-cfrg-
-              eddsa-08>.
-
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
               DOI 10.17487/RFC2119, March 1997,
@@ -943,16 +921,22 @@ Internet-Draft                  SSH Agent                    August 2023
               RFC 5656, DOI 10.17487/RFC5656, December 2009,
               <https://www.rfc-editor.org/info/rfc5656>.
 
+   [RFC8032]  Josefsson, S. and I. Liusvaara, "Edwards-Curve Digital
+              Signature Algorithm (EdDSA)", RFC 8032,
+              DOI 10.17487/RFC8032, January 2017,
+              <https://www.rfc-editor.org/info/rfc8032>.
+
+   [RFC8332]  Bider, D., "Use of RSA Keys with SHA-256 and SHA-512 in
+              the Secure Shell (SSH) Protocol", RFC 8332,
+              DOI 10.17487/RFC8332, March 2018,
+              <https://www.rfc-editor.org/info/rfc8332>.
+
+   [RFC8709]  Harris, B. and L. Velvindron, "Ed25519 and Ed448 Public
+              Key Algorithms for the Secure Shell (SSH) Protocol",
+              RFC 8709, DOI 10.17487/RFC8709, February 2020,
+              <https://www.rfc-editor.org/info/rfc8709>.
+
 Author's Address
-
-
-
-
-
-Miller                  Expires 16 February 2024               [Page 17]
-
-Internet-Draft                  SSH Agent                    August 2023
-
 
    Damien Miller
    OpenSSH
@@ -965,44 +949,4 @@ Internet-Draft                  SSH Agent                    August 2023
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Miller                  Expires 16 February 2024               [Page 18]
+Miller                  Expires 16 February 2024               [Page 17]

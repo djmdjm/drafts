@@ -4,11 +4,11 @@
 <!ENTITY RFC4251 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4251.xml">
 <!ENTITY RFC4253 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4253.xml">
 <!ENTITY RFC5226 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5226.xml">
-<!ENTITY RFC5656 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5656.xml">
 <!ENTITY RFC5226 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5226.xml">
-<!ENTITY I-D.ietf-curdle-ssh-ed25519 SYSTEM "http://xml2rfc.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-curdle-ssh-ed25519.xml">
-<!ENTITY I-D.ietf-curdle-rsa-sha2 SYSTEM "http://xml2rfc.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-curdle-rsa-sha2.xml">
-<!ENTITY I-D.irtf-cfrg-eddsa SYSTEM "http://xml2rfc.ietf.org/public/rfc/bibxml3/reference.I-D.irtf-cfrg-eddsa.xml">
+<!ENTITY RFC5656 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5656.xml">
+<!ENTITY RFC8032 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.8032.xml">
+<!ENTITY RFC8332 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.8332.xml">
+<!ENTITY RFC8709 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.8709.xml">
 ]>
 <?xml-stylesheet type='text/xsl' href='rfc2629.xslt' ?>
 <?rfc strict="yes" ?>
@@ -30,7 +30,7 @@
 <?rfc subcompact="no" ?>
 <!-- keep one blank line between list items -->
 <!-- end of list of popular I-D processing instructions -->
-<rfc category="info" docName="draft-miller-ssh-agent-05" ipr="trust200902">
+<rfc category="info" docName="draft-miller-ssh-agent-06" ipr="trust200902">
  <!-- category values: std, bcp, info, exp, and historic
     ipr values: trust200902, noModificationTrust200902, noDerivativesTrust200902,
        or pre5378Trust200902
@@ -283,7 +283,7 @@
 				<t>
 				Ed25519 keys have key type "ssh-ed25519" and are
 				defined in
-				<xref target="I-D.ietf-curdle-ssh-ed25519" />.
+				<xref target="RFC8709" />.
 				They may be added to the agent using the
 				following message. The "key constraints"
 				field is only present for
@@ -310,8 +310,7 @@
 				The contents and interpretation of the
 				<spanx style="verb">ENC(A)</spanx>
 				and <spanx style="verb">k</spanx> values are
-				defined by
-				<xref target="I-D.irtf-cfrg-eddsa" />.
+				defined by <xref target="RFC8032" />.
 				</t>
 			</section>
 			<section title="RSA keys">
@@ -501,7 +500,7 @@
 			<xref target="RFC4253" /> for "ssh-rsa" and
 			"ssh-dss" keys, in <xref target="RFC5656" />
 			for "ecdsa-sha2-*" keys and in
-			<xref target="I-D.ietf-curdle-ssh-ed25519" />
+			<xref target="RFC8709" />
 			for "ssh-ed25519" keys.
 			</t>
 			<t>
@@ -604,7 +603,7 @@
 			<xref target="RFC4253" /> for "ssh-rsa" and
 			"ssh-dss" keys, in <xref target="RFC5656" />
 			for "ecdsa-sha2-*" keys and in
-			<xref target="I-D.ietf-curdle-ssh-ed25519" />
+			<xref target="RFC8709" />
 			for "ssh-ed25519" keys.
 			</t>
 			<section title="Signature flags">
@@ -618,7 +617,7 @@
 			the "rsa-sha2-256" or "rsa-sha2-512"
 			signature methods respectively. These
 			signature schemes are defined in
-			<xref target="I-D.ietf-curdle-rsa-sha2" />.
+			<xref target="RFC8332" />.
 			</t>
 			</section>
 		</section>
@@ -972,11 +971,11 @@
 
 		&RFC5656;
 
-		&I-D.ietf-curdle-ssh-ed25519;
+		&RFC8032;
 
-		&I-D.ietf-curdle-rsa-sha2;
+		&RFC8332;
 
-		&I-D.irtf-cfrg-eddsa;
+		&RFC8709;
 
 		<reference anchor="FIPS.186-4">
 			<front>
