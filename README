@@ -4,3 +4,5 @@ up to date wrt their .xml source files, but sometimes I forget
 to run make...
 
 Templates from https://github.com/ietf-tools/rfcxml-templates-and-schemas/
+
+Note that some drafts might use an older template/format.
