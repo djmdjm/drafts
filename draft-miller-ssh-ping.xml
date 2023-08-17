@@ -211,9 +211,13 @@
 	<xref target="RFC4253" /> requires that implementations that do not
 	support a given message type must return SSH_MSG_UNIMPLEMENTED. The
 	use of SSH_MSG_PING SHOULD NOT be used unless the peer has negotiated
-	support for it via <xref target="RFC8308" /> SSH_MSG_EXT_INFO.
+	support for it using the <xref target="RFC8308" /> Extension
+	Negotiation mechanism.
+      </t>
+      <t>
 	Support for this protocol feature may be advertised using the extension
-	name "ping".
+	name "ping" in the <xref target="RFC8308" /> SSH_MSG_EXT_INFO extension
+	advertisment message.
       </t>
       <sourcecode markers="false">
       <![CDATA[
