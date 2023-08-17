@@ -32,7 +32,7 @@
   <front>
     <title>SSH Transport Protocol Ping Facility</title>
     <seriesInfo name="Internet-Draft" value="draft-miller-ssh-ping-00"/>
-    <author fullname="Damien" initials="D.J." surname="Miller">
+    <author fullname="Damien" initials="D." surname="Miller">
       <!-- [CHECK]
              * initials should not include an initial for the surname
              * role="editor" is optional -->

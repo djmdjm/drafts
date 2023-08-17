@@ -2,7 +2,7 @@
 
 
 
-Internet Engineering Task Force                              D.J. Miller
+Internet Engineering Task Force                                D. Miller
 Internet-Draft                                                   OpenSSH
 Intended status: Informational                            17 August 2023
 Expires: 18 February 2024
