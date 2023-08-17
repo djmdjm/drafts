@@ -160,8 +160,8 @@
 	This may seem like a trivial difference, but the extra bytes required by
 	the SSH_MSG_GLOBAL_REQUEST means that the minimally-sized message would
 	be larger than the smallest possible SSH_MSG_CHANNEL_DATA packet body
-	of eight bytes, making it less useful when used as a fake keystroke for
-	traffic analysis countermeasures.
+	of eight bytes, potentially making it discernable from keystroke data
+	if used as a countermeasure for traffic analysis.
       </t>
     </section>
     
