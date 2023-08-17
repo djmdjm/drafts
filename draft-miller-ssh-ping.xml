@@ -140,13 +140,19 @@
       <t>
 	Several close analogues exist. the transport-layer SSH_MSG_IGNORE
 	provides the ability to send data to the peer, but that data is simply
-	dropped and not echoed back. The higher-level SSH Connection Protocol 
+	dropped and not echoed back.
+      </t>
+      <t>
+	The higher-level SSH Connection Protocol 
 	<xref target="RFC4253" /> defines channel and global requests that
 	may require replies from the peer, and an extension mechanism that
 	allows their arbitrary use without requiring the specification of new
 	protocol numbers. However, all of these requests require textual
 	request names, which removes the possibility of sending minimally-sized
-	ping requests. For example, the shortest possible SSH_MSG_GLOBAL_REQUEST
+	ping requests.
+      </t>
+      <t>
+	For example, the shortest possible SSH_MSG_GLOBAL_REQUEST
 	body (using an unintuitive one-character message name) is 10 bytes,
 	whereas the smallest possible SSH_MSG_PING body is only four bytes.
       </t>
