@@ -3,12 +3,16 @@
 <!ENTITY RFC2119 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml">
 <!ENTITY RFC4251 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4251.xml">
 <!ENTITY RFC4253 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4253.xml">
+<!ENTITY RFC4254 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4254.xml">
 <!ENTITY RFC5226 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5226.xml">
 <!ENTITY RFC5226 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5226.xml">
 <!ENTITY RFC5656 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5656.xml">
 <!ENTITY RFC8032 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.8032.xml">
+<!ENTITY RFC8308 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.8308.xml">
 <!ENTITY RFC8332 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.8332.xml">
 <!ENTITY RFC8709 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.8709.xml">
+<!-- <!ENTITY draft-ietf-secsh-agent SYSTEM "https://datatracker.ietf.org/doc/bibxml3/draft-ietf-secsh-agent-02.xml"> -->
+
 ]>
 <?xml-stylesheet type='text/xsl' href='rfc2629.xslt' ?>
 <?rfc strict="yes" ?>
@@ -23,7 +27,7 @@
 <!-- use symbolic references tags, i.e, [RFC2119] instead of [1] -->
 <?rfc sortrefs="yes" ?>
 <!-- sort the reference entries alphabetically -->
-<!-- control vertical white space 
+<!-- control vertical white space
     (using these PIs as follows is recommended by the RFC Editor) -->
 <?rfc compact="yes" ?>
 <!-- do not start each main section on a new page -->
@@ -34,7 +38,7 @@
  <!-- category values: std, bcp, info, exp, and historic
     ipr values: trust200902, noModificationTrust200902, noDerivativesTrust200902,
        or pre5378Trust200902
-    you can add the attributes updates="NNNN" and obsoletes="NNNN" 
+    you can add the attributes updates="NNNN" and obsoletes="NNNN"
     they will automatically be output with "(if approved)" -->
 <front>
 	<title abbrev="SSH Agent">SSH Agent Protocol</title>
@@ -60,11 +64,11 @@
 		</address>
 	</author>
    <date year="2023" />
-   <!-- If the month and year are both specified and are the current ones, xml2rfc will fill 
-	in the current day for you. If only the current year is specified, xml2rfc will fill 
-	 in the current day and month for you. If the year is not the current one, it is 
-	 necessary to specify at least a month (xml2rfc assumes day="1" if not specified for the 
-	 purpose of calculating the expiry date).  With drafts it is normally sufficient to 
+   <!-- If the month and year are both specified and are the current ones, xml2rfc will fill
+	in the current day for you. If only the current year is specified, xml2rfc will fill
+	 in the current day and month for you. If the year is not the current one, it is
+	 necessary to specify at least a month (xml2rfc assumes day="1" if not specified for the
+	 purpose of calculating the expiry date).  With drafts it is normally sufficient to
 	 specify just the year. -->
 
    <!-- Meta-data Declarations -->
@@ -74,7 +78,7 @@
    <workgroup>Internet Engineering Task Force</workgroup>
 
    <!-- WG name at the upperleft corner of the doc,
-	IETF is fine for individual submissions.  
+	IETF is fine for individual submissions.
 	 If this element is not present, the default is "Network Working Group",
 	which is used by the RFC Editor as a nod to the history of the IETF. -->
 
@@ -149,6 +153,13 @@
 		For this reason, clients of the agent SHOULD be prepared to
 		fail gracefully if any operation is refused.
 		</t>
+<!-- broken
+		<t>
+		Note that this protocol is separate to and incompatible with
+		the one described in the similarly-named
+		<xref target="draft-ietf-secsh-agent" />.
+		</t>
+-->
 	</section>
 	<section title="Protocol Messages">
 		<t>
@@ -157,9 +168,9 @@
 		Messages consist of a length, type and contents.
 		</t>
 		<figure><artwork>
-   uint32                    message length
-   byte                      message type
-   byte[message length - 1]  message contents
+   uint32            length
+   byte              type
+   byte[length - 1]  contents
 		</artwork></figure>
 		<section title="Generic server responses">
 			<t>
@@ -168,14 +179,14 @@
 			agent may reply either with:
 			</t>
 			<figure><artwork>
-   byte                     SSH_AGENT_SUCCESS
+   byte              SSH_AGENT_SUCCESS
 			</artwork></figure>
 			<t>
 			or a request-specific success message.
 			On failure, the agent may reply with:
 			</t>
 			<figure><artwork>
-   byte                     SSH_AGENT_FAILURE
+   byte              SSH_AGENT_FAILURE
 			</artwork></figure>
 			<t>
 			SSH_AGENT_FAILURE messages are also sent in reply to
@@ -195,10 +206,10 @@
 			SSH_AGENTC_ADD_IDENTITY message is:
 			</t>
 			<figure><artwork>
-    byte                    SSH_AGENTC_ADD_IDENTITY
-    string                  key type
-    byte[]                  key contents
-    string                  key comment
+    byte             SSH_AGENTC_ADD_IDENTITY
+    string           key type
+    byte[]           key contents
+    string           key comment
 			</artwork></figure>
 			<t>
 			Here "type" is the specified key type name, for example
@@ -216,11 +227,11 @@
 			extra field:
 			</t>
 			<figure><artwork>
-    byte                    SSH_AGENTC_ADD_ID_CONSTRAINED
-    string                  type
-    byte[]                  contents
-    string                  comment
-    constraint[]            constraints
+    byte             SSH_AGENTC_ADD_ID_CONSTRAINED
+    string           type
+    byte[]           contents
+    string           comment
+    constraint[]     constraints
 			</artwork></figure>
 			<t>
 			Constraints are used to place limits on the validity
@@ -244,16 +255,16 @@
 				message.
 				</t>
 				<figure><artwork>
-    byte                    SSH_AGENTC_ADD_IDENTITY or
-                            SSH_AGENTC_ADD_ID_CONSTRAINED
-    string                  "ssh-dss"
-    mpint                   p
-    mpint                   q
-    mpint                   g
-    mpint                   y
-    mpint                   x
-    string                  comment
-    constraint[]            constraints
+    byte             SSH_AGENTC_ADD_IDENTITY or
+                     SSH_AGENTC_ADD_ID_CONSTRAINED
+    string           "ssh-dss"
+    mpint            p
+    mpint            q
+    mpint            g
+    mpint            y
+    mpint            x
+    string           comment
+    constraint[]     constraints
 				</artwork></figure>
 				<t>
 				The "p", "q", "g" values are the DSA domain
@@ -273,14 +284,14 @@
 				the SSH_AGENTC_ADD_ID_CONSTRAINED message.
 				</t>
 				<figure><artwork>
-    byte                    SSH_AGENTC_ADD_IDENTITY or
-                            SSH_AGENTC_ADD_ID_CONSTRAINED
-    string                  key type
-    string                  ecdsa_curve_name
-    string                  Q
-    mpint                   d
-    string                  comment
-    constraint[]            constraints
+    byte             SSH_AGENTC_ADD_IDENTITY or
+                     SSH_AGENTC_ADD_ID_CONSTRAINED
+    string           key type
+    string           ecdsa_curve_name
+    string           Q
+    mpint            d
+    string           comment
+    constraint[]     constraints
 				</artwork></figure>
 				<t>
 				The values "Q" and "d" are the ECDSA public and
@@ -299,13 +310,13 @@
 				the SSH_AGENTC_ADD_ID_CONSTRAINED message.
 				</t>
 				<figure><artwork>
-    byte                    SSH_AGENTC_ADD_IDENTITY or
-                            SSH_AGENTC_ADD_ID_CONSTRAINED
-    string                  "ssh-ed25519" or "ssh-e448"
-    string                  ENC(A)
-    string                  k || ENC(A)
-    string                  comment
-    constraint[]            constraints
+    byte             SSH_AGENTC_ADD_IDENTITY or
+                     SSH_AGENTC_ADD_ID_CONSTRAINED
+    string           "ssh-ed25519" or "ssh-e448"
+    string           ENC(A)
+    string           k || ENC(A)
+    string           comment
+    constraint[]     constraints
 				</artwork></figure>
 				<t>
 				The first value is the EDDSA public key
@@ -330,17 +341,17 @@
 				SSH_AGENTC_ADD_ID_CONSTRAINED message.
 				</t>
 				<figure><artwork>
-    byte                    SSH_AGENTC_ADD_IDENTITY or
-                            SSH_AGENTC_ADD_ID_CONSTRAINED
-    string                  "ssh-rsa"
-    mpint                   n
-    mpint                   e
-    mpint                   d
-    mpint                   iqmp
-    mpint                   p
-    mpint                   q
-    string                  comment
-    constraint[]            constraints
+    byte             SSH_AGENTC_ADD_IDENTITY or
+                     SSH_AGENTC_ADD_ID_CONSTRAINED
+    string           "ssh-rsa"
+    mpint            n
+    mpint            e
+    mpint            d
+    mpint            iqmp
+    mpint            p
+    mpint            q
+    string           comment
+    constraint[]     constraints
 				</artwork></figure>
 				<t>
 				"n" is the public composite modulus.
@@ -364,11 +375,11 @@
 				variant of this message.
 				</t>
 				<figure><artwork>
-    byte                    SSH_AGENTC_ADD_SMARTCARD_KEY or
-                            SSH_AGENTC_ADD_SMARTCARD_KEY_CONSTRAINED
-    string                  id
-    string                  PIN
-    constraint[]            constraints
+    byte             SSH_AGENTC_ADD_SMARTCARD_KEY or
+                     SSH_AGENTC_ADD_SMARTCARD_KEY_CONSTRAINED
+    string           id
+    string           PIN
+    constraint[]     constraints
 				</artwork></figure>
 				<t>
 				Here "id" is an opaque identifier for the
@@ -411,13 +422,13 @@
 				consecutively to the end of the request:
 				</t>
 				<figure><artwork>
-    byte                    constraint1_type
-    byte[]                  constraint1_data
-    byte                    constraint2_type
-    byte[]                  constraint2_data
+    byte             constraint1_type
+    byte[]           constraint1_data
+    byte             constraint2_type
+    byte[]           constraint2_data
     ....
-    byte                    constraintN_type
-    byte[]                  constraintN_data
+    byte             constraintN_type
+    byte[]           constraintN_data
 				</artwork></figure>
 				<t>
 				If an agent does not recognise or support a
@@ -438,8 +449,8 @@
 					the agent.
 					</t>
 					<figure><artwork>
-    byte                    SSH_AGENT_CONSTRAIN_LIFETIME
-    uint32                  seconds
+    byte             SSH_AGENT_CONSTRAIN_LIFETIME
+    uint32           seconds
 					</artwork></figure>
 				</section>
 				<section title="Key confirmation constraint">
@@ -453,7 +464,7 @@
 					operation.
 					</t>
 					<figure><artwork>
-    byte                    SSH_AGENT_CONSTRAIN_CONFIRM
+    byte             SSH_AGENT_CONSTRAIN_CONFIRM
 					</artwork></figure>
 				</section>
 				<section title="Constraint extensions">
@@ -464,9 +475,9 @@
 					named constraints.
 					</t>
 					<figure><artwork>
-    byte                    SSH_AGENT_CONSTRAIN_EXTENSION
-    string                  extension name
-    byte[]                  extension-specific details
+    byte             SSH_AGENT_CONSTRAIN_EXTENSION
+    string           extension name
+    byte[]           extension-specific details
 					</artwork></figure>
 					<t>
 					The extension name MUST consist of
@@ -486,7 +497,7 @@
 			all keys that it stores:
 			</t>
 			<figure><artwork>
-    byte                    SSH_AGENTC_REMOVE_ALL_IDENTITIES
+    byte             SSH_AGENTC_REMOVE_ALL_IDENTITIES
 			</artwork></figure>
 			<t>
 			On receipt of such a message, an agent
@@ -497,8 +508,8 @@
 			Specific keys may also be removed:
 			</t>
 			<figure><artwork>
-    byte                    SSH_AGENTC_REMOVE_IDENTITY
-    string                  key blob
+    byte             SSH_AGENTC_REMOVE_IDENTITY
+    string           key blob
 			</artwork></figure>
 			<t>
 			Where "key blob" is the standard public
@@ -519,9 +530,9 @@
 			Smartcard keys may be removed using:
 			</t>
 			<figure><artwork>
-    byte                    SSH_AGENTC_REMOVE_SMARTCARD_KEY
-    string                  reader id
-    string                  PIN
+    byte             SSH_AGENTC_REMOVE_SMARTCARD_KEY
+    string           reader id
+    string           PIN
 			</artwork></figure>
 			<t>
 			Where "reader id" is an opaque identifier for
@@ -543,15 +554,15 @@
 			agent using the following message:
 			</t>
 			<figure><artwork>
-    byte                    SSH_AGENTC_REQUEST_IDENTITIES
+    byte             SSH_AGENTC_REQUEST_IDENTITIES
 			</artwork></figure>
 			<t>
 			The agent shall reply with a message with
 			the following preamble.
 			</t>
 			<figure><artwork>
-    byte                    SSH_AGENT_IDENTITIES_ANSWER
-    uint32                  nkeys
+    byte             SSH_AGENT_IDENTITIES_ANSWER
+    uint32           nkeys
 			</artwork></figure>
 			<t>
 			Where "nkeys" indicates the number of keys
@@ -559,8 +570,8 @@
 			or more keys, each encoded as:
 			</t>
 			<figure><artwork>
-    string                  key blob
-    string                  comment
+    string           key blob
+    string           comment
 			</artwork></figure>
 			<t>
 			Where "key blob" is the wire encoding of the
@@ -575,10 +586,10 @@
 				following message:
 			</t>
 			<figure><artwork>
-    byte                    SSH_AGENTC_SIGN_REQUEST
-    string                  key blob
-    string                  data
-    uint32                  flags
+    byte             SSH_AGENTC_SIGN_REQUEST
+    string           key blob
+    string           data
+    uint32           flags
 			</artwork></figure>
 			<t>
 			Where "key blob" is the key requested to
@@ -600,8 +611,8 @@
 			On success, the agent shall reply with:
 			</t>
 			<figure><artwork>
-    byte                    SSH_AGENT_SIGN_RESPONSE
-    string                  signature
+    byte             SSH_AGENT_SIGN_RESPONSE
+    string           signature
 			</artwork></figure>
 			<t>
 			The signature format is specific to the
@@ -642,8 +653,8 @@
 			The following message requests agent locking
 			</t>
 			<figure><artwork>
-    byte                    SSH_AGENTC_LOCK
-    string                  passphrase
+    byte             SSH_AGENTC_LOCK
+    string           passphrase
 			</artwork></figure>
 			<t>
 			The agent shall reply with SSH_AGENT_SUCCESS
@@ -656,8 +667,8 @@
 			agent:
 			</t>
 			<figure><artwork>
-    byte                    SSH_AGENTC_UNLOCK
-    string                  passphrase
+    byte             SSH_AGENTC_UNLOCK
+    string           passphrase
 			</artwork></figure>
 			<t>
 			If the agent is already locked and the
@@ -680,8 +691,8 @@
 			the client consist of:
 			</t>
 			<figure><artwork>
-    byte                    SSH_AGENTC_EXTENSION
-    string                  extension type
+    byte             SSH_AGENTC_EXTENSION
+    string           extension type
     byte[]                  extension contents
 			</artwork></figure>
 			<t>
@@ -731,10 +742,110 @@
 				a list of supported extension names.
 				</t>
 				<figure><artwork>
-    byte                    SSH_AGENT_SUCCESS
-    string[]                extension type
+    byte             SSH_AGENT_SUCCESS
+    string[]         extension type
 				</artwork></figure>
 			</section>
+		</section>
+	</section>
+	<section title="Forwarding access to an agent">
+		<t>
+		The agent protocol may be forwarded over a SSH connection,
+		using the <xref target="RFC4254" /> connection protocol,
+		allowing agent forwarding to be requested for any session
+		channel, using a model that is similar to the connection
+		protocol's support for X11 Forwarding
+		(<xref target="RFC4254" /> section 6.3.)
+		</t>
+		<section anchor="advertising"
+		    title="Advertising agent forwarding support">
+			<t>
+			Support for agent forwarding may be advertised by a
+			SSH protocol server using the
+			<xref target="RFC8308" /> extension
+			mechanism using the name "agent-forward" in the
+			SSH_MSG_EXT_INFO message.
+			</t>
+			<figure><artwork>
+    string           "agent-forward"
+    string           "0" (version)
+			</artwork></figure>
+			<t>
+			Note that this protocol substantially predates the
+			existence of the
+			<xref target="RFC8308" /> extension mechanism and
+			several widely-deployed SSH implementations that
+			support agent forwarding do not advertise their ability
+			to do so. Clients MAY opportunitically attempt to
+			request agent forwarding in the absence of an
+			<xref target="RFC8308" />
+			advertisment using the vendor-specific names mentioned
+			below.
+			</t>
+		</section>
+		<section title="Requesting agent forwarding">
+			<t>
+			A client may request agent forwarding for a
+			previously-opened session using the following
+			channel request.
+			</t>
+			<figure><artwork>
+    byte             SSH_MSG_CHANNEL_REQUEST
+    string           channel_id
+    string           "auth-agent-req@openssh.com" | "agent-forward"
+    boolean          want_reply
+			</artwork></figure>
+			<t>
+			Where <spanx style="verb">channel_id</spanx> is
+			the identifier for an established session channel
+			(as returned from a previous SSH_MSG_CHANNEL_OPEN
+			request, and the
+			<spanx style="verb">want_reply</spanx> flag indicates
+			whether the server should respond with a confirmation
+			of whether the request was successful (as specified
+			in <xref target="RFC4254" /> section 5.4)
+			</t>
+			<t>
+			As mentioned previously,
+			many deployed implementations only support the former,
+			pre-standardisation "auth-agent-req@openssh.com" request
+			name. The latter "agent-req" name SHOULD only be used if
+			support was explicitly advertised as per
+			<xref target="advertising" />.
+			</t>
+		</section>
+		<section title="Agent connection requests">
+			<t>
+			After a client has requested that a session have agent
+			forwarding enabled, the server later may request a
+			connection to the forwarded agent. The server does this
+			by requesting a dedicated channel to communicate with
+			the client's agent.
+			</t>
+			<figure><artwork>
+    byte             SSH_MSG_CHANNEL_OPEN
+    string           "auth-agent@openssh.com" | "agent-connect"
+    uint32           channel_id
+    uint32           local_window
+    uint32           local_maxpacket
+			</artwork></figure>
+			<t>
+			The <spanx style="verb">channel_id</spanx>,
+			<spanx style="verb">local_window</spanx> and
+			<spanx style="verb">local_maxpacket</spanx> fields
+			should be interpreted as specified by
+			<xref target="RFC4254" />
+			section 5.1.
+			</t>
+			<t>
+			As above, the latter "agent-connect" open type name
+			SHOULD only be used if support was explicitly
+			advertised as per <xref target="advertising" />.
+			</t>
+			<t>
+			A client SHOULD be prepared to handle multiple
+			concurrent active agent connections.
+			</t>
 		</section>
 	</section>
 	<section title="Protocol numbers">
@@ -813,10 +924,10 @@
 		<t>
 		This protocol was designed and first implemented by
 		Markus Friedl, based on a similar protocol for an agent
-		to support the legacy SSH version 1 by Tatu Ylonen. 
+		to support the legacy SSH version 1 by Tatu Ylonen.
 		</t>
 		<t>
-		Thanks to Simon Tatham <!-- and ... --> who reviewed and helped
+		Thanks to Simon Tatham and Niels M&ouml;ller who reviewed and helped
 		improve this document.
 		</t>
 	</section>
@@ -944,7 +1055,7 @@
 		<t>
 		Given this, the agent
 		should, as far as possible, prevent its memory being read
-		by other processes to direct theft of loaded keys. 
+		by other processes to direct theft of loaded keys.
 		This typically include disabling debugging interfaces and
 		preventing process memory dumps on abnormal termination.
 		</t>
@@ -953,7 +1064,7 @@
 		via cryptographic side-channels. Private key operations may
 		leak information about the contents of keys via differences
 		in timing, power use or by side-effects in the memory
-		subsystems (e.g. CPU caches) of the host running the agent. 
+		subsystems (e.g. CPU caches) of the host running the agent.
 		For the case of a local attacker and an agent holding
 		unconstrained keys, the only limit on the number of private
 		key operations the attacker may be able to observe is the
@@ -975,6 +1086,8 @@
 
 		&RFC4251;
 
+		&RFC4254;
+
 		&RFC4253;
 
 		&RFC5226;
@@ -982,6 +1095,8 @@
 		&RFC5656;
 
 		&RFC8032;
+
+		&RFC8308;
 
 		&RFC8332;
 
@@ -1005,6 +1120,7 @@
 
 <!--
 	<references title="Informative References">
+		&draft-ietf-secsh-agent;
 	</references>
 
 	<section anchor="app-additional" title="Additional Stuff">
