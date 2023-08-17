@@ -97,7 +97,7 @@
 	by the transport layer itself. This document extends the transport
 	layer protocol with a new pair of messages that implement a ping-like
 	facility that may be used for testing, protocol-level measurement
-	and to mitigate traffic analysisto mitigate traffic analysis.
+	and to mitigate traffic analysis.
       </t>
       
       <section>
@@ -171,8 +171,8 @@
         ]]>
         </sourcecode>
       <t>
-	Upon receiving this message, an implementation SHOULD reply with a
-	SSH_MSG_PONG that copies the data from the SSH_MSG_PING request.
+	Upon receiving this message, an implementation MAY reply with a
+	SSH_MSG_PONG that exactly copies the data from the SSH_MSG_PING request.
       </t>
       <sourcecode markers="false">
       <![CDATA[
@@ -185,11 +185,10 @@
 	a SSH_MSG_PONG message.
       </t>
       <t>
-	Where the body data is exactly copied from the ping request. A peer MAY
-	elect not to reply to a ping request and MAY implement a limit of the
-	size of data that it is prepared to return. Implementations MUST
-	either return an exact copy of the entire data from the ping request or
-	make no reply at all.
+	A peer MAY elect not to reply to a ping request and MAY implement
+	a limit of the size of data that it is prepared to return.
+	Implementations MUST either return an exact copy of the entire data
+	from the ping request or make no reply at all.
       </t>
       <t>
 	SSH_MSG_PING requests MUST be replied to in the order that they were
