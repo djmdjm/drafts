@@ -75,7 +75,10 @@
          use by search engines. -->
 
     <abstract>
-      <t>Abstract [REPLACE]</t>
+      <t>
+	This document describes an extension to the SSH Transport Protocol to
+	support an end-to-end "ping" operation.
+      </t>
     </abstract>
  
   </front>
