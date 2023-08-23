@@ -4,8 +4,8 @@
 
 Internet Engineering Task Force                                D. Miller
 Internet-Draft                                                   OpenSSH
-Intended status: Informational                            17 August 2023
-Expires: 18 February 2024
+Intended status: Informational                            23 August 2023
+Expires: 24 February 2024
 
 
                   SSH Transport Protocol Ping Facility
@@ -31,7 +31,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 18 February 2024.
+   This Internet-Draft will expire on 24 February 2024.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Miller                  Expires 18 February 2024                [Page 1]
+Miller                  Expires 24 February 2024                [Page 1]
 
 Internet-Draft    SSH Transport Protocol Ping Facility       August 2023
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Miller                  Expires 18 February 2024                [Page 2]
+Miller                  Expires 24 February 2024                [Page 2]
 
 Internet-Draft    SSH Transport Protocol Ping Facility       August 2023
 
@@ -165,7 +165,7 @@ Internet-Draft    SSH Transport Protocol Ping Facility       August 2023
 
 
 
-Miller                  Expires 18 February 2024                [Page 3]
+Miller                  Expires 24 February 2024                [Page 3]
 
 Internet-Draft    SSH Transport Protocol Ping Facility       August 2023
 
@@ -221,7 +221,7 @@ Internet-Draft    SSH Transport Protocol Ping Facility       August 2023
 
 
 
-Miller                  Expires 18 February 2024                [Page 4]
+Miller                  Expires 24 February 2024                [Page 4]
 
 Internet-Draft    SSH Transport Protocol Ping Facility       August 2023
 
@@ -277,7 +277,7 @@ Internet-Draft    SSH Transport Protocol Ping Facility       August 2023
 
 
 
-Miller                  Expires 18 February 2024                [Page 5]
+Miller                  Expires 24 February 2024                [Page 5]
 
 Internet-Draft    SSH Transport Protocol Ping Facility       August 2023
 
@@ -333,4 +333,4 @@ Author's Address
 
 
 
-Miller                  Expires 18 February 2024                [Page 6]
+Miller                  Expires 24 February 2024                [Page 6]

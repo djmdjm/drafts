@@ -1199,7 +1199,7 @@ Acknowledgements
 
 Author's Address
 
-   Damien
+   Damien Miller
    OpenSSH
    Email: djm@openssh.com
    URI:   https://www.openssh.com/
