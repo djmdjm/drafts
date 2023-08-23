@@ -10,7 +10,7 @@
 <rfc
   xmlns:xi="http://www.w3.org/2001/XInclude"
   category="info"
-  docName="draft-miller-ssh-agent-09"
+  docName="draft-miller-ssh-agent-10"
   ipr="trust200902"
   obsoletes=""
   updates=""
@@ -198,6 +198,13 @@
 		as a result of one of these messages, or
 		SSH_AGENT_FAILURE otherwise.
 		</t>
+		<t>
+		An agent MAY support only a subset of the key types defined
+		here and may support additional key types as described below.
+		If an agent does not recognise the type name in a request to
+		add a key, then it MUST fail gracefully and respond with a
+		SSH_AGENT_FAILURE reply.
+		</t>
 		<section><name>DSA keys</name>
 			<t>
 			DSA keys have key type "ssh-dss" and are
@@ -314,6 +321,14 @@
 			"p". All these values except "iqmp"
 			(which can be calculated from the others)
 			are defined by <xref target="FIPS.186-4" />.
+			</t>
+		</section>
+		<section><name>Other keys</name>
+			<t>
+			Agents and their clients MAY support additional key
+			types not documented here. Vendor-specific key types
+			should use the domain-qualified naming convention
+			defined in <xref target="RFC4251" section="4.2" />.
 			</t>
 		</section>
 		<section><name>Adding keys from a token</name>
@@ -443,7 +458,18 @@
 			</section>
 		</section>
 	</section>
-		<section><name>Removing keys from the agent</name>
+	<section anchor="pubkeyblob"><name>Public key encoding</name>
+		<t>
+		Keys previously loaded into an agent are referred to by their
+		public key blob, which is the standard SSH wire encoding for
+		public keys. SSH protocol key encodings are defined in
+		<xref target="RFC4253" /> for "ssh-rsa" and "ssh-dss" keys,
+		in <xref target="RFC5656" /> for "ecdsa-sha2-*" keys and in
+		<xref target="RFC8709" /> for "ssh-ed25519" and "ssh-ed448"
+		keys.
+		</t>
+	</section>
+	<section><name>Removing keys from the agent</name>
 		<t>
 		A client may request that an agent remove
 		all keys that it stores:
@@ -464,19 +490,12 @@
     string           key blob
 		</sourcecode>
 		<t>
-		Where "key blob" is the standard public
-		key encoding of the key to be removed.
-		SSH protocol key encodings are defined in
-		<xref target="RFC4253" /> for "ssh-rsa" and
-		"ssh-dss" keys, in <xref target="RFC5656" />
-		for "ecdsa-sha2-*" keys and in
-		<xref target="RFC8709" />
-		for "ssh-ed25519" keys.
+		Where "key blob" is the standard public key encoding of the
+		key to be removed (<xref target="pubkeyblob" />).
 		</t>
 		<t>
-		An agent shall reply with SSH_AGENT_SUCCESS
-		if the key was deleted or SSH_AGENT_FAILURE
-		if it was not found.
+		An agent shall reply with SSH_AGENT_SUCCESS if the key was
+		deleted or SSH_AGENT_FAILURE if it was not found.
 		</t>
 		<t>
 		Smartcard keys may be removed using:
@@ -487,48 +506,44 @@
     string           PIN
 		</sourcecode>
 		<t>
-		Where "reader id" is an opaque identifier for
-		the smartcard reader and "PIN" is an optional
-		password or PIN (not typically used).
-		Requesting deletion of smartcard-hosted keys
-		will cause the agent to remove
-		all keys loaded from that smartcard.
+		Where "reader id" is an opaque identifier for the smartcard
+		reader and "PIN" is an optional password or PIN (not typically
+		used).  Requesting deletion of smartcard-hosted keys SHOULD
+		cause the agent to remove all keys loaded from that smartcard.
 		</t>
 		<t>
-		An agent shall reply with SSH_AGENT_SUCCESS
-		if the key was deleted or SSH_AGENT_FAILURE
-		if it was not found.
+		An agent shall reply with SSH_AGENT_SUCCESS if the key was
+		deleted or SSH_AGENT_FAILURE if it was not found.
 		</t>
 	</section>
 	<section><name>Requesting a list of keys</name>
 		<t>
-		A client may request a list of keys from an
-		agent using the following message:
+		A client may request a list of keys from an agent using the
+		following message:
 		</t>
 		<sourcecode>
     byte             SSH_AGENTC_REQUEST_IDENTITIES
 		</sourcecode>
 		<t>
-		The agent shall reply with a message with
-		the following preamble.
+		The agent shall reply with a message with the following
+		preamble.
 		</t>
 		<sourcecode>
     byte             SSH_AGENT_IDENTITIES_ANSWER
     uint32           nkeys
 		</sourcecode>
 		<t>
-		Where "nkeys" indicates the number of keys
-		to follow.  Following the preamble are zero
-		or more keys, each encoded as:
+		Where "nkeys" indicates the number of keys to follow.
+		Following the preamble are zero or more keys, each encoded as:
 		</t>
 		<sourcecode>
     string           key blob
     string           comment
 		</sourcecode>
 		<t>
-		Where "key blob" is the wire encoding of the
-		public key and "comment" is a human-readable
-		comment encoded as a UTF-8 string.
+		Where "key blob" is the standard public key encoding of the
+		key (<xref target="pubkeyblob" />) and "comment" is a
+		human-readable comment encoded as a UTF-8 string.
 		</t>
 	</section>
 	<section><name>Private key operations</name>
@@ -544,20 +559,18 @@
     uint32           flags
 		</sourcecode>
 		<t>
-		Where "key blob" is the key requested to
-		perform the signature, "data" is the data
-		to be signed and "flags" is a bitfield
-		containing the bitwise OR of zero or more
-		signature flags (see below).
+		Where "key blob" is the key requested to perform the
+		signature (encoded as per <xref target="pubkeyblob" />),
+		"data" is the data to be signed and "flags" is a bitfield
+		containing the bitwise OR of zero or more signature flags
+		(see below).
 		</t>
 		<t>
-		If the agent does not support the requested
-		flags, or is otherwise unable or unwilling to
-		generate the signature (e.g. because it
-		doesn't have the specified key, or the user
-		refused confirmation of a constrained
-		key), it must reply with a SSH_AGENT_FAILURE
-		message.
+		If the agent does not support the requested flags, or is
+		otherwise unable or unwilling to generate the signature (e.g.
+		because it doesn't have the specified key, or the user
+		refused confirmation of a constrained key), it must reply
+		with a SSH_AGENT_FAILURE message.
 		</t>
 		<t>
 		On success, the agent shall reply with:
@@ -567,39 +580,35 @@
     string           signature
 		</sourcecode>
 		<t>
-		The signature format is specific to the
-		algorithm of the key type in use.
-		SSH protocol signature formats are defined in
-		<xref target="RFC4253" /> for "ssh-rsa" and
-		"ssh-dss" keys, in <xref target="RFC5656" />
-		for "ecdsa-sha2-*" keys and in
-		<xref target="RFC8709" />
-		for "ssh-ed25519" keys.
+		The signature format is specific to the algorithm of the key
+		type in use.  SSH protocol signature formats are defined in
+		<xref target="RFC4253" /> for "ssh-rsa" and "ssh-dss" keys,
+		in <xref target="RFC5656" /> for "ecdsa-sha2-*" keys and in
+		<xref target="RFC8709" /> for "ssh-ed25519" and "ssh-ed448"
+		keys.
 		</t>
 		<section><name>Signature flags</name>
-		<t>
-		Two flags are currently defined for
-		signature request messages:
-		SSH_AGENT_RSA_SHA2_256 and SSH_AGENT_RSA_SHA2_512.
-		These two flags are only valid for
-		"ssh-rsa" keys and request that the agent
-		return a signature using
-		the "rsa-sha2-256" or "rsa-sha2-512"
-		signature methods respectively. These
-		signature schemes are defined in
-		<xref target="RFC8332" />.
+			<t>
+			Two flags are currently defined for
+			signature request messages:
+			SSH_AGENT_RSA_SHA2_256 and SSH_AGENT_RSA_SHA2_512.
+			These two flags are only valid for
+			"ssh-rsa" keys and request that the agent
+			return a signature using
+			the "rsa-sha2-256" or "rsa-sha2-512"
+			signature methods respectively. These
+			signature schemes are defined in
+			<xref target="RFC8332" />.
 		</t>
 		</section>
 	</section>
 	<section><name>Locking and unlocking an agent</name>
 		<t>
-		The agent protocol supports requesting that
-		an agent temporarily lock itself with a
-		pass-phrase. When locked an agent should
-		suspend processing of sensitive operations
-		(private key operations at the very least)
-		until it has been unlocked with the same
-		pass-phrase.
+		The agent protocol supports requesting that an agent
+		temporarily lock itself with a pass-phrase. When locked an
+		agent should suspend processing of sensitive operations
+		(private key signature operations at the very least) until it
+		has been unlocked with the same pass-phrase.
 		</t>
 		<t>
 		The following message requests agent locking
@@ -609,38 +618,32 @@
     string           passphrase
 		</sourcecode>
 		<t>
-		The agent shall reply with SSH_AGENT_SUCCESS
-		if locked successfully or SSH_AGENT_FAILURE
-		otherwise (e.g. if the agent was already
-		locked).
+		The agent shall reply with SSH_AGENT_SUCCESS if locked
+		successfully or SSH_AGENT_FAILURE otherwise (e.g. if the agent
+		was already locked).
 		</t>
 		<t>
-		The following message requests unlocking an
-		agent:
+		The following message requests unlocking an agent:
 		</t>
 		<sourcecode>
     byte             SSH_AGENTC_UNLOCK
     string           passphrase
 		</sourcecode>
 		<t>
-		If the agent is already locked and the
-		pass-phrase matches the one used to lock it
-		then it should unlock and reply with
-		SSH_AGENT_SUCCESS. If the agent is unlocked
-		or if the the pass-phrase does not match
-		it should reply with SSH_AGENT_FAILURE.
-		An agent SHOULD take countermeasures against
-		brute-force guessing attacks against the
-		pass-phrase.
+		If the agent is already locked and the pass-phrase matches the
+		one used to lock it then it should unlock and reply with
+		SSH_AGENT_SUCCESS. If the agent is unlocked or if the the
+		pass-phrase does not match it should reply with
+		SSH_AGENT_FAILURE. An agent SHOULD take countermeasures
+		against brute-force guessing attacks against the pass-phrase.
 		</t>
 	</section>
 	<section><name>Extension mechanism</name>
 		<t>
-		The agent protocol includes an optional extension
-		mechanism that allows vendor-specific and
-		experimental messages to be sent via the
-		agent protocol.  Extension requests from
-		the client consist of:
+		The agent protocol includes an optional extension mechanism
+		that allows vendor-specific and experimental messages to be
+		sent via the agent protocol. Extension requests from the
+		client consist of:
 		</t>
 		<sourcecode>
     byte             SSH_AGENTC_EXTENSION
@@ -648,43 +651,36 @@
     byte[]           extension contents
 		</sourcecode>
 		<t>
-		The extension type indicates the type of the
-		extension message as a UTF-8 string.
-		Implementation-specific
-		extensions should be suffixed by the
-		implementation domain following the extension
-		naming scheme defined in
-		<xref target="RFC4251" section="4.2" />,
-		e.g.  "foo@example.com".
+		The extension type indicates the type of the extension message
+		as a UTF-8 string.  Implementation-specific extensions should
+		be suffixed by the implementation domain following the
+		extension naming scheme defined in
+		<xref target="RFC4251" section="4.2" />, e.g. "foo@example.com".
 		</t>
 		<t>
-		An agent that does not support extensions of
-		the supplied type MUST reply with an empty
-		SSH_AGENT_FAILURE message. This reply is also
-		sent by agents that do not support the
-		extension mechanism at all.
+		An agent that does not support extensions of the supplied type
+		MUST reply with an empty SSH_AGENT_FAILURE message. This reply
+		is also sent by agents that do not support the extension
+		mechanism at all.
 		</t>
 		<t>
-		The contents of successful extension reply
-		messages are specific to the extension type.
-		Extension requests may return
-		SSH_AGENT_SUCCESS on success or some other
-		extension-specific message.
+		The contents of successful extension reply messages are
+		specific to the extension type.  Extension requests may return
+		SSH_AGENT_SUCCESS on success or some other extension-specific
+		message.
 		</t>
 		<t>
 		Extension failure should be signaled using the
-		SSH_AGENT_EXTENSION_FAILURE code - extensions
-		should not use the standard SSH_AGENT_FAILURE
-		message. This allows failed requests to be
-		distinguished from the extension not being
+		SSH_AGENT_EXTENSION_FAILURE code - extensions should not use
+		the standard SSH_AGENT_FAILURE message. This allows failed
+		requests to be distinguished from the extension not being
 		supported.
 		</t>
 		<section anchor="queryext"><name>Query extension</name>
 			<t>
-			A single, optional extension request "query"
-			is defined to allow a client to query
-			which, if any, extensions are supported
-			by an agent.
+			A single, optional extension request "query" is
+			defined to allow a client to query which, if any,
+			extensions are supported by an agent.
 			</t>
 		<sourcecode>
     byte             SSH_AGENTC_EXTENSION
@@ -702,20 +698,19 @@
 	</section>
 </section>
 
-<section><name>Forwarding access to an agent</name>
+<section anchor="fwd"><name>Forwarding access to an agent</name>
 	<t>
-	The agent protocol may be forwarded over a SSH connection,
-	using the <xref target="RFC4254" /> connection protocol,
-	allowing agent forwarding to be requested for any session
-	channel, using a model that is similar to the connection
-	protocol's support for X11 Forwarding
-	(<xref target="RFC4254" section="6.3"/>)
+	The agent protocol may be forwarded over a SSH connection, using the
+	<xref target="RFC4254" /> connection protocol, allowing agent
+	forwarding to be requested for any session channel, using a model
+	that is similar to the connection protocol's support for X11 Forwarding
+	(<xref target="RFC4254" section="6.3"/>).
+	This feature is OPTIONAL for SSH protocol and agent implementations.
 	</t>
 	<section anchor="fwdext" title="Advertising agent forwarding support">
 		<t>
-		Support for agent forwarding may be advertised by a
-		SSH protocol server using the
-		<xref target="RFC8308" /> extension
+		Support for agent forwarding may be advertised by a SSH
+		protocol server using the <xref target="RFC8308" /> extension
 		mechanism using the name "agent-forward" in the
 		SSH_MSG_EXT_INFO message.
 		</t>
@@ -724,23 +719,20 @@
     string           "0" (version)
 		</sourcecode>
 		<t>
-		Note that this protocol substantially predates the
-		existence of the
-		<xref target="RFC8308" /> extension mechanism and
-		several widely-deployed SSH implementations that
-		support agent forwarding do not advertise their ability
-		to do so. Clients MAY opportunitically attempt to
-		request agent forwarding in the absence of an
-		<xref target="RFC8308" />
-		advertisment using the vendor-specific names mentioned
-		below.
+		Note that this protocol substantially predates the existence
+		of the <xref target="RFC8308" /> extension mechanism and
+		several widely-deployed SSH implementations that support agent
+		forwarding do not advertise their ability to do so. Clients
+		MAY opportunitically attempt to request agent forwarding in
+		the absence of an <xref target="RFC8308" /> advertisment
+		using the vendor-specific names mentioned below.
 		</t>
 	</section>
 	<section anchor="fwdreq"><name>Requesting agent forwarding</name>
 		<t>
-		A client may request agent forwarding for a
-		previously-opened session using the following
-		channel request.
+		A client may request agent forwarding for a previously-opened
+		session (<xref target="RFC4254" section="6.1" />) using the
+		following channel request.
 		</t>
 		<sourcecode>
     byte             SSH_MSG_CHANNEL_REQUEST
@@ -749,31 +741,28 @@
     boolean          want_reply
 		</sourcecode>
 		<t>
-		Where channel_id is
-		the identifier for an established session channel
-		(as returned from a previous SSH_MSG_CHANNEL_OPEN
-		request, and the
-		want_reply flag indicates
-		whether the server should respond with a confirmation
-		of whether the request was successful (as specified
-		in <xref target="RFC4254" section="5.4"/>)
+		Where channel_id is the identifier for an established session
+		channel (as returned from a previous SSH_MSG_CHANNEL_OPEN
+		request, and the want_reply flag indicates whether the server
+		should respond with a confirmation of whether the request was
+		successful (as specified in
+		<xref target="RFC4254" section="5.4"/>)
 		</t>
 		<t>
-		As mentioned previously,
-		many deployed implementations only support the former,
-		pre-standardisation "auth-agent-req@openssh.com" request
-		name. The latter "agent-req" name SHOULD only be used if
-		support was explicitly advertised as per
-		<xref target="fwdext" />.
+		As mentioned previously, many deployed implementations only
+		support the former, pre-standardisation
+		"auth-agent-req@openssh.com" request name. The latter
+		"agent-req" name SHOULD only be used if support was explicitly
+		advertised as per <xref target="fwdext" />.
 		</t>
 	</section>
 	<section anchor="fwdtype"><name>Agent connection requests</name>
 		<t>
 		After a client has requested that a session have agent
 		forwarding enabled, the server later may request a
-		connection to the forwarded agent. The server does this
-		by requesting a dedicated channel to communicate with
-		the client's agent.
+		connection to the forwarded agent. The server does this by
+		requesting a dedicated channel to communicate with the
+		client's agent.
 		</t>
 		<sourcecode>
     byte             SSH_MSG_CHANNEL_OPEN
@@ -783,20 +772,18 @@
     uint32           local_maxpacket
 		</sourcecode>
 		<t>
-		The channel_id,
-		local_window and
-		local_maxpacket fields
+		The channel_id, local_window and local_maxpacket fields
 		should be interpreted as specified by
 		<xref target="RFC4254" section="5.1"/>.
 		</t>
 		<t>
-		As above, the latter "agent-connect" open type name
-		SHOULD only be used if support was explicitly
-		advertised as per <xref target="fwdext" />.
+		As above, the latter "agent-connect" open type name SHOULD
+		only be used if support was explicitly advertised as per
+		<xref target="fwdext" />.
 		</t>
 		<t>
-		A client SHOULD be prepared to handle multiple
-		concurrent active agent connections.
+		A client SHOULD be prepared to handle multiple concurrent
+		active agent connections.
 		</t>
 	</section>
 </section>
@@ -804,8 +791,8 @@
 <section><name>Protocol numbers</name>
 	<section anchor="messagenum" title="Message numbers">
 		<t>
-		The following numbers are used for requests from the
-		client to the agent.
+		The following numbers are used for requests from the client
+		to the agent.
 		</t>
 		<sourcecode>
     SSH_AGENTC_REQUEST_IDENTITIES                  11
@@ -822,8 +809,8 @@
     SSH_AGENTC_EXTENSION                           27
 		</sourcecode>
 		<t>
-		The following numbers are used for replies from the
-		agent to the client.
+		The following numbers are used for replies from the agent to
+		the client.
 		</t>
 		<sourcecode>
     SSH_AGENT_FAILURE                               5
@@ -834,21 +821,20 @@
 		</sourcecode>
 		<section anchor="reservednum"><name>Reserved message numbers</name>
 			<t>
-			The following message numbers are reserved
-			for implementations that implement support for
-			the legacy SSH protocol version 1:
-			1-4, 7-9 and 24 (inclusive).
+			The following message numbers are reserved for
+			implementations that implement support for the legacy
+			SSH protocol version 1: 1-4, 7-9 and 24 (inclusive).
 			These message numbers MAY be used by an
-			implementation supporting the legacy protocol
-			but MUST NOT be reused otherwise.
+			implementation supporting the legacy protocol but
+			MUST NOT be reused otherwise.
 			</t>
 		</section>
 	</section>
 	<section anchor="constraintnum" title="Constraint identifiers">
 		<t>
-		The following numbers are used to identify key
-		constraints. These are only used in key constraints
-		and are not sent as message numbers.
+		The following numbers are used to identify key constraints.
+		These are only used in key constraints and are not sent as
+		message numbers.
 		</t>
 		<sourcecode>
     SSH_AGENT_CONSTRAIN_LIFETIME                    1
@@ -858,27 +844,26 @@
 	</section>
 	<section anchor="sigflagnum" title="Signature flags">
 		<t>
-		The following numbers may be present in signature
-		request (SSH_AGENTC_SIGN_REQUEST) messages.
-		These flags form a bit field by taking the logical
-		OR of zero or more flags.
+		The following numbers may be present in signature request
+		(SSH_AGENTC_SIGN_REQUEST) messages. These flags form a bit
+		field by taking the logical OR of zero or more flags.
 		</t>
 		<sourcecode>
     SSH_AGENT_RSA_SHA2_256                          2
     SSH_AGENT_RSA_SHA2_512                          4
 		</sourcecode>
 		<t>
-		The flag value 1 is reserved for historical
-		implementations.
+		The flag value 1 is reserved for historical implementations.
 		</t>
 	</section>
 </section>
 
 <section anchor="IANA"><name>IANA Considerations</name>
+<!--
 	<t>
 	This protocol requires three registries be established, one for
-	message numbers, one for constraints and one for
-	signature request flags.
+	message numbers, one for constraints and one for signature request
+	flags.
 	</t>
 	<section><name>New registry: SSH agent protocol numbers</name>
 		<t>
@@ -997,6 +982,7 @@
 </tbody>
 </table>
 	</section>
+-->
 	<section title="Additions to SSH Extension Names">
 		<t>
 		IANA is requested to insert the following entries into the
@@ -1049,52 +1035,54 @@
 
 <section anchor="Security"><name>Security Considerations</name>
 	<t>
-	The agent is a service that
-	is tasked with retaining and providing controlled access to
-	what are typically long-lived login authentication credentials.
-	It is by nature a sensitive and trusted software component.
-	Moreover, the agent protocol itself does not include any
-	authentication or transport security; ability to communicate
-	with an agent is usually sufficient to invoke it to perform
-	private key operations.
+	The agent is a service that is tasked with retaining and providing
+	controlled access to what are typically long-lived login
+	authentication credentials. It is by nature a sensitive and trusted
+	software component. Moreover, the agent protocol itself does not
+	include any authentication or transport security; ability to
+	communicate with an agent is usually sufficient to invoke it to
+	perform private key operations.
 	</t>
 	<t>
-	Since being able to access an agent is usually sufficient
-	to perform private key operations, it is critically
-	important that the agent only be exposed to its owner and
-	their authorised delegates.
+	Since being able to access an agent is usually sufficient to perform
+	private key operations, it is critically important that the agent
+	only be exposed to its owner and their authorised delegates.
 	</t>
 	<t>
-	The primary design intention of an agent is that an attacker
-	with unprivileged access to their victim's agent should be
-	prevented from gaining a copy of any keys that have been loaded
-	into it. This may not preclude the attacker from
-	stealing use of those keys (e.g. if they have been loaded
-	without a confirmation constraint).
+	The primary design intention of an agent is that an attacker with
+	unprivileged access to their victim's agent should be prevented from
+	gaining a copy of any keys that have been loaded into it. This may
+	not preclude the attacker from stealing use of those keys (e.g.
+	if they have been loaded without a confirmation constraint).
 	</t>
 	<t>
-	Given this, the agent
-	should, as far as possible, prevent its memory being read
-	by other processes to direct theft of loaded keys.
+	Given this, the agent should, as far as possible, prevent its
+	memory being read by other processes to direct theft of loaded keys.
 	This typically include disabling debugging interfaces and
 	preventing process memory dumps on abnormal termination.
 	</t>
 	<t>
-	Another, more subtle, means by which keys may be stolen are
-	via cryptographic side-channels. Private key operations may
-	leak information about the contents of keys via differences
-	in timing, power use or by side-effects in the memory
-	subsystems (e.g. CPU caches) of the host running the agent.
-	For the case of a local attacker and an agent holding
-	unconstrained keys, the only limit on the number of private
-	key operations the attacker may be able to observe is the
-	rate at which the CPU can perform signatures. This grants
-	the attacker an almost ideal oracle for side-channel attacks.
-	While a full treatment of side-channel attacks is beyond the
-	scope of this specification, agents SHOULD use cryptographic
-	implementations that are resistant to side-channel attacks
-	and MAY take additional measures to hide the actual time
-	spent processing private key operations.
+	Another, more subtle, means by which keys may be stolen are via
+	cryptographic side-channels. Private key operations may leak
+	information about the contents of keys via differences in timing,
+	power use or by side-effects in the memory subsystems (e.g. CPU
+	caches) of the host running the agent. For the case of a local
+	attacker and an agent holding unconstrained keys, the only limit
+	on the number of private key operations the attacker may be able
+	to observe is the rate at which the CPU can perform signatures.
+	This grants the attacker an almost ideal oracle for side-channel
+	attacks.  While a full treatment of side-channel attacks is beyond
+	the scope of this specification, agents SHOULD use cryptographic
+	implementations that are resistant to side-channel attacks and MAY
+	take additional measures to hide the actual time spent processing
+	private key operations.
+	</t>
+	<t>
+	Forwarding access to a local agent over a SSH connection
+	(<xref target="fwd" />) inherently creates a transitive trust
+	relationship. SSH implementations SHOULD NOT forward use of an agent
+	by default and MAY implement additional controls over key visibility
+	and use for forwarded agent connections.
 	</t>
 </section>
 </middle>
@@ -1108,7 +1096,7 @@
 		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.4251.xml" />
 		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.4253.xml" />
 		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.4254.xml" />
-		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.5226.xml" />
+		<!-- <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.5226.xml" /> -->
 		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.5656.xml" />
 		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8032.xml" />
 		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8174.xml" />
