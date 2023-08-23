@@ -10,7 +10,7 @@
 <rfc
   xmlns:xi="http://www.w3.org/2001/XInclude"
   category="info"
-  docName="draft-miller-ssh-agent-08"
+  docName="draft-miller-ssh-agent-09"
   ipr="trust200902"
   obsoletes=""
   updates=""
@@ -21,14 +21,14 @@
     * docName should be the name of your draft
     * category should be one of std, bcp, info, exp, historic
     * ipr should be one of trust200902, noModificationTrust200902, noDerivativesTrust200902, pre5378Trust200902
-    * updates can be an RFC number as NNNN
+    * updates can be an RFC number as NNNN.
     * obsoletes can be an RFC number as NNNN 
 -->
 
 <front>
 	<title>SSH Agent Protocol</title>
-	<seriesInfo name="Internet-Draft" value="draft-miller-ssh-agent-08"/>
-	<author fullname="Damien" initials="D" surname="Miller">
+	<seriesInfo name="Internet-Draft" value="draft-miller-ssh-agent"/>
+	<author fullname="Damien" initials="D." surname="Miller">
 		<organization>OpenSSH</organization>
 		<address>
 			<email>djm@mindrot.org</email>  
