@@ -31,7 +31,7 @@
 	<author fullname="Damien" initials="D." surname="Miller">
 		<organization>OpenSSH</organization>
 		<address>
-			<email>djm@mindrot.org</email>  
+			<email>djm@openssh.com</email>  
 			<uri>https://www.openssh.com/</uri>
 		</address>
 	</author>

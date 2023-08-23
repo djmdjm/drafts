@@ -1201,7 +1201,7 @@ Author's Address
 
    Damien
    OpenSSH
-   Email: djm@mindrot.org
+   Email: djm@openssh.com
    URI:   https://www.openssh.com/
 
 
