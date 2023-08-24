@@ -10,7 +10,7 @@
 <rfc
   xmlns:xi="http://www.w3.org/2001/XInclude"
   category="info"
-  docName="draft-miller-ssh-agent-10"
+  docName="draft-miller-ssh-agent-11"
   ipr="trust200902"
   obsoletes=""
   updates=""
@@ -35,7 +35,7 @@
 			<uri>https://www.openssh.com/</uri>
 		</address>
 	</author>
-	<date year="2023" month="8" day="23" />
+	<date year="2023" month="8" day="24" />
 	<area>General</area>
 	<workgroup>Internet Engineering Task Force</workgroup>
 	<keyword>ssh</keyword>
@@ -707,6 +707,11 @@
 	(<xref target="RFC4254" section="6.3"/>).
 	This feature is OPTIONAL for SSH protocol and agent implementations.
 	</t>
+	<t>
+	Note that the deployed integration with the SSH protocol uses
+	vendor-specific names.
+	</t>
+<!--
 	<section anchor="fwdext" title="Advertising agent forwarding support">
 		<t>
 		Support for agent forwarding may be advertised by a SSH
@@ -728,16 +733,19 @@
 		using the vendor-specific names mentioned below.
 		</t>
 	</section>
+-->
 	<section anchor="fwdreq"><name>Requesting agent forwarding</name>
 		<t>
 		A client may request agent forwarding for a previously-opened
 		session (<xref target="RFC4254" section="6.1" />) using the
-		following channel request.
+		following channel request. This request is sent after the
+		channel has been opened, but before a shell, command or
+		subsystem has been executed.
 		</t>
 		<sourcecode>
     byte             SSH_MSG_CHANNEL_REQUEST
     string           channel_id
-    string           "auth-agent-req@openssh.com" | "agent-forward"
+    string           "auth-agent-req@openssh.com"
     boolean          want_reply
 		</sourcecode>
 		<t>
@@ -749,12 +757,22 @@
 		<xref target="RFC4254" section="5.4"/>)
 		</t>
 		<t>
+		If a SSH server accepts this request, typically it will arrange
+		to make a endpoint (e.g. a listening socket) available and
+		advertise this fact to the subordinate session. Most
+		implementations on Unix-like systems do this by providing a
+		user-private listening Unix domain socket and recording its
+		location in an environment variable $SSH_AUTH_SOCK.
+		</t>
+<!--
+		<t>
 		As mentioned previously, many deployed implementations only
 		support the former, pre-standardisation
 		"auth-agent-req@openssh.com" request name. The latter
 		"agent-req" name SHOULD only be used if support was explicitly
 		advertised as per <xref target="fwdext" />.
 		</t>
+-->
 	</section>
 	<section anchor="fwdtype"><name>Agent connection requests</name>
 		<t>
@@ -766,7 +784,7 @@
 		</t>
 		<sourcecode>
     byte             SSH_MSG_CHANNEL_OPEN
-    string           "auth-agent@openssh.com" | "agent-connect"
+    string           "auth-agent@openssh.com"
     uint32           channel_id
     uint32           local_window
     uint32           local_maxpacket
@@ -776,14 +794,35 @@
 		should be interpreted as specified by
 		<xref target="RFC4254" section="5.1"/>.
 		</t>
+<!--
 		<t>
 		As above, the latter "agent-connect" open type name SHOULD
 		only be used if support was explicitly advertised as per
 		<xref target="fwdext" />.
 		</t>
+-->
 		<t>
 		A client SHOULD be prepared to handle multiple concurrent
 		active agent connections.
+		A client MAY accept agent connection requests (subject to
+		authorisation) without a prior agent forwarding request having
+		been made to support the situation where agent forwarding
+		without opening a session is desired.
+		Similarly, a client MAY continue to accept agent connection
+		requests after the session for which agent forwarding was
+		requested has closed.
+		</t>
+		<t>
+		A client MUST refuse unauthorised agent connection requests,
+		i.e. when agent forwarding was not desired or requested but a
+		a server sends an agent connection request anyway.
+		</t>
+		<t>
+		Note the connection request provides no way to identify which
+		session channel a given agent connection request relates to.
+		This implies that a SSH connection can functionally forward
+		access to only a single client-side agent concurrently using
+		this protocol.
 		</t>
 	</section>
 </section>
@@ -858,8 +897,8 @@
 	</section>
 </section>
 
-<section anchor="IANA"><name>IANA Considerations</name>
 <!--
+<section anchor="IANA"><name>IANA Considerations</name>
 	<t>
 	This protocol requires three registries be established, one for
 	message numbers, one for constraints and one for signature request
@@ -982,7 +1021,6 @@
 </tbody>
 </table>
 	</section>
--->
 	<section title="Additions to SSH Extension Names">
 		<t>
 		IANA is requested to insert the following entries into the
@@ -1032,6 +1070,7 @@
 </table>
 	</section>
 </section>
+-->
 
 <section anchor="Security"><name>Security Considerations</name>
 	<t>
@@ -1092,7 +1131,7 @@
 	<name>References</name>
 	<references><name>Normative References</name>
 		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.2119.xml" />
-		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.4250.xml" />
+		<!-- <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.4250.xml" /> -->
 		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.4251.xml" />
 		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.4253.xml" />
 		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.4254.xml" />
@@ -1100,7 +1139,7 @@
 		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.5656.xml" />
 		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8032.xml" />
 		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8174.xml" />
-		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8308.xml" />
+		<!-- <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8308.xml" /> -->
 		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8332.xml" />
 		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8709.xml" />
 		<reference anchor="FIPS.186-4">
@@ -1120,6 +1159,7 @@
 	</references>
 
 	<references><name>Informative References</name>
+<!--
 			<reference anchor="IANA-SSH-CHANREQ" target="https://www.iana.org/assignments/ssh-parameters/"><front>
 			<title>Connection Protocol Channel Types</title>
 			<author>
@@ -1138,7 +1178,7 @@
 				<organization>IANA</organization>
 			</author>
 		</front></reference>       
-
+-->
 		<!-- XXX bibtex gives me xml2rfc errors -->
 		<!-- <xi:include href="https://datatracker.ietf.org/doc/bibxml3/draft-ietf-secsh-agent-02.xml" /> -->
 		<reference anchor="draft-ietf-secsh-agent-02" target="https://datatracker.ietf.org/doc/html/draft-ietf-secsh-agent-02"><front>
