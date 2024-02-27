@@ -713,7 +713,7 @@ Internet-Draft             SSH Agent Protocol              February 2024
 
        byte             SSH_MSG_CHANNEL_REQUEST
        string           channel_id
-       string           "auth-agent-req@openssh.com"
+       string           "agent-req" or "auth-agent-req@openssh.com"
        boolean          want_reply
 
    Where channel_id is the identifier for an established session channel
@@ -750,7 +750,7 @@ Internet-Draft             SSH Agent Protocol              February 2024
    communicate with the client's agent.
 
        byte             SSH_MSG_CHANNEL_OPEN
-       string           "auth-agent@openssh.com"
+       string           "agent-connect" or "auth-agent@openssh.com"
        uint32           channel_id
        uint32           local_window
        uint32           local_maxpacket
