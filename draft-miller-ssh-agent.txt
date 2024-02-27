@@ -4,12 +4,12 @@
 
 Internet Engineering Task Force                                D. Miller
 Internet-Draft                                                   OpenSSH
-Intended status: Informational                          26 February 2024
-Expires: 29 August 2024
+Intended status: Informational                          28 February 2024
+Expires: 31 August 2024
 
 
                            SSH Agent Protocol
-                       draft-miller-ssh-agent-12
+                       draft-miller-ssh-agent-13
 
 Abstract
 
@@ -31,7 +31,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 29 August 2024.
+   This Internet-Draft will expire on 31 August 2024.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Miller                   Expires 29 August 2024                 [Page 1]
+Miller                   Expires 31 August 2024                 [Page 1]
 
 Internet-Draft             SSH Agent Protocol              February 2024
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Miller                   Expires 29 August 2024                 [Page 2]
+Miller                   Expires 31 August 2024                 [Page 2]
 
 Internet-Draft             SSH Agent Protocol              February 2024
 
@@ -165,7 +165,7 @@ Internet-Draft             SSH Agent Protocol              February 2024
 
 
 
-Miller                   Expires 29 August 2024                 [Page 3]
+Miller                   Expires 31 August 2024                 [Page 3]
 
 Internet-Draft             SSH Agent Protocol              February 2024
 
@@ -221,7 +221,7 @@ Internet-Draft             SSH Agent Protocol              February 2024
 
 
 
-Miller                   Expires 29 August 2024                 [Page 4]
+Miller                   Expires 31 August 2024                 [Page 4]
 
 Internet-Draft             SSH Agent Protocol              February 2024
 
@@ -277,7 +277,7 @@ Internet-Draft             SSH Agent Protocol              February 2024
 
 
 
-Miller                   Expires 29 August 2024                 [Page 5]
+Miller                   Expires 31 August 2024                 [Page 5]
 
 Internet-Draft             SSH Agent Protocol              February 2024
 
@@ -333,7 +333,7 @@ Internet-Draft             SSH Agent Protocol              February 2024
 
 
 
-Miller                   Expires 29 August 2024                 [Page 6]
+Miller                   Expires 31 August 2024                 [Page 6]
 
 Internet-Draft             SSH Agent Protocol              February 2024
 
@@ -389,7 +389,7 @@ Internet-Draft             SSH Agent Protocol              February 2024
 
 
 
-Miller                   Expires 29 August 2024                 [Page 7]
+Miller                   Expires 31 August 2024                 [Page 7]
 
 Internet-Draft             SSH Agent Protocol              February 2024
 
@@ -445,7 +445,7 @@ Internet-Draft             SSH Agent Protocol              February 2024
 
 
 
-Miller                   Expires 29 August 2024                 [Page 8]
+Miller                   Expires 31 August 2024                 [Page 8]
 
 Internet-Draft             SSH Agent Protocol              February 2024
 
@@ -501,7 +501,7 @@ Internet-Draft             SSH Agent Protocol              February 2024
 
 
 
-Miller                   Expires 29 August 2024                 [Page 9]
+Miller                   Expires 31 August 2024                 [Page 9]
 
 Internet-Draft             SSH Agent Protocol              February 2024
 
@@ -557,7 +557,7 @@ Internet-Draft             SSH Agent Protocol              February 2024
 
 
 
-Miller                   Expires 29 August 2024                [Page 10]
+Miller                   Expires 31 August 2024                [Page 10]
 
 Internet-Draft             SSH Agent Protocol              February 2024
 
@@ -613,7 +613,7 @@ Internet-Draft             SSH Agent Protocol              February 2024
 
 
 
-Miller                   Expires 29 August 2024                [Page 11]
+Miller                   Expires 31 August 2024                [Page 11]
 
 Internet-Draft             SSH Agent Protocol              February 2024
 
@@ -669,7 +669,7 @@ Internet-Draft             SSH Agent Protocol              February 2024
 
 
 
-Miller                   Expires 29 August 2024                [Page 12]
+Miller                   Expires 31 August 2024                [Page 12]
 
 Internet-Draft             SSH Agent Protocol              February 2024
 
@@ -725,7 +725,7 @@ Internet-Draft             SSH Agent Protocol              February 2024
 
 
 
-Miller                   Expires 29 August 2024                [Page 13]
+Miller                   Expires 31 August 2024                [Page 13]
 
 Internet-Draft             SSH Agent Protocol              February 2024
 
@@ -781,7 +781,7 @@ Internet-Draft             SSH Agent Protocol              February 2024
 
 
 
-Miller                   Expires 29 August 2024                [Page 14]
+Miller                   Expires 31 August 2024                [Page 14]
 
 Internet-Draft             SSH Agent Protocol              February 2024
 
@@ -837,7 +837,7 @@ Internet-Draft             SSH Agent Protocol              February 2024
 
 
 
-Miller                   Expires 29 August 2024                [Page 15]
+Miller                   Expires 31 August 2024                [Page 15]
 
 Internet-Draft             SSH Agent Protocol              February 2024
 
@@ -893,7 +893,7 @@ Internet-Draft             SSH Agent Protocol              February 2024
 
 
 
-Miller                   Expires 29 August 2024                [Page 16]
+Miller                   Expires 31 August 2024                [Page 16]
 
 Internet-Draft             SSH Agent Protocol              February 2024
 
@@ -949,7 +949,7 @@ Internet-Draft             SSH Agent Protocol              February 2024
 
 
 
-Miller                   Expires 29 August 2024                [Page 17]
+Miller                   Expires 31 August 2024                [Page 17]
 
 Internet-Draft             SSH Agent Protocol              February 2024
 
@@ -1005,7 +1005,7 @@ Internet-Draft             SSH Agent Protocol              February 2024
 
 
 
-Miller                   Expires 29 August 2024                [Page 18]
+Miller                   Expires 31 August 2024                [Page 18]
 
 Internet-Draft             SSH Agent Protocol              February 2024
 
@@ -1061,7 +1061,7 @@ Internet-Draft             SSH Agent Protocol              February 2024
 
 
 
-Miller                   Expires 29 August 2024                [Page 19]
+Miller                   Expires 31 August 2024                [Page 19]
 
 Internet-Draft             SSH Agent Protocol              February 2024
 
@@ -1117,7 +1117,7 @@ Internet-Draft             SSH Agent Protocol              February 2024
 
 
 
-Miller                   Expires 29 August 2024                [Page 20]
+Miller                   Expires 31 August 2024                [Page 20]
 
 Internet-Draft             SSH Agent Protocol              February 2024
 
@@ -1173,7 +1173,7 @@ Internet-Draft             SSH Agent Protocol              February 2024
 
 
 
-Miller                   Expires 29 August 2024                [Page 21]
+Miller                   Expires 31 August 2024                [Page 21]
 
 Internet-Draft             SSH Agent Protocol              February 2024
 
@@ -1229,7 +1229,7 @@ Internet-Draft             SSH Agent Protocol              February 2024
 
 
 
-Miller                   Expires 29 August 2024                [Page 22]
+Miller                   Expires 31 August 2024                [Page 22]
 
 Internet-Draft             SSH Agent Protocol              February 2024
 
@@ -1285,4 +1285,4 @@ Author's Address
 
 
 
-Miller                   Expires 29 August 2024                [Page 23]
+Miller                   Expires 31 August 2024                [Page 23]
