@@ -10,7 +10,7 @@
 <rfc
   xmlns:xi="http://www.w3.org/2001/XInclude"
   category="info"
-  docName="draft-miller-ssh-agent-13"
+  docName="draft-miller-ssh-agent-14"
   ipr="trust200902"
   obsoletes=""
   updates=""
@@ -35,7 +35,7 @@
 			<uri>https://www.openssh.com/</uri>
 		</address>
 	</author>
-	<date year="2024" month="2" day="28" />
+	<date year="2024" month="4" day="15" />
 	<area>General</area>
 	<workgroup>Internet Engineering Task Force</workgroup>
 	<keyword>ssh</keyword>
@@ -648,7 +648,7 @@
 		<sourcecode>
     byte             SSH_AGENTC_EXTENSION
     string           extension type
-    byte[]           extension contents
+    byte[]           extension request-specific contents
 		</sourcecode>
 		<t>
 		The extension type indicates the type of the extension message
@@ -666,8 +666,16 @@
 		<t>
 		The contents of successful extension reply messages are
 		specific to the extension type.  Extension requests may return
-		SSH_AGENT_SUCCESS on success or some other extension-specific
-		message.
+		SSH_AGENT_SUCCESS on success or the extension-specific
+		response message:
+		</t>
+		<sourcecode>
+    byte             SSH_AGENT_EXTENSION_RESPONSE
+    string           extension type
+    byte[]           extension response-specific contents
+		</sourcecode>
+		<t>
+		Where the extension type is the same as that in the request.
 		</t>
 		<t>
 		Extension failure should be signaled using the
@@ -691,8 +699,9 @@
 			should reply with a list of supported extension names.
 			</t>
 			<sourcecode>
-    byte             SSH_AGENT_SUCCESS
-    string[]         extension type
+    byte             SSH_AGENT_EXTENSION_RESPONSE
+    string           "query"
+    string[]         supported extension types
 			</sourcecode>
 		</section>
 	</section>
@@ -835,11 +844,11 @@
     SSH_AGENTC_ADD_IDENTITY                        17
     SSH_AGENTC_REMOVE_IDENTITY                     18
     SSH_AGENTC_REMOVE_ALL_IDENTITIES               19
-    SSH_AGENTC_ADD_ID_CONSTRAINED                  25
     SSH_AGENTC_ADD_SMARTCARD_KEY                   20
     SSH_AGENTC_REMOVE_SMARTCARD_KEY                21
     SSH_AGENTC_LOCK                                22
     SSH_AGENTC_UNLOCK                              23
+    SSH_AGENTC_ADD_ID_CONSTRAINED                  25
     SSH_AGENTC_ADD_SMARTCARD_KEY_CONSTRAINED       26
     SSH_AGENTC_EXTENSION                           27
 		</sourcecode>
@@ -850,9 +859,10 @@
 		<sourcecode>
     SSH_AGENT_FAILURE                               5
     SSH_AGENT_SUCCESS                               6
-    SSH_AGENT_EXTENSION_FAILURE                     28
     SSH_AGENT_IDENTITIES_ANSWER                     12
     SSH_AGENT_SIGN_RESPONSE                         14
+    SSH_AGENT_EXTENSION_FAILURE                     28
+    SSH_AGENT_EXTENSION_RESPONSE                    29
 		</sourcecode>
 		<section anchor="reservednum"><name>Reserved message numbers</name>
 			<t>
@@ -948,6 +958,7 @@
 <tr><td>26</td><td>SSH_AGENTC_ADD_SMARTCARD_KEY_CONSTRAINED</td><td><xref target="messagenum" /></td></tr>
 <tr><td>27</td><td>SSH_AGENTC_EXTENSION</td><td><xref target="messagenum" /></td></tr>
 <tr><td>28</td><td>SSH_AGENT_EXTENSION_FAILURE</td><td><xref target="messagenum" /></td></tr>
+<tr><td>29</td><td>SSH_AGENT_EXTENSION_RESPONSE</td><td><xref target="messagenum" /></td></tr>
 <tr><td>240-255</td><td>Reserved for organizational use</td><td><xref target="messagenum" /></td></tr>
 </tbody>
 </table>
@@ -1218,8 +1229,8 @@
 	to support the legacy SSH version 1 by Tatu Ylonen.
 	</t>
 	<t>
-	Thanks to Simon Tatham and Niels Möller who reviewed and helped
-	improve this document.
+	Thanks to Simon Tatham, Niels Möller and James Spencer who reviewed
+	and helped improve this document.
 	</t>
 </section>
 
