@@ -921,9 +921,8 @@
 		agent responses.
 		Its initial state should consist of the following
 		numbers and reservations.
-		Future message number allocations shall require
-		specification in the form of an RFC
-		(EXPERT REVIEW as per <xref target="RFC8126" />).
+		Future message number allocations shall occur via
+		EXPERT REVIEW as per <xref target="RFC8126" />.
 		</t>
 <table>
 <thead>
@@ -969,9 +968,8 @@
 		records the message numbers for key use constraints.
 		Its initial state should consist of the
 		following numbers.
-		Future constraint number allocations shall require
-		specification in the form of an RFC
-		(EXPERT REVIEW as per <xref target="RFC8126" />).
+		Future message number allocations shall occur via
+		EXPERT REVIEW as per <xref target="RFC8126" />.
 		</t>
 <table>
 <thead>
@@ -996,9 +994,8 @@
 		flag value is 0x80000000.
 		</t>
 		<t>
-		Future constraint number allocations shall require
-		specification in the form of an RFC
-		(EXPERT REVIEW as per <xref target="RFC8126" />).
+		Future message number allocations shall occur via
+		EXPERT REVIEW as per <xref target="RFC8126" />.
 		</t>
 <table>
 <thead>
@@ -1020,9 +1017,8 @@
 		following names.
 		</t>
 		<t>
-		Future constraint number allocations shall require
-		specification in the form of an RFC
-		(EXPERT REVIEW as per <xref target="RFC8126" />).
+		Future message number allocations shall occur via
+		EXPERT REVIEW as per <xref target="RFC8126" />.
 		</t>
 <table>
 <thead>

@@ -873,8 +873,8 @@ Internet-Draft             SSH Agent Protocol               October 2024
    This registry, titled "SSH agent protocol numbers" records the
    message numbers for client requests and agent responses.  Its initial
    state should consist of the following numbers and reservations.
-   Future message number allocations shall require specification in the
-   form of an RFC (EXPERT REVIEW as per [RFC8126]).
+   Future message number allocations shall occur via EXPERT REVIEW as
+   per [RFC8126].
 
    +===========+==========================================+===========+
    | Number(s) | Identifier                               | Reference |
@@ -992,9 +992,9 @@ Internet-Draft             SSH Agent Protocol               October 2024
 
    This registry, titled "SSH agent key constraint numbers" records the
    message numbers for key use constraints.  Its initial state should
-   consist of the following numbers.  Future constraint number
-   allocations shall require specification in the form of an RFC (EXPERT
-   REVIEW as per [RFC8126]).
+   consist of the following numbers.  Future message number allocations
+   shall occur via EXPERT REVIEW as per [RFC8126].
+
 
 
 
@@ -1030,8 +1030,8 @@ Internet-Draft             SSH Agent Protocol               October 2024
    the flags are combined by bitwise OR, all flag values must be powers
    of two and the maximum available flag value is 0x80000000.
 
-   Future constraint number allocations shall require specification in
-   the form of an RFC (EXPERT REVIEW as per [RFC8126]).
+   Future message number allocations shall occur via EXPERT REVIEW as
+   per [RFC8126].
 
              +========+========================+=============+
              | Number | Identifier             | Reference   |
@@ -1052,8 +1052,8 @@ Internet-Draft             SSH Agent Protocol               October 2024
    (SSH_AGENTC_EXTENSION).  Its initial state should consist of the
    following names.
 
-   Future constraint number allocations shall require specification in
-   the form of an RFC (EXPERT REVIEW as per [RFC8126]).
+   Future message number allocations shall occur via EXPERT REVIEW as
+   per [RFC8126].
 
 
 
