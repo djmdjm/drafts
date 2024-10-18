@@ -923,7 +923,7 @@
 		numbers and reservations.
 		Future message number allocations shall require
 		specification in the form of an RFC
-		(RFC REQUIRED as per <xref target="RFC5226" />).
+		(EXPERT REVIEW as per <xref target="RFC8126" />).
 		</t>
 <table>
 <thead>
@@ -971,7 +971,7 @@
 		following numbers.
 		Future constraint number allocations shall require
 		specification in the form of an RFC
-		(RFC REQUIRED as per <xref target="RFC5226" />).
+		(EXPERT REVIEW as per <xref target="RFC8126" />).
 		</t>
 <table>
 <thead>
@@ -998,7 +998,7 @@
 		<t>
 		Future constraint number allocations shall require
 		specification in the form of an RFC
-		(RFC REQUIRED as per <xref target="RFC5226" />).
+		(EXPERT REVIEW as per <xref target="RFC8126" />).
 		</t>
 <table>
 <thead>
@@ -1022,7 +1022,7 @@
 		<t>
 		Future constraint number allocations shall require
 		specification in the form of an RFC
-		(RFC REQUIRED as per <xref target="RFC5226" />).
+		(EXPERT REVIEW as per <xref target="RFC8126" />).
 		</t>
 <table>
 <thead>
@@ -1146,9 +1146,9 @@
 		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.4251.xml" />
 		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.4253.xml" />
 		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.4254.xml" />
-		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.5226.xml" />
 		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.5656.xml" />
 		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8032.xml" />
+		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8126.xml" />
 		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8174.xml" />
 		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8308.xml" />
 		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8332.xml" />
