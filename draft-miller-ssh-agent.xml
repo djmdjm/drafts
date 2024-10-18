@@ -10,7 +10,7 @@
 <rfc
   xmlns:xi="http://www.w3.org/2001/XInclude"
   category="info"
-  docName="draft-miller-ssh-agent-16"
+  docName="draft-miller-ssh-agent-17"
   ipr="trust200902"
   obsoletes=""
   updates=""
@@ -27,7 +27,7 @@
 
 <front>
 	<title>SSH Agent Protocol</title>
-	<seriesInfo name="Internet-Draft" value="draft-miller-ssh-agent-16"/>
+	<seriesInfo name="Internet-Draft" value="draft-miller-ssh-agent-17"/>
 	<author fullname="Damien Miller" initials="D." surname="Miller">
 		<organization>OpenSSH</organization>
 		<address>
