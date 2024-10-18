@@ -58,7 +58,7 @@
 	including public key authentication. This document
 	describes the protocol for interacting with an agent
 	that holds private keys. Clients (and possibly
-	servers) can use invoke the agent via this protocol
+	servers) can invoke the agent via this protocol
 	to perform operations using public and private keys
 	held in the agent.
 	</t>
@@ -352,7 +352,7 @@
 			<t>
 			Here "id" is an opaque identifier for the
 			hardware token and "PIN" is an optional
-			password on PIN to unlock the key.
+			password or PIN to unlock the key.
 			The interpretation of "id" is not defined
 			by the protocol but is left solely up to
 			the agent.
@@ -819,7 +819,7 @@
 		</t>
 		<t>
 		A client MUST refuse unauthorised agent connection requests,
-		i.e. when agent forwarding was not desired or requested but a
+		i.e. when agent forwarding was not desired or requested but
 		a server sends an agent connection request anyway.
 		</t>
 		<t>
