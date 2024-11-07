@@ -736,7 +736,7 @@
 		of the <xref target="RFC8308" /> extension mechanism and
 		several widely-deployed SSH implementations that support agent
 		forwarding do not advertise their ability to do so. Clients
-		MAY opportunitically attempt to request agent forwarding in
+		MAY opportunistically attempt to request agent forwarding in
 		the absence of an <xref target="RFC8308" /> advertisment
 		using the vendor-specific names mentioned below.
 		Likewise, servers MAY implement the vendor-specific names in
