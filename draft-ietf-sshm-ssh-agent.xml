@@ -230,7 +230,8 @@
 			The "p", "q", "g" values are the DSA domain
 			parameters. "y" and "x" are the public and
 			private keys respectively. These values are
-			as defined by <xref target="FIPS.186-4" />.
+			as defined by Section 4.1 of
+			<xref target="FIPS.186-4"/>.
 			</t>
 		</section>
 		<section><name>ECDSA keys</name>
@@ -256,7 +257,7 @@
 			<t>
 			The values "Q" and "d" are the ECDSA public and
 			private values respectively. Both are defined
-			by <xref target="FIPS.186-4" />.
+			by Section 6.2 of <xref target="FIPS.186-5"/>.
 			</t>
 		</section>
 		<section><name>EDDSA keys</name>
@@ -288,7 +289,7 @@
 			The contents and interpretation of the
 			ENC(A)
 			and k values are
-			defined by <xref target="RFC8032" />.
+			defined by <xref target="RFC8032" section="3.2"/>.
 			</t>
 		</section>
 		<section><name>RSA keys</name>
@@ -320,7 +321,8 @@
 			"iqmp" is the inverse of "q" modulo
 			"p". All these values except "iqmp"
 			(which can be calculated from the others)
-			are defined by <xref target="FIPS.186-4" />.
+			are defined by Section 5.1 of
+			<xref target="FIPS.186-4" />.
 			</t>
 		</section>
 		<section><name>Other keys</name>
@@ -1275,8 +1277,22 @@
 				</author>
 				<date month="July" year="2013" />
 			</front>
-			<seriesInfo name="FIPS" value="PUB 186-4" />
-			<format target="http://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.186-4.pdf" type="PDF" />
+			<refcontent>FIPS PUB 186-4</refcontent>
+			<seriesInfo name="DOI" value="10.6028/NIST.FIPS.186-4"/>
+		</reference>
+		<reference anchor="FIPS.186-5">
+			<front>
+				<title>Digital Signature Standard (DSS)</title>
+				<author>
+					<organization>
+						National Institute of
+						Standards and Technology
+					</organization>
+				</author>
+				<date month="February" year="2023" />
+			</front>
+			<refcontent>FIPS PUB 186-5</refcontent>
+			<seriesInfo name="DOI" value="10.6028/NIST.FIPS.186-5"/>
 		</reference>
 	</references>
 
