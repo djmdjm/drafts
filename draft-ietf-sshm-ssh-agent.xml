@@ -1130,6 +1130,18 @@
 	by default and MAY implement additional controls over key visibility
 	and use for forwarded agent connections.
 	</t>
+	<t>
+	Implementation of smartcard keys requires some care too. On some systems
+	smartcards are invoked via shared libraries that must be loaded
+	to make use of keys hosted on the device (a path to a PKCS#11 module,
+	for example). Loading a shared libraries on most platforms implies
+	automatic execution of code in that library in the address space of
+	the process that loads it. Agents that support loading smartcard keys
+	via library path SHOULD ensure that only trusted smartcard provider
+	libraries are loadable, SHOULD ensure that loaded smartcard library code
+	cannot gain access to other keys loaded in the agent and MAY disallow
+	remote clients from loading smartcard keys entriely.
+	</t>
 </section>
 </middle>
 

@@ -103,7 +103,7 @@ Table of Contents
    8.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  22
      8.1.  Normative References  . . . . . . . . . . . . . . . . . .  22
      8.2.  Informative References  . . . . . . . . . . . . . . . . .  23
-   Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .  23
+   Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .  24
    Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .  24
 
 
@@ -1184,6 +1184,18 @@ Internet-Draft             SSH Agent Protocol               October 2024
    implement additional controls over key visibility and use for
    forwarded agent connections.
 
+   Implementation of smartcard keys requires some care too.  On some
+   systems smartcards are invoked via shared libraries that must be
+   loaded to make use of keys hosted on the device (a path to a PKCS#11
+   module, for example).  Loading a shared libraries on most platforms
+   implies automatic execution of code in that library in the address
+   space of the process that loads it.  Agents that support loading
+   smartcard keys via library path SHOULD ensure that only trusted
+   smartcard provider libraries are loadable, SHOULD ensure that loaded
+   smartcard library code cannot gain access to other keys loaded in the
+   agent and MAY disallow remote clients from loading smartcard keys
+   entriely.
+
 8.  References
 
 8.1.  Normative References
@@ -1215,6 +1227,13 @@ Internet-Draft             SSH Agent Protocol               October 2024
               RFC 5656, DOI 10.17487/RFC5656, December 2009,
               <https://www.rfc-editor.org/info/rfc5656>.
 
+
+
+Miller                    Expires 21 April 2025                [Page 22]
+
+Internet-Draft             SSH Agent Protocol               October 2024
+
+
    [RFC8032]  Josefsson, S. and I. Liusvaara, "Edwards-Curve Digital
               Signature Algorithm (EdDSA)", RFC 8032,
               DOI 10.17487/RFC8032, January 2017,
@@ -1224,15 +1243,6 @@ Internet-Draft             SSH Agent Protocol               October 2024
               Writing an IANA Considerations Section in RFCs", BCP 26,
               RFC 8126, DOI 10.17487/RFC8126, June 2017,
               <https://www.rfc-editor.org/info/rfc8126>.
-
-
-
-
-
-Miller                    Expires 21 April 2025                [Page 22]
-
-Internet-Draft             SSH Agent Protocol               October 2024
-
 
    [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
@@ -1270,6 +1280,16 @@ Internet-Draft             SSH Agent Protocol               October 2024
               IANA, "Connection Protocol Channel Request Names",
               <https://www.iana.org/assignments/ssh-parameters/>.
 
+
+
+
+
+
+Miller                    Expires 21 April 2025                [Page 23]
+
+Internet-Draft             SSH Agent Protocol               October 2024
+
+
    [draft-ietf-secsh-agent-02]
               Ylonen, T., Rinne, T. J., and S. Lehtinen, "Secure Shell
               Authentication Agent Protocol", January 2004,
@@ -1282,14 +1302,6 @@ Acknowledgements
    based on a similar protocol for an agent to support the legacy SSH
    version 1 by Tatu Ylonen.
 
-
-
-
-Miller                    Expires 21 April 2025                [Page 23]
-
-Internet-Draft             SSH Agent Protocol               October 2024
-
-
    Thanks to Simon Tatham, Niels Möller and James Spencer who reviewed
    and helped improve this document.
 
@@ -1299,18 +1311,6 @@ Author's Address
    OpenSSH
    Email: djm@openssh.com
    URI:   https://www.openssh.com/
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
