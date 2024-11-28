@@ -1,0 +1,582 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-model href="rfc7991bis.rnc"?>
+<!-- <?xml-stylesheet type="text/xsl" href="rfc2629.xslt" ?> --> 
+<!DOCTYPE rfc [
+  <!ENTITY nbsp    "&#160;">
+  <!ENTITY zwsp   "&#8203;">
+  <!ENTITY nbhy   "&#8209;">
+  <!ENTITY wj     "&#8288;">
+]>
+<rfc
+  xmlns:xi="http://www.w3.org/2001/XInclude"
+  category="info"
+  docName="draft-miller-ssh-cert-00"
+  ipr="trust200902"
+  obsoletes=""
+  updates=""
+  submissionType="IETF"
+  xml:lang="en"
+  version="3">
+<!-- 
+    * docName should be the name of your draft
+    * category should be one of std, bcp, info, exp, historic
+    * ipr should be one of trust200902, noModificationTrust200902, noDerivativesTrust200902, pre5378Trust200902
+    * updates can be an RFC number as NNNN.
+    * obsoletes can be an RFC number as NNNN 
+-->
+
+<front>
+	<title>SSH Certificate Format</title>
+	<seriesInfo name="Internet-Draft" value="draft-miller-ssh-cert-00"/>
+	<author fullname="Damien Miller" initials="D." surname="Miller">
+		<organization>OpenSSH</organization>
+		<address>
+			<email>djm@openssh.com</email>  
+			<uri>https://www.openssh.com/</uri>
+		</address>
+	</author>
+	<date year="2024" month="11" day="27" />
+	<area>General</area>
+	<workgroup>Internet Engineering Task Force</workgroup>
+	<keyword>ssh</keyword>
+	<keyword>certificate</keyword>
+	<abstract>
+		<t>
+		This document presents a simple certificate format that may
+		be used in the context of the Secure Shell (SSH) protocol for
+		user and host authentication.
+		</t>
+	</abstract>
+</front>
+
+<middle>
+<section><name>Introduction</name>
+	<t>
+	Secure Shell (SSH) is a protocol for secure remote
+	connections and login over untrusted networks.
+	SSH uses public key signatures for host authentication and
+	commonly uses them for user authentication.
+	This document describes a lightweight certificate format for use in
+	these contexts.
+	</t>
+	<t>
+	XXX
+	</t>
+	      
+	<section anchor="requirements"><name>Requirements Language</name>
+		<t>
+		The key words "MUST", "MUST NOT", "REQUIRED", "SHALL",
+	        "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT
+	        RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be
+	        interpreted as described in BCP 14 <xref target="RFC2119"/>
+	        <xref target="RFC8174"/> when, and only when, they appear in
+	        all capitals, as shown here.
+		</t>
+	</section>
+</section>
+    
+<section><name>Format Overview</name>
+	<t>
+	XXX
+	</t>
+</section>
+    
+<section><name>Certificate Format</name>
+	<t>
+	All values in a certificate are encoded using the SSH wire
+	representations specified by <xref target="RFC4251" />.
+	XXX
+	</t>
+	<section><name>Public certificate format</name>
+		<section><name>General structure and common fields</name>
+			<t>
+			Certificates have the following general structure:
+			</t>
+			<sourcecode>
+    string              key type   
+    string              nonce 
+    byte[]              public key fields
+    uint64              serial number
+    uint32              certificate role
+    string              identifier
+    string              principals
+    uint64              valid after
+    uint64              valid before
+    string              critical options
+    string              extensions
+    string              reserved
+    string              signature key
+    string              signature
+			</sourcecode>
+			<t>
+			The "key type" string identifies the certificate type,
+			e.g. "ssh-ed25519-cert-v01" identifies an ED25519
+			certificate. 
+			</t>
+			<t>
+			The "nonce" field contains a random nonce. This value
+			MUST be at least 16 bytes in length.
+			</t>
+			<t>
+			The "public key fields" section contains the actual
+			public key material. These are specified below for
+			each certificate type.
+			</t>
+			<t>
+			The "certificate role" field indicates the role of the
+			certificate, either SSH2_CERT_TYPE_USER for user
+			authentication certificates or SSH2_CERT_TYPE_HOST
+			authentication certificates.
+			</t>
+			<t>
+			The "identifier" field contains a UTF-8 encoded,
+			human-readable identifier for the certificate,
+			suitable for display to the user, recording in logs,
+			etc.
+			</t>
+			<t>
+			The "principals" field contains one or more UTF-8
+			encoded names, separated by commas. These
+			names identify the principals the certificate is
+			intended to authenticate. In the case of user
+			certificates, these will typically be user names,
+			whereas for host certificates they will be host names
+			or numerical addresses.
+			</t>
+			<t>
+			The "valid after" and "valid before" field represent
+			a validity interval for the certificate with each
+			field being interpreted as a number of seconds since
+			the Unix epoch (00:00:00 UTC on 1 January 1970) except
+			for two special values. A zero value in the
+			"valid after" field indicates that the certificate
+			is valid from any time to the "valid after" date.
+			A all-1s (i.e. 0xFFFFFFFFFFFFFFFF) value in the
+			"valid after" field indicates that the certificate has
+			no end expiry date.
+			</t>
+			<t>
+			The "critical options" field contains zero or more
+			certificate options, encoded as described in the XXX
+			section below. If an implementation does not recognise
+			or support a particular option contained in a
+			certificate, then it MUST refuse to accept the
+			certificate for authentication.
+			</t>
+			<t>
+			The "extensions" field similarly contains zero or more
+			certificate extensions, encoded as described in the XXX
+			section below. An implementation that does not recognise
+			an extension present in a certificate MUST ignore the
+			extension.
+			</t>
+			<t>
+			The "reserved" field is reserved for future use.
+			Implementations MUST ignore the contents of this field
+			if it is non-zero.
+			</t>
+			<t>
+			The "signature key" field contains the CA key used to
+			sign the certificate, encoded as a public key blob.
+			Implementations SHOULD NOT accept certificate keys
+			as CA keys.
+			</t>
+			<t>
+			The "signature" field contains a signature, made using
+			the CA signature key over the entire certificate
+			excluding the "signature" field itself (i.e. everything
+			from the "key type" up to and including the
+			"signature key").
+			The signature is encoded using the standard SSH
+			signature encoding (e.g. as defined by section 3.1.2 of
+			<xref target="RFC5656" /> for ECDSA CA keys).
+			</t>
+		</section>
+		<section><name>DSA certificates</name>
+			<t>
+			DSA certificates are rep
+			DSA keys have key type "ssh-dss" and are
+			defined in <xref target="RFC4253" />. They
+			may be added to the agent using the following
+			message. The "constraints" field is only
+			present for the SSH_AGENTC_ADD_ID_CONSTRAINED
+			message.
+			</t>
+			<sourcecode>
+    byte             SSH_AGENTC_ADD_IDENTITY or
+                     SSH_AGENTC_ADD_ID_CONSTRAINED
+    string           "ssh-dss"
+    mpint            p
+    mpint            q
+    mpint            g
+    mpint            y
+    mpint            x
+    string           comment
+    constraint[]     constraints
+			</sourcecode>
+			<t>
+			The "p", "q", "g" values are the DSA domain
+			parameters. "y" and "x" are the public and
+			private keys respectively. These values are
+			as defined by Section 4.1 of
+			<xref target="FIPS.186-4"/>.
+			</t>
+		</section>
+		<section><name>ECDSA certificates</name>
+			<t>
+			ECDSA keys have key types starting with
+			"ecdsa-sha2-" and are defined in
+			<xref target="RFC5656" />. They
+			may be added to the agent using the
+			following message.
+			The "constraints" field is only present for
+			the SSH_AGENTC_ADD_ID_CONSTRAINED message.
+			</t>
+			<sourcecode>
+    byte             SSH_AGENTC_ADD_IDENTITY or
+                     SSH_AGENTC_ADD_ID_CONSTRAINED
+    string           key type
+    string           ecdsa_curve_name
+    string           Q
+    mpint            d
+    string           comment
+    constraint[]     constraints
+			</sourcecode>
+			<t>
+			The values "Q" and "d" are the ECDSA public and
+			private values respectively. Both are defined
+			by Section 6.2 of <xref target="FIPS.186-5"/>.
+			</t>
+		</section>
+		<section><name>EDDSA certificates</name>
+			<t>
+			<xref target="RFC8709" /> defines Ed25519 and
+			Ed448 with key type names "ssh-ed25519" and
+			"ssh-ed448" respectively.
+			These may be added to the agent using the
+			following message. The "key constraints"
+			field is only present for
+			the SSH_AGENTC_ADD_ID_CONSTRAINED message.
+			</t>
+			<sourcecode>
+    byte             SSH_AGENTC_ADD_IDENTITY or
+                     SSH_AGENTC_ADD_ID_CONSTRAINED
+    string           "ssh-ed25519" or "ssh-ed448"
+    string           ENC(A)
+    string           k || ENC(A)
+    string           comment
+    constraint[]     constraints
+			</sourcecode>
+			<t>
+			The first value is the EDDSA public key
+			ENC(A).
+			The second value is a concatenation of
+			the private key k
+			and the public
+			ENC(A) key.
+			The contents and interpretation of the
+			ENC(A)
+			and k values are
+			defined by <xref target="RFC8032" section="3.2"/>.
+			</t>
+		</section>
+		<section><name>RSA certificates</name>
+			<t>
+			RSA keys have key type "ssh-rsa" and are
+			defined in <xref target="RFC4253" />. They
+			may be added to the agent using the following
+			message. The "key constraints" field is only
+			present for the
+			SSH_AGENTC_ADD_ID_CONSTRAINED message.
+			</t>
+			<sourcecode>
+    byte             SSH_AGENTC_ADD_IDENTITY or
+                     SSH_AGENTC_ADD_ID_CONSTRAINED
+    string           "ssh-rsa"
+    mpint            n
+    mpint            e
+    mpint            d
+    mpint            iqmp
+    mpint            p
+    mpint            q
+    string           comment
+    constraint[]     constraints
+			</sourcecode>
+			<t>
+			"n" is the public composite modulus.
+			"p" and "q" are its constituent private
+			prime factors. "e" is the public exponent.
+			"iqmp" is the inverse of "q" modulo
+			"p". All these values except "iqmp"
+			(which can be calculated from the others)
+			are defined by Section 5.1 of
+			<xref target="FIPS.186-4" />.
+			</t>
+		</section>
+		<section><name>Other certificate formats</name>
+			<t>
+			XXX and their clients MAY support additional key
+			types not documented here. Vendor-specific key types
+			should use the domain-qualified naming convention
+			defined in <xref target="RFC4251" section="4.2" />.
+			</t>
+		</section>
+	</section>
+	<section><name>Certificate extensions</name>
+		<t>
+		XXX
+		</t>
+	</section>
+	<section><name>Critical options</name>
+		<t>
+		XXX
+		</t>
+	</section>
+	<section><name>Private certificate format</name>
+		<t>
+		XXX
+		</t>
+	</section>
+</section>
+
+<section anchor="xxx"><name>XXX</name>
+	<t>
+	XXX
+	</t>
+</section>
+
+<section anchor="IANA"><name>IANA Considerations</name>
+	<t>
+	XXX
+	</t>
+	<section title="Additions to SSH Extension Names">
+		<t>
+		IANA is requested to insert the following entries into the
+		table Extension Names <xref target="IANA-SSH-EXT" /> under
+		Secure Shell (SSH) Protocol Parameters
+		<xref target="RFC4250" />.
+		</t>
+		<table>
+		<thead>
+		<tr><th>Extension Name</th><th>Reference</th></tr>
+		</thead>
+		<tbody>
+		<tr><td>XXX</td><td><xref target="xxx" /></td></tr>
+		</tbody>
+		</table>
+	</section>
+</section>
+
+<section anchor="Security"><name>Security Considerations</name>
+	<t>
+	XXX
+	</t>
+</section>
+<section anchor="implstatus"><name>Implementation Status</name>
+	<t>
+	This section records the status of known implementations of the
+	protocol defined by this specification at the time of posting of
+	this Internet-Draft, and is based on a proposal described in
+	<xref target="RFC7942" />. The description of implementations in
+	this section is intended to assist the IETF in its decision processes
+	in progressing drafts to RFCs. Please note that the listing of any
+	individual implementation here does not imply endorsement by the
+	IETF. Furthermore, no effort has been spent to verify the
+	information presented here that was supplied by IETF contributors.
+	This is not intended as, and must not be construed to be, a
+	catalog of available implementations or their features. Readers
+	are advised to note that other implementations may exist.
+	</t>
+	<t>
+	According to <xref target="RFC7942" />, "this will allow reviewers
+	and working groups to assign due consideration to documents that
+	have the benefit of running code, which may serve as evidence of
+	valuable experimentation and feedback that have made the implemented
+	protocols more mature. It is up to the individual working groups
+	to use this information as they see fit".
+	</t>
+	<t>
+	The following example projects maintain an implementation of this
+	protocol:
+	</t>
+	<dl>
+		<dt>OpenSSH</dt>
+		<dd>
+		<t>
+		OpenSSH is the originating implementation of this protocol and
+		has supported it since 2010.
+		</t>
+		<t>
+		Website: https://www.openssh.com/
+		</t>
+		</dd>
+
+		<dt>PuTTY</dt>
+		<dd>
+		<t>
+		XXX
+		</t>
+		<t>
+		Website: https://www.chiark.greenend.org.uk/~sgtatham/putty/
+		</t>
+		</dd>
+
+		<dt>Dropbear</dt>
+		<dd>
+		<t>
+		XXX
+		</t>
+		<t>
+		Website: https://matt.ucc.asn.au/dropbear/dropbear.html
+		</t>
+		</dd>
+
+		<dt>Paramiko</dt>
+		<dd>
+		<t>
+		XXX
+		</t>
+		<t>
+		Website: https://matt.ucc.asn.au/dropbear/dropbear.html
+		</t>
+		</dd>
+
+		<dt>Golang x/crypto/ssh/agent</dt>
+		<dd>
+		<t>
+		The Go programming language project has supported an
+		implementation of XXX in its external "x" repository
+		since XXX.
+		</t>
+		<t>
+		Website: https://pkg.go.dev/golang.org/x/crypto/ssh/agent
+		</t>
+		</dd>
+	</dl>
+	<t>
+		This list is not exhaustive.
+	</t>
+</section>
+</middle>
+
+<back>
+<references>
+	<name>References</name>
+	<references><name>Normative References</name>
+		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.2119.xml" />
+		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.4250.xml" />
+		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.4251.xml" />
+		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.4253.xml" />
+		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.4254.xml" />
+		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.5656.xml" />
+		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.7942.xml" />
+		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8032.xml" />
+		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8126.xml" />
+		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8174.xml" />
+		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8308.xml" />
+		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8332.xml" />
+		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8709.xml" />
+		<reference anchor="FIPS.186-4">
+			<front>
+				<title>Digital Signature Standard (DSS)</title>
+				<author>
+					<organization>
+						National Institute of
+						Standards and Technology
+					</organization>
+				</author>
+				<date month="July" year="2013" />
+			</front>
+			<refcontent>FIPS PUB 186-4</refcontent>
+			<seriesInfo name="DOI" value="10.6028/NIST.FIPS.186-4"/>
+		</reference>
+		<reference anchor="FIPS.186-5">
+			<front>
+				<title>Digital Signature Standard (DSS)</title>
+				<author>
+					<organization>
+						National Institute of
+						Standards and Technology
+					</organization>
+				</author>
+				<date month="February" year="2023" />
+			</front>
+			<refcontent>FIPS PUB 186-5</refcontent>
+			<seriesInfo name="DOI" value="10.6028/NIST.FIPS.186-5"/>
+		</reference>
+	</references>
+
+	<references><name>Informative References</name>
+			<reference anchor="IANA-SSH-CHANREQ" target="https://www.iana.org/assignments/ssh-parameters/"><front>
+			<title>Connection Protocol Channel Types</title>
+			<author>
+				<organization>IANA</organization>
+			</author>
+		</front></reference>       
+			<reference anchor="IANA-SSH-CHANTYPE" target="https://www.iana.org/assignments/ssh-parameters/"><front>
+			<title>Extension Names</title>
+			<author>
+				<organization>IANA</organization>
+			</author>
+		</front></reference>       
+			<reference anchor="IANA-SSH-EXT" target="https://www.iana.org/assignments/ssh-parameters/"><front>
+			<title>Connection Protocol Channel Request Names</title>
+			<author>
+				<organization>IANA</organization>
+			</author>
+		</front></reference>       
+		<!-- XXX bibtex gives me xml2rfc errors -->
+		<!-- <xi:include href="https://datatracker.ietf.org/doc/bibxml3/draft-ietf-secsh-agent-02.xml" /> -->
+		<reference anchor="draft-ietf-secsh-agent-02" target="https://datatracker.ietf.org/doc/html/draft-ietf-secsh-agent-02"><front>
+			<title>Secure Shell Authentication Agent Protocol</title>
+			<author surname="Ylonen" fullname="Tatu Ylonen" />
+			<author surname="Rinne" fullname="Timo J. Rinne" />
+			<author surname="Lehtinen" fullname="Sami Lehtinen" />
+			<date year="2004" month="January"/>
+			<abstract>
+				<t>
+				This document describes the Secure Shell
+				authentication agent protocol (i.e., the
+				protocol used between a client requesting
+				authentication and the authentication agent).
+				This protocol usually runs in a machine-spe-
+				cific local channel or over a forwarded
+				authentication channel.  It is assumed that
+				the channel is trusted, so no protection for
+				the communica- tions channel is provided by
+				this protocol.
+				</t>
+			</abstract>
+		</front></reference>
+	</references>
+</references>
+
+<!--   
+<section><name>Appendix 1</name>
+	<t>
+	This becomes an Appendix
+	</t>
+</section>
+-->
+
+<section anchor="Acknowledgements" numbered="false"><name>Acknowledgements</name>
+	<t>
+	XXX
+	</t>
+</section>
+
+
+<!--
+<section anchor="Contributors" numbered="false"><name>Contributors</name>
+	<t>Thanks to all of the contributors.</t>
+	<contact fullname="Jane Doe" initials="J" surname="Doe">
+	<organization>Acme</organization>
+	<address>
+	<email>jdoe@example.com</email>
+	</address>
+	</contact>
+</section>
+-->
+
+</back>
+</rfc>
