@@ -4,12 +4,12 @@
 
 Internet Engineering Task Force                                D. Miller
 Internet-Draft                                                   OpenSSH
-Intended status: Informational                           8 November 2024
-Expires: 12 May 2025
+Intended status: Informational                          28 November 2024
+Expires: 1 June 2025
 
 
                            SSH Agent Protocol
-                      draft-ietf-sshm-ssh-agent-00
+                      draft-ietf-sshm-ssh-agent-01
 
 Abstract
 
@@ -31,7 +31,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 12 May 2025.
+   This Internet-Draft will expire on 1 June 2025.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Miller                     Expires 12 May 2025                  [Page 1]
+Miller                     Expires 1 June 2025                  [Page 1]
 
 Internet-Draft             SSH Agent Protocol              November 2024
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Miller                     Expires 12 May 2025                  [Page 2]
+Miller                     Expires 1 June 2025                  [Page 2]
 
 Internet-Draft             SSH Agent Protocol              November 2024
 
@@ -165,7 +165,7 @@ Internet-Draft             SSH Agent Protocol              November 2024
 
 
 
-Miller                     Expires 12 May 2025                  [Page 3]
+Miller                     Expires 1 June 2025                  [Page 3]
 
 Internet-Draft             SSH Agent Protocol              November 2024
 
@@ -221,7 +221,7 @@ Internet-Draft             SSH Agent Protocol              November 2024
 
 
 
-Miller                     Expires 12 May 2025                  [Page 4]
+Miller                     Expires 1 June 2025                  [Page 4]
 
 Internet-Draft             SSH Agent Protocol              November 2024
 
@@ -277,7 +277,7 @@ Internet-Draft             SSH Agent Protocol              November 2024
 
 
 
-Miller                     Expires 12 May 2025                  [Page 5]
+Miller                     Expires 1 June 2025                  [Page 5]
 
 Internet-Draft             SSH Agent Protocol              November 2024
 
@@ -333,7 +333,7 @@ Internet-Draft             SSH Agent Protocol              November 2024
 
 
 
-Miller                     Expires 12 May 2025                  [Page 6]
+Miller                     Expires 1 June 2025                  [Page 6]
 
 Internet-Draft             SSH Agent Protocol              November 2024
 
@@ -389,7 +389,7 @@ Internet-Draft             SSH Agent Protocol              November 2024
 
 
 
-Miller                     Expires 12 May 2025                  [Page 7]
+Miller                     Expires 1 June 2025                  [Page 7]
 
 Internet-Draft             SSH Agent Protocol              November 2024
 
@@ -445,7 +445,7 @@ Internet-Draft             SSH Agent Protocol              November 2024
 
 
 
-Miller                     Expires 12 May 2025                  [Page 8]
+Miller                     Expires 1 June 2025                  [Page 8]
 
 Internet-Draft             SSH Agent Protocol              November 2024
 
@@ -501,7 +501,7 @@ Internet-Draft             SSH Agent Protocol              November 2024
 
 
 
-Miller                     Expires 12 May 2025                  [Page 9]
+Miller                     Expires 1 June 2025                  [Page 9]
 
 Internet-Draft             SSH Agent Protocol              November 2024
 
@@ -557,7 +557,7 @@ Internet-Draft             SSH Agent Protocol              November 2024
 
 
 
-Miller                     Expires 12 May 2025                 [Page 10]
+Miller                     Expires 1 June 2025                 [Page 10]
 
 Internet-Draft             SSH Agent Protocol              November 2024
 
@@ -613,7 +613,7 @@ Internet-Draft             SSH Agent Protocol              November 2024
 
 
 
-Miller                     Expires 12 May 2025                 [Page 11]
+Miller                     Expires 1 June 2025                 [Page 11]
 
 Internet-Draft             SSH Agent Protocol              November 2024
 
@@ -669,7 +669,7 @@ Internet-Draft             SSH Agent Protocol              November 2024
 
 
 
-Miller                     Expires 12 May 2025                 [Page 12]
+Miller                     Expires 1 June 2025                 [Page 12]
 
 Internet-Draft             SSH Agent Protocol              November 2024
 
@@ -725,7 +725,7 @@ Internet-Draft             SSH Agent Protocol              November 2024
 
 
 
-Miller                     Expires 12 May 2025                 [Page 13]
+Miller                     Expires 1 June 2025                 [Page 13]
 
 Internet-Draft             SSH Agent Protocol              November 2024
 
@@ -781,7 +781,7 @@ Internet-Draft             SSH Agent Protocol              November 2024
 
 
 
-Miller                     Expires 12 May 2025                 [Page 14]
+Miller                     Expires 1 June 2025                 [Page 14]
 
 Internet-Draft             SSH Agent Protocol              November 2024
 
@@ -837,7 +837,7 @@ Internet-Draft             SSH Agent Protocol              November 2024
 
 
 
-Miller                     Expires 12 May 2025                 [Page 15]
+Miller                     Expires 1 June 2025                 [Page 15]
 
 Internet-Draft             SSH Agent Protocol              November 2024
 
@@ -893,7 +893,7 @@ Internet-Draft             SSH Agent Protocol              November 2024
 
 
 
-Miller                     Expires 12 May 2025                 [Page 16]
+Miller                     Expires 1 June 2025                 [Page 16]
 
 Internet-Draft             SSH Agent Protocol              November 2024
 
@@ -949,7 +949,7 @@ Internet-Draft             SSH Agent Protocol              November 2024
 
 
 
-Miller                     Expires 12 May 2025                 [Page 17]
+Miller                     Expires 1 June 2025                 [Page 17]
 
 Internet-Draft             SSH Agent Protocol              November 2024
 
@@ -1005,7 +1005,7 @@ Internet-Draft             SSH Agent Protocol              November 2024
 
 
 
-Miller                     Expires 12 May 2025                 [Page 18]
+Miller                     Expires 1 June 2025                 [Page 18]
 
 Internet-Draft             SSH Agent Protocol              November 2024
 
@@ -1061,7 +1061,7 @@ Internet-Draft             SSH Agent Protocol              November 2024
 
 
 
-Miller                     Expires 12 May 2025                 [Page 19]
+Miller                     Expires 1 June 2025                 [Page 19]
 
 Internet-Draft             SSH Agent Protocol              November 2024
 
@@ -1117,7 +1117,7 @@ Internet-Draft             SSH Agent Protocol              November 2024
 
 
 
-Miller                     Expires 12 May 2025                 [Page 20]
+Miller                     Expires 1 June 2025                 [Page 20]
 
 Internet-Draft             SSH Agent Protocol              November 2024
 
@@ -1173,7 +1173,7 @@ Internet-Draft             SSH Agent Protocol              November 2024
 
 
 
-Miller                     Expires 12 May 2025                 [Page 21]
+Miller                     Expires 1 June 2025                 [Page 21]
 
 Internet-Draft             SSH Agent Protocol              November 2024
 
@@ -1229,7 +1229,7 @@ Internet-Draft             SSH Agent Protocol              November 2024
 
 
 
-Miller                     Expires 12 May 2025                 [Page 22]
+Miller                     Expires 1 June 2025                 [Page 22]
 
 Internet-Draft             SSH Agent Protocol              November 2024
 
@@ -1249,13 +1249,7 @@ Internet-Draft             SSH Agent Protocol              November 2024
       Python programming language.  It has supported an agent protocol
       implementation since 2005.
 
-      Website: https://matt.ucc.asn.au/dropbear/dropbear.html
-
-   Paramiko  Paramiko is a SSH client and server implementation in the
-      Python programming language.  It has supported an agent protocol
-      implementation since 2005.
-
-      Website: https://matt.ucc.asn.au/dropbear/dropbear.html
+      Website: https://www.paramiko.org/
 
    Golang x/crypto/ssh/agent  The Go programming language project has
       supported an implementation of this protocol in its external "x"
@@ -1283,16 +1277,18 @@ Internet-Draft             SSH Agent Protocol              November 2024
               Protocol Architecture", RFC 4251, DOI 10.17487/RFC4251,
               January 2006, <https://www.rfc-editor.org/info/rfc4251>.
 
-
-
-Miller                     Expires 12 May 2025                 [Page 23]
-
-Internet-Draft             SSH Agent Protocol              November 2024
-
-
    [RFC4253]  Ylonen, T. and C. Lonvick, Ed., "The Secure Shell (SSH)
               Transport Layer Protocol", RFC 4253, DOI 10.17487/RFC4253,
               January 2006, <https://www.rfc-editor.org/info/rfc4253>.
+
+
+
+
+
+Miller                     Expires 1 June 2025                 [Page 23]
+
+Internet-Draft             SSH Agent Protocol              November 2024
+
 
    [RFC4254]  Ylonen, T. and C. Lonvick, Ed., "The Secure Shell (SSH)
               Connection Protocol", RFC 4254, DOI 10.17487/RFC4254,
@@ -1336,21 +1332,19 @@ Internet-Draft             SSH Agent Protocol              November 2024
               RFC 8709, DOI 10.17487/RFC8709, February 2020,
               <https://www.rfc-editor.org/info/rfc8709>.
 
-
-
-
-
-
-Miller                     Expires 12 May 2025                 [Page 24]
-
-Internet-Draft             SSH Agent Protocol              November 2024
-
-
    [FIPS.186-4]
               National Institute of Standards and Technology, "Digital
               Signature Standard (DSS)", FIPS PUB 186-4,
               DOI 10.6028/NIST.FIPS.186-4, July 2013,
               <https://doi.org/10.6028/NIST.FIPS.186-4>.
+
+
+
+
+Miller                     Expires 1 June 2025                 [Page 24]
+
+Internet-Draft             SSH Agent Protocol              November 2024
+
 
    [FIPS.186-5]
               National Institute of Standards and Technology, "Digital
@@ -1397,4 +1391,10 @@ Author's Address
 
 
 
-Miller                     Expires 12 May 2025                 [Page 25]
+
+
+
+
+
+
+Miller                     Expires 1 June 2025                 [Page 25]

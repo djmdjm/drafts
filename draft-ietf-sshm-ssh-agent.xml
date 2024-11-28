@@ -10,7 +10,7 @@
 <rfc
   xmlns:xi="http://www.w3.org/2001/XInclude"
   category="info"
-  docName="draft-ietf-sshm-ssh-agent-00"
+  docName="draft-ietf-sshm-ssh-agent-01"
   ipr="trust200902"
   obsoletes=""
   updates=""
@@ -27,7 +27,7 @@
 
 <front>
 	<title>SSH Agent Protocol</title>
-	<seriesInfo name="Internet-Draft" value="draft-ietf-sshm-ssh-agent-00"/>
+	<seriesInfo name="Internet-Draft" value="draft-ietf-sshm-ssh-agent-01"/>
 	<author fullname="Damien Miller" initials="D." surname="Miller">
 		<organization>OpenSSH</organization>
 		<address>
@@ -35,7 +35,7 @@
 			<uri>https://www.openssh.com/</uri>
 		</address>
 	</author>
-	<date year="2024" month="11" day="8" />
+	<date year="2024" month="11" day="28" />
 	<area>General</area>
 	<workgroup>Internet Engineering Task Force</workgroup>
 	<keyword>ssh</keyword>
@@ -1215,19 +1215,7 @@
 		implementation since 2005.
 		</t>
 		<t>
-		Website: https://matt.ucc.asn.au/dropbear/dropbear.html
-		</t>
-		</dd>
-
-		<dt>Paramiko</dt>
-		<dd>
-		<t>
-		Paramiko is a SSH client and server implementation in the
-		Python programming language. It has supported an agent protocol
-		implementation since 2005.
-		</t>
-		<t>
-		Website: https://matt.ucc.asn.au/dropbear/dropbear.html
+		Website: https://www.paramiko.org/
 		</t>
 		</dd>
 
