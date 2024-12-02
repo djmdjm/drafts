@@ -104,7 +104,7 @@ Table of Contents
    9.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  23
      9.1.  Normative References  . . . . . . . . . . . . . . . . . .  23
      9.2.  Informative References  . . . . . . . . . . . . . . . . .  25
-   Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .  25
+   Acknowledgments . . . . . . . . . . . . . . . . . . . . . . . . .  25
    Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .  25
 
 
@@ -151,7 +151,7 @@ Internet-Draft             SSH Agent Protocol              November 2024
    response to a client request.  Replies are sent in order.
 
    Agents MAY implement support for only a subset of operations or
-   available key types, and MAY additionally refuse abitrary operations
+   available key types, and MAY additionally refuse arbitrary operations
    in particular contexts.  For example, an agent may allow only local
    clients of an agent to add or remove keys, or make particular subsets
    of keys available to a given client.  For this reason, clients of the
@@ -706,7 +706,7 @@ Internet-Draft             SSH Agent Protocol              November 2024
    [RFC8308] extension mechanism and several widely-deployed SSH
    implementations that support agent forwarding do not advertise their
    ability to do so.  Clients MAY opportunistically attempt to request
-   agent forwarding in the absence of an [RFC8308] advertisment using
+   agent forwarding in the absence of an [RFC8308] advertisement using
    the vendor-specific names mentioned below.  Likewise, servers MAY
    implement the vendor-specific names in addition to the one described
    here.
@@ -1194,7 +1194,7 @@ Internet-Draft             SSH Agent Protocol              November 2024
    smartcard provider libraries are loadable, SHOULD ensure that loaded
    smartcard library code cannot gain access to other keys loaded in the
    agent and MAY disallow remote clients from loading smartcard keys
-   entriely.
+   entirely.
 
 8.  Implementation Status
 
@@ -1234,7 +1234,7 @@ Miller                     Expires 1 June 2025                 [Page 22]
 Internet-Draft             SSH Agent Protocol              November 2024
 
 
-   PuTTY  PuTTY is a popular SSH client implementation for mutiple
+   PuTTY  PuTTY is a popular SSH client implementation for multiple
       platforms that has included a compatible agent client since 2001.
 
       Website: https://www.chiark.greenend.org.uk/~sgtatham/putty/
@@ -1372,7 +1372,7 @@ Internet-Draft             SSH Agent Protocol              November 2024
               <https://datatracker.ietf.org/doc/html/draft-ietf-secsh-
               agent-02>.
 
-Acknowledgements
+Acknowledgments
 
    This protocol was designed and first implemented by Markus Friedl,
    based on a similar protocol for an agent to support the legacy SSH

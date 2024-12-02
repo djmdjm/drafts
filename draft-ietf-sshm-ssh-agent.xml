@@ -100,7 +100,7 @@
 	</t>
 	<t>
 	Agents MAY implement support for only a subset of operations
-	or available key types, and MAY additionally refuse abitrary
+	or available key types, and MAY additionally refuse arbitrary
 	operations in particular contexts. For example, an agent may
 	allow only local clients of an agent to add or remove keys, or
 	make particular subsets of keys available to a given client.
@@ -739,7 +739,7 @@
 		several widely-deployed SSH implementations that support agent
 		forwarding do not advertise their ability to do so. Clients
 		MAY opportunistically attempt to request agent forwarding in
-		the absence of an <xref target="RFC8308" /> advertisment
+		the absence of an <xref target="RFC8308" /> advertisement
 		using the vendor-specific names mentioned below.
 		Likewise, servers MAY implement the vendor-specific names in
 		addition to the one described here.
@@ -1142,7 +1142,7 @@
 	via library path SHOULD ensure that only trusted smartcard provider
 	libraries are loadable, SHOULD ensure that loaded smartcard library code
 	cannot gain access to other keys loaded in the agent and MAY disallow
-	remote clients from loading smartcard keys entriely.
+	remote clients from loading smartcard keys entirely.
 	</t>
 </section>
 <section anchor="implstatus"><name>Implementation Status</name>
@@ -1187,7 +1187,7 @@
 		<dt>PuTTY</dt>
 		<dd>
 		<t>
-		PuTTY is a popular SSH client implementation for mutiple
+		PuTTY is a popular SSH client implementation for multiple
 		platforms that has included a compatible agent client since
 		2001.
 		</t>
@@ -1317,12 +1317,12 @@
 				authentication agent protocol (i.e., the
 				protocol used between a client requesting
 				authentication and the authentication agent).
-				This protocol usually runs in a machine-spe-
-				cific local channel or over a forwarded
-				authentication channel.  It is assumed that
-				the channel is trusted, so no protection for
-				the communica- tions channel is provided by
-				this protocol.
+				This protocol usually runs in a
+				machine-spe-cific local channel or over a
+				forwarded authentication channel. It is
+				assumed that the channel is trusted, so no
+				protection for the communications channel
+				is provided by this protocol.
 				</t>
 			</abstract>
 		</front></reference>
@@ -1337,7 +1337,7 @@
 </section>
 -->
 
-<section anchor="Acknowledgements" numbered="false"><name>Acknowledgements</name>
+<section anchor="Acknowledgments" numbered="false"><name>Acknowledgments</name>
 	<t>
 	This protocol was designed and first implemented by
 	Markus Friedl, based on a similar protocol for an agent
