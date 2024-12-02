@@ -9,11 +9,12 @@
 ]>
 <rfc
   xmlns:xi="http://www.w3.org/2001/XInclude"
-  category="info"
+  category="std"
   docName="draft-ietf-sshm-ssh-agent-01"
   ipr="trust200902"
   obsoletes=""
   updates=""
+  consensus="true"
   submissionType="IETF"
   xml:lang="en"
   version="3">
@@ -35,7 +36,7 @@
 			<uri>https://www.openssh.com/</uri>
 		</address>
 	</author>
-	<date year="2024" month="11" day="28" />
+	<date year="2024" month="12" day="01" />
 	<area>General</area>
 	<workgroup>Internet Engineering Task Force</workgroup>
 	<keyword>ssh</keyword>
