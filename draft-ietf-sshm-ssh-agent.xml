@@ -755,7 +755,7 @@
 		</t>
 		<sourcecode>
     byte             SSH_MSG_CHANNEL_REQUEST
-    string           channel_id
+    uint32           channel_id
     string           "agent-req" or "auth-agent-req@openssh.com"
     boolean          want_reply
 		</sourcecode>
