@@ -672,7 +672,7 @@
 		<t>
 		The contents of successful extension reply messages are
 		specific to the extension type.  Extension requests may return
-		SSH_AGENT_SUCCESS on success or the extension-specific
+		either SSH_AGENT_SUCCESS on success or an extension-specific
 		response message:
 		</t>
 		<sourcecode>
@@ -684,8 +684,14 @@
 		Where the extension type is the same as that in the request.
 		</t>
 		<t>
-		Extension failure SHOULD be signaled using the
-		SSH_AGENT_EXTENSION_FAILURE code - extensions SHOULD NOT use
+		Extension failure SHOULD be signaled using a
+		SSH_AGENT_EXTENSION_FAILURE message:
+		</t>
+		<sourcecode>
+    byte             SSH_AGENT_EXTENSION_FAILURE
+		</sourcecode>
+		<t>
+		Extensions SHOULD NOT use
 		the standard SSH_AGENT_FAILURE message. This allows failed
 		requests to be distinguished from the extension not being
 		supported.

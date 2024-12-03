@@ -80,19 +80,19 @@ Table of Contents
        3.6.1.  Signature flags . . . . . . . . . . . . . . . . . . .  11
      3.7.  Locking and unlocking an agent  . . . . . . . . . . . . .  11
      3.8.  Extension mechanism . . . . . . . . . . . . . . . . . . .  12
-       3.8.1.  Query extension . . . . . . . . . . . . . . . . . . .  12
+       3.8.1.  Query extension . . . . . . . . . . . . . . . . . . .  13
    4.  Forwarding access to an agent . . . . . . . . . . . . . . . .  13
      4.1.  Advertising agent forwarding support  . . . . . . . . . .  13
-     4.2.  Requesting agent forwarding . . . . . . . . . . . . . . .  13
+     4.2.  Requesting agent forwarding . . . . . . . . . . . . . . .  14
      4.3.  Agent connection requests . . . . . . . . . . . . . . . .  14
    5.  Protocol numbers  . . . . . . . . . . . . . . . . . . . . . .  15
      5.1.  Message numbers . . . . . . . . . . . . . . . . . . . . .  15
-       5.1.1.  Reserved message numbers  . . . . . . . . . . . . . .  15
+       5.1.1.  Reserved message numbers  . . . . . . . . . . . . . .  16
      5.2.  Constraint identifiers  . . . . . . . . . . . . . . . . .  16
      5.3.  Signature flags . . . . . . . . . . . . . . . . . . . . .  16
    6.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  16
      6.1.  New registry: SSH agent protocol numbers  . . . . . . . .  16
-     6.2.  New registry: SSH agent key constraint numbers  . . . . .  18
+     6.2.  New registry: SSH agent key constraint numbers  . . . . .  19
      6.3.  New registry: SSH agent signature flags . . . . . . . . .  19
      6.4.  New registry: SSH agent extension request names . . . . .  19
      6.5.  Additions to SSH Extension Names  . . . . . . . . . . . .  20
@@ -645,8 +645,9 @@ Internet-Draft             SSH Agent Protocol              December 2024
    sent by agents that do not support the extension mechanism at all.
 
    The contents of successful extension reply messages are specific to
-   the extension type.  Extension requests may return SSH_AGENT_SUCCESS
-   on success or the extension-specific response message:
+   the extension type.  Extension requests may return either
+   SSH_AGENT_SUCCESS on success or an extension-specific response
+   message:
 
        byte             SSH_AGENT_EXTENSION_RESPONSE
        string           extension type
@@ -654,10 +655,24 @@ Internet-Draft             SSH Agent Protocol              December 2024
 
    Where the extension type is the same as that in the request.
 
-   Extension failure SHOULD be signaled using the
-   SSH_AGENT_EXTENSION_FAILURE code - extensions SHOULD NOT use the
-   standard SSH_AGENT_FAILURE message.  This allows failed requests to
-   be distinguished from the extension not being supported.
+   Extension failure SHOULD be signaled using a
+   SSH_AGENT_EXTENSION_FAILURE message:
+
+       byte             SSH_AGENT_EXTENSION_FAILURE
+
+   Extensions SHOULD NOT use the standard SSH_AGENT_FAILURE message.
+   This allows failed requests to be distinguished from the extension
+   not being supported.
+
+
+
+
+
+
+Miller                     Expires 4 June 2025                 [Page 12]
+
+Internet-Draft             SSH Agent Protocol              December 2024
+
 
 3.8.1.  Query extension
 
@@ -666,13 +681,6 @@ Internet-Draft             SSH Agent Protocol              December 2024
 
        byte             SSH_AGENTC_EXTENSION
        string           "query"
-
-
-
-Miller                     Expires 4 June 2025                 [Page 12]
-
-Internet-Draft             SSH Agent Protocol              December 2024
-
 
    If an agent supports the query extension is SHOULD reply with a list
    of supported extension names.
@@ -711,6 +719,17 @@ Internet-Draft             SSH Agent Protocol              December 2024
    implement the vendor-specific names in addition to the one described
    here.
 
+
+
+
+
+
+
+Miller                     Expires 4 June 2025                 [Page 13]
+
+Internet-Draft             SSH Agent Protocol              December 2024
+
+
 4.2.  Requesting agent forwarding
 
    A client may request agent forwarding for a previously-opened session
@@ -722,13 +741,6 @@ Internet-Draft             SSH Agent Protocol              December 2024
        uint32           channel_id
        string           "agent-req" or "auth-agent-req@openssh.com"
        boolean          want_reply
-
-
-
-Miller                     Expires 4 June 2025                 [Page 13]
-
-Internet-Draft             SSH Agent Protocol              December 2024
-
 
    Where channel_id is the identifier for an established session channel
    (as returned from a previous SSH_MSG_CHANNEL_OPEN request, and the
@@ -767,6 +779,13 @@ Internet-Draft             SSH Agent Protocol              December 2024
    As above, the latter "agent-connect" open type name SHOULD only be
    used if support was explicitly advertised as per Section 4.1.
 
+
+
+Miller                     Expires 4 June 2025                 [Page 14]
+
+Internet-Draft             SSH Agent Protocol              December 2024
+
+
    A client SHOULD be prepared to handle multiple concurrent active
    agent connections.  A client MAY accept agent connection requests
    (subject to authorisation) without a prior agent forwarding request
@@ -778,13 +797,6 @@ Internet-Draft             SSH Agent Protocol              December 2024
    A client MUST refuse unauthorised agent connection requests, i.e.
    when agent forwarding was not desired or requested but a server sends
    an agent connection request anyway.
-
-
-
-Miller                     Expires 4 June 2025                 [Page 14]
-
-Internet-Draft             SSH Agent Protocol              December 2024
-
 
    Note the connection request provides no way to identify which session
    channel a given agent connection request relates to.  This implies
@@ -821,6 +833,15 @@ Internet-Draft             SSH Agent Protocol              December 2024
        SSH_AGENT_EXTENSION_FAILURE                     28
        SSH_AGENT_EXTENSION_RESPONSE                    29
 
+
+
+
+
+Miller                     Expires 4 June 2025                 [Page 15]
+
+Internet-Draft             SSH Agent Protocol              December 2024
+
+
 5.1.1.  Reserved message numbers
 
    The following message numbers are reserved for implementations that
@@ -832,15 +853,6 @@ Internet-Draft             SSH Agent Protocol              December 2024
    The range of message numbers 240-255 are reserved for organization-
    local extensions to the agent protocol and MUST NOT be used by
    generic implementations.
-
-
-
-
-
-Miller                     Expires 4 June 2025                 [Page 15]
-
-Internet-Draft             SSH Agent Protocol              December 2024
-
 
 5.2.  Constraint identifiers
 
@@ -876,6 +888,16 @@ Internet-Draft             SSH Agent Protocol              December 2024
    Future message number allocations shall occur via EXPERT REVIEW as
    per [RFC8126].
 
+
+
+
+
+
+Miller                     Expires 4 June 2025                 [Page 16]
+
+Internet-Draft             SSH Agent Protocol              December 2024
+
+
    +===========+==========================================+===========+
    | Number(s) | Identifier                               | Reference |
    +===========+==========================================+===========+
@@ -890,14 +912,6 @@ Internet-Draft             SSH Agent Protocol              December 2024
    +-----------+------------------------------------------+-----------+
    | 4         | reserved                                 | Section   |
    |           |                                          | 5.1.1     |
-
-
-
-Miller                     Expires 4 June 2025                 [Page 16]
-
-Internet-Draft             SSH Agent Protocol              December 2024
-
-
    +-----------+------------------------------------------+-----------+
    | 5         | SSH_AGENT_FAILURE                        | Section   |
    |           |                                          | 5.1       |
@@ -932,6 +946,14 @@ Internet-Draft             SSH Agent Protocol              December 2024
    | 15        | reserved                                 | Section   |
    |           |                                          | 5.1.1     |
    +-----------+------------------------------------------+-----------+
+
+
+
+Miller                     Expires 4 June 2025                 [Page 17]
+
+Internet-Draft             SSH Agent Protocol              December 2024
+
+
    | 16        | reserved                                 | Section   |
    |           |                                          | 5.1.1     |
    +-----------+------------------------------------------+-----------+
@@ -946,14 +968,6 @@ Internet-Draft             SSH Agent Protocol              December 2024
    +-----------+------------------------------------------+-----------+
    | 20        | SSH_AGENTC_ADD_SMARTCARD_KEY             | Section   |
    |           |                                          | 5.1       |
-
-
-
-Miller                     Expires 4 June 2025                 [Page 17]
-
-Internet-Draft             SSH Agent Protocol              December 2024
-
-
    +-----------+------------------------------------------+-----------+
    | 21        | SSH_AGENTC_REMOVE_SMARTCARD_KEY          | Section   |
    |           |                                          | 5.1       |
@@ -988,20 +1002,6 @@ Internet-Draft             SSH Agent Protocol              December 2024
 
                                  Table 1
 
-6.2.  New registry: SSH agent key constraint numbers
-
-   This registry, titled "SSH agent key constraint numbers" records the
-   message numbers for key use constraints.  Its initial state should
-   consist of the following numbers.  Future message number allocations
-   shall occur via EXPERT REVIEW as per [RFC8126].
-
-
-
-
-
-
-
-
 
 
 
@@ -1009,6 +1009,13 @@ Miller                     Expires 4 June 2025                 [Page 18]
 
 Internet-Draft             SSH Agent Protocol              December 2024
 
+
+6.2.  New registry: SSH agent key constraint numbers
+
+   This registry, titled "SSH agent key constraint numbers" records the
+   message numbers for key use constraints.  Its initial state should
+   consist of the following numbers.  Future message number allocations
+   shall occur via EXPERT REVIEW as per [RFC8126].
 
          +========+===============================+=============+
          | Number | Identifier                    | Reference   |
@@ -1052,19 +1059,15 @@ Internet-Draft             SSH Agent Protocol              December 2024
    (SSH_AGENTC_EXTENSION).  Its initial state should consist of the
    following names.
 
-   Future message number allocations shall occur via EXPERT REVIEW as
-   per [RFC8126].
-
-
-
-
-
 
 
 Miller                     Expires 4 June 2025                 [Page 19]
 
 Internet-Draft             SSH Agent Protocol              December 2024
 
+
+   Future message number allocations shall occur via EXPERT REVIEW as
+   per [RFC8126].
 
                     +================+===============+
                     | Extension Name | Reference     |
@@ -1107,9 +1110,6 @@ Internet-Draft             SSH Agent Protocol              December 2024
    IANA is requested to insert the following entries into the table
    Connection Protocol Channel Types [IANA-SSH-CHANTYPE] under Secure
    Shell (SSH) Protocol Parameters [RFC4250].
-
-
-
 
 
 
