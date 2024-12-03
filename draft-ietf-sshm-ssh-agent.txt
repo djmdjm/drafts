@@ -1097,7 +1097,7 @@ Internet-Draft             SSH Agent Protocol              December 2024
                      +================+=============+
                      | Extension Name | Reference   |
                      +================+=============+
-                     | agent-forward  | Section 4.2 |
+                     | agent-req      | Section 4.2 |
                      +----------------+-------------+
 
                                  Table 6
