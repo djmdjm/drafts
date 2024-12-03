@@ -1379,8 +1379,8 @@ Acknowledgments
    version 1 by Tatu Ylonen.
 
    Thanks to Simon Tatham, Niels Möller, James Spencer, Simon Josefsson,
-   Matt Johnston and Jakub Jelen who reviewed and helped improve this
-   document.
+   Matt Johnston, Jakub Jelen iand Niels Möller who reviewed and helped
+   improve this document.
 
 Author's Address
 
