@@ -143,6 +143,7 @@
    byte              SSH_AGENT_FAILURE
 		</sourcecode>
 		<t>
+		or a request-specific success message.
 		SSH_AGENT_FAILURE messages are also sent in reply to
 		requests with unknown types.
 		</t>
@@ -194,7 +195,7 @@
 		and their format.
 		</t>
 		<t>
-		An agent should reply with SSH_AGENT_SUCCESS
+		An agent MUST reply with SSH_AGENT_SUCCESS
 		if the key was successfully loaded
 		as a result of one of these messages, or
 		SSH_AGENT_FAILURE otherwise.
@@ -330,8 +331,9 @@
 			<t>
 			Agents and their clients MAY support additional key
 			types not documented here. Vendor-specific key types
-			should use the domain-qualified naming convention
-			defined in <xref target="RFC4251" section="4.2" />.
+			MUST use the domain-qualified naming convention
+			defined in <xref target="RFC4251" section="4.2" />
+			until code-points are allocated by IANA.
 			</t>
 		</section>
 		<section><name>Adding keys from a token</name>
@@ -369,11 +371,11 @@
 			delegated to the hardware token in question.
 			</t>
 			<t>
-			An agent should reply with SSH_AGENT_SUCCESS
+			An agent MUST reply with SSH_AGENT_SUCCESS
 			if one or more keys were successfully loaded
 			as a result of one of these messages, or
 			SSH_AGENT_FAILURE if no keys were found.
-			The agent should also return SSH_AGENT_FAILURE
+			The agent SHOULD also return SSH_AGENT_FAILURE
 			if the token "id" was not recognised or if
 			the agent doesn't support token-hosted keys
 			at all.
@@ -609,8 +611,8 @@
 	<section><name>Locking and unlocking an agent</name>
 		<t>
 		The agent protocol supports requesting that an agent
-		temporarily lock itself with a pass-phrase. When locked an
-		agent should suspend processing of sensitive operations
+		temporarily lock itself with a pass-phrase. When locked, an
+		agent MUST suspend processing of sensitive operations
 		(private key signature operations at the very least) until it
 		has been unlocked with the same pass-phrase.
 		</t>
@@ -635,9 +637,9 @@
 		</sourcecode>
 		<t>
 		If the agent is already locked and the pass-phrase matches the
-		one used to lock it then it should unlock and reply with
-		SSH_AGENT_SUCCESS. If the agent is unlocked or if the the
-		pass-phrase does not match it should reply with
+		one used to lock it then it MUST unlock and reply with
+		SSH_AGENT_SUCCESS. If the agent is already unlocked or if the
+		the pass-phrase does not match it MUST reply with
 		SSH_AGENT_FAILURE. An agent SHOULD take countermeasures
 		against brute-force guessing attacks against the pass-phrase.
 		</t>
@@ -656,7 +658,7 @@
 		</sourcecode>
 		<t>
 		The extension type indicates the type of the extension message
-		as a UTF-8 string.  Implementation-specific extensions should
+		as a UTF-8 string.  Implementation-specific extensions MUST
 		be suffixed by the implementation domain following the
 		extension naming scheme defined in
 		<xref target="RFC4251" section="4.2" />, e.g. "foo@example.com".
@@ -682,8 +684,8 @@
 		Where the extension type is the same as that in the request.
 		</t>
 		<t>
-		Extension failure should be signaled using the
-		SSH_AGENT_EXTENSION_FAILURE code - extensions should not use
+		Extension failure SHOULD be signaled using the
+		SSH_AGENT_EXTENSION_FAILURE code - extensions SHOULD NOT use
 		the standard SSH_AGENT_FAILURE message. This allows failed
 		requests to be distinguished from the extension not being
 		supported.
@@ -700,7 +702,7 @@
 		</sourcecode>
 			<t>
 			If an agent supports the query extension is
-			should reply with a list of supported extension names.
+			SHOULD reply with a list of supported extension names.
 			</t>
 			<sourcecode>
     byte             SSH_AGENT_EXTENSION_RESPONSE

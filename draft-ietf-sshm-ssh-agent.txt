@@ -193,8 +193,8 @@ Internet-Draft             SSH Agent Protocol              December 2024
 
       byte              SSH_AGENT_FAILURE
 
-   SSH_AGENT_FAILURE messages are also sent in reply to requests with
-   unknown types.
+   or a request-specific success message.  SSH_AGENT_FAILURE messages
+   are also sent in reply to requests with unknown types.
 
 3.2.  Adding keys to the agent
 
@@ -235,7 +235,7 @@ Internet-Draft             SSH Agent Protocol              December 2024
    Constraints are used to place limits on the validity or use of keys.
    Section 3.2.7 details constraint types and their format.
 
-   An agent should reply with SSH_AGENT_SUCCESS if the key was
+   An agent MUST reply with SSH_AGENT_SUCCESS if the key was
    successfully loaded as a result of one of these messages, or
    SSH_AGENT_FAILURE otherwise.
 
@@ -359,8 +359,9 @@ Internet-Draft             SSH Agent Protocol              December 2024
 3.2.5.  Other keys
 
    Agents and their clients MAY support additional key types not
-   documented here.  Vendor-specific key types should use the domain-
-   qualified naming convention defined in Section 4.2 of [RFC4251].
+   documented here.  Vendor-specific key types MUST use the domain-
+   qualified naming convention defined in Section 4.2 of [RFC4251] until
+   code-points are allocated by IANA.
 
 3.2.6.  Adding keys from a token
 
@@ -388,15 +389,14 @@ Internet-Draft             SSH Agent Protocol              December 2024
 
 
 
-
 Miller                     Expires 4 June 2025                  [Page 7]
 
 Internet-Draft             SSH Agent Protocol              December 2024
 
 
-   An agent should reply with SSH_AGENT_SUCCESS if one or more keys were
+   An agent MUST reply with SSH_AGENT_SUCCESS if one or more keys were
    successfully loaded as a result of one of these messages, or
-   SSH_AGENT_FAILURE if no keys were found.  The agent should also
+   SSH_AGENT_FAILURE if no keys were found.  The agent SHOULD also
    return SSH_AGENT_FAILURE if the token "id" was not recognised or if
    the agent doesn't support token-hosted keys at all.
 
@@ -589,7 +589,7 @@ Internet-Draft             SSH Agent Protocol              December 2024
 3.7.  Locking and unlocking an agent
 
    The agent protocol supports requesting that an agent temporarily lock
-   itself with a pass-phrase.  When locked an agent should suspend
+   itself with a pass-phrase.  When locked, an agent MUST suspend
    processing of sensitive operations (private key signature operations
    at the very least) until it has been unlocked with the same pass-
    phrase.
@@ -619,11 +619,11 @@ Internet-Draft             SSH Agent Protocol              December 2024
 
 
    If the agent is already locked and the pass-phrase matches the one
-   used to lock it then it should unlock and reply with
-   SSH_AGENT_SUCCESS.  If the agent is unlocked or if the the pass-
-   phrase does not match it should reply with SSH_AGENT_FAILURE.  An
-   agent SHOULD take countermeasures against brute-force guessing
-   attacks against the pass-phrase.
+   used to lock it then it MUST unlock and reply with SSH_AGENT_SUCCESS.
+   If the agent is already unlocked or if the the pass-phrase does not
+   match it MUST reply with SSH_AGENT_FAILURE.  An agent SHOULD take
+   countermeasures against brute-force guessing attacks against the
+   pass-phrase.
 
 3.8.  Extension mechanism
 
@@ -636,8 +636,8 @@ Internet-Draft             SSH Agent Protocol              December 2024
        byte[]           extension request-specific contents
 
    The extension type indicates the type of the extension message as a
-   UTF-8 string.  Implementation-specific extensions should be suffixed
-   by the implementation domain following the extension naming scheme
+   UTF-8 string.  Implementation-specific extensions MUST be suffixed by
+   the implementation domain following the extension naming scheme
    defined in Section 4.2 of [RFC4251], e.g. "foo@example.com".
 
    An agent that does not support extensions of the supplied type MUST
@@ -654,8 +654,8 @@ Internet-Draft             SSH Agent Protocol              December 2024
 
    Where the extension type is the same as that in the request.
 
-   Extension failure should be signaled using the
-   SSH_AGENT_EXTENSION_FAILURE code - extensions should not use the
+   Extension failure SHOULD be signaled using the
+   SSH_AGENT_EXTENSION_FAILURE code - extensions SHOULD NOT use the
    standard SSH_AGENT_FAILURE message.  This allows failed requests to
    be distinguished from the extension not being supported.
 
@@ -674,7 +674,7 @@ Miller                     Expires 4 June 2025                 [Page 12]
 Internet-Draft             SSH Agent Protocol              December 2024
 
 
-   If an agent supports the query extension is should reply with a list
+   If an agent supports the query extension is SHOULD reply with a list
    of supported extension names.
 
        byte             SSH_AGENT_EXTENSION_RESPONSE
