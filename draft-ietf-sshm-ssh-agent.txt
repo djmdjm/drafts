@@ -507,9 +507,9 @@ Internet-Draft             SSH Agent Protocol              December 2024
 
 
    Where "reader id" is an opaque identifier for the smartcard reader
-   and "PIN" is an optional password or PIN (not typically used).
-   Requesting deletion of smartcard-hosted keys SHOULD cause the agent
-   to remove all keys loaded from that smartcard.
+   and "PIN" is an optional password or PIN (not typically used), both
+   encoded using UTF-8.  Requesting deletion of smartcard-hosted keys
+   SHOULD cause the agent to remove all keys loaded from that smartcard.
 
    An agent shall reply with SSH_AGENT_SUCCESS if the key was deleted or
    SSH_AGENT_FAILURE if it was not found.
@@ -719,7 +719,7 @@ Internet-Draft             SSH Agent Protocol              December 2024
    shell, command or subsystem has been executed.
 
        byte             SSH_MSG_CHANNEL_REQUEST
-       string           channel_id
+       uint32           channel_id
        string           "agent-req" or "auth-agent-req@openssh.com"
        boolean          want_reply
 

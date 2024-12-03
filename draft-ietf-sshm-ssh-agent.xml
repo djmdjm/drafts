@@ -511,7 +511,8 @@
 		<t>
 		Where "reader id" is an opaque identifier for the smartcard
 		reader and "PIN" is an optional password or PIN (not typically
-		used).  Requesting deletion of smartcard-hosted keys SHOULD
+		used), both encoded using UTF-8.
+		Requesting deletion of smartcard-hosted keys SHOULD
 		cause the agent to remove all keys loaded from that smartcard.
 		</t>
 		<t>
