@@ -506,10 +506,10 @@ Miller                     Expires 4 June 2025                  [Page 9]
 Internet-Draft             SSH Agent Protocol              December 2024
 
 
-   Where "reader id" is an opaque identifier for the smartcard reader
-   and "PIN" is an optional password or PIN (not typically used), both
-   encoded using UTF-8.  Requesting deletion of smartcard-hosted keys
-   SHOULD cause the agent to remove all keys loaded from that smartcard.
+   Where "id" is an opaque identifier for the hardware token and "PIN"
+   is an optional password or PIN (not typically used), both encoded
+   using UTF-8.  Requesting deletion of smartcard-hosted keys SHOULD
+   cause the agent to remove all keys loaded from that smartcard.
 
    An agent shall reply with SSH_AGENT_SUCCESS if the key was deleted or
    SSH_AGENT_FAILURE if it was not found.
