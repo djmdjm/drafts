@@ -707,7 +707,7 @@
     string           "query"
 		</sourcecode>
 			<t>
-			If an agent supports the query extension is
+			If an agent supports the query extension it
 			SHOULD reply with a list of supported extension names.
 			</t>
 			<sourcecode>
