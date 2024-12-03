@@ -1378,8 +1378,8 @@ Acknowledgments
    based on a similar protocol for an agent to support the legacy SSH
    version 1 by Tatu Ylonen.
 
-   Thanks to Simon Tatham, Niels Möller and James Spencer who reviewed
-   and helped improve this document.
+   Thanks to Simon Tatham, Niels Möller, James Spencer, Simon Josefsson,
+   Matt Johnston who reviewed and helped improve this document.
 
 Author's Address
 
