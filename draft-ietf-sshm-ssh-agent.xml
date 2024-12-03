@@ -505,12 +505,12 @@
 		</t>
 		<sourcecode>
     byte             SSH_AGENTC_REMOVE_SMARTCARD_KEY
-    string           reader id
+    string           id
     string           PIN
 		</sourcecode>
 		<t>
-		Where "reader id" is an opaque identifier for the smartcard
-		reader and "PIN" is an optional password or PIN (not typically
+		Where "id" is an opaque identifier for the hardware token and
+		"PIN" is an optional password or PIN (not typically
 		used).  Requesting deletion of smartcard-hosted keys SHOULD
 		cause the agent to remove all keys loaded from that smartcard.
 		</t>
