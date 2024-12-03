@@ -1060,7 +1060,7 @@
 <tr><th>Extension Name</th><th>Reference</th></tr>
 </thead>
 <tbody>
-<tr><td>agent-forward</td><td><xref target="fwdreq" /></td></tr>
+<tr><td>agent-req</td><td><xref target="fwdreq" /></td></tr>
 </tbody>
 </table>
 	</section>
