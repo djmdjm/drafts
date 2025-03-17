@@ -8,7 +8,7 @@ Intended status: Standards Track                           17 March 2025
 Expires: 18 September 2025
 
 
-                           SSH Agent Protocol
+                        SSH Strict KEX extension
                     draft-miller-sshm-strict-kex-00
 
 Abstract
@@ -55,7 +55,7 @@ Copyright Notice
 
 Miller                  Expires 18 September 2025               [Page 1]
 
-Internet-Draft             SSH Agent Protocol                 March 2025
+Internet-Draft          SSH Strict KEX extension              March 2025
 
 
 Table of Contents
@@ -111,7 +111,7 @@ Table of Contents
 
 Miller                  Expires 18 September 2025               [Page 2]
 
-Internet-Draft             SSH Agent Protocol                 March 2025
+Internet-Draft          SSH Strict KEX extension              March 2025
 
 
 1.1.  Requirements Language
@@ -167,7 +167,7 @@ Internet-Draft             SSH Agent Protocol                 March 2025
 
 Miller                  Expires 18 September 2025               [Page 3]
 
-Internet-Draft             SSH Agent Protocol                 March 2025
+Internet-Draft          SSH Strict KEX extension              March 2025
 
 
 3.  Terrapin Attack
@@ -223,7 +223,7 @@ Internet-Draft             SSH Agent Protocol                 March 2025
 
 Miller                  Expires 18 September 2025               [Page 4]
 
-Internet-Draft             SSH Agent Protocol                 March 2025
+Internet-Draft          SSH Strict KEX extension              March 2025
 
 
    Note how the attacker is able to desynchronise the client's sequence
@@ -279,7 +279,7 @@ Internet-Draft             SSH Agent Protocol                 March 2025
 
 Miller                  Expires 18 September 2025               [Page 5]
 
-Internet-Draft             SSH Agent Protocol                 March 2025
+Internet-Draft          SSH Strict KEX extension              March 2025
 
 
    For the client, typically the first messages of the encrypted
@@ -335,7 +335,7 @@ Internet-Draft             SSH Agent Protocol                 March 2025
 
 Miller                  Expires 18 September 2025               [Page 6]
 
-Internet-Draft             SSH Agent Protocol                 March 2025
+Internet-Draft          SSH Strict KEX extension              March 2025
 
 
 5.  Strict KEX
@@ -391,7 +391,7 @@ Internet-Draft             SSH Agent Protocol                 March 2025
 
 Miller                  Expires 18 September 2025               [Page 7]
 
-Internet-Draft             SSH Agent Protocol                 March 2025
+Internet-Draft          SSH Strict KEX extension              March 2025
 
 
    Finally, the "kex-strict-*" pseudo-algorithm identifiers are valid
@@ -447,7 +447,7 @@ Internet-Draft             SSH Agent Protocol                 March 2025
 
 Miller                  Expires 18 September 2025               [Page 8]
 
-Internet-Draft             SSH Agent Protocol                 March 2025
+Internet-Draft          SSH Strict KEX extension              March 2025
 
 
 5.3.  Resetting sequence number at KEX completion
@@ -503,7 +503,7 @@ Internet-Draft             SSH Agent Protocol                 March 2025
 
 Miller                  Expires 18 September 2025               [Page 9]
 
-Internet-Draft             SSH Agent Protocol                 March 2025
+Internet-Draft          SSH Strict KEX extension              March 2025
 
 
    The susceptibility of the original SSH protocol to the Terrapin
@@ -559,7 +559,7 @@ Internet-Draft             SSH Agent Protocol                 March 2025
 
 Miller                  Expires 18 September 2025              [Page 10]
 
-Internet-Draft             SSH Agent Protocol                 March 2025
+Internet-Draft          SSH Strict KEX extension              March 2025
 
 
    Paramiko  Paramiko is a SSH client and server implementation in the
@@ -571,7 +571,7 @@ Internet-Draft             SSH Agent Protocol                 March 2025
    Golang x/crypto/ssh  The Go programming language project has
       supported strict KEX in its external "x" repository since 2023.
 
-      Website: https://pkg.go.dev/golang.org/x/crypto/ssh/agent
+      Website: https://pkg.go.dev/golang.org/x/crypto/ssh
 
    Russh  Russsh has implemented strict KEX since 2023.
 
@@ -615,7 +615,7 @@ Internet-Draft             SSH Agent Protocol                 March 2025
 
 Miller                  Expires 18 September 2025              [Page 11]
 
-Internet-Draft             SSH Agent Protocol                 March 2025
+Internet-Draft          SSH Strict KEX extension              March 2025
 
 
    [RFC7942]  Sheffer, Y. and A. Farrel, "Improving Awareness of Running
@@ -671,7 +671,7 @@ Acknowledgments
 
 Miller                  Expires 18 September 2025              [Page 12]
 
-Internet-Draft             SSH Agent Protocol                 March 2025
+Internet-Draft          SSH Strict KEX extension              March 2025
 
 
    These changes were developed with assistance from Darren Tucker,

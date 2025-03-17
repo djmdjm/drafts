@@ -27,7 +27,7 @@
 -->
 
 <front>
-	<title>SSH Agent Protocol</title>
+	<title>SSH Strict KEX extension</title>
 	<seriesInfo name="Internet-Draft" value="draft-miller-sshm-strict-kex-00"/>
 	<author fullname="Damien Miller" initials="D." surname="Miller">
 		<organization>OpenSSH</organization>
@@ -562,7 +562,7 @@
 		in its external "x" repository since 2023.
 		</t>
 		<t>
-		Website: https://pkg.go.dev/golang.org/x/crypto/ssh/agent
+		Website: https://pkg.go.dev/golang.org/x/crypto/ssh
 		</t>
 		</dd>
 
