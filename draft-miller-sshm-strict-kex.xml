@@ -61,7 +61,7 @@
 	confidential and integrity-protected channel over which application
 	traffic is carries.
 	This transport receives its keys from an initial key agreement
-	subprotocol, referred to as "key exchange" in the original standards
+	sub-protocol, referred to as "key exchange" in the original standards
 	and usually abbreviated as "KEX".
 	</t>
 	<t>
@@ -70,12 +70,12 @@
 	on the SSH transport
 	layer and initial key agreement phase. This attack, briefly
 	summarised below, depends on assumptions made by the transport layer
-	and unforseen interactions between the unencrypted pre-KEX transport
+	and unforeseen interactions between the unencrypted pre-KEX transport
 	and the encrypted post-KEX transport.
 	</t>
 	<t>
 	In response to this, many SSH implementation deployed the
-	modifications to the SSH transport protocol and KEX subprotocol
+	modifications to the SSH transport protocol and KEX sub-protocol
 	described in this draft, collectively referred to as "strict KEX".
 	These modifications provide a minimally invasive but comprehensive 
 	defence against the Terrapin attack.
@@ -115,7 +115,7 @@
 	When the transport protocol begins, it is typical
 	for the endpoints to commence KEX immediately by
 	each sending SSH_MSG_KEXINIT packets and only sending packets relevant
-	to the KEX subprotocol until it concludes with the SSH_MSG_NEWKEYS
+	to the KEX sub-protocol until it concludes with the SSH_MSG_NEWKEYS
 	message. However, sending only KEX-relevant messages during KEX was
 	not strictly required, and a conformant implementation would be
 	expected to accept and process packets such as SSH_MSG_IGNORE or
@@ -146,12 +146,12 @@
 	To perform this attack, an on-path adversary injects one or more
 	packets (such as SSH_MSG_IGNORE) between the SSH banner and initial
 	SSH_MSG_KEXINIT packet, or between other packets before the conclusion
-	of the KEX subprotocol. These inserted packets will be functionally
+	of the KEX sub-protocol. These inserted packets will be functionally
 	ignored by the peer but will have the side-effect of incrementing the
 	peer's implicit sequence number.
 	</t>
 	<t>
-	After the KEX subprotocol completes, the on-path attacker must then
+	After the KEX sub-protocol completes, the on-path attacker must then
 	delete an equal number of packets to those that they previously
 	inserted. They may succeed in doing this because the implicit sequence
 	number of the first packet after the deletion will now match the peer's
@@ -188,9 +188,9 @@
     sent_seq=4       SSH2_MSG_SERVICE_ACCEPT   expected_seq=4
 	</sourcecode>
 	<t>
-	Note how the attacker is able to desyncronise the client's sequence
+	Note how the attacker is able to desynchronise the client's sequence
 	number by inserting a SSH_MSG_IGNORE message. This insertion is not
-	detectible prior to the commencement of the encrypted transport
+	detectable prior to the commencement of the encrypted transport
 	because sequence numbers are implicit and not checkable.
 	The deletion is not similarly detectable because it resynchronises
 	the sequence number with the client's expectation.
@@ -203,20 +203,20 @@
 	<t>
 	Any CBC mode cipher or CTR mode cipher used with the original SSH
 	encrypt-and-MAC construction is immune to this (with cryptographic
-	probablility), as the message deletion will desyncronise the
+	probability), as the message deletion will desynchronise the
 	ciphertext stream. AES-GCM <xref target="RFC5674"/> is also immune
 	to this as it uses an internal instance counter, that does effectively
 	reset when KEX completes, instead of the SSH transport sequence number.
 	</t>
 	<t>
 	However this attack is possible for a number of vendor extension
-	algorithms, some very popular across SSH implemetations.
+	algorithms, some very popular across SSH implementations.
 	</t>
 	<t>
 	The chacha20-poly1305@openssh.com AEAD uses the sequence number as an
 	initialisation vector (IV) to generate its per-packet MAC key and
 	is otherwise stateless between packets. This AEAD is vulnerable as
-	there is no state other than the IV to desyncronise.
+	there is no state other than the IV to desynchronise.
 	</t>
 	<t>
 	The *-etm@openssh.com MAC modes when used with CBC mode ciphers
@@ -224,7 +224,7 @@
 	in the keystream is limited to the block following the deletion
 	only.
 	CTR mode ciphers used with this MAC mode can not practically be
-	exploited as the keystream is permanently desyncronised after the
+	exploited as the keystream is permanently desynchronised after the
 	deletion.
 	</t>
 </section>
@@ -278,14 +278,14 @@
 	by the server could conceivably cause the client to use a weaker
 	signature algorithm during user authentication, though it is difficult
 	to see whether this would have any real-world impact as the signature
-	would still be subject to the confidentialty and integrity protection
+	would still be subject to the confidentiality and integrity protection
 	of the encrypted SSH transport protocol.
 	</t>
 	<t>
 	An OpenSSH vendor extension, ping@openssh.com is somewhat more
 	interesting as an attack target. This key in a SSH_MSG_EXT_INFO message
 	signals support for a transport-level echo mechanism used by OpenSSH
-	as part of a defence against keystroke timing traffic anaysis. Deleting
+	as part of a defence against keystroke timing traffic analysis. Deleting
 	the SSH_MSG_EXT_INFO that signals the presence of this feature would
 	disable this countermeasure.
 	</t>
@@ -312,9 +312,9 @@
 	persisting from the period before the connection is confidential and
 	integrity-protected to after.
 	</t>
-	<section anchor="ext-signal"><name>Signalling support for strict KEX</name>
+	<section anchor="ext-signal"><name>Signaling support for strict KEX</name>
 		<t>
-		Support for strict KEX is signalled by the presence of new
+		Support for strict KEX is signaled by the presence of new
 		extension marker pseudo-algorithms in the kex_algorithms field
 		of the client and server's initial SSH_MSG_KEXINIT packet,
 		analogous to how ext-info-c and ext-info-s in this field
