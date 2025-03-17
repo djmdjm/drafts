@@ -539,19 +539,19 @@ Internet-Draft             SSH Agent Protocol                 March 2025
    The following example projects maintain an implementation of this
    protocol:
 
-   OpenSSH  OpenSSH is the originating implementation of this protocol
+   OpenSSH  OpenSSH is the originating implementation of this extension
       and has supported it since 2023.
 
       Website: https://www.openssh.com/
 
    PuTTY  PuTTY is a popular SSH client implementation for multiple
-      platforms that has included a compatible agent client since 2023.
+      platforms that added strict KEX support in 2023.
 
       Website: https://www.chiark.greenend.org.uk/~sgtatham/putty/
 
    Dropbear  Dropbear is a SSH client and server implementation for
-      Unix- like systems.  It has supported the agent protocol since
-      2023.
+      Unix- like systems.  It has supported the strict KEX extension
+      since 2023.
 
       Website: https://matt.ucc.asn.au/dropbear/dropbear.html
 
@@ -563,16 +563,19 @@ Internet-Draft             SSH Agent Protocol                 March 2025
 
 
    Paramiko  Paramiko is a SSH client and server implementation in the
-      Python programming language.  It has supported an agent protocol
-      implementation since 2023.
+      Python programming language.  It has supported the strict KEX
+      modifications since 2023.
 
       Website: https://www.paramiko.org/
 
-   Golang x/crypto/ssh/agent  The Go programming language project has
-      supported an implementation of this protocol in its external "x"
-      repository since 2023.
+   Golang x/crypto/ssh  The Go programming language project has
+      supported strict KEX in its external "x" repository since 2023.
 
       Website: https://pkg.go.dev/golang.org/x/crypto/ssh/agent
+
+   Russh  Russsh has implemented strict KEX since 2023.
+
+      Website: https://github.com/Eugeny/russh
 
    This list is not exhaustive.
 
@@ -607,9 +610,6 @@ Internet-Draft             SSH Agent Protocol                 March 2025
    [RFC5674]  Chisholm, S. and R. Gerhards, "Alarms in Syslog",
               RFC 5674, DOI 10.17487/RFC5674, October 2009,
               <https://www.rfc-editor.org/info/rfc5674>.
-
-
-
 
 
 

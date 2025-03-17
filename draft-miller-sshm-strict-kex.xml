@@ -512,7 +512,7 @@
 		<dt>OpenSSH</dt>
 		<dd>
 		<t>
-		OpenSSH is the originating implementation of this protocol and
+		OpenSSH is the originating implementation of this extension and
 		has supported it since 2023.
 		</t>
 		<t>
@@ -524,8 +524,7 @@
 		<dd>
 		<t>
 		PuTTY is a popular SSH client implementation for multiple
-		platforms that has included a compatible agent client since
-		2023.
+		platforms that added strict KEX support in 2023.
 		</t>
 		<t>
 		Website: https://www.chiark.greenend.org.uk/~sgtatham/putty/
@@ -536,7 +535,8 @@
 		<dd>
 		<t>
 		Dropbear is a SSH client and server implementation for Unix-
-		like systems. It has supported the agent protocol since 2023.
+		like systems. It has supported the strict KEX extension
+		since 2023.
 		</t>
 		<t>
 		Website: https://matt.ucc.asn.au/dropbear/dropbear.html
@@ -547,29 +547,32 @@
 		<dd>
 		<t>
 		Paramiko is a SSH client and server implementation in the
-		Python programming language. It has supported an agent protocol
-		implementation since 2023.
+		Python programming language. It has supported the strict KEX
+		modifications since 2023.
 		</t>
 		<t>
 		Website: https://www.paramiko.org/
 		</t>
 		</dd>
 
-		<dt>Golang x/crypto/ssh/agent</dt>
+		<dt>Golang x/crypto/ssh</dt>
 		<dd>
 		<t>
-		The Go programming language project has supported an
-		implementation of this protocol in its external "x" repository
-		since 2023.
+		The Go programming language project has supported strict KEX
+		in its external "x" repository since 2023.
 		</t>
 		<t>
 		Website: https://pkg.go.dev/golang.org/x/crypto/ssh/agent
 		</t>
+		</dd>
+
+		<dt>Russh</dt>
+		<dd>
 		<t>
-		Russsh has implemented this since 2023.
+		Russsh has implemented strict KEX since 2023.
+		</t>
 		<t>
 		Website: https://github.com/Eugeny/russh
-		</t>
 		</t>
 		</dd>
 	</dl>
