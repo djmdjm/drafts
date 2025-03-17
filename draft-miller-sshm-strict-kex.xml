@@ -565,6 +565,12 @@
 		<t>
 		Website: https://pkg.go.dev/golang.org/x/crypto/ssh/agent
 		</t>
+		<t>
+		Russsh has implemented this since 2023.
+		<t>
+		Website: https://github.com/Eugeny/russh
+		</t>
+		</t>
 		</dd>
 	</dl>
 	<t>
