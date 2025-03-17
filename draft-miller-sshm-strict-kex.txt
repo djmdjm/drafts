@@ -72,12 +72,12 @@ Table of Contents
    6.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   9
      6.1.  Additions to SSH Extension Names  . . . . . . . . . . . .   9
    7.  Security Considerations . . . . . . . . . . . . . . . . . . .   9
-   8.  Implementation Status . . . . . . . . . . . . . . . . . . . .   9
-   9.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  10
-     9.1.  Normative References  . . . . . . . . . . . . . . . . . .  10
+   8.  Implementation Status . . . . . . . . . . . . . . . . . . . .  10
+   9.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  11
+     9.1.  Normative References  . . . . . . . . . . . . . . . . . .  11
      9.2.  Informative References  . . . . . . . . . . . . . . . . .  12
    Acknowledgments . . . . . . . . . . . . . . . . . . . . . . . . .  12
-   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .  12
+   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .  13
 
 1.  Introduction
 
@@ -98,7 +98,7 @@ Table of Contents
 
    In response to this, many SSH implementation deployed the
    modifications to the SSH transport protocol and KEX sub-protocol
-   described in this draft, collectively referred to as "strict KEX".
+   described in this document, collectively referred to as "strict KEX".
    These modifications provide a minimally invasive but comprehensive
    defence against the Terrapin attack.
 
@@ -485,7 +485,34 @@ Internet-Draft             SSH Agent Protocol                 March 2025
 
 7.  Security Considerations
 
-   XXX
+   This document describes a number of modifications to the SSH
+   transport protocol to defend against a demonstrated attack that may
+   be performed by active on-path adversaries.  While the practical
+   impact of this attack is relatively limited, it does represent a
+   significant violation of the properties expected by a cryptographic
+   protocol and is therefore worth repairing.
+
+   These countermeasures are a comprehensive defence to the specific
+   Terrapin attack, but also harden the protocol against other attacks
+   on the initial key agreement phase and the interaction between the
+   pre- and post-KEX transport protocols.
+
+
+
+
+
+Miller                  Expires 18 September 2025               [Page 9]
+
+Internet-Draft             SSH Agent Protocol                 March 2025
+
+
+   The susceptibility of the original SSH protocol to the Terrapin
+   attack may serve as a demonstration of the danger of retaining
+   implicit state across protocol security boundaries - here, from the
+   unencypted pre-KEX transport to the post-KEX encrypted transport, and
+   also show the desirability of authenticating all messages sent by all
+   parties in the process of key agreement, e.g. using a mechanism like
+   TLS 1.3's Transcript Hash (Section 4.4.1 of [RFC8446]).
 
 8.  Implementation Status
 
@@ -498,14 +525,6 @@ Internet-Draft             SSH Agent Protocol                 March 2025
    here does not imply endorsement by the IETF.  Furthermore, no effort
    has been spent to verify the information presented here that was
    supplied by IETF contributors.  This is not intended as, and must not
-
-
-
-Miller                  Expires 18 September 2025               [Page 9]
-
-Internet-Draft             SSH Agent Protocol                 March 2025
-
-
    be construed to be, a catalog of available implementations or their
    features.  Readers are advised to note that other implementations may
    exist.
@@ -536,6 +555,13 @@ Internet-Draft             SSH Agent Protocol                 March 2025
 
       Website: https://matt.ucc.asn.au/dropbear/dropbear.html
 
+
+
+Miller                  Expires 18 September 2025              [Page 10]
+
+Internet-Draft             SSH Agent Protocol                 March 2025
+
+
    Paramiko  Paramiko is a SSH client and server implementation in the
       Python programming language.  It has supported an agent protocol
       implementation since 2023.
@@ -553,14 +579,6 @@ Internet-Draft             SSH Agent Protocol                 March 2025
 9.  References
 
 9.1.  Normative References
-
-
-
-
-Miller                  Expires 18 September 2025              [Page 10]
-
-Internet-Draft             SSH Agent Protocol                 March 2025
-
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -590,6 +608,16 @@ Internet-Draft             SSH Agent Protocol                 March 2025
               RFC 5674, DOI 10.17487/RFC5674, October 2009,
               <https://www.rfc-editor.org/info/rfc5674>.
 
+
+
+
+
+
+Miller                  Expires 18 September 2025              [Page 11]
+
+Internet-Draft             SSH Agent Protocol                 March 2025
+
+
    [RFC7942]  Sheffer, Y. and A. Farrel, "Improving Awareness of Running
               Code: The Implementation Status Section", BCP 205,
               RFC 7942, DOI 10.17487/RFC7942, July 2016,
@@ -603,20 +631,9 @@ Internet-Draft             SSH Agent Protocol                 March 2025
               (SSH) Protocol", RFC 8308, DOI 10.17487/RFC8308, March
               2018, <https://www.rfc-editor.org/info/rfc8308>.
 
-
-
-
-
-
-
-
-
-
-
-Miller                  Expires 18 September 2025              [Page 11]
-
-Internet-Draft             SSH Agent Protocol                 March 2025
-
+   [RFC8446]  Rescorla, E., "The Transport Layer Security (TLS) Protocol
+              Version 1.3", RFC 8446, DOI 10.17487/RFC8446, August 2018,
+              <https://www.rfc-editor.org/info/rfc8446>.
 
    [I-D.ietf-sshm-ntruprime-ssh]
               Friedl, M., Mojzis, J., and S. Josefsson, "Secure Shell
@@ -650,6 +667,13 @@ Acknowledgments
    identifying the Terrapin attack and consulting on the countermeasures
    described in this document.
 
+
+
+Miller                  Expires 18 September 2025              [Page 12]
+
+Internet-Draft             SSH Agent Protocol                 March 2025
+
+
    These changes were developed with assistance from Darren Tucker,
    Markus Friedl and Theo de Raadt from the OpenSSH project.
    Additionally, Simon Tatham of the PuTTY project, Ron Frederick of the
@@ -669,4 +693,36 @@ Author's Address
 
 
 
-Miller                  Expires 18 September 2025              [Page 12]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Miller                  Expires 18 September 2025              [Page 13]

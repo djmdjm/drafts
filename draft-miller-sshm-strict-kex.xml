@@ -76,7 +76,7 @@
 	<t>
 	In response to this, many SSH implementation deployed the
 	modifications to the SSH transport protocol and KEX sub-protocol
-	described in this draft, collectively referred to as "strict KEX".
+	described in this document, collectively referred to as "strict KEX".
 	These modifications provide a minimally invasive but comprehensive 
 	defence against the Terrapin attack.
 	</t>
@@ -457,7 +457,28 @@
 
 <section anchor="Security"><name>Security Considerations</name>
 	<t>
-	XXX
+	This document describes a number of modifications to the SSH transport
+	protocol to defend against a demonstrated attack that may be performed
+	by active on-path adversaries. While the practical impact of this
+	attack is relatively limited, it does represent a significant violation
+	of the properties expected by a cryptographic protocol and is therefore
+	worth repairing.
+	</t>
+	<t>
+	These countermeasures are a comprehensive defence to the specific
+	Terrapin attack, but also harden the protocol against other attacks
+	on the initial key agreement phase and the interaction between the
+	pre- and post-KEX transport protocols.
+	</t>
+	<t>
+	The susceptibility of the original SSH protocol to the Terrapin
+	attack may serve as a demonstration of the danger of retaining
+	implicit state across protocol security boundaries - here, from the
+	unencypted pre-KEX transport to the post-KEX encrypted transport,
+	and also show the desirability of authenticating all messages
+	sent by all parties in the process of key agreement, e.g. using
+	a mechanism like TLS 1.3's Transcript Hash
+	(<xref target="RFC8446" section="4.4.1" />).
 	</t>
 </section>
 <section anchor="implstatus"><name>Implementation Status</name>
@@ -565,6 +586,7 @@
 		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.7942.xml" />
 		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8174.xml" />
 		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8308.xml" />
+		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8446.xml" />
 		<xi:include href="https://datatracker.ietf.org/doc/bibxml3/draft-ietf-sshm-ntruprime-ssh-01.xml" />
 		<xi:include href="https://datatracker.ietf.org/doc/bibxml3/draft-ietf-sshm-mlkem-hybrid-kex-00.xml" />
 	</references>
