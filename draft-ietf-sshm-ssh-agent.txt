@@ -1379,7 +1379,7 @@ Acknowledgments
    version 1 by Tatu Ylonen.
 
    Thanks to Simon Tatham, Niels Möller, James Spencer, Simon Josefsson,
-   Matt Johnston, Jakub Jelen iand Niels Möller who reviewed and helped
+   Matt Johnston, Jakub Jelen and Niels Möller who reviewed and helped
    improve this document.
 
 Author's Address
