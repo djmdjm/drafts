@@ -682,7 +682,7 @@ Internet-Draft             SSH Agent Protocol                 March 2025
        byte             SSH_AGENTC_EXTENSION
        string           "query"
 
-   If an agent supports the query extension is SHOULD reply with a list
+   If an agent supports the query extension it SHOULD reply with a list
    of supported extension names.
 
        byte             SSH_AGENT_EXTENSION_RESPONSE
