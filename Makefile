@@ -1,5 +1,5 @@
 
-TARGETS=draft-ietf-sshm-ssh-agent.txt draft-miller-ssh-ping.txt draft-miller-ssh-cert.txt
+TARGETS=draft-ietf-sshm-ssh-agent.txt draft-miller-ssh-ping.txt draft-miller-ssh-cert.txt draft-miller-sshm-strict-kex.txt
 
 all: $(TARGETS)
 
