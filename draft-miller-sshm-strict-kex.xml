@@ -10,7 +10,7 @@
 <rfc
   xmlns:xi="http://www.w3.org/2001/XInclude"
   category="std"
-  docName="draft-miller-sshm-strict-kex-00"
+  docName="draft-miller-sshm-strict-kex-01"
   ipr="trust200902"
   obsoletes=""
   updates=""
@@ -28,7 +28,7 @@
 
 <front>
 	<title>SSH Strict KEX extension</title>
-	<seriesInfo name="Internet-Draft" value="draft-miller-sshm-strict-kex-00"/>
+	<seriesInfo name="Internet-Draft" value="draft-miller-sshm-strict-kex-01"/>
 	<author fullname="Damien Miller" initials="D." surname="Miller">
 		<organization>OpenSSH</organization>
 		<address>
@@ -36,7 +36,7 @@
 			<uri>https://www.openssh.com/</uri>
 		</address>
 	</author>
-	<date year="2025" month="03" day="17" />
+	<date year="2025" month="03" day="18" />
 	<area>General</area>
 	<workgroup>Internet Engineering Task Force</workgroup>
 	<keyword>ssh</keyword>
@@ -93,7 +93,8 @@
 	</section>
 </section>
     
-<section><name>Protocol background</name>
+<section><name>Terrapin Attack</name>
+	<section><name>Protocol background</name>
 	<t>
 	The SSH protocol begins with the client and server exchanging string
 	banners that contain the protocol version and an implementation
@@ -132,9 +133,9 @@
 	selected values and not over every message exchanged between the
 	endpoints (i.e. it is not a "full session transcript").
 	</t>
-</section>
+	</section>
     
-<section><name>Terrapin Attack</name>
+	<section><name>Attack Mechanics</name>
 	<t>
 	The Terrapin attack exploits these preconditions to allow an on-path
 	adversary (a.k.a MITM) to perform selective deletion of one or more
@@ -196,7 +197,7 @@
 	the sequence number with the client's expectation.
 	</t>
 	<t>
-	In practice, successfully performing this attack in practice also
+	In practice, successfully performing this attack also
 	depends on the symmetric cryptography in use, and it is not possible
 	to achieve for many potential algorithm choices.
 	</t>
@@ -216,7 +217,9 @@
 	The chacha20-poly1305@openssh.com AEAD uses the sequence number as an
 	initialisation vector (IV) to generate its per-packet MAC key and
 	is otherwise stateless between packets. This AEAD is vulnerable as
-	there is no state other than the IV to desynchronise.
+	there is no state other than the IV to desynchronise. At the time
+	of publication of the Terrapin attack, this mode was the most popular
+	default cipher for SSH servers (<xref target="TERRAPIN" /> table 2).
 	</t>
 	<t>
 	The *-etm@openssh.com MAC modes when used with CBC mode ciphers
@@ -227,9 +230,9 @@
 	exploited as the keystream is permanently desynchronised after the
 	deletion.
 	</t>
-</section>
+	</section>
 
-<section><name>Attack Impact</name>
+	<section><name>Attack Impact</name>
 	<t>
 	As mentioned previously, the Terrapin attack allows selective
 	deletion of one or more consecutive packets from the initial
@@ -289,6 +292,15 @@
 	the SSH_MSG_EXT_INFO that signals the presence of this feature would
 	disable this countermeasure.
 	</t>
+	<t>
+	More generally, the ability to inject non-KEX messages during the
+	initial key agreement without desynchronising the sequence number
+	can expose other implementation bugs. For example, one SSH
+	implementation (<xref target="TERRAPIN" /> section 6.2)
+	was found to accept messages relevant to the the user-authentication
+	phase of the protocol prior to the conclusion of KEX.
+	</t>
+	</section>
 </section>
 
 <section><name>Strict KEX</name>
@@ -323,28 +335,41 @@
 		</t>
 		<t>
 		Specifically, a client indicates support for this extension by
-		including either the standard "kex-strict-c" identifier or the
-		pre-standard "kex-strict-c-v00@openssh.com" identifier in the
-		kex_algorithms field of the initial SSH_MSG_KEXINIT packet.
+		including either the standard "kex-strict-c" identifier and/or
+		the pre-standard "kex-strict-c-v00@openssh.com" identifier
+		in the kex_algorithms field of the initial SSH_MSG_KEXINIT
+		packet.
 		</t>
 		<t>
 		Similarly, a server indicates support by including either
-		the standard "kex-strict-s" identifier or the
+		the standard "kex-strict-s" identifier and/or the
 		pre-standard "kex-strict-s-v00@openssh.com" identifier in its
 		kex_algorithms field.
 		</t>
 		<t>
-		For both the client and server, the standard and pre-standard
-		pseudo-algorithm names should be treated as fully equivalent
-		when received. Implementations MUST include the standard names
-		in kex_algorithms field that they emit and MAY also include the
-		pre-standard name too.
+		If the client advertises support for the "kex-strict-c"
+		extension and the server advertises support for the
+		"kex-strict-s" extension, then both endpoints MUST enable
+		the transport protocol changes described below for the
+		duration of the connection.
 		</t>
 		<t>
-		If both the client and server signal support for this
-		extension, then both endpoints MUST enable the transport
-		protocol changes described below for the duration of the
-		connection.
+		Similarly, if the client offers support for the pre-standard
+		extension name "kex-strict-c-v00@openssh.com" and the server
+		advertises "kex-strict-s-v00@openssh.com" then both ends MUST
+		enable the protocol changes below.
+		</t>
+		<t>
+		SSH implementations MUST NOT enable Strict KEX if one offers
+		only the standard name (i.e. "kex-strict-[cs]") and the other
+		offers only the pre-standard name
+		("kex-strict-[cs]-v00@openssh.com").
+		</t>
+		<t>
+		Implementations seeking these protections with maximum
+		interoperability SHOULD offer both the standard and
+		pre-standard names, as support for Strict KEX is widely
+		deployed under the pre-standard names.
 		</t>
 		<t>
 		Finally, the "kex-strict-*" pseudo-algorithm identifiers are
@@ -358,7 +383,7 @@
 		When strict KEX is enabled, implementations MUST terminate the
 		connection if they receive a non-KEX message during the initial
 		key exchange. Permitted messages include only SSH_MSG_KEXINIT,
-		SSH_MSG_NEWKEYS and the specific messages specific to each KEX
+		SSH_MSG_NEWKEYS and the messages specific to each KEX
 		algorithm:
 		</t>
 		<ul>

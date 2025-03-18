@@ -4,12 +4,12 @@
 
 Internet Engineering Task Force                                D. Miller
 Internet-Draft                                                   OpenSSH
-Intended status: Standards Track                           17 March 2025
-Expires: 18 September 2025
+Intended status: Standards Track                           18 March 2025
+Expires: 19 September 2025
 
 
                         SSH Strict KEX extension
-                    draft-miller-sshm-strict-kex-00
+                    draft-miller-sshm-strict-kex-01
 
 Abstract
 
@@ -32,7 +32,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 18 September 2025.
+   This Internet-Draft will expire on 19 September 2025.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Miller                  Expires 18 September 2025               [Page 1]
+Miller                  Expires 19 September 2025               [Page 1]
 
 Internet-Draft          SSH Strict KEX extension              March 2025
 
@@ -62,21 +62,22 @@ Table of Contents
 
    1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   2
      1.1.  Requirements Language . . . . . . . . . . . . . . . . . .   3
-   2.  Protocol background . . . . . . . . . . . . . . . . . . . . .   3
-   3.  Terrapin Attack . . . . . . . . . . . . . . . . . . . . . . .   4
-   4.  Attack Impact . . . . . . . . . . . . . . . . . . . . . . . .   5
-   5.  Strict KEX  . . . . . . . . . . . . . . . . . . . . . . . . .   7
-     5.1.  Signaling support for strict KEX  . . . . . . . . . . . .   7
-     5.2.  Disallowing non-KEX messages in initial KEX . . . . . . .   8
-     5.3.  Resetting sequence number at KEX completion . . . . . . .   9
-   6.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   9
-     6.1.  Additions to SSH Extension Names  . . . . . . . . . . . .   9
-   7.  Security Considerations . . . . . . . . . . . . . . . . . . .   9
-   8.  Implementation Status . . . . . . . . . . . . . . . . . . . .  10
-   9.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  11
-     9.1.  Normative References  . . . . . . . . . . . . . . . . . .  11
-     9.2.  Informative References  . . . . . . . . . . . . . . . . .  12
-   Acknowledgments . . . . . . . . . . . . . . . . . . . . . . . . .  12
+   2.  Terrapin Attack . . . . . . . . . . . . . . . . . . . . . . .   3
+     2.1.  Protocol background . . . . . . . . . . . . . . . . . . .   3
+     2.2.  Attack Mechanics  . . . . . . . . . . . . . . . . . . . .   4
+     2.3.  Attack Impact . . . . . . . . . . . . . . . . . . . . . .   5
+   3.  Strict KEX  . . . . . . . . . . . . . . . . . . . . . . . . .   7
+     3.1.  Signaling support for strict KEX  . . . . . . . . . . . .   7
+     3.2.  Disallowing non-KEX messages in initial KEX . . . . . . .   8
+     3.3.  Resetting sequence number at KEX completion . . . . . . .   9
+   4.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   9
+     4.1.  Additions to SSH Extension Names  . . . . . . . . . . . .   9
+   5.  Security Considerations . . . . . . . . . . . . . . . . . . .   9
+   6.  Implementation Status . . . . . . . . . . . . . . . . . . . .  10
+   7.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  11
+     7.1.  Normative References  . . . . . . . . . . . . . . . . . .  11
+     7.2.  Informative References  . . . . . . . . . . . . . . . . .  12
+   Acknowledgments . . . . . . . . . . . . . . . . . . . . . . . . .  13
    Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .  13
 
 1.  Introduction
@@ -108,8 +109,7 @@ Table of Contents
 
 
 
-
-Miller                  Expires 18 September 2025               [Page 2]
+Miller                  Expires 19 September 2025               [Page 2]
 
 Internet-Draft          SSH Strict KEX extension              March 2025
 
@@ -122,7 +122,9 @@ Internet-Draft          SSH Strict KEX extension              March 2025
    14 [RFC2119] [RFC8174] when, and only when, they appear in all
    capitals, as shown here.
 
-2.  Protocol background
+2.  Terrapin Attack
+
+2.1.  Protocol background
 
    The SSH protocol begins with the client and server exchanging string
    banners that contain the protocol version and an implementation
@@ -163,14 +165,12 @@ Internet-Draft          SSH Strict KEX extension              March 2025
 
 
 
-
-
-Miller                  Expires 18 September 2025               [Page 3]
+Miller                  Expires 19 September 2025               [Page 3]
 
 Internet-Draft          SSH Strict KEX extension              March 2025
 
 
-3.  Terrapin Attack
+2.2.  Attack Mechanics
 
    The Terrapin attack exploits these preconditions to allow an on-path
    adversary (a.k.a MITM) to perform selective deletion of one or more
@@ -221,7 +221,7 @@ Internet-Draft          SSH Strict KEX extension              March 2025
 
 
 
-Miller                  Expires 18 September 2025               [Page 4]
+Miller                  Expires 19 September 2025               [Page 4]
 
 Internet-Draft          SSH Strict KEX extension              March 2025
 
@@ -233,9 +233,9 @@ Internet-Draft          SSH Strict KEX extension              March 2025
    deletion is not similarly detectable because it resynchronises the
    sequence number with the client's expectation.
 
-   In practice, successfully performing this attack in practice also
-   depends on the symmetric cryptography in use, and it is not possible
-   to achieve for many potential algorithm choices.
+   In practice, successfully performing this attack also depends on the
+   symmetric cryptography in use, and it is not possible to achieve for
+   many potential algorithm choices.
 
    Any CBC mode cipher or CTR mode cipher used with the original SSH
    encrypt-and-MAC construction is immune to this (with cryptographic
@@ -250,7 +250,9 @@ Internet-Draft          SSH Strict KEX extension              March 2025
    The chacha20-poly1305@openssh.com AEAD uses the sequence number as an
    initialisation vector (IV) to generate its per-packet MAC key and is
    otherwise stateless between packets.  This AEAD is vulnerable as
-   there is no state other than the IV to desynchronise.
+   there is no state other than the IV to desynchronise.  At the time of
+   publication of the Terrapin attack, this mode was the most popular
+   default cipher for SSH servers ([TERRAPIN] table 2).
 
    The *-etm@openssh.com MAC modes when used with CBC mode ciphers can
    be exploited with high probability as the desynchronisation in the
@@ -258,7 +260,7 @@ Internet-Draft          SSH Strict KEX extension              March 2025
    mode ciphers used with this MAC mode can not practically be exploited
    as the keystream is permanently desynchronised after the deletion.
 
-4.  Attack Impact
+2.3.  Attack Impact
 
    As mentioned previously, the Terrapin attack allows selective
    deletion of one or more consecutive packets from the initial
@@ -266,28 +268,20 @@ Internet-Draft          SSH Strict KEX extension              March 2025
    of the protocol are necessary for it to successfully proceed, and so
    deleting them will cause the connection to fail.
 
-
-
-
-
-
-
-
-
-
-
-
-Miller                  Expires 18 September 2025               [Page 5]
-
-Internet-Draft          SSH Strict KEX extension              March 2025
-
-
    For the client, typically the first messages of the encrypted
    transport are an optional SSH_MSG_EXT_INFO followed by a
    SSH_MSG_SERVICE_REQUEST to initiate user authentication.  If the
    SSH_MSG_EXT_INFO was sent by the client, then it's deletion by a
    successful Terrapin attack would not be noticed by the server.
    However, deleting the SSH_MSG_SERVICE_REQUEST would almost certainly
+
+
+
+Miller                  Expires 19 September 2025               [Page 5]
+
+Internet-Draft          SSH Strict KEX extension              March 2025
+
+
    cause the connection to fail, as the user authentication phase that
    is necessary for all popular SSH implementation would never be
    initiated.
@@ -328,17 +322,23 @@ Internet-Draft          SSH Strict KEX extension              March 2025
    analysis.  Deleting the SSH_MSG_EXT_INFO that signals the presence of
    this feature would disable this countermeasure.
 
+   More generally, the ability to inject non-KEX messages during the
+   initial key agreement without desynchronising the sequence number can
+   expose other implementation bugs.  For example, one SSH
+   implementation ([TERRAPIN] section 6.2) was found to accept messages
+   relevant to the the user-authentication phase of the protocol prior
+   to the conclusion of KEX.
 
 
 
 
 
-Miller                  Expires 18 September 2025               [Page 6]
+Miller                  Expires 19 September 2025               [Page 6]
 
 Internet-Draft          SSH Strict KEX extension              March 2025
 
 
-5.  Strict KEX
+3.  Strict KEX
 
    Strict KEX is a set of two small SSH transport protocol changes to
    prevent the Terrapin attack: disallowing non-KEX messages prior to
@@ -357,7 +357,7 @@ Internet-Draft          SSH Strict KEX extension              March 2025
    persisting from the period before the connection is confidential and
    integrity-protected to after.
 
-5.1.  Signaling support for strict KEX
+3.1.  Signaling support for strict KEX
 
    Support for strict KEX is signaled by the presence of new extension
    marker pseudo-algorithms in the kex_algorithms field of the client
@@ -366,46 +366,54 @@ Internet-Draft          SSH Strict KEX extension              March 2025
    [RFC8308] SSH_MSG_EXT_INFO in the client and server respectively.
 
    Specifically, a client indicates support for this extension by
-   including either the standard "kex-strict-c" identifier or the pre-
-   standard "kex-strict-c-v00@openssh.com" identifier in the
+   including either the standard "kex-strict-c" identifier and/or the
+   pre-standard "kex-strict-c-v00@openssh.com" identifier in the
    kex_algorithms field of the initial SSH_MSG_KEXINIT packet.
 
    Similarly, a server indicates support by including either the
-   standard "kex-strict-s" identifier or the pre-standard "kex-strict-
-   s-v00@openssh.com" identifier in its kex_algorithms field.
+   standard "kex-strict-s" identifier and/or the pre-standard "kex-
+   strict-s-v00@openssh.com" identifier in its kex_algorithms field.
 
-   For both the client and server, the standard and pre-standard pseudo-
-   algorithm names should be treated as fully equivalent when received.
-   Implementations MUST include the standard names in kex_algorithms
-   field that they emit and MAY also include the pre-standard name too.
-
-   If both the client and server signal support for this extension, then
+   If the client advertises support for the "kex-strict-c" extension and
+   the server advertises support for the "kex-strict-s" extension, then
    both endpoints MUST enable the transport protocol changes described
    below for the duration of the connection.
 
+   Similarly, if the client offers support for the pre-standard
+   extension name "kex-strict-c-v00@openssh.com" and the server
+   advertises "kex-strict-s-v00@openssh.com" then both ends MUST enable
+   the protocol changes below.
 
 
 
 
 
 
-Miller                  Expires 18 September 2025               [Page 7]
+Miller                  Expires 19 September 2025               [Page 7]
 
 Internet-Draft          SSH Strict KEX extension              March 2025
 
+
+   SSH implementations MUST NOT enable Strict KEX if one offers only the
+   standard name (i.e. "kex-strict-[cs]") and the other offers only the
+   pre-standard name ("kex-strict-[cs]-v00@openssh.com").
+
+   Implementations seeking these protections with maximum
+   interoperability SHOULD offer both the standard and pre-standard
+   names, as support for Strict KEX is widely deployed under the pre-
+   standard names.
 
    Finally, the "kex-strict-*" pseudo-algorithm identifiers are valid
    only in the initial SSH_MSG_KEXINIT message from each endpoint.
    Their presence or absence in subsequent SSH_MSG_KEXINIT packets MUST
    be ignored by all parties.
 
-5.2.  Disallowing non-KEX messages in initial KEX
+3.2.  Disallowing non-KEX messages in initial KEX
 
    When strict KEX is enabled, implementations MUST terminate the
    connection if they receive a non-KEX message during the initial key
    exchange.  Permitted messages include only SSH_MSG_KEXINIT,
-   SSH_MSG_NEWKEYS and the specific messages specific to each KEX
-   algorithm:
+   SSH_MSG_NEWKEYS and the messages specific to each KEX algorithm:
 
    *  SSH_MSG_KEXDH_INIT and SSH_MSG_KEXDH_REPLY for the modp-DH diffie-
       hellman-* algorithms (Section 8 of [RFC4253]).
@@ -433,24 +441,22 @@ Internet-Draft          SSH Strict KEX extension              March 2025
    separately, because they must happen somewhat retrospectively, unlike
    the other enforcement mentioned in this section.
 
+
+
+
+
+Miller                  Expires 19 September 2025               [Page 8]
+
+Internet-Draft          SSH Strict KEX extension              March 2025
+
+
    Finally, implementations MUST additionally ensure that any message
    permitted during KEX only be accepted the expected number of times.
    For example, for ECDH KEX, the SSH_MSG_KEX_ECDH_INIT will only be
    sent a single time by a well-behaved client.  A server implementing
    this extension MUST only accept it once.
 
-
-
-
-
-
-
-Miller                  Expires 18 September 2025               [Page 8]
-
-Internet-Draft          SSH Strict KEX extension              March 2025
-
-
-5.3.  Resetting sequence number at KEX completion
+3.3.  Resetting sequence number at KEX completion
 
    When strict KEX is enabled, both the client and server MUST reset
    their sequence numbers at the conclusion of the initial KEX and for
@@ -463,11 +469,11 @@ Internet-Draft          SSH Strict KEX extension              March 2025
    Likewise, the expected sequence number for packets received from the
    peer MUST be reset after a SSH_MSG_NEWKEYS is received.
 
-6.  IANA Considerations
+4.  IANA Considerations
 
    This protocol requires one existing registry to be modified.
 
-6.1.  Additions to SSH Extension Names
+4.1.  Additions to SSH Extension Names
 
    IANA is requested to insert the following entries into the table Key
    Exchange Method Names [IANA-SSH-EXT] under Secure Shell (SSH)
@@ -476,14 +482,14 @@ Internet-Draft          SSH Strict KEX extension              March 2025
                       +==============+=============+
                       | Method name  | Reference   |
                       +==============+=============+
-                      | kex-strict-c | Section 5.1 |
+                      | kex-strict-c | Section 3.1 |
                       +--------------+-------------+
-                      | kex-strict-s | Section 5.1 |
+                      | kex-strict-s | Section 3.1 |
                       +--------------+-------------+
 
                                  Table 1
 
-7.  Security Considerations
+5.  Security Considerations
 
    This document describes a number of modifications to the SSH
    transport protocol to defend against a demonstrated attack that may
@@ -492,19 +498,18 @@ Internet-Draft          SSH Strict KEX extension              March 2025
    significant violation of the properties expected by a cryptographic
    protocol and is therefore worth repairing.
 
+
+
+
+Miller                  Expires 19 September 2025               [Page 9]
+
+Internet-Draft          SSH Strict KEX extension              March 2025
+
+
    These countermeasures are a comprehensive defence to the specific
    Terrapin attack, but also harden the protocol against other attacks
    on the initial key agreement phase and the interaction between the
    pre- and post-KEX transport protocols.
-
-
-
-
-
-Miller                  Expires 18 September 2025               [Page 9]
-
-Internet-Draft          SSH Strict KEX extension              March 2025
-
 
    The susceptibility of the original SSH protocol to the Terrapin
    attack may serve as a demonstration of the danger of retaining
@@ -514,7 +519,7 @@ Internet-Draft          SSH Strict KEX extension              March 2025
    parties in the process of key agreement, e.g. using a mechanism like
    TLS 1.3's Transcript Hash (Section 4.4.1 of [RFC8446]).
 
-8.  Implementation Status
+6.  Implementation Status
 
    This section records the status of known implementations of the
    protocol defined by this specification at the time of posting of this
@@ -549,18 +554,19 @@ Internet-Draft          SSH Strict KEX extension              March 2025
 
       Website: https://www.chiark.greenend.org.uk/~sgtatham/putty/
 
+
+
+
+Miller                  Expires 19 September 2025              [Page 10]
+
+Internet-Draft          SSH Strict KEX extension              March 2025
+
+
    Dropbear  Dropbear is a SSH client and server implementation for
       Unix- like systems.  It has supported the strict KEX extension
       since 2023.
 
       Website: https://matt.ucc.asn.au/dropbear/dropbear.html
-
-
-
-Miller                  Expires 18 September 2025              [Page 10]
-
-Internet-Draft          SSH Strict KEX extension              March 2025
-
 
    Paramiko  Paramiko is a SSH client and server implementation in the
       Python programming language.  It has supported the strict KEX
@@ -579,9 +585,9 @@ Internet-Draft          SSH Strict KEX extension              March 2025
 
    This list is not exhaustive.
 
-9.  References
+7.  References
 
-9.1.  Normative References
+7.1.  Normative References
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -602,6 +608,16 @@ Internet-Draft          SSH Strict KEX extension              March 2025
               Protocol", RFC 4419, DOI 10.17487/RFC4419, March 2006,
               <https://www.rfc-editor.org/info/rfc4419>.
 
+
+
+
+
+
+Miller                  Expires 19 September 2025              [Page 11]
+
+Internet-Draft          SSH Strict KEX extension              March 2025
+
+
    [RFC5656]  Stebila, D. and J. Green, "Elliptic Curve Algorithm
               Integration in the Secure Shell Transport Layer",
               RFC 5656, DOI 10.17487/RFC5656, December 2009,
@@ -610,13 +626,6 @@ Internet-Draft          SSH Strict KEX extension              March 2025
    [RFC5674]  Chisholm, S. and R. Gerhards, "Alarms in Syslog",
               RFC 5674, DOI 10.17487/RFC5674, October 2009,
               <https://www.rfc-editor.org/info/rfc5674>.
-
-
-
-Miller                  Expires 18 September 2025              [Page 11]
-
-Internet-Draft          SSH Strict KEX extension              March 2025
-
 
    [RFC7942]  Sheffer, Y. and A. Farrel, "Improving Awareness of Running
               Code: The Implementation Status Section", BCP 205,
@@ -651,11 +660,19 @@ Internet-Draft          SSH Strict KEX extension              March 2025
               <https://datatracker.ietf.org/doc/html/draft-ietf-sshm-
               mlkem-hybrid-kex-00>.
 
-9.2.  Informative References
+7.2.  Informative References
 
    [IANA-SSH-EXT]
               IANA, "Key Exchange Method Names",
               <https://www.iana.org/assignments/ssh-parameters/>.
+
+
+
+
+Miller                  Expires 19 September 2025              [Page 12]
+
+Internet-Draft          SSH Strict KEX extension              March 2025
+
 
    [TERRAPIN] Bäumer, F., Brinkmann, M., and J. Schwenk, "Terrapin
               Attack: Breaking SSH Channel Integrity By Sequence Number
@@ -666,13 +683,6 @@ Acknowledgments
    Thanks Fabian Bäumer, Marcus Brinkmann and Jörg Schwenk for
    identifying the Terrapin attack and consulting on the countermeasures
    described in this document.
-
-
-
-Miller                  Expires 18 September 2025              [Page 12]
-
-Internet-Draft          SSH Strict KEX extension              March 2025
-
 
    These changes were developed with assistance from Darren Tucker,
    Markus Friedl and Theo de Raadt from the OpenSSH project.
@@ -715,14 +725,4 @@ Author's Address
 
 
 
-
-
-
-
-
-
-
-
-
-
-Miller                  Expires 18 September 2025              [Page 13]
+Miller                  Expires 19 September 2025              [Page 13]
