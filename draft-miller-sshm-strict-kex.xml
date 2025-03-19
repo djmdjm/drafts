@@ -205,7 +205,7 @@
 	Any CBC mode cipher or CTR mode cipher used with the original SSH
 	encrypt-and-MAC construction is immune to this (with cryptographic
 	probability), as the message deletion will desynchronise the
-	ciphertext stream. AES-GCM <xref target="RFC5674"/> is also immune
+	ciphertext stream. AES-GCM <xref target="RFC5647"/> is also immune
 	to this as it uses an internal instance counter, that does effectively
 	reset when KEX completes, instead of the SSH transport sequence number.
 	</t>
@@ -616,7 +616,7 @@
 		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.4253.xml" />
 		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.4419.xml" />
 		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.5656.xml" />
-		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.5674.xml" />
+		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.5647.xml" />
 		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.7942.xml" />
 		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8174.xml" />
 		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8308.xml" />

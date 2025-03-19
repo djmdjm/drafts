@@ -240,7 +240,7 @@ Internet-Draft          SSH Strict KEX extension              March 2025
    Any CBC mode cipher or CTR mode cipher used with the original SSH
    encrypt-and-MAC construction is immune to this (with cryptographic
    probability), as the message deletion will desynchronise the
-   ciphertext stream.  AES-GCM [RFC5674] is also immune to this as it
+   ciphertext stream.  AES-GCM [RFC5647] is also immune to this as it
    uses an internal instance counter, that does effectively reset when
    KEX completes, instead of the SSH transport sequence number.
 
@@ -623,9 +623,10 @@ Internet-Draft          SSH Strict KEX extension              March 2025
               RFC 5656, DOI 10.17487/RFC5656, December 2009,
               <https://www.rfc-editor.org/info/rfc5656>.
 
-   [RFC5674]  Chisholm, S. and R. Gerhards, "Alarms in Syslog",
-              RFC 5674, DOI 10.17487/RFC5674, October 2009,
-              <https://www.rfc-editor.org/info/rfc5674>.
+   [RFC5647]  Igoe, K. and J. Solinas, "AES Galois Counter Mode for the
+              Secure Shell Transport Layer Protocol", RFC 5647,
+              DOI 10.17487/RFC5647, August 2009,
+              <https://www.rfc-editor.org/info/rfc5647>.
 
    [RFC7942]  Sheffer, Y. and A. Farrel, "Improving Awareness of Running
               Code: The Implementation Status Section", BCP 205,
@@ -665,7 +666,6 @@ Internet-Draft          SSH Strict KEX extension              March 2025
    [IANA-SSH-EXT]
               IANA, "Key Exchange Method Names",
               <https://www.iana.org/assignments/ssh-parameters/>.
-
 
 
 
