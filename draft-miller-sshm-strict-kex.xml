@@ -59,7 +59,7 @@
 	connections and login over untrusted networks.
 	The SSH transport layer <xref target="RFC4253" /> uses symmetric encryption to provide a
 	confidential and integrity-protected channel over which application
-	traffic is carries.
+	traffic is carried.
 	This transport receives its keys from an initial key agreement
 	sub-protocol, referred to as "key exchange" in the original standards
 	and usually abbreviated as "KEX".
@@ -424,13 +424,13 @@
 			sequence number does not wrap (by
 			incrementing past 2^32-1) at any time prior to the
 			completion of the initial KEX phase. These
-			check is noted separately, because they must happen
+			checks are noted separately, because they must happen
 			somewhat retrospectively, unlike the other enforcement
 			mentioned in this section.
 		</t>
 		<t>
 			Finally, implementations MUST additionally ensure that
-			any message permitted during KEX only be accepted the
+			any message permitted during KEX can be only accepted the
 			expected number of times. For example, for ECDH KEX,
 			the SSH_MSG_KEX_ECDH_INIT will only be sent a single
 			time by a well-behaved client. A server implementing

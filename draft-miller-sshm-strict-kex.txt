@@ -86,7 +86,7 @@ Table of Contents
    connections and login over untrusted networks.  The SSH transport
    layer [RFC4253] uses symmetric encryption to provide a confidential
    and integrity-protected channel over which application traffic is
-   carries.  This transport receives its keys from an initial key
+   carried.  This transport receives its keys from an initial key
    agreement sub-protocol, referred to as "key exchange" in the original
    standards and usually abbreviated as "KEX".
 
@@ -437,7 +437,7 @@ Internet-Draft          SSH Strict KEX extension              March 2025
    SSH_MSG_KEXINIT was the first message received from the peer.
    Additionally, implementations MUST ensure that the sequence number
    does not wrap (by incrementing past 2^32-1) at any time prior to the
-   completion of the initial KEX phase.  These check is noted
+   completion of the initial KEX phase.  These checks are noted
    separately, because they must happen somewhat retrospectively, unlike
    the other enforcement mentioned in this section.
 
@@ -451,10 +451,10 @@ Internet-Draft          SSH Strict KEX extension              March 2025
 
 
    Finally, implementations MUST additionally ensure that any message
-   permitted during KEX only be accepted the expected number of times.
-   For example, for ECDH KEX, the SSH_MSG_KEX_ECDH_INIT will only be
-   sent a single time by a well-behaved client.  A server implementing
-   this extension MUST only accept it once.
+   permitted during KEX can be only accepted the expected number of
+   times.  For example, for ECDH KEX, the SSH_MSG_KEX_ECDH_INIT will
+   only be sent a single time by a well-behaved client.  A server
+   implementing this extension MUST only accept it once.
 
 3.3.  Resetting sequence number at KEX completion
 
