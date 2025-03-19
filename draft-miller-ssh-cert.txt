@@ -78,20 +78,25 @@ Table of Contents
        2.5.2.  ECDSA certificates  . . . . . . . . . . . . . . . . .  11
        2.5.3.  EDDSA certificates  . . . . . . . . . . . . . . . . .  12
        2.5.4.  RSA certificates  . . . . . . . . . . . . . . . . . .  12
-   3.  Protocol numbers  . . . . . . . . . . . . . . . . . . . . . .  12
-     3.1.  Certificate types . . . . . . . . . . . . . . . . . . . .  12
-   4.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  13
-     4.1.  Additions to SSH key type registry  . . . . . . . . . . .  13
-     4.2.  New registry: Certificate Extension Identifiers . . . . .  13
-     4.3.  New registry: Certificate Criticial Option Identifiers  .  14
-     4.4.  New registry: Certificate Type Numbers  . . . . . . . . .  14
-   5.  Security Considerations . . . . . . . . . . . . . . . . . . .  14
-   6.  Implementation Status . . . . . . . . . . . . . . . . . . . .  14
-   7.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  16
-     7.1.  Normative References  . . . . . . . . . . . . . . . . . .  16
-     7.2.  Informative References  . . . . . . . . . . . . . . . . .  17
-   Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .  18
-   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .  18
+   3.  Using certificates  . . . . . . . . . . . . . . . . . . . . .  12
+     3.1.  Accepting certificates  . . . . . . . . . . . . . . . . .  13
+     3.2.  Certificate signatures  . . . . . . . . . . . . . . . . .  13
+     3.3.  Use in host authentication  . . . . . . . . . . . . . . .  13
+     3.4.  Use in user authentication  . . . . . . . . . . . . . . .  14
+   4.  Protocol numbers  . . . . . . . . . . . . . . . . . . . . . .  15
+     4.1.  Certificate types . . . . . . . . . . . . . . . . . . . .  15
+   5.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  15
+     5.1.  Additions to SSH key type registry  . . . . . . . . . . .  15
+     5.2.  New registry: Certificate Extension Identifiers . . . . .  16
+     5.3.  New registry: Certificate Criticial Option Identifiers  .  16
+     5.4.  New registry: Certificate Type Numbers  . . . . . . . . .  17
+   6.  Security Considerations . . . . . . . . . . . . . . . . . . .  17
+   7.  Implementation Status . . . . . . . . . . . . . . . . . . . .  17
+   8.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  18
+     8.1.  Normative References  . . . . . . . . . . . . . . . . . .  18
+     8.2.  Informative References  . . . . . . . . . . . . . . . . .  20
+   Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .  21
+   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .  21
 
 1.  Introduction
 
@@ -99,13 +104,8 @@ Table of Contents
    login over untrusted networks.  SSH uses public key signatures for
    host authentication and commonly uses them for user authentication.
    This document describes a lightweight certificate format for use in
-   these contexts.
-
-
-
-
-
-
+   these contexts.  It may be used for server authentication as part of
+   key exchange (Section 7 of [RFC4253]) and for user public key
 
 
 
@@ -113,6 +113,8 @@ Miller                  Expires 20 September 2025               [Page 2]
 
 Internet-Draft           SSH Certificate Format               March 2025
 
+
+   authentication (Section 7 of [RFC4252]).
 
 1.1.  Requirements Language
 
@@ -158,9 +160,7 @@ Internet-Draft           SSH Certificate Format               March 2025
    The "public key fields" section contains the actual public key
    material.  These are specified below for each certificate type.
 
-   The "certificate role" field indicates the role of the certificate,
-   either SSH2_CERT_TYPE_USER for user authentication certificates or
-   SSH2_CERT_TYPE_HOST authentication certificates.
+
 
 
 
@@ -169,6 +169,10 @@ Miller                  Expires 20 September 2025               [Page 3]
 
 Internet-Draft           SSH Certificate Format               March 2025
 
+
+   The "certificate role" field indicates the role of the certificate,
+   either SSH2_CERT_TYPE_USER for user authentication certificates or
+   SSH2_CERT_TYPE_HOST authentication certificates.
 
    The "identifier" field contains a UTF-8 encoded, human-readable
    identifier for the certificate, suitable for display to the user,
@@ -214,10 +218,6 @@ Internet-Draft           SSH Certificate Format               March 2025
    the "signature key").  The signature is encoded using the standard
    SSH signature encoding for the CA key type in question, e.g.
    Section 3.1.2 of [RFC5656] for ECDSA CA keys.
-
-
-
-
 
 
 
@@ -659,13 +659,13 @@ Internet-Draft           SSH Certificate Format               March 2025
    be calculated from the others) are defined by Section 5.1 of
    [FIPS.186-4].
 
-3.  Protocol numbers
+3.  Using certificates
 
-3.1.  Certificate types
-
-   The following numbers are used for certificate types:
-
-
+   Certificates may be appear and be used any place in the SSH protocol
+   where plain keys are used.  In particular, they may be used for
+   server authentication or for user public-key authentication.  For
+   each of these cases, the certificate, encoded as per Section 2.1
+   appears in place of the encoded key.
 
 
 
@@ -674,15 +674,142 @@ Miller                  Expires 20 September 2025              [Page 12]
 Internet-Draft           SSH Certificate Format               March 2025
 
 
+3.1.  Accepting certificates
+
+   Implementations that accept a certificate MUST verify the CA
+   signature over the certificate contents prior to making any
+   authentication or authorisation decisions.  Implementations MAY elect
+   to verify the certificate signature as soon as the certificate is
+   received.
+
+   When making authentication or authorisation decisions with a
+   certificate, implementations:
+
+   *  MUST check that the certificate is well-formed
+
+   *  MUST ensure that no unsupported critical options are present
+
+   *  MUST check that the "certificate role" matches the intended
+      decision type (user or host authentication)
+
+   *  MUST check the time against the certificate validity interval
+
+   *  MUST verify that at least one of the listed certificate principals
+      is accepted
+
+   *  MUST perform any additional authorisation operations required by
+      critical options.
+
+3.2.  Certificate signatures
+
+   When signatures are required, they are made and formatted using the
+   same rules for the underlying plain key type.  For example, a "ssh-
+   rsa-cert" could produce signatures of types "ssh-rsa" using the rules
+   from Section 6.6 of [RFC4253], or "rsa-sha2-256" or "rsa-sha2-512"
+   using the rules from Section 3 of [RFC8332].
+
+3.3.  Use in host authentication
+
+   Certificate host keys may be used for server authentication as part
+   of the initial key exchange or for subsequent re-exchange.  To use a
+   certificate host key, its key type name (e.g. "ssh-ed25519-cert")
+   must appear in the server_host_key_algorithms of the SSH_MSG_KEXINIT
+   (Section 7.1 of [RFC5656]).  If negotiated by both the server and the
+   client, then a certificate of the agreed type may take the place of
+   the plain host key in the final reply message.  For example in ECDH
+   host authentication (Section 4 of [RFC5656]), host authentication
+   occurs in the final SSH_MSG_KEX_ECDH_REPLY message:
+
+
+
+
+
+
+Miller                  Expires 20 September 2025              [Page 13]
+
+Internet-Draft           SSH Certificate Format               March 2025
+
+
+       byte                SSH_MSG_KEX_ECDH_REPLY
+       string              K_S, server's certificate
+       string              Q_S, server's ephemeral ECDH public key
+       string              the signature on the exchange hash
+
+   Certificates used for host authentication MUST have "certificate
+   role" of SSH2_CERT_TYPE_HOST.  Other certificate types MUST not be
+   accepted.
+
+   Certificate host keys list hostnames and/or IP addresses for the host
+   in their "principals" section.  Clients MUST match the hostname or
+   address thay are using for the host against the principals in this
+   list and refuse to authorise the certificate if it is absent.
+
+   Clients that accept certified host keys MAY downgrade the certificate
+   to a plain public key and process it accordingly, if they are unable
+   to verify the certificate.  This allows recovery from the situation
+   where the endpoints negotiate use of a cerificate host key but the
+   client is not able to authorise the certificate contents, perhaps
+   because the CA is not trusted or because the host name the client is
+   using does not match any in the certificate.
+
+3.4.  Use in user authentication
+
+   For user public key authentication No prior negotiation is needed to
+   send a user authentication attempt that contains a certificate,
+   though clients may wish to filter the ones they send against the
+   server's list of accepted publickey authentication signature
+   algorithms if one was provided via the [RFC8308]SSH_MSG_EXT_INFO
+   mechanism.
+
+   Certificates used for user authentication MUST have "certificate
+   role" of SSH2_CERT_TYPE_USER.  Other certificate types MUST not be
+   accepted.
+
+   Certificate keys for user authentication list one or more user
+   principal names in their "principals" section.  Interpretation and
+   authorisation of principal names for a given target user name is
+   fully determined by the server.  In the trivial case, a certificate
+   may list user names directly and the server merely matches the user
+   name in the SSH_MSG_USERAUTH_REQUEST (Section 7 of [RFC4252]) to one
+   of the principals in the certificate.
+
+   To make a user authentication attempt using a certificate host key,
+   the certificate takes the place of the plain public key in a
+   SSH_MSG_USERAUTH_REQUEST message.  For example:
+
+
+
+
+
+Miller                  Expires 20 September 2025              [Page 14]
+
+Internet-Draft           SSH Certificate Format               March 2025
+
+
+       byte                SSH_MSG_USERAUTH_REQUEST
+       string              user name
+       string              service name
+       string              "publickey"
+       boolean             TRUE
+       string              certificate key algorithm name
+       string              encoded certificate
+       string              signature
+
+4.  Protocol numbers
+
+4.1.  Certificate types
+
+   The following numbers are used for certificate types:
+
        SSH2_CERT_TYPE_USER                1
        SSH2_CERT_TYPE_HOST                2
 
-4.  IANA Considerations
+5.  IANA Considerations
 
    This format requires creation of one new registry and additions to an
    existing registry.
 
-4.1.  Additions to SSH key type registry
+5.1.  Additions to SSH key type registry
 
    IANA is requested to insert the following entries into the table
    Public Key Algorithm Names [IANA-SSH-KEYTYPES] under Secure Shell
@@ -708,44 +835,70 @@ Internet-Draft           SSH Certificate Format               March 2025
 
                                  Table 1
 
-4.2.  New registry: Certificate Extension Identifiers
+
+
+Miller                  Expires 20 September 2025              [Page 15]
+
+Internet-Draft           SSH Certificate Format               March 2025
+
+
+5.2.  New registry: Certificate Extension Identifiers
 
    This registry, titled "Certificate Extension Identifiers" records
    identifiers for certificate extensions.  Its initial state should
    consist of the following names.  Future name allocations shall occur
    via EXPERT REVIEW as per [RFC8126].
 
-                     +================+=============+
-                     | Extension name | Reference   |
-                     +================+=============+
-                     | XXX            | Section 2.3 |
-                     +----------------+-------------+
+                 +=========================+=============+
+                 | Extension name          | Reference   |
+                 +=========================+=============+
+                 | no-touch-required       | Section 2.3 |
+                 +-------------------------+-------------+
+                 | permit-agent-forwarding | Section 2.3 |
+                 +-------------------------+-------------+
+                 | permit-port-forwarding  | Section 2.3 |
+                 +-------------------------+-------------+
+                 | permit-pty              | Section 2.3 |
+                 +-------------------------+-------------+
+                 | permit-user-rc          | Section 2.3 |
+                 +-------------------------+-------------+
+                 | permit-X11-forwarding   | Section 2.3 |
+                 +-------------------------+-------------+
 
-                                 Table 2
+                                  Table 2
 
-
-
-Miller                  Expires 20 September 2025              [Page 13]
-
-Internet-Draft           SSH Certificate Format               March 2025
-
-
-4.3.  New registry: Certificate Criticial Option Identifiers
+5.3.  New registry: Certificate Criticial Option Identifiers
 
    This registry, titled "Certificate Critical Option Identifiers"
    records identifiers for certificate criticial options.  Its initial
    state should consist of the following names.  Future names
    allocations shall occur via EXPERT REVIEW as per [RFC8126].
 
-                       +=============+=============+
-                       | Option name | Reference   |
-                       +=============+=============+
-                       | XXX         | Section 2.4 |
-                       +-------------+-------------+
+                     +=================+=============+
+                     | Option name     | Reference   |
+                     +=================+=============+
+                     | force-command   | Section 2.4 |
+                     +-----------------+-------------+
+                     | source-address  | Section 2.4 |
+                     +-----------------+-------------+
+                     | verify-required | Section 2.4 |
+                     +-----------------+-------------+
 
                                   Table 3
 
-4.4.  New registry: Certificate Type Numbers
+
+
+
+
+
+
+
+Miller                  Expires 20 September 2025              [Page 16]
+
+Internet-Draft           SSH Certificate Format               March 2025
+
+
+5.4.  New registry: Certificate Type Numbers
 
    This registry, titled "Certificate Type Numbers" records the numbers
    used to indicate the types of certificates.  Its initial state should
@@ -755,18 +908,18 @@ Internet-Draft           SSH Certificate Format               March 2025
               +========+=====================+=============+
               | Number | Identifier          | Reference   |
               +========+=====================+=============+
-              | 1      | SSH2_CERT_TYPE_USER | Section 3.1 |
+              | 1      | SSH2_CERT_TYPE_USER | Section 4.1 |
               +--------+---------------------+-------------+
-              | 2      | SSH2_CERT_TYPE_HOST | Section 3.1 |
+              | 2      | SSH2_CERT_TYPE_HOST | Section 4.1 |
               +--------+---------------------+-------------+
 
                                  Table 4
 
-5.  Security Considerations
+6.  Security Considerations
 
    XXX TODO XXX
 
-6.  Implementation Status
+7.  Implementation Status
 
    This section records the status of known implementations of the
    protocol defined by this specification at the time of posting of this
@@ -778,14 +931,6 @@ Internet-Draft           SSH Certificate Format               March 2025
    has been spent to verify the information presented here that was
    supplied by IETF contributors.  This is not intended as, and must not
    be construed to be, a catalog of available implementations or their
-
-
-
-Miller                  Expires 20 September 2025              [Page 14]
-
-Internet-Draft           SSH Certificate Format               March 2025
-
-
    features.  Readers are advised to note that other implementations may
    exist.
 
@@ -801,6 +946,14 @@ Internet-Draft           SSH Certificate Format               March 2025
    namespace, e.g. "ssh-rsa-cert-v01@openssh.com".
 
    OpenSSH  OpenSSH is the originating implementation of this protocol
+
+
+
+Miller                  Expires 20 September 2025              [Page 17]
+
+Internet-Draft           SSH Certificate Format               March 2025
+
+
       and has supported it since 2010.
 
       Website: https://www.openssh.com/
@@ -834,14 +987,6 @@ Internet-Draft           SSH Certificate Format               March 2025
 
    PuTTY  The PuTTY SSH client has supported this format since 2022.
 
-
-
-
-Miller                  Expires 20 September 2025              [Page 15]
-
-Internet-Draft           SSH Certificate Format               March 2025
-
-
       Website: https://www.chiark.greenend.org.uk/~sgtatham/putty/
 
    russh  The russh library has supported this format since 2024.
@@ -852,9 +997,18 @@ Internet-Draft           SSH Certificate Format               March 2025
    OpenSSH certificate format to perform centralised authorisation for
    pool of target hosts.
 
-7.  References
+8.  References
 
-7.1.  Normative References
+8.1.  Normative References
+
+
+
+
+
+Miller                  Expires 20 September 2025              [Page 18]
+
+Internet-Draft           SSH Certificate Format               March 2025
+
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -869,6 +1023,10 @@ Internet-Draft           SSH Certificate Format               March 2025
    [RFC4251]  Ylonen, T. and C. Lonvick, Ed., "The Secure Shell (SSH)
               Protocol Architecture", RFC 4251, DOI 10.17487/RFC4251,
               January 2006, <https://www.rfc-editor.org/info/rfc4251>.
+
+   [RFC4252]  Ylonen, T. and C. Lonvick, Ed., "The Secure Shell (SSH)
+              Authentication Protocol", RFC 4252, DOI 10.17487/RFC4252,
+              January 2006, <https://www.rfc-editor.org/info/rfc4252>.
 
    [RFC4253]  Ylonen, T. and C. Lonvick, Ed., "The Secure Shell (SSH)
               Transport Layer Protocol", RFC 4253, DOI 10.17487/RFC4253,
@@ -888,16 +1046,6 @@ Internet-Draft           SSH Certificate Format               March 2025
               RFC 7942, DOI 10.17487/RFC7942, July 2016,
               <https://www.rfc-editor.org/info/rfc7942>.
 
-
-
-
-
-
-Miller                  Expires 20 September 2025              [Page 16]
-
-Internet-Draft           SSH Certificate Format               March 2025
-
-
    [RFC8032]  Josefsson, S. and I. Liusvaara, "Edwards-Curve Digital
               Signature Algorithm (EdDSA)", RFC 8032,
               DOI 10.17487/RFC8032, January 2017,
@@ -908,9 +1056,28 @@ Internet-Draft           SSH Certificate Format               March 2025
               RFC 8126, DOI 10.17487/RFC8126, June 2017,
               <https://www.rfc-editor.org/info/rfc8126>.
 
+
+
+
+
+
+Miller                  Expires 20 September 2025              [Page 19]
+
+Internet-Draft           SSH Certificate Format               March 2025
+
+
    [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
               May 2017, <https://www.rfc-editor.org/info/rfc8174>.
+
+   [RFC8332]  Bider, D., "Use of RSA Keys with SHA-256 and SHA-512 in
+              the Secure Shell (SSH) Protocol", RFC 8332,
+              DOI 10.17487/RFC8332, March 2018,
+              <https://www.rfc-editor.org/info/rfc8332>.
+
+   [RFC8308]  Bider, D., "Extension Negotiation in the Secure Shell
+              (SSH) Protocol", RFC 8308, DOI 10.17487/RFC8308, March
+              2018, <https://www.rfc-editor.org/info/rfc8308>.
 
    [RFC8709]  Harris, B. and L. Velvindron, "Ed25519 and Ed448 Public
               Key Algorithms for the Secure Shell (SSH) Protocol",
@@ -935,7 +1102,7 @@ Internet-Draft           SSH Certificate Format               March 2025
               DOI 10.6028/NIST.FIPS.186-5, February 2023,
               <https://doi.org/10.6028/NIST.FIPS.186-5>.
 
-7.2.  Informative References
+8.2.  Informative References
 
    [IANA-SSH-KEYTYPES]
               IANA, "Public Key Algorithm Names",
@@ -949,7 +1116,8 @@ Internet-Draft           SSH Certificate Format               March 2025
 
 
 
-Miller                  Expires 20 September 2025              [Page 17]
+
+Miller                  Expires 20 September 2025              [Page 20]
 
 Internet-Draft           SSH Certificate Format               March 2025
 
@@ -1005,4 +1173,4 @@ Author's Address
 
 
 
-Miller                  Expires 20 September 2025              [Page 18]
+Miller                  Expires 20 September 2025              [Page 21]

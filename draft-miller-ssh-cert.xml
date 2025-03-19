@@ -57,7 +57,9 @@
 	SSH uses public key signatures for host authentication and
 	commonly uses them for user authentication.
 	This document describes a lightweight certificate format for use in
-	these contexts.
+	these contexts. It may be used for server authentication as part
+	of key exchange (<xref target="RFC4253" section="7" />) and for
+	user public key authentication (<xref target="RFC4252" section="7" />).
 	</t>
 
 	<section anchor="requirements"><name>Requirements Language</name>
@@ -704,7 +706,7 @@
 			</sourcecode>
 			<t>
 			"p" and "q" are its constituent private
-			prime factors. 
+			prime factors.
 			"iqmp" is the inverse of "q" modulo
 			"p". All these values except "iqmp"
 			(which can be calculated from the others)
@@ -712,6 +714,136 @@
 			<xref target="FIPS.186-4" />.
 			</t>
 		</section>
+	</section>
+</section>
+
+<section><name>Using certificates</name>
+	<t>
+	Certificates may be appear and be used any place in the SSH protocol
+	where plain keys are used.
+	In particular, they may be used for server authentication or for
+	user public-key authentication.
+	For each of these cases, the certificate, encoded as per
+	<xref target="fmt" /> appears in place of the encoded key.
+	</t>
+	<section title="Accepting certificates">
+		<t>
+		Implementations that accept a certificate MUST verify the CA
+		signature over the certificate contents prior to making
+		any authentication or authorisation decisions.
+		Implementations MAY elect to verify the certificate signature
+		as soon as the certificate is received.
+		</t>
+		<t>
+		When making authentication or authorisation decisions with a
+		certificate, implementations:
+		</t>
+		<ul>
+			<li><t>MUST check that the certificate is well-formed</t></li>
+			<li><t>MUST ensure that no unsupported critical options are present</t></li>
+			<li><t>MUST check that the "certificate role" matches the intended decision type (user or host authentication)</t></li>
+			<li><t>MUST check the time against the certificate validity interval</t></li>
+			<li><t>MUST verify that at least one of the listed certificate principals is accepted</t></li>
+			<li><t>MUST perform any additional authorisation operations required by critical options.</t></li>
+		</ul>
+	</section>
+	<section title="Certificate signatures">
+		<t>
+		When signatures are required, they are made and formatted using
+		the same rules for the underlying plain key type. For example, a
+		"ssh-rsa-cert" could produce signatures of types "ssh-rsa" using
+		the rules from <xref target="RFC4253" section="6.6" />, or
+		"rsa-sha2-256" or "rsa-sha2-512" using the rules from
+		<xref target="RFC8332" section="3" />.
+		</t>
+	</section>
+	<section title="Use in host authentication">
+		<t>
+		Certificate host keys may be used for server authentication
+		as part of the initial key exchange or for subsequent
+		re-exchange. To use a certificate host key, its key type name
+		(e.g. "ssh-ed25519-cert") must appear in the
+		server_host_key_algorithms of the SSH_MSG_KEXINIT
+		(<xref target="RFC5656" section="7.1" />).
+		If negotiated by both the server and the client, then
+		a certificate of the agreed type may take the place
+		of the plain host key in the final reply message. For example
+		in ECDH host authentication
+		(<xref target="RFC5656" section="4" />),
+		host authentication occurs in the
+		final SSH_MSG_KEX_ECDH_REPLY message:
+		</t>
+		<sourcecode>
+    byte                SSH_MSG_KEX_ECDH_REPLY
+    string              K_S, server's certificate
+    string              Q_S, server's ephemeral ECDH public key
+    string              the signature on the exchange hash
+		</sourcecode>
+		<t>
+		Certificates used for host authentication MUST have
+		"certificate role" of SSH2_CERT_TYPE_HOST. Other certificate
+		types MUST not be accepted.
+		</t>
+		<t>
+		Certificate host keys list hostnames and/or IP addresses for
+		the host in their "principals" section. Clients MUST match
+		the hostname or address thay are using for the host against
+		the principals in this list and refuse to authorise the
+		certificate if it is absent.
+		</t>
+		<t>
+		Clients that accept certified host keys MAY downgrade the
+		certificate to a plain public key and process it accordingly,
+		if they are unable to verify the certificate. This allows
+		recovery from the situation where the endpoints negotiate
+		use of a cerificate host key but the client is not able to
+		authorise the certificate contents, perhaps because the CA
+		is not trusted or because the host name the client is using
+		does not match any in the certificate.
+		</t>
+	</section>
+	<section title="Use in user authentication">
+		<t>
+		For user public key authentication
+		No prior negotiation is needed to send a user
+		authentication attempt that contains a certificate, though
+		clients may wish to filter the ones they send against the
+		server's list of accepted publickey authentication signature
+		algorithms if one was provided via the
+		<xref target="RFC8308" />SSH_MSG_EXT_INFO mechanism.
+		</t>
+		<t>
+		Certificates used for user authentication MUST have
+		"certificate role" of SSH2_CERT_TYPE_USER. Other certificate
+		types MUST not be accepted.
+		</t>
+		<t>
+		Certificate keys for user authentication list one or more
+		user principal names in their "principals" section.
+		Interpretation and authorisation of principal names for a
+		given target user name is fully determined by the server.
+		In the trivial case, a certificate may list user names directly
+		and the server merely matches the user name in the
+		SSH_MSG_USERAUTH_REQUEST
+		(<xref target="RFC4252" section="7" />)
+		to one of the principals in the certificate.
+		</t>
+		<t>
+		To make a user authentication attempt using a certificate
+		host key, the certificate takes the place of the plain
+		public key in a SSH_MSG_USERAUTH_REQUEST message.
+		For example:
+		</t>
+		<sourcecode>
+    byte                SSH_MSG_USERAUTH_REQUEST
+    string              user name
+    string              service name
+    string              "publickey"
+    boolean             TRUE
+    string              certificate key algorithm name
+    string              encoded certificate
+    string              signature
+		</sourcecode>
 	</section>
 </section>
 
@@ -769,7 +901,12 @@
 		<tr><th>Extension name</th><th>Reference</th></tr>
 		</thead>
 		<tbody>
-		<tr><td>XXX</td><td><xref target="exts" /></td></tr>
+		<tr><td>no-touch-required</td><td><xref target="exts" /></td></tr>
+		<tr><td>permit-agent-forwarding</td><td><xref target="exts" /></td></tr>
+		<tr><td>permit-port-forwarding</td><td><xref target="exts" /></td></tr>
+		<tr><td>permit-pty</td><td><xref target="exts" /></td></tr>
+		<tr><td>permit-user-rc</td><td><xref target="exts" /></td></tr>
+		<tr><td>permit-X11-forwarding</td><td><xref target="exts" /></td></tr>
 		</tbody>
 		</table>
 	</section>
@@ -787,7 +924,9 @@
 		<tr><th>Option name</th><th>Reference</th></tr>
 		</thead>
 		<tbody>
-		<tr><td>XXX</td><td><xref target="critopts" /></td></tr>
+		<tr><td>force-command</td><td><xref target="critopts" /></td></tr>
+		<tr><td>source-address</td><td><xref target="critopts" /></td></tr>
+		<tr><td>verify-required</td><td><xref target="critopts" /></td></tr>
 		</tbody>
 		</table>
 	</section>
@@ -957,6 +1096,7 @@
 		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.2119.xml" />
 		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.4250.xml" />
 		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.4251.xml" />
+		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.4252.xml" />
 		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.4253.xml" />
 		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.4254.xml" />
 		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.5656.xml" />
@@ -964,6 +1104,8 @@
 		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8032.xml" />
 		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8126.xml" />
 		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8174.xml" />
+		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8332.xml" />
+		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8308.xml" />
 		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8709.xml" />
 		<xi:include href="https://datatracker.ietf.org/doc/bibxml3/draft-ietf-sshm-ssh-agent-02.xml" />
 		<reference anchor="FIPS.186-4">
