@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-model href="rfc7991bis.rnc"?>
+<!-- <?xml-stylesheet type="text/xsl" href="rfc2629.xslt" ?> --> 
+<!DOCTYPE rfc [
+  <!ENTITY nbsp    "&#160;">
+  <!ENTITY zwsp   "&#8203;">
+  <!ENTITY nbhy   "&#8209;">
+  <!ENTITY wj     "&#8288;">
+]>
+<rfc
+  xmlns:xi="http://www.w3.org/2001/XInclude"
+  category="std"
+  docName="draft-miller-sshm-aes-gcm-00"
+  ipr="trust200902"
+  obsoletes=""
+  updates=""
+  consensus="true"
+  submissionType="IETF"
+  xml:lang="en"
+  version="3">
+<!-- 
+    * docName should be the name of your draft
+    * category should be one of std, bcp, info, exp, historic
+    * ipr should be one of trust200902, noModificationTrust200902, noDerivativesTrust200902, pre5378Trust200902
+    * updates can be an RFC number as NNNN.
+    * obsoletes can be an RFC number as NNNN 
+-->
+
+<front>
+	<title>Fixed AES-GCM modes for the SSH protocol</title>
+	<seriesInfo name="Internet-Draft" value="draft-miller-sshm-aes-gcm-00"/>
+	<author fullname="Damien Miller" initials="D." surname="Miller">
+		<organization>OpenSSH</organization>
+		<address>
+			<email>djm@openssh.com</email>  
+			<uri>https://www.openssh.com/</uri>
+		</address>
+	</author>
+	<date year="2025" month="03" day="18" />
+	<area>General</area>
+	<workgroup>Internet Engineering Task Force</workgroup>
+	<keyword>ssh</keyword>
+	<keyword>AES-GCM</keyword>
+	<abstract>
+		<t>
+		This document describes the use of the AES-GCM AEAD in the
+		Secure Shell (SSH) protocol, using the underlying construction
+		of <xref target="RFC5647" /> but fixing problems in the
+		negotiation mechanism.
+		</t>
+	</abstract>
+</front>
+
+<middle>
+<section><name>Introduction</name>
+	<t>
+	Secure Shell (SSH) is a cryptographic protocol for secure remote
+	connections and login over untrusted networks.
+	The SSH transport layer <xref target="RFC4253" /> uses symmetric
+	encryption to provide a
+	confidential and integrity-protected channel over which application
+	traffic is carried.
+	When initially designed, the SSH protocol negotiated ciphers and
+	MACs separately and combines them using a specified encrypt-and-MAC
+	construction.
+	</t>
+	<t>
+	<xref target="RFC5647" /> introduced the first AEAD (Authenticated
+	Encryption with Additional Data) in the form of AES-GCM (Galois
+	Counter Mode). This document specified two algorithms:
+	AEAD_AES_128_GCM and AEAD_AES_256_GCM.
+	</t>
+	<t>
+	Unfortunately, this document contained a problem in how these new
+	modes were negotiated in key exchange:
+	<xref target="RFC5647" section="5.1" /> required that these new
+	algorithm identifiers be included in both the "encryption_algorithms"
+	and "mac_algorithms" fields on the SSH_MSG_KEXINIT negotiation
+	message (<xref target="RFC4253" section="7.1" />), and that
+	algorithm negotiation must fail if the endpoints do not agree on the
+	same algorithm for both cipher and MAC.
+	</t>
+	<t>
+	This aspect of the design is problematic, as it creates the situation
+	where two endpoints could propose well-formed
+	algorithm proposals that contain
+	shared algorithms that should (per <xref target="RFC4253" />) yield
+	a successful negotiated set of parameters, but could potentially fail
+	to if the endpoints contain the AEAD_AES_128/256_GCM algorithms in
+	different preference positions. As such, these modes were not safe
+	to use in the presence of other cipher/MAC preferences.
+	</t>
+	<t>
+	Most SSH implementations have since adopted a different approach to
+	negotiating AEAD modes in the key exchange phase. Instead of requiring
+	the same algorithm name to appear in both the "encryption_algorithms"
+	and "mac_algorithms" SSH_MSG_KEXINIT fields, the AEAD appears only in
+	the "encryption_algorithms" field and, if negotiated as the preferred
+	cipher, negotiation of "mac_algorithms" is skipped entriely.
+	This approach was used by
+	<xref target="I-D.ietf-sshm-chacha20-poly1305" />
+	and by the OpenSSH AES-GCM modes that are being specified here.
+	</t>
+
+	<section anchor="requirements"><name>Requirements Language</name>
+		<t>
+		The key words "MUST", "MUST NOT", "REQUIRED", "SHALL",
+	        "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT
+	        RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be
+	        interpreted as described in BCP 14 <xref target="RFC2119"/>
+	        <xref target="RFC8174"/> when, and only when, they appear in
+	        all capitals, as shown here.
+		</t>
+	</section>
+</section>
+    
+<section><name>Revised AES-GCM modes</name>
+	<t>
+	This document defines two new AEAD modes for the SSH transport protocol,
+	"aes128-gcm" and "aes256-gcm". These modes have an identical
+	construction to the AEAD_AES_128_GCM and AEAD_AES_256_GCM (respecitvely)
+	from <xref target="RFC5647" /> except for their negotiation.
+	</t>
+	<t>
+	Specifically, these modes inherit all provisions of
+	<xref target="RFC5647" /> except those relating to Key Exchange
+	(<xref target="RFC5647" section="5.1" />. Instead, the following
+	algorithm negotiation rules apply:
+	</t>
+	<t>
+	AEAD modes, such as "aes128-gcm" or "aes256-gcm", MUST be listed in
+	the "encryption_algorithms" field of SSH_MSG_KEXINIT packets only.
+	They MUST NOT appear in the "mac_algorithms" field.
+	</t>
+	<t>
+	When an AEAD mode is selected as the highest preference of the
+	"encryption_algorithms" by the endpoints, MAC negotiation MUST be
+	skipped and the contents of the "mac_algorithms" field ignored.
+	Specifically, failures of the endpoints to agree on a mutual selection
+	from the "mac_algorithms" field MUST NOT cause connection failure.
+	</t>
+	<t>
+	This supports the situation where a client and server agree on an AEAD
+	(which provides all the properties that SSH requires of a MAC), but
+	have disjoint sets of proposed MAC algorithms.
+	</t>
+	<section anchor="aes128-gcm" title="aes128-gcm">
+		<t>
+		This algorithm is identical to AEAD_AES_128_GCM defined in
+		<xref target="RFC5647" section="6.1" /> except for the
+		algorithm negotiation changes mentioned above.
+		</t>
+	</section>
+	<section anchor="aes256-gcm" title="aes256-gcm">
+		<t>
+		This algorithm is identical to AEAD_AES_256_GCM defined in
+		<xref target="RFC5647" section="6.2" /> except for the
+		algorithm negotiation changes mentioned above.
+		</t>
+	</section>
+</section>
+
+<section anchor="IANA"><name>IANA Considerations</name>
+	<t>
+	This protocol requires one existing registry to be modified.
+	</t>
+	<section title="Additions to SSH Encryption Algorithm Names">
+		<t>
+		IANA is requested to insert the following entries into the
+		table Encryption Algorithm Names
+		<xref target="IANA-SSH-EXT" /> under Secure Shell (SSH)
+		Protocol Parameters <xref target="RFC4250" />.
+		</t>
+<table>
+<thead>
+<tr><th>Algorithm name</th><th>Reference</th></tr>
+</thead>
+<tbody>
+<tr><td>aes128-gcm</td><td><xref target="aes128-gcm" /></td></tr>
+<tr><td>aes256-gcm</td><td><xref target="aes256-gcm" /></td></tr>
+</tbody>
+</table>
+	</section>
+</section>
+
+<section anchor="Security"><name>Security Considerations</name>
+	<t>
+	The security considerations of <xref target="RFC5647" /> apply.
+	</t>
+</section>
+
+<section anchor="implstatus"><name>Implementation Status</name>
+	<t>
+	This section records the status of known implementations of the
+	protocol defined by this specification at the time of posting of
+	this Internet-Draft, and is based on a proposal described in
+	<xref target="RFC7942" />. The description of implementations in
+	this section is intended to assist the IETF in its decision processes
+	in progressing drafts to RFCs. Please note that the listing of any
+	individual implementation here does not imply endorsement by the
+	IETF. Furthermore, no effort has been spent to verify the
+	information presented here that was supplied by IETF contributors.
+	This is not intended as, and must not be construed to be, a
+	catalog of available implementations or their features. Readers
+	are advised to note that other implementations may exist.
+	</t>
+	<t>
+	According to <xref target="RFC7942" />, "this will allow reviewers
+	and working groups to assign due consideration to documents that
+	have the benefit of running code, which may serve as evidence of
+	valuable experimentation and feedback that have made the implemented
+	protocols more mature. It is up to the individual working groups
+	to use this information as they see fit".
+	</t>
+	<t>
+	The following example projects maintain an implementation of this
+	protocol:
+	</t>
+	<dl>
+		<dt>OpenSSH</dt>
+		<dd>
+		<t>
+		OpenSSH is the originating implementation of this modes and
+		has supported them since 2013.
+		</t>
+		<t>
+		Website: https://www.openssh.com/
+		</t>
+		</dd>
+
+		<dt>PuTTY</dt>
+		<dd>
+		<t>
+		PuTTY is a popular SSH client implementation for multiple
+		platforms that added support for these modes in 2022.
+		</t>
+		<t>
+		Website: https://www.chiark.greenend.org.uk/~sgtatham/putty/
+		</t>
+		</dd>
+
+		<dt>Paramiko</dt>
+		<dd>
+		<t>
+		Paramiko is a SSH client and server implementation in the
+		Python programming language. It has supported the these modes
+		modifications since 2024.
+		</t>
+		<t>
+		Website: https://www.paramiko.org/
+		</t>
+		</dd>
+
+		<dt>Golang x/crypto/ssh</dt>
+		<dd>
+		<t>
+		The Go programming language project has supported these modes
+		in its external "x" repository since 2023.
+		</t>
+		<t>
+		Website: https://pkg.go.dev/golang.org/x/crypto/ssh
+		</t>
+		</dd>
+
+		<dt>libssh</dt>
+		<dd>
+		<t>
+		libssh has implemented these modes since 2018.
+		</t>
+		<t>
+		Website: https://libssh.org/
+		</t>
+		</dd>
+
+		<dt>Russh</dt>
+		<dd>
+		<t>
+		Russsh has implemented these modes since 2022.
+		</t>
+		<t>
+		Website: https://github.com/Eugeny/russh
+		</t>
+		</dd>
+	</dl>
+	<t>
+		This list is not exhaustive.
+	</t>
+</section>
+</middle>
+
+<back>
+<references>
+	<name>References</name>
+	<references><name>Normative References</name>
+		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.2119.xml" />
+		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.4250.xml" />
+		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.4253.xml" />
+		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.5647.xml" />
+		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.7942.xml" />
+		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8174.xml" />
+		<xi:include href="https://datatracker.ietf.org/doc/bibxml3/draft-ietf-sshm-chacha20-poly1305-01.xml" />
+	</references>
+
+	<references><name>Informative References</name>
+			<reference anchor="IANA-SSH-EXT" target="https://www.iana.org/assignments/ssh-parameters/"><front>
+			<title>Encryption Algorithm Names</title>
+			<author>
+				<organization>IANA</organization>
+			</author>
+		</front></reference>       
+
+	</references>
+</references>
+
+<section anchor="Acknowledgments" numbered="false"><name>Acknowledgments</name>
+	<t>
+	These modes were initially specified and implemented in OpenSSH
+	by Markus Friedl.
+	</t>
+</section>
+
+</back>
+</rfc>
