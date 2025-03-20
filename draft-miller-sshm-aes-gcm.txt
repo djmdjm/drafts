@@ -120,7 +120,7 @@ Internet-Draft  Fixed AES-GCM modes for the SSH protocol      March 2025
    "encryption_algorithms" and "mac_algorithms" SSH_MSG_KEXINIT fields,
    the AEAD appears only in the "encryption_algorithms" field and, if
    negotiated as the preferred cipher, negotiation of "mac_algorithms"
-   is skipped entriely.  This approach was used by
+   is skipped entirely.  This approach was used by
    [I-D.ietf-sshm-chacha20-poly1305] and by the OpenSSH AES-GCM modes
    that are being specified here.
 

@@ -96,7 +96,7 @@
 	the same algorithm name to appear in both the "encryption_algorithms"
 	and "mac_algorithms" SSH_MSG_KEXINIT fields, the AEAD appears only in
 	the "encryption_algorithms" field and, if negotiated as the preferred
-	cipher, negotiation of "mac_algorithms" is skipped entriely.
+	cipher, negotiation of "mac_algorithms" is skipped entirely.
 	This approach was used by
 	<xref target="I-D.ietf-sshm-chacha20-poly1305" />
 	and by the OpenSSH AES-GCM modes that are being specified here.
