@@ -150,12 +150,20 @@
 		<xref target="RFC5647" section="6.1" /> except for the
 		algorithm negotiation changes mentioned above.
 		</t>
+		<t>
+		Several SSH implementation support this algorithm under the
+		vendor extension name "aes128-gcm@openssh.com".
+		</t>
 	</section>
 	<section anchor="aes256-gcm" title="aes256-gcm">
 		<t>
 		This algorithm is identical to AEAD_AES_256_GCM defined in
 		<xref target="RFC5647" section="6.2" /> except for the
 		algorithm negotiation changes mentioned above.
+		</t>
+		<t>
+		Several SSH implementation support this algorithm under the
+		vendor extension name "aes256-gcm@openssh.com".
 		</t>
 	</section>
 </section>
@@ -315,7 +323,7 @@
 <section anchor="Acknowledgments" numbered="false"><name>Acknowledgments</name>
 	<t>
 	These modes were initially specified and implemented in OpenSSH
-	by Markus Friedl.
+	by Markus Friedl. Simon Tatham contributed to this specification.
 	</t>
 </section>
 
