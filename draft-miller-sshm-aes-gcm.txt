@@ -176,7 +176,7 @@ Internet-Draft  Fixed AES-GCM modes for the SSH protocol      March 2025
    Section 6.1 of [RFC5647] except for the algorithm negotiation changes
    mentioned above.
 
-   Several SSH implementation support this algorithm under the vendor
+   Several SSH implementations support this algorithm under the vendor
    extension name "aes128-gcm@openssh.com".
 
 2.2.  aes256-gcm
@@ -185,7 +185,7 @@ Internet-Draft  Fixed AES-GCM modes for the SSH protocol      March 2025
    Section 6.2 of [RFC5647] except for the algorithm negotiation changes
    mentioned above.
 
-   Several SSH implementation support this algorithm under the vendor
+   Several SSH implementations support this algorithm under the vendor
    extension name "aes256-gcm@openssh.com".
 
 3.  IANA Considerations

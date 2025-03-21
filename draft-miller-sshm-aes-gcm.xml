@@ -151,7 +151,7 @@
 		algorithm negotiation changes mentioned above.
 		</t>
 		<t>
-		Several SSH implementation support this algorithm under the
+		Several SSH implementations support this algorithm under the
 		vendor extension name "aes128-gcm@openssh.com".
 		</t>
 	</section>
@@ -162,7 +162,7 @@
 		algorithm negotiation changes mentioned above.
 		</t>
 		<t>
-		Several SSH implementation support this algorithm under the
+		Several SSH implementations support this algorithm under the
 		vendor extension name "aes256-gcm@openssh.com".
 		</t>
 	</section>
