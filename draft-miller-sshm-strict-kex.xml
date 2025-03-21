@@ -454,6 +454,28 @@
 		from the peer MUST be reset after a SSH_MSG_NEWKEYS is
 		received.
 		</t>
+		<t>
+		One place a sequence number may appear on the wire is the
+		SSH_MSG_UNIMPLEMENTED reply
+		(<xref target="RFC4253" section="11.4" />) to unrecognised
+		messages. There is no special handling of the sequence number
+		in this packet when strict KEX is active - it will use the
+		the same sequence number as the transport packets.
+		I.e. if the first packet sent by an endpoint after
+		SSH_MSG_NEWKEYS was unrecognised, then the sequence number
+		that refers to it in SSH_MSG_UNIMPLEMENTED should be 0.
+		</t>
+		<t>
+		When strict KEX is enabled, there should be no ambiguity
+		in which packet elicited SSH_MSG_UNIMPLEMENTED.
+		The last paragraps of
+		<xref target="RFC4253" section="7.1" />
+		require endpoints drain most non-KEX messages before
+		syncronously completing key exchange, and strict KEX requires
+		sequence number reset only on SSH_MSG_NEWKEYS (which cannot
+		be unrecognised), so there is no possibility of an unrecognised
+		message and its reply spanning a sequence number reset.
+		</t>
 	</section>
 </section>
 
