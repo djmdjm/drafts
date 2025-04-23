@@ -4,12 +4,12 @@
 
 Internet Engineering Task Force                                D. Miller
 Internet-Draft                                                   OpenSSH
-Intended status: Informational                             19 March 2025
-Expires: 20 September 2025
+Intended status: Informational                             23 April 2025
+Expires: 25 October 2025
 
 
                          SSH Certificate Format
-                        draft-miller-ssh-cert-00
+                        draft-miller-ssh-cert-01
 
 Abstract
 
@@ -32,7 +32,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 20 September 2025.
+   This Internet-Draft will expire on 25 October 2025.
 
 Copyright Notice
 
@@ -53,50 +53,66 @@ Copyright Notice
 
 
 
-Miller                  Expires 20 September 2025               [Page 1]
+Miller                   Expires 25 October 2025                [Page 1]
 
-Internet-Draft           SSH Certificate Format               March 2025
+Internet-Draft           SSH Certificate Format               April 2025
 
 
 Table of Contents
 
-   1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   2
+   1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   3
      1.1.  Requirements Language . . . . . . . . . . . . . . . . . .   3
    2.  Certificate Format  . . . . . . . . . . . . . . . . . . . . .   3
      2.1.  Public certificate format . . . . . . . . . . . . . . . .   3
        2.1.1.  General structure and common fields . . . . . . . . .   3
        2.1.2.  DSA certificates  . . . . . . . . . . . . . . . . . .   5
-       2.1.3.  ECDSA certificates  . . . . . . . . . . . . . . . . .   5
+       2.1.3.  ECDSA certificates  . . . . . . . . . . . . . . . . .   6
        2.1.4.  EDDSA certificates  . . . . . . . . . . . . . . . . .   6
        2.1.5.  RSA certificates  . . . . . . . . . . . . . . . . . .   7
-       2.1.6.  Other certificate formats . . . . . . . . . . . . . .   7
-     2.2.  Option / extension encoding . . . . . . . . . . . . . . .   7
+       2.1.6.  Other certificate formats . . . . . . . . . . . . . .   8
+     2.2.  Option / extension encoding . . . . . . . . . . . . . . .   8
      2.3.  Certificate extensions  . . . . . . . . . . . . . . . . .   9
      2.4.  Critical options  . . . . . . . . . . . . . . . . . . . .  10
      2.5.  Private certificate format  . . . . . . . . . . . . . . .  11
-       2.5.1.  DSA certificates  . . . . . . . . . . . . . . . . . .  11
-       2.5.2.  ECDSA certificates  . . . . . . . . . . . . . . . . .  11
+       2.5.1.  DSA certificates  . . . . . . . . . . . . . . . . . .  12
+       2.5.2.  ECDSA certificates  . . . . . . . . . . . . . . . . .  12
        2.5.3.  EDDSA certificates  . . . . . . . . . . . . . . . . .  12
        2.5.4.  RSA certificates  . . . . . . . . . . . . . . . . . .  12
-   3.  Using certificates  . . . . . . . . . . . . . . . . . . . . .  12
+   3.  Using certificates  . . . . . . . . . . . . . . . . . . . . .  13
      3.1.  Accepting certificates  . . . . . . . . . . . . . . . . .  13
-     3.2.  Certificate signatures  . . . . . . . . . . . . . . . . .  13
-     3.3.  Use in host authentication  . . . . . . . . . . . . . . .  13
-     3.4.  Use in user authentication  . . . . . . . . . . . . . . .  14
+     3.2.  Certificate signatures  . . . . . . . . . . . . . . . . .  14
+     3.3.  Use in host authentication  . . . . . . . . . . . . . . .  14
+     3.4.  Use in user authentication  . . . . . . . . . . . . . . .  15
    4.  Protocol numbers  . . . . . . . . . . . . . . . . . . . . . .  15
      4.1.  Certificate types . . . . . . . . . . . . . . . . . . . .  15
    5.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  15
-     5.1.  Additions to SSH key type registry  . . . . . . . . . . .  15
+     5.1.  Additions to SSH key type registry  . . . . . . . . . . .  16
      5.2.  New registry: Certificate Extension Identifiers . . . . .  16
-     5.3.  New registry: Certificate Criticial Option Identifiers  .  16
+     5.3.  New registry: Certificate Criticial Option Identifiers  .  17
      5.4.  New registry: Certificate Type Numbers  . . . . . . . . .  17
-   6.  Security Considerations . . . . . . . . . . . . . . . . . . .  17
-   7.  Implementation Status . . . . . . . . . . . . . . . . . . . .  17
-   8.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  18
-     8.1.  Normative References  . . . . . . . . . . . . . . . . . .  18
-     8.2.  Informative References  . . . . . . . . . . . . . . . . .  20
+   6.  Security Considerations . . . . . . . . . . . . . . . . . . .  18
+   7.  Implementation Status . . . . . . . . . . . . . . . . . . . .  18
+   8.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  19
+     8.1.  Normative References  . . . . . . . . . . . . . . . . . .  19
+     8.2.  Informative References  . . . . . . . . . . . . . . . . .  21
    Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .  21
-   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .  21
+   Example certificates  . . . . . . . . . . . . . . . . . . . . . .  21
+   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .  24
+
+
+
+
+
+
+
+
+
+
+
+Miller                   Expires 25 October 2025                [Page 2]
+
+Internet-Draft           SSH Certificate Format               April 2025
+
 
 1.  Introduction
 
@@ -106,14 +122,6 @@ Table of Contents
    This document describes a lightweight certificate format for use in
    these contexts.  It may be used for server authentication as part of
    key exchange (Section 7 of [RFC4253]) and for user public key
-
-
-
-Miller                  Expires 20 September 2025               [Page 2]
-
-Internet-Draft           SSH Certificate Format               March 2025
-
-
    authentication (Section 7 of [RFC4252]).
 
 1.1.  Requirements Language
@@ -154,21 +162,19 @@ Internet-Draft           SSH Certificate Format               March 2025
    ed25519-cert" identifies an ED25519 certificate.  The valid
    certificate types are listed below.
 
+
+
+
+Miller                   Expires 25 October 2025                [Page 3]
+
+Internet-Draft           SSH Certificate Format               April 2025
+
+
    The "nonce" field contains a random nonce.  This value MUST be at
    least 16 bytes in length. 32 bytes is typical.
 
    The "public key fields" section contains the actual public key
    material.  These are specified below for each certificate type.
-
-
-
-
-
-
-Miller                  Expires 20 September 2025               [Page 3]
-
-Internet-Draft           SSH Certificate Format               March 2025
-
 
    The "certificate role" field indicates the role of the certificate,
    either SSH2_CERT_TYPE_USER for user authentication certificates or
@@ -179,10 +185,17 @@ Internet-Draft           SSH Certificate Format               March 2025
    recording in logs, etc.
 
    The "principals" field contains one or more UTF-8 encoded names,
-   separated by commas.  These names identify the principals the
-   certificate is intended to authenticate.  In the case of user
-   certificates, these will typically be user names, whereas for host
-   certificates they will be host names and/or numerical addresses.
+   themselves encoded as strings, for example:
+
+       string              principal[0]
+       string              principal[1]
+       ...
+       string              principal[N]
+
+   These names identify the principals the certificate is intended to
+   authenticate.  In the case of user certificates, these will typically
+   be user names, whereas for host certificates they will be host names
+   and/or numerical addresses.
 
    The "valid after" and "valid before" field represent a validity
    interval for the certificate with each field being interpreted as a
@@ -205,6 +218,14 @@ Internet-Draft           SSH Certificate Format               March 2025
    or support an extension present in a certificate extension section
    MUST ignore the extension.
 
+
+
+
+Miller                   Expires 25 October 2025                [Page 4]
+
+Internet-Draft           SSH Certificate Format               April 2025
+
+
    The "reserved" field is reserved for future use.  Implementations
    MUST ignore the contents of this field if it is not empty.
 
@@ -218,13 +239,6 @@ Internet-Draft           SSH Certificate Format               March 2025
    the "signature key").  The signature is encoded using the standard
    SSH signature encoding for the CA key type in question, e.g.
    Section 3.1.2 of [RFC5656] for ECDSA CA keys.
-
-
-
-Miller                  Expires 20 September 2025               [Page 4]
-
-Internet-Draft           SSH Certificate Format               March 2025
-
 
 2.1.2.  DSA certificates
 
@@ -255,6 +269,19 @@ Internet-Draft           SSH Certificate Format               March 2025
    public key value.  These values are as defined by Section 4.1 of
    [FIPS.186-4].
 
+
+
+
+
+
+
+
+
+Miller                   Expires 25 October 2025                [Page 5]
+
+Internet-Draft           SSH Certificate Format               April 2025
+
+
 2.1.3.  ECDSA certificates
 
    ECDSA certificates are represented by the key types "ecdsa-
@@ -265,22 +292,6 @@ Internet-Draft           SSH Certificate Format               March 2025
    equivalent to the vendor extensions "ecdsa-sha2-nistp256-cert-
    v01@openssh.com", "ecdsa-sha2-nistp384-cert-v01@openssh.com" and
    "ecdsa-sha2-nistp521-cert-v01@openssh.com".
-
-
-
-
-
-
-
-
-
-
-
-
-Miller                  Expires 20 September 2025               [Page 5]
-
-Internet-Draft           SSH Certificate Format               March 2025
-
 
        string              "ecdsa-sha2-nistp256-cert" |
                            "ecdsa-sha2-nistp384-cert" |
@@ -311,6 +322,22 @@ Internet-Draft           SSH Certificate Format               March 2025
    defined by [RFC8709].  This format is equivalent to the vendor
    extension "ssh-ed25519-cert-v01@openssh.com".
 
+
+
+
+
+
+
+
+
+
+
+
+Miller                   Expires 25 October 2025                [Page 6]
+
+Internet-Draft           SSH Certificate Format               April 2025
+
+
        string              "ssh-ed25519-cert" | "ssh-ed448-cert"
        string              nonce
        string              ENC(A)
@@ -329,14 +356,6 @@ Internet-Draft           SSH Certificate Format               March 2025
 
    The value ENC(A) is the EDDSA public key, the contents and
    interpretation of which are defined by Section 3.2 of [RFC8032].
-
-
-
-
-Miller                  Expires 20 September 2025               [Page 6]
-
-Internet-Draft           SSH Certificate Format               March 2025
-
 
 2.1.5.  RSA certificates
 
@@ -364,6 +383,17 @@ Internet-Draft           SSH Certificate Format               March 2025
    "n" is the public composite modulus and "e" is the public exponent.
    These values are defined by Section 5.1 of [FIPS.186-4].
 
+
+
+
+
+
+
+Miller                   Expires 25 October 2025                [Page 7]
+
+Internet-Draft           SSH Certificate Format               April 2025
+
+
 2.1.6.  Other certificate formats
 
    SSH clients and server clients MAY support additional key types not
@@ -381,18 +411,6 @@ Internet-Draft           SSH Certificate Format               March 2025
 
        string              key
        string              value
-
-
-
-
-
-
-
-
-Miller                  Expires 20 September 2025               [Page 7]
-
-Internet-Draft           SSH Certificate Format               March 2025
-
 
    "key" should be a UTF-8 encoded string that identifies the option
    being encoded.  Available keys for extensions and for critical
@@ -424,6 +442,14 @@ Internet-Draft           SSH Certificate Format               March 2025
          00000004                       #   value body string len=4
            73667470                     #     "sftp"
 
+
+
+
+Miller                   Expires 25 October 2025                [Page 8]
+
+Internet-Draft           SSH Certificate Format               April 2025
+
+
    Finally, the following is an example of a critical options section
    that contains a flag option "foo@example.com" and a string-valued
    option "force-command" with a the value "sftp".
@@ -437,18 +463,6 @@ Internet-Draft           SSH Certificate Format               March 2025
        00000008                         # 2nd value string len=8
          00000004                       #   value body string len=4
            73667470                     #     "sftp"
-
-
-
-
-
-
-
-
-Miller                  Expires 20 September 2025               [Page 8]
-
-Internet-Draft           SSH Certificate Format               March 2025
-
 
 2.3.  Certificate extensions
 
@@ -481,6 +495,17 @@ Internet-Draft           SSH Certificate Format               March 2025
       This is a flag-type option.  Its value is the empty string.
 
    permit-port-forwarding  Indicates that sessions authenticated with
+
+
+
+
+
+
+Miller                   Expires 25 October 2025                [Page 9]
+
+Internet-Draft           SSH Certificate Format               April 2025
+
+
       this certificate may request authentication TCP forwarding using
       the "tcpip-forward" and/or "direct-tcpip" SSH channel requests
       defined in Section 7 of [RFC4254].  Certificates that lack this
@@ -497,14 +522,6 @@ Internet-Draft           SSH Certificate Format               March 2025
       support it.
 
       This is a flag-type option.  Its value is the empty string.
-
-
-
-
-Miller                  Expires 20 September 2025               [Page 9]
-
-Internet-Draft           SSH Certificate Format               March 2025
-
 
    permit-user-rc  Indicates that sessions authenticated with this
       certificate may execute optional SSH-specific user initialisation
@@ -538,6 +555,13 @@ Internet-Draft           SSH Certificate Format               March 2025
 
    The initially defined critical options for user certificates are:
 
+
+
+Miller                   Expires 25 October 2025               [Page 10]
+
+Internet-Draft           SSH Certificate Format               April 2025
+
+
    force-command  Forces the execution of the specified command for any
       session (Section 6.5 of [RFC4254]) of type "exec" or "shell" and
       overrides the subsystem name for sessions of type "subsystem".
@@ -553,14 +577,6 @@ Internet-Draft           SSH Certificate Format               March 2025
 
       This is a string-type option.  Its value contains a nested string
       which holds the allow-list.
-
-
-
-
-Miller                  Expires 20 September 2025              [Page 10]
-
-Internet-Draft           SSH Certificate Format               March 2025
-
 
    verify-required  Valid for key types that support user verification
       assertions in their signatures (such as FIDO-backed keys).  This
@@ -591,6 +607,17 @@ Internet-Draft           SSH Certificate Format               March 2025
    as described in Section 2.1 and "private key fields" contain the
    encoded private key values as described in the following sections.
 
+
+
+
+
+
+
+Miller                   Expires 25 October 2025               [Page 11]
+
+Internet-Draft           SSH Certificate Format               April 2025
+
+
 2.5.1.  DSA certificates
 
    DSA certificates with private keys use the following encoding format.
@@ -606,17 +633,6 @@ Internet-Draft           SSH Certificate Format               March 2025
 
    ECDSA certificates with private keys use the following encoding
    format.
-
-
-
-
-
-
-
-Miller                  Expires 20 September 2025              [Page 11]
-
-Internet-Draft           SSH Certificate Format               March 2025
-
 
        string              "ecdsa-sha2-nistp256-cert" |
                            "ecdsa-sha2-nistp384-cert" |
@@ -646,6 +662,18 @@ Internet-Draft           SSH Certificate Format               March 2025
    EDDSA certificates with private keys use the following encoding
    format.
 
+
+
+
+
+
+
+
+Miller                   Expires 25 October 2025               [Page 12]
+
+Internet-Draft           SSH Certificate Format               April 2025
+
+
        string              "ssh-dss-cert"
        string              certificate blob
        byte[]              private key fields
@@ -666,13 +694,6 @@ Internet-Draft           SSH Certificate Format               March 2025
    server authentication or for user public-key authentication.  For
    each of these cases, the certificate, encoded as per Section 2.1
    appears in place of the encoded key.
-
-
-
-Miller                  Expires 20 September 2025              [Page 12]
-
-Internet-Draft           SSH Certificate Format               March 2025
-
 
 3.1.  Accepting certificates
 
@@ -700,6 +721,15 @@ Internet-Draft           SSH Certificate Format               March 2025
    *  MUST perform any additional authorisation operations required by
       critical options.
 
+
+
+
+
+Miller                   Expires 25 October 2025               [Page 13]
+
+Internet-Draft           SSH Certificate Format               April 2025
+
+
 3.2.  Certificate signatures
 
    When signatures are required, they are made and formatted using the
@@ -719,16 +749,6 @@ Internet-Draft           SSH Certificate Format               March 2025
    the plain host key in the final reply message.  For example in ECDH
    host authentication (Section 4 of [RFC5656]), host authentication
    occurs in the final SSH_MSG_KEX_ECDH_REPLY message:
-
-
-
-
-
-
-Miller                  Expires 20 September 2025              [Page 13]
-
-Internet-Draft           SSH Certificate Format               March 2025
-
 
        byte                SSH_MSG_KEX_ECDH_REPLY
        string              K_S, server's certificate
@@ -751,6 +771,20 @@ Internet-Draft           SSH Certificate Format               March 2025
    client is not able to authorise the certificate contents, perhaps
    because the CA is not trusted or because the host name the client is
    using does not match any in the certificate.
+
+
+
+
+
+
+
+
+
+
+Miller                   Expires 25 October 2025               [Page 14]
+
+Internet-Draft           SSH Certificate Format               April 2025
+
 
 3.4.  Use in user authentication
 
@@ -777,15 +811,6 @@ Internet-Draft           SSH Certificate Format               March 2025
    the certificate takes the place of the plain public key in a
    SSH_MSG_USERAUTH_REQUEST message.  For example:
 
-
-
-
-
-Miller                  Expires 20 September 2025              [Page 14]
-
-Internet-Draft           SSH Certificate Format               March 2025
-
-
        byte                SSH_MSG_USERAUTH_REQUEST
        string              user name
        string              service name
@@ -808,6 +833,14 @@ Internet-Draft           SSH Certificate Format               March 2025
 
    This format requires creation of one new registry and additions to an
    existing registry.
+
+
+
+
+Miller                   Expires 25 October 2025               [Page 15]
+
+Internet-Draft           SSH Certificate Format               April 2025
+
 
 5.1.  Additions to SSH key type registry
 
@@ -835,19 +868,35 @@ Internet-Draft           SSH Certificate Format               March 2025
 
                                  Table 1
 
-
-
-Miller                  Expires 20 September 2025              [Page 15]
-
-Internet-Draft           SSH Certificate Format               March 2025
-
-
 5.2.  New registry: Certificate Extension Identifiers
 
    This registry, titled "Certificate Extension Identifiers" records
    identifiers for certificate extensions.  Its initial state should
    consist of the following names.  Future name allocations shall occur
    via EXPERT REVIEW as per [RFC8126].
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Miller                   Expires 25 October 2025               [Page 16]
+
+Internet-Draft           SSH Certificate Format               April 2025
+
 
                  +=========================+=============+
                  | Extension name          | Reference   |
@@ -886,24 +935,24 @@ Internet-Draft           SSH Certificate Format               March 2025
 
                                   Table 3
 
-
-
-
-
-
-
-
-Miller                  Expires 20 September 2025              [Page 16]
-
-Internet-Draft           SSH Certificate Format               March 2025
-
-
 5.4.  New registry: Certificate Type Numbers
 
    This registry, titled "Certificate Type Numbers" records the numbers
    used to indicate the types of certificates.  Its initial state should
    consist of the following numbers.  Future message number allocations
    shall occur via EXPERT REVIEW as per [RFC8126].
+
+
+
+
+
+
+
+
+Miller                   Expires 25 October 2025               [Page 17]
+
+Internet-Draft           SSH Certificate Format               April 2025
+
 
               +========+=====================+=============+
               | Number | Identifier          | Reference   |
@@ -946,14 +995,6 @@ Internet-Draft           SSH Certificate Format               March 2025
    namespace, e.g. "ssh-rsa-cert-v01@openssh.com".
 
    OpenSSH  OpenSSH is the originating implementation of this protocol
-
-
-
-Miller                  Expires 20 September 2025              [Page 17]
-
-Internet-Draft           SSH Certificate Format               March 2025
-
-
       and has supported it since 2010.
 
       Website: https://www.openssh.com/
@@ -961,6 +1002,13 @@ Internet-Draft           SSH Certificate Format               March 2025
    libssh  libssh has supported this format since 2011.
 
       Website: https://www.libssh.org/
+
+
+
+Miller                   Expires 25 October 2025               [Page 18]
+
+Internet-Draft           SSH Certificate Format               April 2025
+
 
    Golang x/crypto/ssh  The Go programming language project has
       supported an implementation of this format in its external "x"
@@ -1001,15 +1049,6 @@ Internet-Draft           SSH Certificate Format               March 2025
 
 8.1.  Normative References
 
-
-
-
-
-Miller                  Expires 20 September 2025              [Page 18]
-
-Internet-Draft           SSH Certificate Format               March 2025
-
-
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
               DOI 10.17487/RFC2119, March 1997,
@@ -1019,6 +1058,13 @@ Internet-Draft           SSH Certificate Format               March 2025
               Protocol Assigned Numbers", RFC 4250,
               DOI 10.17487/RFC4250, January 2006,
               <https://www.rfc-editor.org/info/rfc4250>.
+
+
+
+Miller                   Expires 25 October 2025               [Page 19]
+
+Internet-Draft           SSH Certificate Format               April 2025
+
 
    [RFC4251]  Ylonen, T. and C. Lonvick, Ed., "The Secure Shell (SSH)
               Protocol Architecture", RFC 4251, DOI 10.17487/RFC4251,
@@ -1056,16 +1102,6 @@ Internet-Draft           SSH Certificate Format               March 2025
               RFC 8126, DOI 10.17487/RFC8126, June 2017,
               <https://www.rfc-editor.org/info/rfc8126>.
 
-
-
-
-
-
-Miller                  Expires 20 September 2025              [Page 19]
-
-Internet-Draft           SSH Certificate Format               March 2025
-
-
    [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
               May 2017, <https://www.rfc-editor.org/info/rfc8174>.
@@ -1078,6 +1114,13 @@ Internet-Draft           SSH Certificate Format               March 2025
    [RFC8308]  Bider, D., "Extension Negotiation in the Secure Shell
               (SSH) Protocol", RFC 8308, DOI 10.17487/RFC8308, March
               2018, <https://www.rfc-editor.org/info/rfc8308>.
+
+
+
+Miller                   Expires 25 October 2025               [Page 20]
+
+Internet-Draft           SSH Certificate Format               April 2025
+
 
    [RFC8709]  Harris, B. and L. Velvindron, "Ed25519 and Ed448 Public
               Key Algorithms for the Secure Shell (SSH) Protocol",
@@ -1111,20 +1154,146 @@ Internet-Draft           SSH Certificate Format               March 2025
    [HIBA]     Google, "HIBA: Host Identity Based Authorization",
               <https://github.com/google/hiba>.
 
-
-
-
-
-
-
-Miller                  Expires 20 September 2025              [Page 20]
-
-Internet-Draft           SSH Certificate Format               March 2025
-
-
 Acknowledgements
 
    XXX YOUR NAME HERE XXX
+
+Example certificates
+
+   This is an example of a hex-encoded certificate for an ecdsa-
+   sha2-nistp256-cert public key, signed by a ssh-ed25519 certificate
+   authority.
+
+
+
+
+
+
+
+
+
+
+Miller                   Expires 25 October 2025               [Page 21]
+
+Internet-Draft           SSH Certificate Format               April 2025
+
+
+       0000: 0000 0018 6563 6473 612d 7368 6132 2d6e  ....ecdsa-sha2-n
+       0010: 6973 7470 3235 362d 6365 7274 0000 0020  istp256-cert...
+       0020: 7ee0 cb87 8240 788b 087e 0a23 f505 1828  ~....@x..~.#...(
+       0030: 98e1 510f b3a2 fcf6 4086 30f6 25b1 aa19  ..Q.....@.0.%...
+       0040: 0000 0008 6e69 7374 7032 3536 0000 0041  ....nistp256...A
+       0050: 04a5 7c7c 0829 b7ee 3473 1383 52b8 afc1  ..||.)..4s..R...
+       0060: 673c 7145 29de 5f0f a699 4f08 6f58 8f96  g<qE)._...O.oX..
+       0070: c9ad 70d3 0b20 a4e9 3558 ffd3 f85d ddfa  ..p.. ..5X...]..
+       0080: 313d 294b 2b9f 2862 dd2b 5831 3688 065c  1=)K+.(b.+X16..\
+       0090: 52ab 54a9 8ceb 1f0a d200 0000 0100 0000  R.T.............
+       00a0: 136a 6f73 6566 2e6b 4065 7861 6d70 6c65  .josef.k@example
+       00b0: 2e6f 7267 0000 001e 0000 0007 6a6f 7365  .org........jose
+       00c0: 662e 6b00 0000 0f45 5841 4d50 4c45 5c6a  f.k....EXAMPLE\j
+       00d0: 6f73 6566 2e6b 0000 0000 4d4a 2972 0000  osef.k....MJ)r..
+       00e0: 0000 82e9 0790 0000 0020 0000 000d 666f  ......... ....fo
+       00f0: 7263 652d 636f 6d6d 616e 6400 0000 0b00  rce-command.....
+       0100: 0000 0765 7865 6375 7465 0000 0082 0000  ...execute......
+       0110: 0015 7065 726d 6974 2d58 3131 2d66 6f72  ..permit-X11-for
+       0120: 7761 7264 696e 6700 0000 0000 0000 1770  warding........p
+       0130: 6572 6d69 742d 6167 656e 742d 666f 7277  ermit-agent-forw
+       0140: 6172 6469 6e67 0000 0000 0000 0016 7065  arding........pe
+       0150: 726d 6974 2d70 6f72 742d 666f 7277 6172  rmit-port-forwar
+       0160: 6469 6e67 0000 0000 0000 000a 7065 726d  ding........perm
+       0170: 6974 2d70 7479 0000 0000 0000 000e 7065  it-pty........pe
+       0180: 726d 6974 2d75 7365 722d 7263 0000 0000  rmit-user-rc....
+       0190: 0000 0000 0000 0033 0000 000b 7373 682d  .......3....ssh-
+       01a0: 6564 3235 3531 3900 0000 20d5 258d f8cb  ed25519... .%...
+       01b0: 1bda 81d7 9a2f 6b4d 1304 d497 0add 67eb  ...../kM......g.
+       01c0: 04b9 d5de 47d9 cc0c d5ff 5000 0000 5300  ....G.....P...S.
+       01d0: 0000 0b73 7368 2d65 6432 3535 3139 0000  ...ssh-ed25519..
+       01e0: 0040 5864 29cc 18fd 8b1d 19f3 210e c11e  .@Xd).......!...
+       01f0: 43a9 bde1 90e6 0505 8733 d333 e806 5381  C........3.3..S.
+       0200: 81b4 d847 6efa 3889 6706 30ea 8117 f2e5  ...Gn.8.g.0.....
+       0210: 25c4 6e6e 2378 5e27 1c25 7653 3af5 ca9f  %.nn#x^'.%vS:...
+       0220: 0b05 0a
+
+   This is an annotated version of the above certificate.  Note that all
+   offsets are inclusive, e.g. "0010-0013" refers to a four-byte
+   sequence.
+
+       # 0000-001b: 0018 6563 6473 ... 7274
+       string              key type name "ecdsa-sha2-nistp256-cert"
+       # 001c-003f: 0020 7ee0 cb87 ... aa19
+       string              nonce
+       # 0040-004b: 0008 6e69 7374 7032 3536
+       string              ECDSA curve name "nistp256"
+       # 004c-0090: 0000 0041 04a5 7c7c ... 5c52
+       string              ECDSA Q point
+
+
+
+Miller                   Expires 25 October 2025               [Page 22]
+
+Internet-Draft           SSH Certificate Format               April 2025
+
+
+       # 0091-0098: ab54 a98c eb1f 0ad2 (12345678901234567890)
+       uint64              serial number
+       # 0099-009c: 0000 0001 (SSH2_CERT_TYPE_USER)
+       uint32              certificate role
+       # 009d-00b3: 0000 0013 6a6f ... 7267
+       string              identifier "josef.k@example.org"
+       # 00b4-00d5: 0000 001e 0000 0007 ... 0790
+       string              principals
+           # 00b8-00c2: 0000 0007 6a6f 7365 662e 6b
+           string          principal[0] = "josef.k"
+           # 00c3-00d5: 000f 4558 414d 504c 455c 6a6f 7365 662e 6b
+           string          principal[1] = "EXAMPLE\josef.k"
+       # 00d6-00dd: 0000 0000 4d4a 2972
+       uint64              valid after = 2011/02/03T04:05:06 UTC
+       # 00de-00e5: 0000 0000 82e9 0790
+       uint64              valid before = 2039/08/07T06:05:04 UTC
+       # 00e6-0109: 0020 0000 000d ... 7465
+       string              critical options
+           # 00ea-00fa: 0000 000d 666f 7263 652d 636f 6d6d 616e 64
+           string          key[0] = "force-command"
+           # 00fb-0109: 0000 000b 0000 0007 6578 6563 7574 65
+           string          value[0]
+               # 00ff-0109: 0000 0007 6578 6563 7574 65
+               string      "execute"
+       # 010a-0190: 0000 0082 0000 0015 ... 7263
+       string              extensions
+           # 010e-0126: 0000 0015 7065 ... 6e67
+           string          key[0] = "permit-X11-forwarding"
+           # 0127-012a: 0000 0000
+           string          value[0] = (empty)
+           # 012b-0145: 0000 0017 7065 726d ... 6e67
+           string          key[1] = "permit-agent-forwarding"
+           # 0146-0149: 0000 0000
+           string          value[1] = (empty)
+           # 014a-0163 0000 0016 7065 ... 6e67
+           string          key[2] = "permit-port-forwarding"
+           # 0164-0167: 0000 0000
+           string          value[2] = (empty)
+           # 0168-0175: 0000 000a 7065 726d 6974 2d70 7479
+           string          key[3] = "permit-pty"
+           # 0176-0179: 0000 0000
+           string          value[3] = (empty)
+           # 017a-018b: 0000 000e 7065 726d 6974 2d75 7365 722d 7263
+           string          key[4] = "permit-user-rc"
+           # 018c-018f: 0000 0000
+           string          value[4] = (empty)
+       # 0190-0193: 0000 0000
+       string              reserved = (empty)
+
+
+
+Miller                   Expires 25 October 2025               [Page 23]
+
+Internet-Draft           SSH Certificate Format               April 2025
+
+
+       # 0194-01ca: 0000 0033 0000 000b ... ff50
+       string              signature key (ssh-ed25519)
+       # 01cb-0222: 0000 0053 0000 000b ... 050a
+       string              signature (ssh-ed25519)
 
 Author's Address
 
@@ -1172,5 +1341,4 @@ Author's Address
 
 
 
-
-Miller                  Expires 20 September 2025              [Page 21]
+Miller                   Expires 25 October 2025               [Page 24]

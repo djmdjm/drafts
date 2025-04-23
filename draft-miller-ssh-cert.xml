@@ -10,7 +10,7 @@
 <rfc
   xmlns:xi="http://www.w3.org/2001/XInclude"
   category="info"
-  docName="draft-miller-ssh-cert-00"
+  docName="draft-miller-ssh-cert-01"
   ipr="trust200902"
   obsoletes=""
   updates=""
@@ -27,7 +27,7 @@
 
 <front>
 	<title>SSH Certificate Format</title>
-	<seriesInfo name="Internet-Draft" value="draft-miller-ssh-cert-00"/>
+	<seriesInfo name="Internet-Draft" value="draft-miller-ssh-cert-01"/>
 	<author fullname="Damien Miller" initials="D." surname="Miller">
 		<organization>OpenSSH</organization>
 		<address>
@@ -35,7 +35,7 @@
 			<uri>https://www.openssh.com/</uri>
 		</address>
 	</author>
-	<date year="2025" month="03" day="19" />
+	<date year="2025" month="04" day="23" />
 	<area>General</area>
 	<workgroup>Internet Engineering Task Force</workgroup>
 	<keyword>ssh</keyword>
@@ -138,8 +138,17 @@
 			</t>
 			<t>
 			The "principals" field contains one or more UTF-8
-			encoded names, separated by commas. These
-			names identify the principals the certificate is
+			encoded names, themselves encoded as strings, for
+			example:
+			</t>
+			<sourcecode>
+    string              principal[0]
+    string              principal[1]
+    ...
+    string              principal[N]
+			</sourcecode>
+			<t>
+			These names identify the principals the certificate is
 			intended to authenticate. In the case of user
 			certificates, these will typically be user names,
 			whereas for host certificates they will be host names
@@ -1154,12 +1163,124 @@
 	</references>
 </references>
 
+
 <section anchor="Acknowledgements" numbered="false"><name>Acknowledgements</name>
 	<t>
 	XXX YOUR NAME HERE XXX
 	</t>
 </section>
 
+<section anchor="appendix_example" numbered="false"><name>Example certificates</name>
+	<t>
+	This is an example of a hex-encoded certificate for an
+	ecdsa-sha2-nistp256-cert public key, signed by a ssh-ed25519
+	certificate authority.
+	</t>
+	<sourcecode>
+    0000: 0000 0018 6563 6473 612d 7368 6132 2d6e  ....ecdsa-sha2-n
+    0010: 6973 7470 3235 362d 6365 7274 0000 0020  istp256-cert...
+    0020: 7ee0 cb87 8240 788b 087e 0a23 f505 1828  ~....@x..~.#...(
+    0030: 98e1 510f b3a2 fcf6 4086 30f6 25b1 aa19  ..Q.....@.0.%...
+    0040: 0000 0008 6e69 7374 7032 3536 0000 0041  ....nistp256...A
+    0050: 04a5 7c7c 0829 b7ee 3473 1383 52b8 afc1  ..||.)..4s..R...
+    0060: 673c 7145 29de 5f0f a699 4f08 6f58 8f96  g&lt;qE)._...O.oX..
+    0070: c9ad 70d3 0b20 a4e9 3558 ffd3 f85d ddfa  ..p.. ..5X...]..
+    0080: 313d 294b 2b9f 2862 dd2b 5831 3688 065c  1=)K+.(b.+X16..\
+    0090: 52ab 54a9 8ceb 1f0a d200 0000 0100 0000  R.T.............
+    00a0: 136a 6f73 6566 2e6b 4065 7861 6d70 6c65  .josef.k@example
+    00b0: 2e6f 7267 0000 001e 0000 0007 6a6f 7365  .org........jose
+    00c0: 662e 6b00 0000 0f45 5841 4d50 4c45 5c6a  f.k....EXAMPLE\j
+    00d0: 6f73 6566 2e6b 0000 0000 4d4a 2972 0000  osef.k....MJ)r..
+    00e0: 0000 82e9 0790 0000 0020 0000 000d 666f  ......... ....fo
+    00f0: 7263 652d 636f 6d6d 616e 6400 0000 0b00  rce-command.....
+    0100: 0000 0765 7865 6375 7465 0000 0082 0000  ...execute......
+    0110: 0015 7065 726d 6974 2d58 3131 2d66 6f72  ..permit-X11-for
+    0120: 7761 7264 696e 6700 0000 0000 0000 1770  warding........p
+    0130: 6572 6d69 742d 6167 656e 742d 666f 7277  ermit-agent-forw
+    0140: 6172 6469 6e67 0000 0000 0000 0016 7065  arding........pe
+    0150: 726d 6974 2d70 6f72 742d 666f 7277 6172  rmit-port-forwar
+    0160: 6469 6e67 0000 0000 0000 000a 7065 726d  ding........perm
+    0170: 6974 2d70 7479 0000 0000 0000 000e 7065  it-pty........pe
+    0180: 726d 6974 2d75 7365 722d 7263 0000 0000  rmit-user-rc....
+    0190: 0000 0000 0000 0033 0000 000b 7373 682d  .......3....ssh-
+    01a0: 6564 3235 3531 3900 0000 20d5 258d f8cb  ed25519... .%...
+    01b0: 1bda 81d7 9a2f 6b4d 1304 d497 0add 67eb  ...../kM......g.
+    01c0: 04b9 d5de 47d9 cc0c d5ff 5000 0000 5300  ....G.....P...S.
+    01d0: 0000 0b73 7368 2d65 6432 3535 3139 0000  ...ssh-ed25519..
+    01e0: 0040 5864 29cc 18fd 8b1d 19f3 210e c11e  .@Xd).......!...
+    01f0: 43a9 bde1 90e6 0505 8733 d333 e806 5381  C........3.3..S.
+    0200: 81b4 d847 6efa 3889 6706 30ea 8117 f2e5  ...Gn.8.g.0.....
+    0210: 25c4 6e6e 2378 5e27 1c25 7653 3af5 ca9f  %.nn#x^'.%vS:...
+    0220: 0b05 0a
+	</sourcecode>
+	<t>
+	This is an annotated version of the above certificate. Note that
+	all offsets are inclusive, e.g. "0010-0013" refers to a four-byte
+	sequence.
+	</t>
+	<sourcecode>
+    # 0000-001b: 0018 6563 6473 ... 7274
+    string              key type name "ecdsa-sha2-nistp256-cert"
+    # 001c-003f: 0020 7ee0 cb87 ... aa19
+    string              nonce
+    # 0040-004b: 0008 6e69 7374 7032 3536
+    string              ECDSA curve name "nistp256"
+    # 004c-0090: 0000 0041 04a5 7c7c ... 5c52
+    string              ECDSA Q point
+    # 0091-0098: ab54 a98c eb1f 0ad2 (12345678901234567890)
+    uint64              serial number
+    # 0099-009c: 0000 0001 (SSH2_CERT_TYPE_USER)
+    uint32              certificate role
+    # 009d-00b3: 0000 0013 6a6f ... 7267
+    string              identifier "josef.k@example.org"
+    # 00b4-00d5: 0000 001e 0000 0007 ... 0790
+    string              principals
+        # 00b8-00c2: 0000 0007 6a6f 7365 662e 6b
+        string          principal[0] = "josef.k"
+        # 00c3-00d5: 000f 4558 414d 504c 455c 6a6f 7365 662e 6b
+        string          principal[1] = "EXAMPLE\josef.k"
+    # 00d6-00dd: 0000 0000 4d4a 2972
+    uint64              valid after = 2011/02/03T04:05:06 UTC
+    # 00de-00e5: 0000 0000 82e9 0790
+    uint64              valid before = 2039/08/07T06:05:04 UTC
+    # 00e6-0109: 0020 0000 000d ... 7465
+    string              critical options
+        # 00ea-00fa: 0000 000d 666f 7263 652d 636f 6d6d 616e 64
+        string          key[0] = "force-command"
+        # 00fb-0109: 0000 000b 0000 0007 6578 6563 7574 65
+        string          value[0]
+            # 00ff-0109: 0000 0007 6578 6563 7574 65
+            string      "execute"
+    # 010a-0190: 0000 0082 0000 0015 ... 7263
+    string              extensions
+        # 010e-0126: 0000 0015 7065 ... 6e67
+        string          key[0] = "permit-X11-forwarding"
+        # 0127-012a: 0000 0000
+        string          value[0] = (empty)
+        # 012b-0145: 0000 0017 7065 726d ... 6e67
+        string          key[1] = "permit-agent-forwarding"
+        # 0146-0149: 0000 0000
+        string          value[1] = (empty)
+        # 014a-0163 0000 0016 7065 ... 6e67
+        string          key[2] = "permit-port-forwarding"
+        # 0164-0167: 0000 0000
+        string          value[2] = (empty)
+        # 0168-0175: 0000 000a 7065 726d 6974 2d70 7479
+        string          key[3] = "permit-pty"
+        # 0176-0179: 0000 0000
+        string          value[3] = (empty)
+        # 017a-018b: 0000 000e 7065 726d 6974 2d75 7365 722d 7263
+        string          key[4] = "permit-user-rc"
+        # 018c-018f: 0000 0000
+        string          value[4] = (empty)
+    # 0190-0193: 0000 0000
+    string              reserved = (empty)
+    # 0194-01ca: 0000 0033 0000 000b ... ff50
+    string              signature key (ssh-ed25519)
+    # 01cb-0222: 0000 0053 0000 000b ... 050a
+    string              signature (ssh-ed25519)
+	</sourcecode>
+</section>
 
 </back>
 </rfc>
