@@ -203,7 +203,15 @@
 	SSH_MSG_PING requests MUST be replied to in the order that they were
 	received. If received during key exchange, the implementation MUST
 	either delay its reply until after key exchange has concluded or simply
-	not reply at all.
+	not reply.
+	If an implementation holds replies to SSH_MSG_PING messages received
+	during key exchange, then it SHOULD limit the number of queued replies
+	to avoid resource exhaustion.
+      </t>
+      <t>
+	Implementations SHOULD NOT issue SSH_MSG_PING requests nor make
+	SSH_MSG_PONG replies before the authentication phase of the protocol
+	has completed.
       </t>
     </section>
     

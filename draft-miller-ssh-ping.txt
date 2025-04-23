@@ -4,8 +4,8 @@
 
 Internet Engineering Task Force                                D. Miller
 Internet-Draft                                                   OpenSSH
-Intended status: Informational                            23 August 2023
-Expires: 24 February 2024
+Intended status: Informational                             23 April 2023
+Expires: 25 October 2023
 
 
                   SSH Transport Protocol Ping Facility
@@ -31,7 +31,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 24 February 2024.
+   This Internet-Draft will expire on 25 October 2023.
 
 Copyright Notice
 
@@ -53,9 +53,9 @@ Copyright Notice
 
 
 
-Miller                  Expires 24 February 2024                [Page 1]
+Miller                   Expires 25 October 2023                [Page 1]
 
-Internet-Draft    SSH Transport Protocol Ping Facility       August 2023
+Internet-Draft    SSH Transport Protocol Ping Facility        April 2023
 
 
 Table of Contents
@@ -73,7 +73,7 @@ Table of Contents
    7.  Security Considerations . . . . . . . . . . . . . . . . . . .   5
    8.  References  . . . . . . . . . . . . . . . . . . . . . . . . .   5
      8.1.  Normative References  . . . . . . . . . . . . . . . . . .   5
-     8.2.  Informative References  . . . . . . . . . . . . . . . . .   5
+     8.2.  Informative References  . . . . . . . . . . . . . . . . .   6
    Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .   6
 
 1.  Introduction
@@ -109,9 +109,9 @@ Table of Contents
 
 
 
-Miller                  Expires 24 February 2024                [Page 2]
+Miller                   Expires 25 October 2023                [Page 2]
 
-Internet-Draft    SSH Transport Protocol Ping Facility       August 2023
+Internet-Draft    SSH Transport Protocol Ping Facility        April 2023
 
 
    The ping facility is build around two new transport-layer messages
@@ -165,9 +165,9 @@ Internet-Draft    SSH Transport Protocol Ping Facility       August 2023
 
 
 
-Miller                  Expires 24 February 2024                [Page 3]
+Miller                   Expires 25 October 2023                [Page 3]
 
-Internet-Draft    SSH Transport Protocol Ping Facility       August 2023
+Internet-Draft    SSH Transport Protocol Ping Facility        April 2023
 
 
    Implementations that support this feature MUST NOT make any reply to
@@ -181,7 +181,13 @@ Internet-Draft    SSH Transport Protocol Ping Facility       August 2023
    SSH_MSG_PING requests MUST be replied to in the order that they were
    received.  If received during key exchange, the implementation MUST
    either delay its reply until after key exchange has concluded or
-   simply not reply at all.
+   simply not reply.  If an implementation holds replies to SSH_MSG_PING
+   messages received during key exchange, then it SHOULD limit the
+   number of queued replies to avoid resource exhaustion.
+
+   Implementations SHOULD NOT issue SSH_MSG_PING requests nor make
+   SSH_MSG_PONG replies before the authentication phase of the protocol
+   has completed.
 
 5.  Compatibility
 
@@ -208,6 +214,18 @@ Internet-Draft    SSH Transport Protocol Ping Facility       August 2023
    Message Numbers [IANA-SSH-MSG] under Secure Shell (SSH) Protocol
    Parameters [RFC4250].
 
+
+
+
+
+
+
+
+Miller                   Expires 25 October 2023                [Page 4]
+
+Internet-Draft    SSH Transport Protocol Ping Facility        April 2023
+
+
                 +=======+==============+=================+
                 | Value | Message ID   | Reference       |
                 +=======+==============+=================+
@@ -217,14 +235,6 @@ Internet-Draft    SSH Transport Protocol Ping Facility       August 2023
                 +-------+--------------+-----------------+
 
                                  Table 1
-
-
-
-
-Miller                  Expires 24 February 2024                [Page 4]
-
-Internet-Draft    SSH Transport Protocol Ping Facility       August 2023
-
 
 6.1.2.  Additions SSH Extension Names
 
@@ -263,6 +273,15 @@ Internet-Draft    SSH Transport Protocol Ping Facility       August 2023
               Transport Layer Protocol", RFC 4253, DOI 10.17487/RFC4253,
               January 2006, <https://www.rfc-editor.org/info/rfc4253>.
 
+
+
+
+
+Miller                   Expires 25 October 2023                [Page 5]
+
+Internet-Draft    SSH Transport Protocol Ping Facility        April 2023
+
+
    [RFC8308]  Bider, D., "Extension Negotiation in the Secure Shell
               (SSH) Protocol", RFC 8308, DOI 10.17487/RFC8308, March
               2018, <https://www.rfc-editor.org/info/rfc8308>.
@@ -272,15 +291,6 @@ Internet-Draft    SSH Transport Protocol Ping Facility       August 2023
               May 2017, <https://www.rfc-editor.org/info/rfc8174>.
 
 8.2.  Informative References
-
-
-
-
-
-Miller                  Expires 24 February 2024                [Page 5]
-
-Internet-Draft    SSH Transport Protocol Ping Facility       August 2023
-
 
    [IANA-SSH-MSG]
               IANA, "Message Numbers",
@@ -323,14 +333,4 @@ Author's Address
 
 
 
-
-
-
-
-
-
-
-
-
-
-Miller                  Expires 24 February 2024                [Page 6]
+Miller                   Expires 25 October 2023                [Page 6]
