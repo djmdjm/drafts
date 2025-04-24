@@ -350,7 +350,7 @@
 			<section anchor="rsacert_sha2"><name>RSA SHA2 signature algorithms</name>
 				<t>
 				<xref target="RFC8332" /> specifies RSA variants
-				that use SHA256 and SHA512. To advertise support
+				that use SHA256 and SHA512. Advertising support
 				for these algorithms with certificates (e.g. in
 				the SSH_MSG_KEXINIT server_host_key_algorithms
 				field) is possible using the algorithm names

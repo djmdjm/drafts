@@ -396,13 +396,13 @@ Internet-Draft           SSH Certificate Format               April 2025
 
 2.1.5.1.  RSA SHA2 signature algorithms
 
-   [RFC8332] specifies RSA variants that use SHA256 and SHA512.  To
-   advertise support for these algorithms with certificates (e.g. in the
-   SSH_MSG_KEXINIT server_host_key_algorithms field) is possible using
-   the algorithm names "rsa-sha2-256-cert" and "rsa-sha2-512-cert".
-   These names should only be used when advertising or requesting
-   signature algorithms and should never appear as the key type in
-   serialised public keys.
+   [RFC8332] specifies RSA variants that use SHA256 and SHA512.
+   Advertising support for these algorithms with certificates (e.g. in
+   the SSH_MSG_KEXINIT server_host_key_algorithms field) is possible
+   using the algorithm names "rsa-sha2-256-cert" and "rsa-
+   sha2-512-cert".  These names should only be used when advertising or
+   requesting signature algorithms and should never appear as the key
+   type in serialised public keys.
 
    The equivalent pre-standardisation vendor extension names are "rsa-
    sha2-256-cert-v01@openssh.com" and "rsa-sha2-512-cert-
