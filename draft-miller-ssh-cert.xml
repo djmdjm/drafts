@@ -347,6 +347,26 @@
 			These values are defined by Section 5.1 of
 			<xref target="FIPS.186-4" />.
 			</t>
+			<section anchor="rsacert_sha2"><name>RSA SHA2 signature algorithms</name>
+				<t>
+				<xref target="RFC8332" /> specifies RSA variants
+				that use SHA256 and SHA512. To advertise support
+				for these algorithms with certificates (e.g. in
+				the SSH_MSG_KEXINIT server_host_key_algorithms
+				field) is possible using the algorithm names
+				"rsa-sha2-256-cert" and "rsa-sha2-512-cert".
+				These names should only be used when advertising
+				or requesting signature algorithms and should
+				never appear as the key type in serialised
+				public keys.
+				</t>
+				<t>
+				The equivalent pre-standardisation vendor
+				extension names are
+				"rsa-sha2-256-cert-v01@openssh.com" and
+				"rsa-sha2-512-cert-v01@openssh.com".
+				</t>
+			</section>
 		</section>
 		<section><name>Other certificate formats</name>
 			<t>
@@ -893,6 +913,8 @@
 		<tr><td>ssh-ed25519-cert</td><td><xref target="eddsacert" /></td></tr>
 		<tr><td>ssh-ed448-cert</td><td><xref target="eddsacert" /></td></tr>
 		<tr><td>ssh-rsa-cert</td><td><xref target="rsacert" /></td></tr>
+		<tr><td>rsa-sha2-256-cert</td><td><xref target="rsacert_sha2" /></td></tr>
+		<tr><td>rsa-sha2-512</td><td><xref target="rsacert_sha2" /></td></tr>
 		</tbody>
 		</table>
 	</section>
