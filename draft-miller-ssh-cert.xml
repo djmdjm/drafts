@@ -678,7 +678,7 @@
     mpint               x
 			</sourcecode>
 			<t>
-			The "y" parameters is defined as per
+			The "x" parameter is defined as per
 			Section 4.1 of <xref target="FIPS.186-4"/>.
 			</t>
 		</section>
@@ -721,11 +721,11 @@
 		</section>
 		<section><name>RSA certificates</name>
 			<t>
-			EDDSA certificates with private keys use the following
+			RSA certificates with private keys use the following
 			encoding format.
 			</t>
 			<sourcecode>
-    string              "ssh-dss-cert"
+    string              "ssh-rsa-cert"
     string              certificate blob
     byte[]              private key fields
     mpint               d
@@ -1188,7 +1188,7 @@
 
 <section anchor="Acknowledgements" numbered="false"><name>Acknowledgements</name>
 	<t>
-	XXX YOUR NAME HERE XXX
+	Jeremy Norris offered valuable feedback on this document.
 	</t>
 </section>
 
