@@ -4,8 +4,8 @@
 
 Internet Engineering Task Force                                D. Miller
 Internet-Draft                                                   OpenSSH
-Intended status: Standards Track                           17 March 2025
-Expires: 18 September 2025
+Intended status: Standards Track                            10 June 2025
+Expires: 12 December 2025
 
 
                            SSH Agent Protocol
@@ -15,6 +15,13 @@ Abstract
 
    This document describes a key agent protocol for use in the Secure
    Shell (SSH) protocol.
+
+Note
+
+   This note is to be removed before publishing as an RFC.
+
+   In the IANA considerations section, please replace "thisRFC" with
+   "RFC" and the assigned number, when known.
 
 Status of This Memo
 
@@ -31,7 +38,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 18 September 2025.
+   This Internet-Draft will expire on 12 December 2025.
 
 Copyright Notice
 
@@ -43,20 +50,17 @@ Copyright Notice
    license-info) in effect on the date of publication of this document.
    Please review these documents carefully, as they describe your rights
    and restrictions with respect to this document.  Code Components
+
+
+
+Miller                  Expires 12 December 2025                [Page 1]
+
+Internet-Draft             SSH Agent Protocol                  June 2025
+
+
    extracted from this document must include Revised BSD License text as
    described in Section 4.e of the Trust Legal Provisions and are
    provided without warranty as described in the Revised BSD License.
-
-
-
-
-
-
-
-Miller                  Expires 18 September 2025               [Page 1]
-
-Internet-Draft             SSH Agent Protocol                 March 2025
-
 
 Table of Contents
 
@@ -67,7 +71,7 @@ Table of Contents
      3.1.  Generic server responses  . . . . . . . . . . . . . . . .   4
      3.2.  Adding keys to the agent  . . . . . . . . . . . . . . . .   4
        3.2.1.  DSA keys  . . . . . . . . . . . . . . . . . . . . . .   5
-       3.2.2.  ECDSA keys  . . . . . . . . . . . . . . . . . . . . .   5
+       3.2.2.  ECDSA keys  . . . . . . . . . . . . . . . . . . . . .   6
        3.2.3.  EDDSA keys  . . . . . . . . . . . . . . . . . . . . .   6
        3.2.4.  RSA keys  . . . . . . . . . . . . . . . . . . . . . .   6
        3.2.5.  Other keys  . . . . . . . . . . . . . . . . . . . . .   7
@@ -93,26 +97,27 @@ Table of Contents
    6.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  16
      6.1.  New registry: SSH agent protocol numbers  . . . . . . . .  16
      6.2.  New registry: SSH agent key constraint numbers  . . . . .  19
-     6.3.  New registry: SSH agent signature flags . . . . . . . . .  19
-     6.4.  New registry: SSH agent extension request names . . . . .  19
+     6.3.  New registry: SSH agent signature flags . . . . . . . . .  20
+     6.4.  New registry: SSH agent extension request names . . . . .  20
      6.5.  Additions to SSH Extension Names  . . . . . . . . . . . .  20
      6.6.  Additions to SSH Connection Protocol Channel Request
-           Names . . . . . . . . . . . . . . . . . . . . . . . . . .  20
-     6.7.  Additions to SSH Connection Protocol Channel Types  . . .  20
+           Names . . . . . . . . . . . . . . . . . . . . . . . . . .  21
+     6.7.  Additions to SSH Connection Protocol Channel Types  . . .  21
    7.  Security Considerations . . . . . . . . . . . . . . . . . . .  21
-   8.  Implementation Status . . . . . . . . . . . . . . . . . . . .  22
-   9.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  23
-     9.1.  Normative References  . . . . . . . . . . . . . . . . . .  23
-     9.2.  Informative References  . . . . . . . . . . . . . . . . .  25
-   Acknowledgments . . . . . . . . . . . . . . . . . . . . . . . . .  25
-   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .  25
+   8.  Implementation Status . . . . . . . . . . . . . . . . . . . .  23
+   9.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  24
 
 
 
-Miller                  Expires 18 September 2025               [Page 2]
+Miller                  Expires 12 December 2025                [Page 2]
 
-Internet-Draft             SSH Agent Protocol                 March 2025
+Internet-Draft             SSH Agent Protocol                  June 2025
 
+
+     9.1.  Normative References  . . . . . . . . . . . . . . . . . .  24
+     9.2.  Informative References  . . . . . . . . . . . . . . . . .  25
+   Acknowledgments . . . . . . . . . . . . . . . . . . . . . . . . .  26
+   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .  26
 
 1.  Introduction
 
@@ -158,17 +163,16 @@ Internet-Draft             SSH Agent Protocol                 March 2025
    agent SHOULD be prepared to fail gracefully if any operation is
    refused.
 
-   Note that this protocol is separate to and incompatible with the one
-   described in the similarly-named [draft-ietf-secsh-agent-02].
 
 
-
-
-
-Miller                  Expires 18 September 2025               [Page 3]
+Miller                  Expires 12 December 2025                [Page 3]
 
-Internet-Draft             SSH Agent Protocol                 March 2025
+Internet-Draft             SSH Agent Protocol                  June 2025
 
+
+   Note that this protocol is separate to and incompatible with the one
+   described in the similarly-named [draft-ietf-secsh-agent-02] which
+   expired in 2004.
 
 3.  Protocol Messages
 
@@ -179,6 +183,10 @@ Internet-Draft             SSH Agent Protocol                 March 2025
       uint32            length
       byte              type
       byte[length - 1]  contents
+
+   In the sections below, the "length" field is omitted.  For clarity,
+   the symbolic names of the messages are shown; their numeric values
+   are listed in Section 5.1 below.
 
 3.1.  Generic server responses
 
@@ -209,6 +217,15 @@ Internet-Draft             SSH Agent Protocol                 March 2025
        byte[]           key contents
        string           key comment
 
+
+
+
+
+Miller                  Expires 12 December 2025                [Page 4]
+
+Internet-Draft             SSH Agent Protocol                  June 2025
+
+
    Here "type" is the specified key type name, for example "ssh-rsa" for
    a RSA key as defined by [RFC4253]. "contents" consists of the public
    and private components of the key and vary by key type, they are
@@ -217,14 +234,6 @@ Internet-Draft             SSH Agent Protocol                 March 2025
    may serve to identify the key in user-visible messages.
 
    The SSH_AGENTC_ADD_ID_CONSTRAINED is similar, but adds a extra field:
-
-
-
-
-Miller                  Expires 18 September 2025               [Page 4]
-
-Internet-Draft             SSH Agent Protocol                 March 2025
-
 
        byte             SSH_AGENTC_ADD_ID_CONSTRAINED
        string           type
@@ -266,21 +275,19 @@ Internet-Draft             SSH Agent Protocol                 March 2025
    are the public and private keys respectively.  These values are as
    defined by Section 4.1 of [FIPS.186-4].
 
+
+
+Miller                  Expires 12 December 2025                [Page 5]
+
+Internet-Draft             SSH Agent Protocol                  June 2025
+
+
 3.2.2.  ECDSA keys
 
    ECDSA keys have key types starting with "ecdsa-sha2-" and are defined
    in [RFC5656].  They may be added to the agent using the following
    message.  The "constraints" field is only present for the
    SSH_AGENTC_ADD_ID_CONSTRAINED message.
-
-
-
-
-
-Miller                  Expires 18 September 2025               [Page 5]
-
-Internet-Draft             SSH Agent Protocol                 March 2025
-
 
        byte             SSH_AGENTC_ADD_IDENTITY or
                         SSH_AGENTC_ADD_ID_CONSTRAINED
@@ -326,16 +333,9 @@ Internet-Draft             SSH Agent Protocol                 March 2025
 
 
 
-
-
-
-
-
-
-
-Miller                  Expires 18 September 2025               [Page 6]
+Miller                  Expires 12 December 2025                [Page 6]
 
-Internet-Draft             SSH Agent Protocol                 March 2025
+Internet-Draft             SSH Agent Protocol                  June 2025
 
 
        byte             SSH_AGENTC_ADD_IDENTITY or
@@ -389,9 +389,9 @@ Internet-Draft             SSH Agent Protocol                 March 2025
 
 
 
-Miller                  Expires 18 September 2025               [Page 7]
+Miller                  Expires 12 December 2025                [Page 7]
 
-Internet-Draft             SSH Agent Protocol                 March 2025
+Internet-Draft             SSH Agent Protocol                  June 2025
 
 
    An agent MUST reply with SSH_AGENT_SUCCESS if one or more keys were
@@ -445,9 +445,9 @@ Internet-Draft             SSH Agent Protocol                 March 2025
 
 
 
-Miller                  Expires 18 September 2025               [Page 8]
+Miller                  Expires 12 December 2025                [Page 8]
 
-Internet-Draft             SSH Agent Protocol                 March 2025
+Internet-Draft             SSH Agent Protocol                  June 2025
 
 
 3.2.7.3.  Constraint extensions
@@ -501,9 +501,9 @@ Internet-Draft             SSH Agent Protocol                 March 2025
 
 
 
-Miller                  Expires 18 September 2025               [Page 9]
+Miller                  Expires 12 December 2025                [Page 9]
 
-Internet-Draft             SSH Agent Protocol                 March 2025
+Internet-Draft             SSH Agent Protocol                  June 2025
 
 
    Where "id" is an opaque identifier for the hardware token and "PIN"
@@ -557,9 +557,9 @@ Internet-Draft             SSH Agent Protocol                 March 2025
 
 
 
-Miller                  Expires 18 September 2025              [Page 10]
+Miller                  Expires 12 December 2025               [Page 10]
 
-Internet-Draft             SSH Agent Protocol                 March 2025
+Internet-Draft             SSH Agent Protocol                  June 2025
 
 
    If the agent does not support the requested flags, or is otherwise
@@ -613,9 +613,9 @@ Internet-Draft             SSH Agent Protocol                 March 2025
 
 
 
-Miller                  Expires 18 September 2025              [Page 11]
+Miller                  Expires 12 December 2025               [Page 11]
 
-Internet-Draft             SSH Agent Protocol                 March 2025
+Internet-Draft             SSH Agent Protocol                  June 2025
 
 
    If the agent is already locked and the pass-phrase matches the one
@@ -669,9 +669,9 @@ Internet-Draft             SSH Agent Protocol                 March 2025
 
 
 
-Miller                  Expires 18 September 2025              [Page 12]
+Miller                  Expires 12 December 2025               [Page 12]
 
-Internet-Draft             SSH Agent Protocol                 March 2025
+Internet-Draft             SSH Agent Protocol                  June 2025
 
 
 3.8.1.  Query extension
@@ -725,9 +725,9 @@ Internet-Draft             SSH Agent Protocol                 March 2025
 
 
 
-Miller                  Expires 18 September 2025              [Page 13]
+Miller                  Expires 12 December 2025               [Page 13]
 
-Internet-Draft             SSH Agent Protocol                 March 2025
+Internet-Draft             SSH Agent Protocol                  June 2025
 
 
 4.2.  Requesting agent forwarding
@@ -781,9 +781,9 @@ Internet-Draft             SSH Agent Protocol                 March 2025
 
 
 
-Miller                  Expires 18 September 2025              [Page 14]
+Miller                  Expires 12 December 2025               [Page 14]
 
-Internet-Draft             SSH Agent Protocol                 March 2025
+Internet-Draft             SSH Agent Protocol                  June 2025
 
 
    A client SHOULD be prepared to handle multiple concurrent active
@@ -837,9 +837,9 @@ Internet-Draft             SSH Agent Protocol                 March 2025
 
 
 
-Miller                  Expires 18 September 2025              [Page 15]
+Miller                  Expires 12 December 2025               [Page 15]
 
-Internet-Draft             SSH Agent Protocol                 March 2025
+Internet-Draft             SSH Agent Protocol                  June 2025
 
 
 5.1.1.  Reserved message numbers
@@ -893,122 +893,152 @@ Internet-Draft             SSH Agent Protocol                 March 2025
 
 
 
-Miller                  Expires 18 September 2025              [Page 16]
+Miller                  Expires 12 December 2025               [Page 16]
 
-Internet-Draft             SSH Agent Protocol                 March 2025
+Internet-Draft             SSH Agent Protocol                  June 2025
 
 
    +===========+==========================================+===========+
    | Number(s) | Identifier                               | Reference |
    +===========+==========================================+===========+
-   | 1         | reserved                                 | Section   |
+   | 1         | reserved                                 | thisrfc,  |
+   |           |                                          | Section   |
    |           |                                          | 5.1.1     |
    +-----------+------------------------------------------+-----------+
-   | 2         | reserved                                 | Section   |
+   | 2         | reserved                                 | thisrfc,  |
+   |           |                                          | Section   |
    |           |                                          | 5.1.1     |
    +-----------+------------------------------------------+-----------+
-   | 3         | reserved                                 | Section   |
+   | 3         | reserved                                 | thisrfc,  |
+   |           |                                          | Section   |
    |           |                                          | 5.1.1     |
    +-----------+------------------------------------------+-----------+
-   | 4         | reserved                                 | Section   |
+   | 4         | reserved                                 | thisrfc,  |
+   |           |                                          | Section   |
    |           |                                          | 5.1.1     |
    +-----------+------------------------------------------+-----------+
-   | 5         | SSH_AGENT_FAILURE                        | Section   |
+   | 5         | SSH_AGENT_FAILURE                        | thisrfc,  |
+   |           |                                          | Section   |
    |           |                                          | 5.1       |
    +-----------+------------------------------------------+-----------+
-   | 6         | SSH_AGENT_SUCCESS                        | Section   |
+   | 6         | SSH_AGENT_SUCCESS                        | thisrfc,  |
+   |           |                                          | Section   |
    |           |                                          | 5.1       |
    +-----------+------------------------------------------+-----------+
-   | 7         | reserved                                 | Section   |
+   | 7         | reserved                                 | thisrfc,  |
+   |           |                                          | Section   |
    |           |                                          | 5.1.1     |
    +-----------+------------------------------------------+-----------+
-   | 8         | reserved                                 | Section   |
+   | 8         | reserved                                 | thisrfc,  |
+   |           |                                          | Section   |
    |           |                                          | 5.1.1     |
    +-----------+------------------------------------------+-----------+
-   | 9         | reserved                                 | Section   |
+   | 9         | reserved                                 | thisrfc,  |
+   |           |                                          | Section   |
    |           |                                          | 5.1.1     |
    +-----------+------------------------------------------+-----------+
-   | 10        | reserved                                 | Section   |
+   | 10        | reserved                                 | thisrfc,  |
+   |           |                                          | Section   |
    |           |                                          | 5.1.1     |
    +-----------+------------------------------------------+-----------+
-   | 11        | SSH_AGENTC_REQUEST_IDENTITIES            | Section   |
+   | 11        | SSH_AGENTC_REQUEST_IDENTITIES            | thisrfc,  |
+   |           |                                          | Section   |
    |           |                                          | 5.1       |
    +-----------+------------------------------------------+-----------+
-   | 12        | SSH_AGENT_IDENTITIES_ANSWER              | Section   |
-   |           |                                          | 5.1       |
-   +-----------+------------------------------------------+-----------+
-   | 13        | SSH_AGENTC_SIGN_REQUEST                  | Section   |
-   |           |                                          | 5.1       |
-   +-----------+------------------------------------------+-----------+
-   | 14        | SSH_AGENT_SIGN_RESPONSE                  | Section   |
-   |           |                                          | 5.1       |
-   +-----------+------------------------------------------+-----------+
-   | 15        | reserved                                 | Section   |
-   |           |                                          | 5.1.1     |
-   +-----------+------------------------------------------+-----------+
+   | 12        | SSH_AGENT_IDENTITIES_ANSWER              | thisrfc,  |
 
 
 
-Miller                  Expires 18 September 2025              [Page 17]
+Miller                  Expires 12 December 2025               [Page 17]
 
-Internet-Draft             SSH Agent Protocol                 March 2025
+Internet-Draft             SSH Agent Protocol                  June 2025
 
 
-   | 16        | reserved                                 | Section   |
+   |           |                                          | Section   |
+   |           |                                          | 5.1       |
+   +-----------+------------------------------------------+-----------+
+   | 13        | SSH_AGENTC_SIGN_REQUEST                  | thisrfc,  |
+   |           |                                          | Section   |
+   |           |                                          | 5.1       |
+   +-----------+------------------------------------------+-----------+
+   | 14        | SSH_AGENT_SIGN_RESPONSE                  | thisrfc,  |
+   |           |                                          | Section   |
+   |           |                                          | 5.1       |
+   +-----------+------------------------------------------+-----------+
+   | 15        | reserved                                 | thisrfc,  |
+   |           |                                          | Section   |
    |           |                                          | 5.1.1     |
    +-----------+------------------------------------------+-----------+
-   | 17        | SSH_AGENTC_ADD_IDENTITY                  | Section   |
-   |           |                                          | 5.1       |
-   +-----------+------------------------------------------+-----------+
-   | 18        | SSH_AGENTC_REMOVE_IDENTITY               | Section   |
-   |           |                                          | 5.1       |
-   +-----------+------------------------------------------+-----------+
-   | 19        | SSH_AGENTC_REMOVE_ALL_IDENTITIES         | Section   |
-   |           |                                          | 5.1       |
-   +-----------+------------------------------------------+-----------+
-   | 20        | SSH_AGENTC_ADD_SMARTCARD_KEY             | Section   |
-   |           |                                          | 5.1       |
-   +-----------+------------------------------------------+-----------+
-   | 21        | SSH_AGENTC_REMOVE_SMARTCARD_KEY          | Section   |
-   |           |                                          | 5.1       |
-   +-----------+------------------------------------------+-----------+
-   | 22        | SSH_AGENTC_LOCK                          | Section   |
-   |           |                                          | 5.1       |
-   +-----------+------------------------------------------+-----------+
-   | 23        | SSH_AGENTC_UNLOCK                        | Section   |
-   |           |                                          | 5.1       |
-   +-----------+------------------------------------------+-----------+
-   | 24        | reserved                                 | Section   |
+   | 16        | reserved                                 | thisrfc,  |
+   |           |                                          | Section   |
    |           |                                          | 5.1.1     |
    +-----------+------------------------------------------+-----------+
-   | 25        | SSH_AGENTC_ADD_ID_CONSTRAINED            | Section   |
+   | 17        | SSH_AGENTC_ADD_IDENTITY                  | thisrfc,  |
+   |           |                                          | Section   |
    |           |                                          | 5.1       |
    +-----------+------------------------------------------+-----------+
-   | 26        | SSH_AGENTC_ADD_SMARTCARD_KEY_CONSTRAINED | Section   |
+   | 18        | SSH_AGENTC_REMOVE_IDENTITY               | thisrfc,  |
+   |           |                                          | Section   |
    |           |                                          | 5.1       |
    +-----------+------------------------------------------+-----------+
-   | 27        | SSH_AGENTC_EXTENSION                     | Section   |
+   | 19        | SSH_AGENTC_REMOVE_ALL_IDENTITIES         | thisrfc,  |
+   |           |                                          | Section   |
    |           |                                          | 5.1       |
    +-----------+------------------------------------------+-----------+
-   | 28        | SSH_AGENT_EXTENSION_FAILURE              | Section   |
+   | 20        | SSH_AGENTC_ADD_SMARTCARD_KEY             | thisrfc,  |
+   |           |                                          | Section   |
    |           |                                          | 5.1       |
    +-----------+------------------------------------------+-----------+
-   | 29        | SSH_AGENT_EXTENSION_RESPONSE             | Section   |
+   | 21        | SSH_AGENTC_REMOVE_SMARTCARD_KEY          | thisrfc,  |
+   |           |                                          | Section   |
    |           |                                          | 5.1       |
    +-----------+------------------------------------------+-----------+
-   | 240-255   | Reserved for organizational use          | Section   |
+   | 22        | SSH_AGENTC_LOCK                          | thisrfc,  |
+   |           |                                          | Section   |
+   |           |                                          | 5.1       |
+   +-----------+------------------------------------------+-----------+
+   | 23        | SSH_AGENTC_UNLOCK                        | thisrfc,  |
+   |           |                                          | Section   |
+   |           |                                          | 5.1       |
+   +-----------+------------------------------------------+-----------+
+   | 24        | reserved                                 | thisrfc,  |
+
+
+
+Miller                  Expires 12 December 2025               [Page 18]
+
+Internet-Draft             SSH Agent Protocol                  June 2025
+
+
+   |           |                                          | Section   |
+   |           |                                          | 5.1.1     |
+   +-----------+------------------------------------------+-----------+
+   | 25        | SSH_AGENTC_ADD_ID_CONSTRAINED            | thisrfc,  |
+   |           |                                          | Section   |
+   |           |                                          | 5.1       |
+   +-----------+------------------------------------------+-----------+
+   | 26        | SSH_AGENTC_ADD_SMARTCARD_KEY_CONSTRAINED | thisrfc,  |
+   |           |                                          | Section   |
+   |           |                                          | 5.1       |
+   +-----------+------------------------------------------+-----------+
+   | 27        | SSH_AGENTC_EXTENSION                     | thisrfc,  |
+   |           |                                          | Section   |
+   |           |                                          | 5.1       |
+   +-----------+------------------------------------------+-----------+
+   | 28        | SSH_AGENT_EXTENSION_FAILURE              | thisrfc,  |
+   |           |                                          | Section   |
+   |           |                                          | 5.1       |
+   +-----------+------------------------------------------+-----------+
+   | 29        | SSH_AGENT_EXTENSION_RESPONSE             | thisrfc,  |
+   |           |                                          | Section   |
+   |           |                                          | 5.1       |
+   +-----------+------------------------------------------+-----------+
+   | 240-255   | Reserved for organizational use          | thisrfc,  |
+   |           |                                          | Section   |
    |           |                                          | 5.1       |
    +-----------+------------------------------------------+-----------+
 
                                  Table 1
-
-
-
-
-Miller                  Expires 18 September 2025              [Page 18]
-
-Internet-Draft             SSH Agent Protocol                 March 2025
-
 
 6.2.  New registry: SSH agent key constraint numbers
 
@@ -1017,17 +1047,24 @@ Internet-Draft             SSH Agent Protocol                 March 2025
    consist of the following numbers.  Future message number allocations
    shall occur via EXPERT REVIEW as per [RFC8126].
 
-         +========+===============================+=============+
-         | Number | Identifier                    | Reference   |
-         +========+===============================+=============+
-         | 1      | SSH_AGENT_CONSTRAIN_LIFETIME  | Section 5.2 |
-         +--------+-------------------------------+-------------+
-         | 2      | SSH_AGENT_CONSTRAIN_CONFIRM   | Section 5.2 |
-         +--------+-------------------------------+-------------+
-         | 255    | SSH_AGENT_CONSTRAIN_EXTENSION | Section 5.2 |
-         +--------+-------------------------------+-------------+
+     +========+===============================+======================+
+     | Number | Identifier                    | Reference            |
+     +========+===============================+======================+
+     | 1      | SSH_AGENT_CONSTRAIN_LIFETIME  | thisrfc, Section 5.2 |
+     +--------+-------------------------------+----------------------+
+     | 2      | SSH_AGENT_CONSTRAIN_CONFIRM   | thisrfc, Section 5.2 |
+     +--------+-------------------------------+----------------------+
+     | 255    | SSH_AGENT_CONSTRAIN_EXTENSION | thisrfc, Section 5.2 |
+     +--------+-------------------------------+----------------------+
 
-                                 Table 2
+                                  Table 2
+
+
+
+Miller                  Expires 12 December 2025               [Page 19]
+
+Internet-Draft             SSH Agent Protocol                  June 2025
+
 
 6.3.  New registry: SSH agent signature flags
 
@@ -1040,17 +1077,17 @@ Internet-Draft             SSH Agent Protocol                 March 2025
    Future message number allocations shall occur via EXPERT REVIEW as
    per [RFC8126].
 
-             +========+========================+=============+
-             | Number | Identifier             | Reference   |
-             +========+========================+=============+
-             | 0x01   | reserved               | Section 5.3 |
-             +--------+------------------------+-------------+
-             | 0x02   | SSH_AGENT_RSA_SHA2_256 | Section 5.3 |
-             +--------+------------------------+-------------+
-             | 0x04   | SSH_AGENT_RSA_SHA2_512 | Section 5.3 |
-             +--------+------------------------+-------------+
+        +========+========================+======================+
+        | Number | Identifier             | Reference            |
+        +========+========================+======================+
+        | 0x01   | reserved               | thisrfc, Section 5.3 |
+        +--------+------------------------+----------------------+
+        | 0x02   | SSH_AGENT_RSA_SHA2_256 | thisrfc, Section 5.3 |
+        +--------+------------------------+----------------------+
+        | 0x04   | SSH_AGENT_RSA_SHA2_512 | thisrfc, Section 5.3 |
+        +--------+------------------------+----------------------+
 
-                                  Table 3
+                                 Table 3
 
 6.4.  New registry: SSH agent extension request names
 
@@ -1059,23 +1096,16 @@ Internet-Draft             SSH Agent Protocol                 March 2025
    (SSH_AGENTC_EXTENSION).  Its initial state should consist of the
    following names.
 
-
-
-Miller                  Expires 18 September 2025              [Page 19]
-
-Internet-Draft             SSH Agent Protocol                 March 2025
-
-
    Future message number allocations shall occur via EXPERT REVIEW as
    per [RFC8126].
 
-                    +================+===============+
-                    | Extension Name | Reference     |
-                    +================+===============+
-                    | query          | Section 3.8.1 |
-                    +----------------+---------------+
+                +================+========================+
+                | Extension Name | Reference              |
+                +================+========================+
+                | query          | thisrfc, Section 3.8.1 |
+                +----------------+------------------------+
 
-                                 Table 4
+                                  Table 4
 
 6.5.  Additions to SSH Extension Names
 
@@ -1083,13 +1113,22 @@ Internet-Draft             SSH Agent Protocol                 March 2025
    Extension Names [IANA-SSH-EXT] under Secure Shell (SSH) Protocol
    Parameters [RFC4250].
 
-                     +================+=============+
-                     | Extension Name | Reference   |
-                     +================+=============+
-                     | agent-forward  | Section 4.1 |
-                     +----------------+-------------+
 
-                                 Table 5
+
+
+
+Miller                  Expires 12 December 2025               [Page 20]
+
+Internet-Draft             SSH Agent Protocol                  June 2025
+
+
+                 +================+======================+
+                 | Extension Name | Reference            |
+                 +================+======================+
+                 | agent-forward  | thisrfc, Section 4.1 |
+                 +----------------+----------------------+
+
+                                  Table 5
 
 6.6.  Additions to SSH Connection Protocol Channel Request Names
 
@@ -1097,13 +1136,13 @@ Internet-Draft             SSH Agent Protocol                 March 2025
    Connection Protocol Channel Request Names [IANA-SSH-CHANREQ] under
    Secure Shell (SSH) Protocol Parameters [RFC4250].
 
-                     +================+=============+
-                     | Extension Name | Reference   |
-                     +================+=============+
-                     | agent-req      | Section 4.2 |
-                     +----------------+-------------+
+                 +================+======================+
+                 | Extension Name | Reference            |
+                 +================+======================+
+                 | agent-req      | thisrfc, Section 4.2 |
+                 +----------------+----------------------+
 
-                                 Table 6
+                                  Table 6
 
 6.7.  Additions to SSH Connection Protocol Channel Types
 
@@ -1111,24 +1150,13 @@ Internet-Draft             SSH Agent Protocol                 March 2025
    Connection Protocol Channel Types [IANA-SSH-CHANTYPE] under Secure
    Shell (SSH) Protocol Parameters [RFC4250].
 
+                 +================+======================+
+                 | Extension Name | Reference            |
+                 +================+======================+
+                 | agent-connect  | thisrfc, Section 4.3 |
+                 +----------------+----------------------+
 
-
-
-
-
-
-Miller                  Expires 18 September 2025              [Page 20]
-
-Internet-Draft             SSH Agent Protocol                 March 2025
-
-
-                     +================+=============+
-                     | Extension Name | Reference   |
-                     +================+=============+
-                     | agent-connect  | Section 4.3 |
-                     +----------------+-------------+
-
-                                 Table 7
+                                  Table 7
 
 7.  Security Considerations
 
@@ -1139,6 +1167,16 @@ Internet-Draft             SSH Agent Protocol                 March 2025
    include any authentication or transport security; ability to
    communicate with an agent is usually sufficient to invoke it to
    perform private key operations.
+
+
+
+
+
+
+Miller                  Expires 12 December 2025               [Page 21]
+
+Internet-Draft             SSH Agent Protocol                  June 2025
+
 
    Since being able to access an agent is usually sufficient to perform
    private key operations, it is critically important that the agent
@@ -1170,14 +1208,6 @@ Internet-Draft             SSH Agent Protocol                 March 2025
    measures to hide the actual time spent processing private key
    operations.
 
-
-
-
-Miller                  Expires 18 September 2025              [Page 21]
-
-Internet-Draft             SSH Agent Protocol                 March 2025
-
-
    Forwarding access to a local agent over a SSH connection (Section 4)
    inherently creates a transitive trust relationship.  SSH
    implementations SHOULD NOT forward use of an agent by default and MAY
@@ -1195,6 +1225,14 @@ Internet-Draft             SSH Agent Protocol                 March 2025
    smartcard library code cannot gain access to other keys loaded in the
    agent and MAY disallow remote clients from loading smartcard keys
    entirely.
+
+
+
+
+Miller                  Expires 12 December 2025               [Page 22]
+
+Internet-Draft             SSH Agent Protocol                  June 2025
+
 
 8.  Implementation Status
 
@@ -1226,14 +1264,6 @@ Internet-Draft             SSH Agent Protocol                 March 2025
 
       Website: https://www.openssh.com/
 
-
-
-
-Miller                  Expires 18 September 2025              [Page 22]
-
-Internet-Draft             SSH Agent Protocol                 March 2025
-
-
    PuTTY  PuTTY is a popular SSH client implementation for multiple
       platforms that has included a compatible agent client since 2001.
 
@@ -1252,6 +1282,14 @@ Internet-Draft             SSH Agent Protocol                 March 2025
       Website: https://www.paramiko.org/
 
    Golang x/crypto/ssh/agent  The Go programming language project has
+
+
+
+Miller                  Expires 12 December 2025               [Page 23]
+
+Internet-Draft             SSH Agent Protocol                  June 2025
+
+
       supported an implementation of this protocol in its external "x"
       repository since 2015.
 
@@ -1281,15 +1319,6 @@ Internet-Draft             SSH Agent Protocol                 March 2025
               Transport Layer Protocol", RFC 4253, DOI 10.17487/RFC4253,
               January 2006, <https://www.rfc-editor.org/info/rfc4253>.
 
-
-
-
-
-Miller                  Expires 18 September 2025              [Page 23]
-
-Internet-Draft             SSH Agent Protocol                 March 2025
-
-
    [RFC4254]  Ylonen, T. and C. Lonvick, Ed., "The Secure Shell (SSH)
               Connection Protocol", RFC 4254, DOI 10.17487/RFC4254,
               January 2006, <https://www.rfc-editor.org/info/rfc4254>.
@@ -1308,6 +1337,14 @@ Internet-Draft             SSH Agent Protocol                 March 2025
               Signature Algorithm (EdDSA)", RFC 8032,
               DOI 10.17487/RFC8032, January 2017,
               <https://www.rfc-editor.org/info/rfc8032>.
+
+
+
+
+Miller                  Expires 12 December 2025               [Page 24]
+
+Internet-Draft             SSH Agent Protocol                  June 2025
+
 
    [RFC8126]  Cotton, M., Leiba, B., and T. Narten, "Guidelines for
               Writing an IANA Considerations Section in RFCs", BCP 26,
@@ -1338,14 +1375,6 @@ Internet-Draft             SSH Agent Protocol                 March 2025
               DOI 10.6028/NIST.FIPS.186-4, July 2013,
               <https://doi.org/10.6028/NIST.FIPS.186-4>.
 
-
-
-
-Miller                  Expires 18 September 2025              [Page 24]
-
-Internet-Draft             SSH Agent Protocol                 March 2025
-
-
    [FIPS.186-5]
               National Institute of Standards and Technology, "Digital
               Signature Standard (DSS)", FIPS PUB 186-5,
@@ -1365,6 +1394,13 @@ Internet-Draft             SSH Agent Protocol                 March 2025
    [IANA-SSH-EXT]
               IANA, "Connection Protocol Channel Request Names",
               <https://www.iana.org/assignments/ssh-parameters/>.
+
+
+
+Miller                  Expires 12 December 2025               [Page 25]
+
+Internet-Draft             SSH Agent Protocol                  June 2025
+
 
    [draft-ietf-secsh-agent-02]
               Ylonen, T., Rinne, T. J., and S. Lehtinen, "Secure Shell
@@ -1397,4 +1433,24 @@ Author's Address
 
 
 
-Miller                  Expires 18 September 2025              [Page 25]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Miller                  Expires 12 December 2025               [Page 26]
