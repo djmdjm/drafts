@@ -48,6 +48,12 @@
 		the Secure Shell (SSH) protocol.
 		</t>
 	</abstract>
+	<note removeInRFC="true">
+		<t>
+		In the IANA considerations section, please replace
+		"thisRFC" with "RFC" and the assigned number, when known.
+		</t>
+	</note>
 </front>
 
 <middle>
@@ -949,36 +955,36 @@
 <tr><th>Number(s)</th><th>Identifier</th><th>Reference</th></tr>
 </thead>
 <tbody>
-<tr><td>1</td><td>reserved</td><td><xref target="reservednum" /></td></tr>
-<tr><td>2</td><td>reserved</td><td><xref target="reservednum" /></td></tr>
-<tr><td>3</td><td>reserved</td><td><xref target="reservednum" /></td></tr>
-<tr><td>4</td><td>reserved</td><td><xref target="reservednum" /></td></tr>
-<tr><td>5</td><td>SSH_AGENT_FAILURE</td><td><xref target="messagenum" /></td></tr>
-<tr><td>6</td><td>SSH_AGENT_SUCCESS</td><td><xref target="messagenum" /></td></tr>
-<tr><td>7</td><td>reserved</td><td><xref target="reservednum" /></td></tr>
-<tr><td>8</td><td>reserved</td><td><xref target="reservednum" /></td></tr>
-<tr><td>9</td><td>reserved</td><td><xref target="reservednum" /></td></tr>
-<tr><td>10</td><td>reserved</td><td><xref target="reservednum" /></td></tr>
-<tr><td>11</td><td>SSH_AGENTC_REQUEST_IDENTITIES</td><td><xref target="messagenum" /></td></tr>
-<tr><td>12</td><td>SSH_AGENT_IDENTITIES_ANSWER</td><td><xref target="messagenum" /></td></tr>
-<tr><td>13</td><td>SSH_AGENTC_SIGN_REQUEST</td><td><xref target="messagenum" /></td></tr>
-<tr><td>14</td><td>SSH_AGENT_SIGN_RESPONSE</td><td><xref target="messagenum" /></td></tr>
-<tr><td>15</td><td>reserved</td><td><xref target="reservednum" /></td></tr>
-<tr><td>16</td><td>reserved</td><td><xref target="reservednum" /></td></tr>
-<tr><td>17</td><td>SSH_AGENTC_ADD_IDENTITY</td><td><xref target="messagenum" /></td></tr>
-<tr><td>18</td><td>SSH_AGENTC_REMOVE_IDENTITY</td><td><xref target="messagenum" /></td></tr>
-<tr><td>19</td><td>SSH_AGENTC_REMOVE_ALL_IDENTITIES</td><td><xref target="messagenum" /></td></tr>
-<tr><td>20</td><td>SSH_AGENTC_ADD_SMARTCARD_KEY</td><td><xref target="messagenum" /></td></tr>
-<tr><td>21</td><td>SSH_AGENTC_REMOVE_SMARTCARD_KEY</td><td><xref target="messagenum" /></td></tr>
-<tr><td>22</td><td>SSH_AGENTC_LOCK</td><td><xref target="messagenum" /></td></tr>
-<tr><td>23</td><td>SSH_AGENTC_UNLOCK</td><td><xref target="messagenum" /></td></tr>
-<tr><td>24</td><td>reserved</td><td><xref target="reservednum" /></td></tr>
-<tr><td>25</td><td>SSH_AGENTC_ADD_ID_CONSTRAINED</td><td><xref target="messagenum" /></td></tr>
-<tr><td>26</td><td>SSH_AGENTC_ADD_SMARTCARD_KEY_CONSTRAINED</td><td><xref target="messagenum" /></td></tr>
-<tr><td>27</td><td>SSH_AGENTC_EXTENSION</td><td><xref target="messagenum" /></td></tr>
-<tr><td>28</td><td>SSH_AGENT_EXTENSION_FAILURE</td><td><xref target="messagenum" /></td></tr>
-<tr><td>29</td><td>SSH_AGENT_EXTENSION_RESPONSE</td><td><xref target="messagenum" /></td></tr>
-<tr><td>240-255</td><td>Reserved for organizational use</td><td><xref target="messagenum" /></td></tr>
+<tr><td>1</td><td>reserved</td><td>thisrfc, <xref target="reservednum" /></td></tr>
+<tr><td>2</td><td>reserved</td><td>thisrfc, <xref target="reservednum" /></td></tr>
+<tr><td>3</td><td>reserved</td><td>thisrfc, <xref target="reservednum" /></td></tr>
+<tr><td>4</td><td>reserved</td><td>thisrfc, <xref target="reservednum" /></td></tr>
+<tr><td>5</td><td>SSH_AGENT_FAILURE</td><td>thisrfc, <xref target="messagenum" /></td></tr>
+<tr><td>6</td><td>SSH_AGENT_SUCCESS</td><td>thisrfc, <xref target="messagenum" /></td></tr>
+<tr><td>7</td><td>reserved</td><td>thisrfc, <xref target="reservednum" /></td></tr>
+<tr><td>8</td><td>reserved</td><td>thisrfc, <xref target="reservednum" /></td></tr>
+<tr><td>9</td><td>reserved</td><td>thisrfc, <xref target="reservednum" /></td></tr>
+<tr><td>10</td><td>reserved</td><td>thisrfc, <xref target="reservednum" /></td></tr>
+<tr><td>11</td><td>SSH_AGENTC_REQUEST_IDENTITIES</td><td>thisrfc, <xref target="messagenum" /></td></tr>
+<tr><td>12</td><td>SSH_AGENT_IDENTITIES_ANSWER</td><td>thisrfc, <xref target="messagenum" /></td></tr>
+<tr><td>13</td><td>SSH_AGENTC_SIGN_REQUEST</td><td>thisrfc, <xref target="messagenum" /></td></tr>
+<tr><td>14</td><td>SSH_AGENT_SIGN_RESPONSE</td><td>thisrfc, <xref target="messagenum" /></td></tr>
+<tr><td>15</td><td>reserved</td><td>thisrfc, <xref target="reservednum" /></td></tr>
+<tr><td>16</td><td>reserved</td><td>thisrfc, <xref target="reservednum" /></td></tr>
+<tr><td>17</td><td>SSH_AGENTC_ADD_IDENTITY</td><td>thisrfc, <xref target="messagenum" /></td></tr>
+<tr><td>18</td><td>SSH_AGENTC_REMOVE_IDENTITY</td><td>thisrfc, <xref target="messagenum" /></td></tr>
+<tr><td>19</td><td>SSH_AGENTC_REMOVE_ALL_IDENTITIES</td><td>thisrfc, <xref target="messagenum" /></td></tr>
+<tr><td>20</td><td>SSH_AGENTC_ADD_SMARTCARD_KEY</td><td>thisrfc, <xref target="messagenum" /></td></tr>
+<tr><td>21</td><td>SSH_AGENTC_REMOVE_SMARTCARD_KEY</td><td>thisrfc, <xref target="messagenum" /></td></tr>
+<tr><td>22</td><td>SSH_AGENTC_LOCK</td><td>thisrfc, <xref target="messagenum" /></td></tr>
+<tr><td>23</td><td>SSH_AGENTC_UNLOCK</td><td>thisrfc, <xref target="messagenum" /></td></tr>
+<tr><td>24</td><td>reserved</td><td>thisrfc, <xref target="reservednum" /></td></tr>
+<tr><td>25</td><td>SSH_AGENTC_ADD_ID_CONSTRAINED</td><td>thisrfc, <xref target="messagenum" /></td></tr>
+<tr><td>26</td><td>SSH_AGENTC_ADD_SMARTCARD_KEY_CONSTRAINED</td><td>thisrfc, <xref target="messagenum" /></td></tr>
+<tr><td>27</td><td>SSH_AGENTC_EXTENSION</td><td>thisrfc, <xref target="messagenum" /></td></tr>
+<tr><td>28</td><td>SSH_AGENT_EXTENSION_FAILURE</td><td>thisrfc, <xref target="messagenum" /></td></tr>
+<tr><td>29</td><td>SSH_AGENT_EXTENSION_RESPONSE</td><td>thisrfc, <xref target="messagenum" /></td></tr>
+<tr><td>240-255</td><td>Reserved for organizational use</td><td>thisrfc, <xref target="messagenum" /></td></tr>
 </tbody>
 </table>
 	</section>
@@ -996,9 +1002,9 @@
 <tr><th>Number</th><th>Identifier</th><th>Reference</th></tr>
 </thead>
 <tbody>
-<tr><td>1</td><td>SSH_AGENT_CONSTRAIN_LIFETIME</td><td><xref target="constraintnum" /></td></tr>
-<tr><td>2</td><td>SSH_AGENT_CONSTRAIN_CONFIRM</td><td><xref target="constraintnum" /></td></tr>
-<tr><td>255</td><td>SSH_AGENT_CONSTRAIN_EXTENSION</td><td><xref target="constraintnum" /></td></tr>
+<tr><td>1</td><td>SSH_AGENT_CONSTRAIN_LIFETIME</td><td>thisrfc, <xref target="constraintnum" /></td></tr>
+<tr><td>2</td><td>SSH_AGENT_CONSTRAIN_CONFIRM</td><td>thisrfc, <xref target="constraintnum" /></td></tr>
+<tr><td>255</td><td>SSH_AGENT_CONSTRAIN_EXTENSION</td><td>thisrfc, <xref target="constraintnum" /></td></tr>
 </tbody>
 </table>
 	</section>
@@ -1022,9 +1028,9 @@
 <tr><th>Number</th><th>Identifier</th><th>Reference</th></tr>
 </thead>
 <tbody>
-<tr><td>0x01</td><td>reserved</td><td><xref target="sigflagnum" /></td></tr>
-<tr><td>0x02</td><td>SSH_AGENT_RSA_SHA2_256</td><td><xref target="sigflagnum" /></td></tr>
-<tr><td>0x04</td><td>SSH_AGENT_RSA_SHA2_512</td><td><xref target="sigflagnum" /></td></tr>
+<tr><td>0x01</td><td>reserved</td><td>thisrfc, <xref target="sigflagnum" /></td></tr>
+<tr><td>0x02</td><td>SSH_AGENT_RSA_SHA2_256</td><td>thisrfc, <xref target="sigflagnum" /></td></tr>
+<tr><td>0x04</td><td>SSH_AGENT_RSA_SHA2_512</td><td>thisrfc, <xref target="sigflagnum" /></td></tr>
 </tbody>
 </table>
 	</section>
@@ -1045,7 +1051,7 @@
 <tr><th>Extension Name</th><th>Reference</th></tr>
 </thead>
 <tbody>
-<tr><td>query</td><td><xref target="queryext" /></td></tr>
+<tr><td>query</td><td>thisrfc, <xref target="queryext" /></td></tr>
 </tbody>
 </table>
 	</section>
@@ -1061,7 +1067,7 @@
 <tr><th>Extension Name</th><th>Reference</th></tr>
 </thead>
 <tbody>
-<tr><td>agent-forward</td><td><xref target="fwdext" /></td></tr>
+<tr><td>agent-forward</td><td>thisrfc, <xref target="fwdext" /></td></tr>
 </tbody>
 </table>
 	</section>
@@ -1077,7 +1083,7 @@
 <tr><th>Extension Name</th><th>Reference</th></tr>
 </thead>
 <tbody>
-<tr><td>agent-req</td><td><xref target="fwdreq" /></td></tr>
+<tr><td>agent-req</td><td>thisrfc, <xref target="fwdreq" /></td></tr>
 </tbody>
 </table>
 	</section>
@@ -1093,7 +1099,7 @@
 <tr><th>Extension Name</th><th>Reference</th></tr>
 </thead>
 <tbody>
-<tr><td>agent-connect</td><td><xref target="fwdtype" /></td></tr>
+<tr><td>agent-connect</td><td>thisrfc, <xref target="fwdtype" /></td></tr>
 </tbody>
 </table>
 	</section>
