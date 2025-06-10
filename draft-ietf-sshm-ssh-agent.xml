@@ -127,6 +127,13 @@
    byte              type
    byte[length - 1]  contents
 	</sourcecode>
+	<t>
+	In the sections below, the "length" field is omitted. For
+	clarity, the symbolic names of the messages are shown;
+	their numeric values are listed in <xref target="messagenum"/>
+	below.
+	</t>
+
 	<section><name>Generic server responses</name>
 		<t>
 		The following generic messages may be sent by the server
