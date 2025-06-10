@@ -36,7 +36,7 @@
 			<uri>https://www.openssh.com/</uri>
 		</address>
 	</author>
-	<date year="2025" month="03" day="17" />
+	<date year="2025" month="06" day="10" />
 	<area>General</area>
 	<workgroup>Internet Engineering Task Force</workgroup>
 	<keyword>ssh</keyword>
@@ -111,7 +111,8 @@
 	<t>
 	Note that this protocol is separate to and incompatible with
 	the one described in the similarly-named
-	<xref target="draft-ietf-secsh-agent-02" />.
+	<xref target="draft-ietf-secsh-agent-02" /> which expired
+	in 2004.
 	</t>
 </section>
     
