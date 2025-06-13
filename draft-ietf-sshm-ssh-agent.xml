@@ -10,7 +10,7 @@
 <rfc
   xmlns:xi="http://www.w3.org/2001/XInclude"
   category="std"
-  docName="draft-ietf-sshm-ssh-agent-03"
+  docName="draft-ietf-sshm-ssh-agent-04"
   ipr="trust200902"
   obsoletes=""
   updates=""
@@ -28,7 +28,7 @@
 
 <front>
 	<title>SSH Agent Protocol</title>
-	<seriesInfo name="Internet-Draft" value="draft-ietf-sshm-ssh-agent-03"/>
+	<seriesInfo name="Internet-Draft" value="draft-ietf-sshm-ssh-agent-04"/>
 	<author fullname="Damien Miller" initials="D." surname="Miller">
 		<organization>OpenSSH</organization>
 		<address>
@@ -731,6 +731,25 @@
 			</sourcecode>
 		</section>
 	</section>
+</section>
+
+<section anchor="connecting"><name>Connecting to an agent agent</name>
+	<t>
+	Agents are exposed to the local system using a connection-oriented
+	endpoint. On Unix-like systems, it is typical to arrange for
+	the agent to listen on a filesystem-based Unix domain socket.
+	On Microsoft Windows, it is usual to use a Windows Named Pipe.
+	Access to these endpoints should be controlled as discussed in the
+	<xref target="Security" /> section.
+	</t>
+	<t>
+	In both cases, it is common to expose the name or address of the
+	listening endpoint via an environment variable named "SSH_AUTH_SOCK".
+	Clients of an agent will use this variable to locate and connect to
+	the listening agent. Agents alternately MAY use an implicit mechanism
+	for clients to locate their endpoint, such as a default per-user
+	location.
+	</t>
 </section>
 
 <section anchor="fwd"><name>Forwarding access to an agent</name>
