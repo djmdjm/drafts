@@ -646,7 +646,7 @@ Internet-Draft           SSH Certificate Format               April 2025
        byte[]              private key fields
        mpint               x
 
-   The "y" parameters is defined as per Section 4.1 of [FIPS.186-4].
+   The "x" parameter is defined as per Section 4.1 of [FIPS.186-4].
 
 2.5.2.  ECDSA certificates
 
@@ -685,10 +685,9 @@ Internet-Draft           SSH Certificate Format               April 2025
 
 2.5.4.  RSA certificates
 
-   EDDSA certificates with private keys use the following encoding
-   format.
+   RSA certificates with private keys use the following encoding format.
 
-       string              "ssh-dss-cert"
+       string              "ssh-rsa-cert"
        string              certificate blob
        byte[]              private key fields
        mpint               d
@@ -722,6 +721,7 @@ Internet-Draft           SSH Certificate Format               April 2025
 
    *  MUST check that the certificate is well-formed
 
+   *  MUST ensure that no unsupported critical options are present
 
 
 
@@ -729,8 +729,6 @@ Miller                   Expires 25 October 2025               [Page 13]
 
 Internet-Draft           SSH Certificate Format               April 2025
 
-
-   *  MUST ensure that no unsupported critical options are present
 
    *  MUST check that the "certificate role" matches the intended
       decision type (user or host authentication)
@@ -777,7 +775,9 @@ Internet-Draft           SSH Certificate Format               April 2025
    address thay are using for the host against the principals in this
    list and refuse to authorise the certificate if it is absent.
 
-
+   Clients that accept certified host keys MAY downgrade the certificate
+   to a plain public key and process it accordingly, if they are unable
+   to verify the certificate.  This allows recovery from the situation
 
 
 
@@ -786,9 +786,6 @@ Miller                   Expires 25 October 2025               [Page 14]
 Internet-Draft           SSH Certificate Format               April 2025
 
 
-   Clients that accept certified host keys MAY downgrade the certificate
-   to a plain public key and process it accordingly, if they are unable
-   to verify the certificate.  This allows recovery from the situation
    where the endpoints negotiate use of a cerificate host key but the
    client is not able to authorise the certificate contents, perhaps
    because the CA is not trusted or because the host name the client is
@@ -834,6 +831,9 @@ Internet-Draft           SSH Certificate Format               April 2025
 
    The following numbers are used for certificate types:
 
+       SSH2_CERT_TYPE_USER                1
+       SSH2_CERT_TYPE_HOST                2
+
 
 
 
@@ -841,9 +841,6 @@ Miller                   Expires 25 October 2025               [Page 15]
 
 Internet-Draft           SSH Certificate Format               April 2025
 
-
-       SSH2_CERT_TYPE_USER                1
-       SSH2_CERT_TYPE_HOST                2
 
 5.  IANA Considerations
 
@@ -886,6 +883,9 @@ Internet-Draft           SSH Certificate Format               April 2025
    identifiers for certificate extensions.  Its initial state should
    consist of the following names.  Future name allocations shall occur
    via EXPERT REVIEW as per [RFC8126].
+
+
+
 
 
 
@@ -1156,7 +1156,7 @@ Internet-Draft           SSH Certificate Format               April 2025
 
 Acknowledgements
 
-   XXX YOUR NAME HERE XXX
+   Jeremy Norris offered valuable feedback on this document.
 
 Example certificates
 
