@@ -733,14 +733,14 @@
 	</section>
 </section>
 
-<section anchor="connecting"><name>Connecting to an agent agent</name>
+<section anchor="connecting"><name>Connecting to an agent</name>
 	<t>
 	Agents are exposed to the local system using a connection-oriented
 	endpoint. On Unix-like systems, it is typical to arrange for
 	the agent to listen on a filesystem-based Unix domain socket.
 	On Microsoft Windows, it is usual to use a Windows Named Pipe.
-	Access to these endpoints should be controlled as discussed in the
-	<xref target="Security" /> section.
+	Access to these endpoints should be controlled as discussed in
+	<xref target="Security" />.
 	</t>
 	<t>
 	In both cases, it is common to expose the name or address of the
