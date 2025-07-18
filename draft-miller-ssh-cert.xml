@@ -10,10 +10,11 @@
 <rfc
   xmlns:xi="http://www.w3.org/2001/XInclude"
   category="info"
-  docName="draft-miller-ssh-cert-01"
+  docName="draft-miller-ssh-cert-02"
   ipr="trust200902"
   obsoletes=""
   updates=""
+  consensus="true"
   submissionType="IETF"
   xml:lang="en"
   version="3">
@@ -27,7 +28,7 @@
 
 <front>
 	<title>SSH Certificate Format</title>
-	<seriesInfo name="Internet-Draft" value="draft-miller-ssh-cert-01"/>
+	<seriesInfo name="Internet-Draft" value="draft-miller-ssh-cert-02"/>
 	<author fullname="Damien Miller" initials="D." surname="Miller">
 		<organization>OpenSSH</organization>
 		<address>
@@ -35,7 +36,7 @@
 			<uri>https://www.openssh.com/</uri>
 		</address>
 	</author>
-	<date year="2025" month="04" day="23" />
+	<date />
 	<area>General</area>
 	<workgroup>Internet Engineering Task Force</workgroup>
 	<keyword>ssh</keyword>
@@ -222,7 +223,6 @@
     mpint               q
     mpint               g
     mpint               y
-    byte[]              public key fields
     uint64              serial number
     uint32              certificate role
     string              identifier
@@ -264,7 +264,6 @@
     string              nonce
     string              ecdsa_curve_name
     string              Q
-    byte[]              public key fields
     uint64              serial number
     uint32              certificate role
     string              identifier
@@ -296,7 +295,6 @@
     string              "ssh-ed25519-cert" | "ssh-ed448-cert"
     string              nonce
     string              ENC(A)
-    byte[]              public key fields
     uint64              serial number
     uint32              certificate role
     string              identifier
@@ -328,7 +326,6 @@
     string              nonce
     mpint               e
     mpint               n
-    byte[]              public key fields
     uint64              serial number
     uint32              certificate role
     string              identifier
