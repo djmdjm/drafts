@@ -4,12 +4,12 @@
 
 Internet Engineering Task Force                                D. Miller
 Internet-Draft                                                   OpenSSH
-Intended status: Standards Track                           18 March 2025
-Expires: 19 September 2025
+Intended status: Standards Track                            22 July 2025
+Expires: 23 January 2026
 
 
                         SSH Strict KEX extension
-                    draft-miller-sshm-strict-kex-01
+                     draft-ietf-sshm-strict-kex-01
 
 Abstract
 
@@ -32,7 +32,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 19 September 2025.
+   This Internet-Draft will expire on 23 January 2026.
 
 Copyright Notice
 
@@ -53,9 +53,9 @@ Copyright Notice
 
 
 
-Miller                  Expires 19 September 2025               [Page 1]
+Miller                   Expires 23 January 2026                [Page 1]
 
-Internet-Draft          SSH Strict KEX extension              March 2025
+Internet-Draft          SSH Strict KEX extension               July 2025
 
 
 Table of Contents
@@ -109,9 +109,9 @@ Table of Contents
 
 
 
-Miller                  Expires 19 September 2025               [Page 2]
+Miller                   Expires 23 January 2026                [Page 2]
 
-Internet-Draft          SSH Strict KEX extension              March 2025
+Internet-Draft          SSH Strict KEX extension               July 2025
 
 
 1.1.  Requirements Language
@@ -165,9 +165,9 @@ Internet-Draft          SSH Strict KEX extension              March 2025
 
 
 
-Miller                  Expires 19 September 2025               [Page 3]
+Miller                   Expires 23 January 2026                [Page 3]
 
-Internet-Draft          SSH Strict KEX extension              March 2025
+Internet-Draft          SSH Strict KEX extension               July 2025
 
 
 2.2.  Attack Mechanics
@@ -221,9 +221,9 @@ Internet-Draft          SSH Strict KEX extension              March 2025
 
 
 
-Miller                  Expires 19 September 2025               [Page 4]
+Miller                   Expires 23 January 2026                [Page 4]
 
-Internet-Draft          SSH Strict KEX extension              March 2025
+Internet-Draft          SSH Strict KEX extension               July 2025
 
 
    Note how the attacker is able to desynchronise the client's sequence
@@ -277,9 +277,9 @@ Internet-Draft          SSH Strict KEX extension              March 2025
 
 
 
-Miller                  Expires 19 September 2025               [Page 5]
+Miller                   Expires 23 January 2026                [Page 5]
 
-Internet-Draft          SSH Strict KEX extension              March 2025
+Internet-Draft          SSH Strict KEX extension               July 2025
 
 
    cause the connection to fail, as the user authentication phase that
@@ -333,9 +333,9 @@ Internet-Draft          SSH Strict KEX extension              March 2025
 
 
 
-Miller                  Expires 19 September 2025               [Page 6]
+Miller                   Expires 23 January 2026                [Page 6]
 
-Internet-Draft          SSH Strict KEX extension              March 2025
+Internet-Draft          SSH Strict KEX extension               July 2025
 
 
 3.  Strict KEX
@@ -389,9 +389,9 @@ Internet-Draft          SSH Strict KEX extension              March 2025
 
 
 
-Miller                  Expires 19 September 2025               [Page 7]
+Miller                   Expires 23 January 2026                [Page 7]
 
-Internet-Draft          SSH Strict KEX extension              March 2025
+Internet-Draft          SSH Strict KEX extension               July 2025
 
 
    SSH implementations MUST NOT enable Strict KEX if one offers only the
@@ -445,9 +445,9 @@ Internet-Draft          SSH Strict KEX extension              March 2025
 
 
 
-Miller                  Expires 19 September 2025               [Page 8]
+Miller                   Expires 23 January 2026                [Page 8]
 
-Internet-Draft          SSH Strict KEX extension              March 2025
+Internet-Draft          SSH Strict KEX extension               July 2025
 
 
    Finally, implementations MUST additionally ensure that any message
@@ -501,18 +501,18 @@ Internet-Draft          SSH Strict KEX extension              March 2025
 
 
 
-Miller                  Expires 19 September 2025               [Page 9]
+Miller                   Expires 23 January 2026                [Page 9]
 
-Internet-Draft          SSH Strict KEX extension              March 2025
+Internet-Draft          SSH Strict KEX extension               July 2025
 
 
-                      +==============+=============+
-                      | Method name  | Reference   |
-                      +==============+=============+
-                      | kex-strict-c | Section 3.1 |
-                      +--------------+-------------+
-                      | kex-strict-s | Section 3.1 |
-                      +--------------+-------------+
+             +==============+=============+=================+
+             | Method name  | Reference   | OK to Implement |
+             +==============+=============+=================+
+             | kex-strict-c | Section 3.1 | SHOULD          |
+             +--------------+-------------+-----------------+
+             | kex-strict-s | Section 3.1 | SHOULD          |
+             +--------------+-------------+-----------------+
 
                                  Table 1
 
@@ -557,9 +557,9 @@ Internet-Draft          SSH Strict KEX extension              March 2025
 
 
 
-Miller                  Expires 19 September 2025              [Page 10]
+Miller                   Expires 23 January 2026               [Page 10]
 
-Internet-Draft          SSH Strict KEX extension              March 2025
+Internet-Draft          SSH Strict KEX extension               July 2025
 
 
    According to [RFC7942], "this will allow reviewers and working groups
@@ -613,9 +613,9 @@ Internet-Draft          SSH Strict KEX extension              March 2025
 
 
 
-Miller                  Expires 19 September 2025              [Page 11]
+Miller                   Expires 23 January 2026               [Page 11]
 
-Internet-Draft          SSH Strict KEX extension              March 2025
+Internet-Draft          SSH Strict KEX extension               July 2025
 
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
@@ -669,9 +669,9 @@ Internet-Draft          SSH Strict KEX extension              March 2025
 
 
 
-Miller                  Expires 19 September 2025              [Page 12]
+Miller                   Expires 23 January 2026               [Page 12]
 
-Internet-Draft          SSH Strict KEX extension              March 2025
+Internet-Draft          SSH Strict KEX extension               July 2025
 
 
    [I-D.ietf-sshm-ntruprime-ssh]
@@ -725,4 +725,4 @@ Author's Address
 
 
 
-Miller                  Expires 19 September 2025              [Page 13]
+Miller                   Expires 23 January 2026               [Page 13]

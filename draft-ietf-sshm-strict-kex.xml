@@ -10,7 +10,7 @@
 <rfc
   xmlns:xi="http://www.w3.org/2001/XInclude"
   category="std"
-  docName="draft-miller-sshm-strict-kex-01"
+  docName="draft-ietf-sshm-strict-kex-01"
   ipr="trust200902"
   obsoletes=""
   updates=""
@@ -28,7 +28,7 @@
 
 <front>
 	<title>SSH Strict KEX extension</title>
-	<seriesInfo name="Internet-Draft" value="draft-miller-sshm-strict-kex-01"/>
+	<seriesInfo name="Internet-Draft" value="draft-ietf-sshm-strict-kex-01"/>
 	<author fullname="Damien Miller" initials="D." surname="Miller">
 		<organization>OpenSSH</organization>
 		<address>
@@ -36,7 +36,7 @@
 			<uri>https://www.openssh.com/</uri>
 		</address>
 	</author>
-	<date year="2025" month="03" day="18" />
+	<date />
 	<area>General</area>
 	<workgroup>Internet Engineering Task Force</workgroup>
 	<keyword>ssh</keyword>
@@ -492,11 +492,11 @@
 		</t>
 <table>
 <thead>
-<tr><th>Method name</th><th>Reference</th></tr>
+<tr><th>Method name</th><th>Reference</th><th>OK to Implement</th></tr>
 </thead>
 <tbody>
-<tr><td>kex-strict-c</td><td><xref target="ext-signal" /></td></tr>
-<tr><td>kex-strict-s</td><td><xref target="ext-signal" /></td></tr>
+<tr><td>kex-strict-c</td><td><xref target="ext-signal" /></td><td>SHOULD</td></tr>
+<tr><td>kex-strict-s</td><td><xref target="ext-signal" /></td><td>SHOULD</td></tr>
 </tbody>
 </table>
 	</section>
