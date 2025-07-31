@@ -1029,7 +1029,7 @@
 	</section>
 	<section><name>New registry: SSH agent signature flags</name>
 		<t>
-		This registry, titled "SSH agent signature flags
+		This registry, titled "SSH agent signature flags"
 		records the values for signature request
 		(SSH_AGENTC_SIGN_REQUEST) flag values.
 		Its initial state should consist of the
