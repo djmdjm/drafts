@@ -129,9 +129,9 @@
 	Messages consist of a length, type and contents.
 	</t>
 	<sourcecode>
-   uint32            length
-   byte              type
-   byte[length - 1]  contents
+    uint32            length
+    byte              type
+    byte[length - 1]  contents
 	</sourcecode>
 	<t>
 	In the sections below, the "length" field is omitted. For
@@ -147,14 +147,14 @@
 		agent may reply either with:
 		</t>
 		<sourcecode>
-   byte              SSH_AGENT_SUCCESS
+    byte              SSH_AGENT_SUCCESS
 		</sourcecode>
 		<t>
 		or a request-specific success message.
 		On failure, the agent may reply with:
 		</t>
 		<sourcecode>
-   byte              SSH_AGENT_FAILURE
+    byte              SSH_AGENT_FAILURE
 		</sourcecode>
 		<t>
 		or a request-specific success message.
