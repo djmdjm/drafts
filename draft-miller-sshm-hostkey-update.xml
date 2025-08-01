@@ -209,9 +209,17 @@
 		Where "signatures" consists signatures made by the requested
 		"hostkeys". The number of signatures present MUST be identical
 		to the number of host keys requested and they MUST appear in
-		identical order to their counterpart host keys. Each signature
-		is made by signing the following structure with the
-		corresponding key:
+		identical order to their counterpart host keys.
+		</t>
+		<t>
+		Each signature is made by signing the following structure with
+		the corresponding key and using the signature algorithm and
+		encoding as it is specified for SSH (e.g.
+		<xref target="RFC5656" section="3.1.1" /> for "ecdsa-sha2-*
+		keys).
+		Note that RSA host keys, which unlike other key types used in
+		SSH can support multiple signature algorithms, have additional
+		rules described below in <xref target="ugh-rsa" />.
 		</t>
 		<sourcecode>
     string           "hostkeys-prove-0"
@@ -230,6 +238,40 @@
 		verify the signature for each, after which it MAY record the
 		new host key as valid for the server.
 		</t>
+		<section anchor="ugh-rsa" title="Special handling for RSA host keys">
+			<t>
+			Most key types used in SSH support only a single
+			signature algorithm, but RSA keys are an exception in
+			that they can generate signatures that use SHA-1,
+			SHA-256 or SHA-512 as the signature hash. Which variant
+			is used for host key signatures is negotiated at the
+			start of key agreement via the algorithm names
+			"ssh-rsa" (RSA-SHA1), "rsa-sha2-256" or "rsa-sha2-512".
+			</t>
+			<t>
+			If a RSA signature algorithm was selected during
+			initial key agreement, then the same algorithm MUST
+			be used for signing hostkey proofs for any RSA keys
+			the server supports. An exception to this is if
+			"ssh-rsa" (i.e. the insecure RSA-SHA1 mode) was
+			negotiated, in which case the "hostkeys-prove"
+			request MUST fail and the server shall return a
+			SSH_MSG_REQUEST_FAILURE.
+			</t>
+			<t>
+			To avoid this situation, a server MAY skip advertising
+			hostkeys when "ssh-rsa" is the negotiated host key
+			signature algorithm. Alternately a server MAY exclude
+			RSA host keys from the "hostkeys" advertisment message
+			if other host key types are available.
+			</t>
+			<t>
+			If a non-RSA host key signature algorithm was selected
+			during initial key agreement, then either of the
+			"rsa-sha2-256" or "rsa-sha2-512" signature algorithms
+			may be used to sign a proof for a RSA host key.
+			</t>
+		</section>
 		<section anchor="legacy-proof" title="Legacy vendor-specific hostkey proof request">
 			<t>
 			Existing implementations support the hostkey proof
@@ -390,6 +432,14 @@
 	verification operations. Implementation should enforce some limit on
 	the maximum number of keys they will accept for both the "hostkeys" and
 	"hostkeys-prove" messages.
+		</t>
+	</section>
+	<section title="Weak signature algorithms">
+		<t>
+	Implementations that retain support for the weak "ssh-rsa" (RSA-SHA1)
+	signature algorithm must pay careful attention to the considerations
+	in <xref target="ugh-rsa" />. Similar special handling may be required
+	in future if other signature algorithms are found to be weak.
 		</t>
 	</section>
 	<section title="Timing attack considerations">
