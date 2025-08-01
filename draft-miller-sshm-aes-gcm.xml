@@ -10,7 +10,7 @@
 <rfc
   xmlns:xi="http://www.w3.org/2001/XInclude"
   category="std"
-  docName="draft-miller-sshm-aes-gcm-00"
+  docName="draft-miller-sshm-aes-gcm-01"
   ipr="trust200902"
   obsoletes=""
   updates=""
@@ -28,7 +28,7 @@
 
 <front>
 	<title>Fixed AES-GCM modes for the SSH protocol</title>
-	<seriesInfo name="Internet-Draft" value="draft-miller-sshm-aes-gcm-00"/>
+	<seriesInfo name="Internet-Draft" value="draft-miller-sshm-aes-gcm-01"/>
 	<author fullname="Damien Miller" initials="D." surname="Miller">
 		<organization>OpenSSH</organization>
 		<address>
@@ -36,7 +36,7 @@
 			<uri>https://www.openssh.com/</uri>
 		</address>
 	</author>
-	<date year="2025" month="03" day="18" />
+	<date />
 	<area>General</area>
 	<workgroup>Internet Engineering Task Force</workgroup>
 	<keyword>ssh</keyword>
@@ -228,7 +228,7 @@
 		<dt>OpenSSH</dt>
 		<dd>
 		<t>
-		OpenSSH is the originating implementation of this modes and
+		OpenSSH is the originating implementation of these modes and
 		has supported them since 2013.
 		</t>
 		<t>
@@ -251,8 +251,8 @@
 		<dd>
 		<t>
 		Paramiko is a SSH client and server implementation in the
-		Python programming language. It has supported the these modes
-		modifications since 2024.
+		Python programming language. It has supported these modes
+		since 2024.
 		</t>
 		<t>
 		Website: https://www.paramiko.org/

@@ -4,12 +4,12 @@
 
 Internet Engineering Task Force                                D. Miller
 Internet-Draft                                                   OpenSSH
-Intended status: Standards Track                           18 March 2025
-Expires: 19 September 2025
+Intended status: Standards Track                           1 August 2025
+Expires: 2 February 2026
 
 
                 Fixed AES-GCM modes for the SSH protocol
-                      draft-miller-sshm-aes-gcm-00
+                      draft-miller-sshm-aes-gcm-01
 
 Abstract
 
@@ -32,7 +32,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 19 September 2025.
+   This Internet-Draft will expire on 2 February 2026.
 
 Copyright Notice
 
@@ -53,9 +53,9 @@ Copyright Notice
 
 
 
-Miller                  Expires 19 September 2025               [Page 1]
+Miller                   Expires 2 February 2026                [Page 1]
 
-Internet-Draft  Fixed AES-GCM modes for the SSH protocol      March 2025
+Internet-Draft  Fixed AES-GCM modes for the SSH protocol     August 2025
 
 
 Table of Contents
@@ -109,9 +109,9 @@ Table of Contents
 
 
 
-Miller                  Expires 19 September 2025               [Page 2]
+Miller                   Expires 2 February 2026                [Page 2]
 
-Internet-Draft  Fixed AES-GCM modes for the SSH protocol      March 2025
+Internet-Draft  Fixed AES-GCM modes for the SSH protocol     August 2025
 
 
    Most SSH implementations have since adopted a different approach to
@@ -165,9 +165,9 @@ Internet-Draft  Fixed AES-GCM modes for the SSH protocol      March 2025
 
 
 
-Miller                  Expires 19 September 2025               [Page 3]
+Miller                   Expires 2 February 2026                [Page 3]
 
-Internet-Draft  Fixed AES-GCM modes for the SSH protocol      March 2025
+Internet-Draft  Fixed AES-GCM modes for the SSH protocol     August 2025
 
 
 2.1.  aes128-gcm
@@ -221,9 +221,9 @@ Internet-Draft  Fixed AES-GCM modes for the SSH protocol      March 2025
 
 
 
-Miller                  Expires 19 September 2025               [Page 4]
+Miller                   Expires 2 February 2026                [Page 4]
 
-Internet-Draft  Fixed AES-GCM modes for the SSH protocol      March 2025
+Internet-Draft  Fixed AES-GCM modes for the SSH protocol     August 2025
 
 
 5.  Implementation Status
@@ -251,7 +251,7 @@ Internet-Draft  Fixed AES-GCM modes for the SSH protocol      March 2025
    The following example projects maintain an implementation of this
    protocol:
 
-   OpenSSH  OpenSSH is the originating implementation of this modes and
+   OpenSSH  OpenSSH is the originating implementation of these modes and
       has supported them since 2013.
 
       Website: https://www.openssh.com/
@@ -262,8 +262,8 @@ Internet-Draft  Fixed AES-GCM modes for the SSH protocol      March 2025
       Website: https://www.chiark.greenend.org.uk/~sgtatham/putty/
 
    Paramiko  Paramiko is a SSH client and server implementation in the
-      Python programming language.  It has supported the these modes
-      modifications since 2024.
+      Python programming language.  It has supported these modes since
+      2024.
 
       Website: https://www.paramiko.org/
 
@@ -277,9 +277,9 @@ Internet-Draft  Fixed AES-GCM modes for the SSH protocol      March 2025
 
 
 
-Miller                  Expires 19 September 2025               [Page 5]
+Miller                   Expires 2 February 2026                [Page 5]
 
-Internet-Draft  Fixed AES-GCM modes for the SSH protocol      March 2025
+Internet-Draft  Fixed AES-GCM modes for the SSH protocol     August 2025
 
 
       Website: https://libssh.org/
@@ -333,9 +333,9 @@ Internet-Draft  Fixed AES-GCM modes for the SSH protocol      March 2025
 
 
 
-Miller                  Expires 19 September 2025               [Page 6]
+Miller                   Expires 2 February 2026                [Page 6]
 
-Internet-Draft  Fixed AES-GCM modes for the SSH protocol      March 2025
+Internet-Draft  Fixed AES-GCM modes for the SSH protocol     August 2025
 
 
 6.2.  Informative References
@@ -389,4 +389,4 @@ Author's Address
 
 
 
-Miller                  Expires 19 September 2025               [Page 7]
+Miller                   Expires 2 February 2026                [Page 7]
