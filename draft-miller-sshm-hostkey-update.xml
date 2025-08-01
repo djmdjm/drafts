@@ -480,71 +480,60 @@
 	</t>
 	<t>
 	The following example projects maintain an implementation of this
-	protocol:
+	protocol, all using the vendor-specific names described above.
 	</t>
 	<dl>
 		<dt>OpenSSH</dt>
 		<dd>
 		<t>
-		OpenSSH is the originating implementation of XXX and
-		has supported them since XXX.
+		OpenSSH is the originating implementation of this extension and
+		has supported them since 2015.
 		</t>
 		<t>
 		Website: https://www.openssh.com/
 		</t>
 		</dd>
 
-		<dt>PuTTY</dt>
+		<dt>AsyncSSH</dt>
 		<dd>
 		<t>
-		PuTTY is a popular SSH client implementation for multiple
-		platforms that added support for XXX in XXX.
+		AsyncSSH is an implementation of the SSHv2 protocol on top
+		of the Python asyncio framework. It added support for
+		this extension in 2024.
 		</t>
 		<t>
-		Website: https://www.chiark.greenend.org.uk/~sgtatham/putty/
+		Website: https://github.com/ronf/asyncssh
 		</t>
 		</dd>
 
-		<dt>Paramiko</dt>
+		<dt>Github</dt>
 		<dd>
 		<t>
-		Paramiko is a SSH client and server implementation in the
-		Python programming language. It has supported XXX
-		since XXX.
+		The SSH implementation used by Github supports this extension.
 		</t>
 		<t>
-		Website: https://www.paramiko.org/
-		</t>
-		</dd>
-
-		<dt>Golang x/crypto/ssh</dt>
-		<dd>
-		<t>
-		The Go programming language project has supported XXX
-		in its external "x" repository since XXX.
-		</t>
-		<t>
-		Website: https://pkg.go.dev/golang.org/x/crypto/ssh
-		</t>
-		</dd>
-
-		<dt>libssh</dt>
-		<dd>
-		<t>
-		libssh has implemented XXX since XXX.
-		</t>
-		<t>
-		Website: https://libssh.org/
+		Website: https://github.com/
 		</t>
 		</dd>
 
 		<dt>Russh</dt>
 		<dd>
 		<t>
-		Russsh has implemented XXX since XXX.
+		Russsh has implemented this extension since 2023.
 		</t>
 		<t>
 		Website: https://github.com/Eugeny/russh
+		</t>
+		</dd>
+
+		<dt>Apache Mina</dt>
+		<dd>
+		<t>
+		The Apache Mina ssh implementation has supported this extension
+		since 2015.
+		</t>
+		<t>
+		Website: https://mina.apache.org/
 		</t>
 		</dd>
 	</dl>
