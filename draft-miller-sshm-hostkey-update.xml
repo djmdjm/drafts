@@ -350,6 +350,43 @@
 	</section>
 </section>
 
+<section><name>Applications</name>
+	<t>
+	There are two motivating applications for this extension: graceful
+	host key rotation and signature algorithm agility.
+	</t>
+	<section title="Host key rotation">
+		<t>
+		With a degree of planning and coordination, this extension
+		may be used to gracefully rotate a server's host keys.
+		To do this, a server begins by advertising via this extension
+		one or more host keys in addition to the ones that it
+		currently offers by default.
+		As clients that support this extension connect to the server,
+		these host keys will be learned and recorded as valid keys for
+		the server.
+		After some grace interval, or when all identified clients are
+		known to have connected at least once, the original host keys
+		may be removed from the server and clients will now use the
+		new keys by default without a discontinuity of trust.
+		</t>
+	</section>
+	<section title="Algorithm agility">
+		<t>
+		This case is similar to host key rotation, except to note
+		that it is possible to advertise host keys of entirely different
+		signature algorithms.
+		By following a process similar to the above host key rotation
+		scheme, and assuming the SSH clients support them,
+		it is possible to retire weak or poorly-performing
+		signature algorithms in favour of better ones. In the near
+		future, it is likely this mechanism will be useful to assist
+		the deployment of Post-Quantum signature schemes without
+		trust discontinuities.
+		</t>
+	</section>
+</section>
+
 <section anchor="IANA"><name>IANA Considerations</name>
 	<t>
 	This extension requires two existing registries to be modified.

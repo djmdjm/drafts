@@ -62,29 +62,32 @@ Table of Contents
 
    1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   2
      1.1.  Requirements Language . . . . . . . . . . . . . . . . . .   3
-   2.  Protocol  . . . . . . . . . . . . . . . . . . . . . . . . . .   3
+   2.  Protocol  . . . . . . . . . . . . . . . . . . . . . . . . . .   4
      2.1.  hostkeys advertisment . . . . . . . . . . . . . . . . . .   4
      2.2.  hostkeys-prove request  . . . . . . . . . . . . . . . . .   4
-       2.2.1.  Special handling for RSA host keys  . . . . . . . . .   5
+       2.2.1.  Special handling for RSA host keys  . . . . . . . . .   6
        2.2.2.  Legacy vendor-specific hostkey proof request  . . . .   6
-     2.3.  Public key encoding . . . . . . . . . . . . . . . . . . .   6
-     2.4.  Advertising support for this extension  . . . . . . . . .   6
-   3.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   7
-     3.1.  Additions to SSH Connection Protocol Global Request
-           Names . . . . . . . . . . . . . . . . . . . . . . . . . .   7
-     3.2.  Additions to SSH Extension Names  . . . . . . . . . . . .   7
-   4.  Security Considerations . . . . . . . . . . . . . . . . . . .   8
-     4.1.  Trusting keys . . . . . . . . . . . . . . . . . . . . . .   8
-     4.2.  Dangers of ignoring proof of private key possession . . .   8
-     4.3.  Denial of service . . . . . . . . . . . . . . . . . . . .   8
-     4.4.  Weak signature algorithms . . . . . . . . . . . . . . . .   9
-     4.5.  Timing attack considerations  . . . . . . . . . . . . . .   9
-   5.  Implementation Status . . . . . . . . . . . . . . . . . . . .   9
-   6.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  10
-     6.1.  Normative References  . . . . . . . . . . . . . . . . . .  10
-     6.2.  Informative References  . . . . . . . . . . . . . . . . .  11
-   Acknowledgments . . . . . . . . . . . . . . . . . . . . . . . . .  11
-   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .  11
+     2.3.  Public key encoding . . . . . . . . . . . . . . . . . . .   7
+     2.4.  Advertising support for this extension  . . . . . . . . .   7
+   3.  Applications  . . . . . . . . . . . . . . . . . . . . . . . .   7
+     3.1.  Host key rotation . . . . . . . . . . . . . . . . . . . .   7
+     3.2.  Algorithm agility . . . . . . . . . . . . . . . . . . . .   8
+   4.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   8
+     4.1.  Additions to SSH Connection Protocol Global Request
+           Names . . . . . . . . . . . . . . . . . . . . . . . . . .   8
+     4.2.  Additions to SSH Extension Names  . . . . . . . . . . . .   8
+   5.  Security Considerations . . . . . . . . . . . . . . . . . . .   9
+     5.1.  Trusting keys . . . . . . . . . . . . . . . . . . . . . .   9
+     5.2.  Dangers of ignoring proof of private key possession . . .   9
+     5.3.  Denial of service . . . . . . . . . . . . . . . . . . . .   9
+     5.4.  Weak signature algorithms . . . . . . . . . . . . . . . .   9
+     5.5.  Timing attack considerations  . . . . . . . . . . . . . .  10
+   6.  Implementation Status . . . . . . . . . . . . . . . . . . . .  10
+   7.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  11
+     7.1.  Normative References  . . . . . . . . . . . . . . . . . .  11
+     7.2.  Informative References  . . . . . . . . . . . . . . . . .  12
+   Acknowledgments . . . . . . . . . . . . . . . . . . . . . . . . .  12
+   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .  12
 
 1.  Introduction
 
@@ -102,10 +105,7 @@ Table of Contents
    shared out-of-band but are more commonly learned for a given server
    the first time a client connects to it and trusted thereafter.
 
-   There is no facility in the SSH transport protocol that allows a
-   server to gracefully rotate its host keys.  Unless coordinated out-
-   of-band, a server changing host keys in this model is a hard break of
-   connection trust, as any client that had learned the previous host
+
 
 
 
@@ -114,6 +114,10 @@ Miller                   Expires 2 February 2026                [Page 2]
 Internet-Draft      Host key update mechanism for SSH        August 2025
 
 
+   There is no facility in the SSH transport protocol that allows a
+   server to gracefully rotate its host keys.  Unless coordinated out-
+   of-band, a server changing host keys in this model is a hard break of
+   connection trust, as any client that had learned the previous host
    key would now be met with an unexpected and untrusted key attempting
    to authenticate the final key exchange.  This situation is
    effectively indistinguishable from an on-path adversary hijacking the
@@ -154,11 +158,7 @@ Internet-Draft      Host key update mechanism for SSH        August 2025
    14 [RFC2119] [RFC8174] when, and only when, they appear in all
    capitals, as shown here.
 
-2.  Protocol
 
-   As mentioned above, this extension consists of a pair of global
-   requests: "hostkeys" and "hostkeys-prove".  These are both messages
-   of type SSH_MSG_GLOBAL_REQUEST (Section 4 of [RFC4254]).
 
 
 
@@ -169,6 +169,12 @@ Miller                   Expires 2 February 2026                [Page 3]
 
 Internet-Draft      Host key update mechanism for SSH        August 2025
 
+
+2.  Protocol
+
+   As mentioned above, this extension consists of a pair of global
+   requests: "hostkeys" and "hostkeys-prove".  These are both messages
+   of type SSH_MSG_GLOBAL_REQUEST (Section 4 of [RFC4254]).
 
    These messages may only be sent after the SSH authentication
    subprotocol ([RFC4252]) has has completed, as signalled by the server
@@ -212,12 +218,6 @@ Internet-Draft      Host key update mechanism for SSH        August 2025
    advertisement to request private key possession proofs only for keys
    it has not seen before.
 
-       byte             SSH_MSG_GLOBAL_REQUEST
-       string           "hostkeys-prove"
-       char             1 /* want reply */
-       string[]         hostkeys
-
-
 
 
 
@@ -225,6 +225,11 @@ Miller                   Expires 2 February 2026                [Page 4]
 
 Internet-Draft      Host key update mechanism for SSH        August 2025
 
+
+       byte             SSH_MSG_GLOBAL_REQUEST
+       string           "hostkeys-prove"
+       char             1 /* want reply */
+       string[]         hostkeys
 
    Where "hostkeys" consists of one or more public key blobs encoded as
    described in Section 2.3.  All hostkeys in this request MUST BE
@@ -262,6 +267,21 @@ Internet-Draft      Host key update mechanism for SSH        August 2025
    signature for each, after which it MAY record the new host key as
    valid for the server.
 
+
+
+
+
+
+
+
+
+
+
+Miller                   Expires 2 February 2026                [Page 5]
+
+Internet-Draft      Host key update mechanism for SSH        August 2025
+
+
 2.2.1.  Special handling for RSA host keys
 
    Most key types used in SSH support only a single signature algorithm,
@@ -274,14 +294,6 @@ Internet-Draft      Host key update mechanism for SSH        August 2025
    If a RSA signature algorithm was selected during initial key
    agreement, then the same algorithm MUST be used for signing hostkey
    proofs for any RSA keys the server supports.  An exception to this is
-
-
-
-Miller                   Expires 2 February 2026                [Page 5]
-
-Internet-Draft      Host key update mechanism for SSH        August 2025
-
-
    if "ssh-rsa" (i.e. the insecure RSA-SHA1 mode) was negotiated, in
    which case the "hostkeys-prove" request MUST fail and the server
    shall return a SSH_MSG_REQUEST_FAILURE.
@@ -317,6 +329,15 @@ Internet-Draft      Host key update mechanism for SSH        August 2025
        string           session identifier
        string           hostkey
 
+
+
+
+
+Miller                   Expires 2 February 2026                [Page 6]
+
+Internet-Draft      Host key update mechanism for SSH        August 2025
+
+
 2.3.  Public key encoding
 
    In this extension, keys are encoded as strings using the the standard
@@ -330,13 +351,6 @@ Internet-Draft      Host key update mechanism for SSH        August 2025
    Support for this extension may be advertised by a SSH protocol server
    using the [RFC8308] extension mechanism using the name "agent-
    forward" in the SSH_MSG_EXT_INFO message.
-
-
-
-Miller                   Expires 2 February 2026                [Page 6]
-
-Internet-Draft      Host key update mechanism for SSH        August 2025
-
 
        string           "hostkeys"
        string           "0" (version)
@@ -358,11 +372,48 @@ Internet-Draft      Host key update mechanism for SSH        August 2025
    mechanism, the peer SHOULD use the standard global request names to
    invoke it instead of the vendor-specific names.
 
-3.  IANA Considerations
+3.  Applications
+
+   There are two motivating applications for this extension: graceful
+   host key rotation and signature algorithm agility.
+
+3.1.  Host key rotation
+
+   With a degree of planning and coordination, this extension may be
+   used to gracefully rotate a server's host keys.  To do this, a server
+   begins by advertising via this extension one or more host keys in
+   addition to the ones that it currently offers by default.  As clients
+   that support this extension connect to the server, these host keys
+   will be learned and recorded as valid keys for the server.  After
+   some grace interval, or when all identified clients are known to have
+
+
+
+Miller                   Expires 2 February 2026                [Page 7]
+
+Internet-Draft      Host key update mechanism for SSH        August 2025
+
+
+   connected at least once, the original host keys may be removed from
+   the server and clients will now use the new keys by default without a
+   discontinuity of trust.
+
+3.2.  Algorithm agility
+
+   This case is similar to host key rotation, except to note that it is
+   possible to advertise host keys of entirely different signature
+   algorithms.  By following a process similar to the above host key
+   rotation scheme, and assuming the SSH clients support them, it is
+   possible to retire weak or poorly-performing signature algorithms in
+   favour of better ones.  In the near future, it is likely this
+   mechanism will be useful to assist the deployment of Post-Quantum
+   signature schemes without trust discontinuities.
+
+4.  IANA Considerations
 
    This extension requires two existing registries to be modified.
 
-3.1.  Additions to SSH Connection Protocol Global Request Names
+4.1.  Additions to SSH Connection Protocol Global Request Names
 
    IANA is requested to insert the following entries into the table
    Connection Protocol Global Request Names [IANA-SSH-GLOBALREQS] under
@@ -378,21 +429,11 @@ Internet-Draft      Host key update mechanism for SSH        August 2025
 
                                   Table 1
 
-3.2.  Additions to SSH Extension Names
+4.2.  Additions to SSH Extension Names
 
    IANA is requested to insert the following entry into the table
    Extension Names [IANA-SSH-EXT] under Secure Shell (SSH) Protocol
    Parameters [RFC4250].
-
-
-
-
-
-
-Miller                   Expires 2 February 2026                [Page 7]
-
-Internet-Draft      Host key update mechanism for SSH        August 2025
-
 
                  +================+======================+
                  | Extension Name | Reference            |
@@ -402,13 +443,20 @@ Internet-Draft      Host key update mechanism for SSH        August 2025
 
                                   Table 2
 
-4.  Security Considerations
+
+
+Miller                   Expires 2 February 2026                [Page 8]
+
+Internet-Draft      Host key update mechanism for SSH        August 2025
+
+
+5.  Security Considerations
 
    This extension defines a mechanism for cryptographic key management,
    which always needs careful handling.  This section calls attention to
    some specific areas of concern.
 
-4.1.  Trusting keys
+5.1.  Trusting keys
 
    This mechanism cannot be used to estabish trust in a SSH server where
    it did not previously exist.  Specifically, if a client learned a
@@ -417,7 +465,7 @@ Internet-Draft      Host key update mechanism for SSH        August 2025
    Keys learned though this mechanism can never be more trustworthy than
    the key used to establish the SSH transport session.
 
-4.2.  Dangers of ignoring proof of private key possession
+5.2.  Dangers of ignoring proof of private key possession
 
    This host key update mechanism operates using two messages: an
    advertisement of host keys and a proof of private key possession.
@@ -434,7 +482,7 @@ Internet-Draft      Host key update mechanism for SSH        August 2025
    server.  This may result in actions intended to be performed on the
    malicious server being instead performed on the legitimate one.
 
-4.3.  Denial of service
+5.3.  Denial of service
 
    This extension may require servers perform additional cryptographic
    signature operations, and require clients to perform additional
@@ -442,22 +490,23 @@ Internet-Draft      Host key update mechanism for SSH        August 2025
    the maximum number of keys they will accept for both the "hostkeys"
    and "hostkeys-prove" messages.
 
-
-
-
-Miller                   Expires 2 February 2026                [Page 8]
-
-Internet-Draft      Host key update mechanism for SSH        August 2025
-
-
-4.4.  Weak signature algorithms
+5.4.  Weak signature algorithms
 
    Implementations that retain support for the weak "ssh-rsa" (RSA-SHA1)
    signature algorithm must pay careful attention to the considerations
    in Section 2.2.1.  Similar special handling may be required in future
    if other signature algorithms are found to be weak.
 
-4.5.  Timing attack considerations
+
+
+
+
+Miller                   Expires 2 February 2026                [Page 9]
+
+Internet-Draft      Host key update mechanism for SSH        August 2025
+
+
+5.5.  Timing attack considerations
 
    This mechanism provides a way for a SSH client to request additional
    signatures using the host private keys.  In doing so, it magnifies
@@ -467,7 +516,7 @@ Internet-Draft      Host key update mechanism for SSH        August 2025
    situation and ensure that "hostkeys-prove" replies do not reveal
    information useful towards recovering the private key itself.
 
-5.  Implementation Status
+6.  Implementation Status
 
    This section records the status of known implementations of the
    protocol defined by this specification at the time of posting of this
@@ -490,49 +539,45 @@ Internet-Draft      Host key update mechanism for SSH        August 2025
    they see fit".
 
    The following example projects maintain an implementation of this
-   protocol:
+   protocol, all using the vendor-specific names described above.
 
-   OpenSSH  OpenSSH is the originating implementation of XXX and has
-      supported them since XXX.
+   OpenSSH  OpenSSH is the originating implementation of this extension
+      and has supported them since 2015.
 
       Website: https://www.openssh.com/
 
-   PuTTY  PuTTY is a popular SSH client implementation for multiple
+   AsyncSSH  AsyncSSH is an implementation of the SSHv2 protocol on top
+      of the Python asyncio framework.  It added support for this
+      extension in 2024.
+
+      Website: https://github.com/ronf/asyncssh
+
+   Github  The SSH implementation used by Github supports this
+      extension.
 
 
 
-Miller                   Expires 2 February 2026                [Page 9]
+Miller                   Expires 2 February 2026               [Page 10]
 
 Internet-Draft      Host key update mechanism for SSH        August 2025
 
 
-      platforms that added support for XXX in XXX.
+      Website: https://github.com/
 
-      Website: https://www.chiark.greenend.org.uk/~sgtatham/putty/
-
-   Paramiko  Paramiko is a SSH client and server implementation in the
-      Python programming language.  It has supported XXX since XXX.
-
-      Website: https://www.paramiko.org/
-
-   Golang x/crypto/ssh  The Go programming language project has
-      supported XXX in its external "x" repository since XXX.
-
-      Website: https://pkg.go.dev/golang.org/x/crypto/ssh
-
-   libssh  libssh has implemented XXX since XXX.
-
-      Website: https://libssh.org/
-
-   Russh  Russsh has implemented XXX since XXX.
+   Russh  Russsh has implemented this extension since 2023.
 
       Website: https://github.com/Eugeny/russh
 
+   Apache Mina  The Apache Mina ssh implementation has supported this
+      extension since 2015.
+
+      Website: https://mina.apache.org/
+
    This list is not exhaustive.
 
-6.  References
+7.  References
 
-6.1.  Normative References
+7.1.  Normative References
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -552,16 +597,6 @@ Internet-Draft      Host key update mechanism for SSH        August 2025
               Authentication Protocol", RFC 4252, DOI 10.17487/RFC4252,
               January 2006, <https://www.rfc-editor.org/info/rfc4252>.
 
-
-
-
-
-
-Miller                   Expires 2 February 2026               [Page 10]
-
-Internet-Draft      Host key update mechanism for SSH        August 2025
-
-
    [RFC4253]  Ylonen, T. and C. Lonvick, Ed., "The Secure Shell (SSH)
               Transport Layer Protocol", RFC 4253, DOI 10.17487/RFC4253,
               January 2006, <https://www.rfc-editor.org/info/rfc4253>.
@@ -574,6 +609,14 @@ Internet-Draft      Host key update mechanism for SSH        August 2025
               Integration in the Secure Shell Transport Layer",
               RFC 5656, DOI 10.17487/RFC5656, December 2009,
               <https://www.rfc-editor.org/info/rfc5656>.
+
+
+
+
+Miller                   Expires 2 February 2026               [Page 11]
+
+Internet-Draft      Host key update mechanism for SSH        August 2025
+
 
    [RFC7942]  Sheffer, Y. and A. Farrel, "Improving Awareness of Running
               Code: The Implementation Status Section", BCP 205,
@@ -593,7 +636,7 @@ Internet-Draft      Host key update mechanism for SSH        August 2025
               RFC 8709, DOI 10.17487/RFC8709, February 2020,
               <https://www.rfc-editor.org/info/rfc8709>.
 
-6.2.  Informative References
+7.2.  Informative References
 
    [IANA-SSH-GLOBALREQS]
               IANA, "Connection Protocol Global Request Names",
@@ -610,53 +653,10 @@ Acknowledgments
 
 Author's Address
 
-
-
-
-Miller                   Expires 2 February 2026               [Page 11]
-
-Internet-Draft      Host key update mechanism for SSH        August 2025
-
-
    Damien Miller
    OpenSSH
    Email: djm@openssh.com
    URI:   https://www.openssh.com/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
