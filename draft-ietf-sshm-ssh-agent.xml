@@ -177,11 +177,11 @@
 		<sourcecode>
     byte             SSH_AGENTC_ADD_IDENTITY
     string           key type
-    byte[]           key contents
-    string           key comment
+    byte[]           contents
+    string           comment
 		</sourcecode>
 		<t>
-		Here "type" is the specified key type name, for example
+		Here "key type" is the specified key type name, for example
 		"ssh-rsa" for a RSA key as defined by
 		<xref target="RFC4253" />. "contents"
 		consists of the public and private components of the key
@@ -197,7 +197,7 @@
 		</t>
 		<sourcecode>
     byte             SSH_AGENTC_ADD_ID_CONSTRAINED
-    string           type
+    string           key type
     byte[]           contents
     string           comment
     constraint[]     constraints
@@ -282,7 +282,7 @@
 			Ed448 with key type names "ssh-ed25519" and
 			"ssh-ed448" respectively.
 			These may be added to the agent using the
-			following message. The "key constraints"
+			following message. The "constraints"
 			field is only present for
 			the SSH_AGENTC_ADD_ID_CONSTRAINED message.
 			</t>
@@ -313,7 +313,7 @@
 			RSA keys have key type "ssh-rsa" and are
 			defined in <xref target="RFC4253" />. They
 			may be added to the agent using the following
-			message. The "key constraints" field is only
+			message. The "constraints" field is only
 			present for the
 			SSH_AGENTC_ADD_ID_CONSTRAINED message.
 			</t>
@@ -525,8 +525,8 @@
     string           PIN
 		</sourcecode>
 		<t>
-		Where "id" is an opaque identifier for the hardware token and
-		"PIN" is an optional password or PIN (not typically
+		Where "reader id" is an opaque identifier for the hardware token
+		and "PIN" is an optional password or PIN (not typically
 		used), both encoded using UTF-8.
 		Requesting deletion of smartcard-hosted keys SHOULD
 		cause the agent to remove all keys loaded from that smartcard.
