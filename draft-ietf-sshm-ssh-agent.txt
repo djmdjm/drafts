@@ -9,7 +9,7 @@ Expires: 2 February 2026
 
 
                            SSH Agent Protocol
-                      draft-ietf-sshm-ssh-agent-05
+                      draft-ietf-sshm-ssh-agent-06
 
 Abstract
 
@@ -1441,8 +1441,8 @@ Acknowledgments
    version 1 by Tatu Ylonen.
 
    Thanks to Simon Tatham, Niels Möller, James Spencer, Simon Josefsson,
-   Matt Johnston, Jakub Jelen and Rich Salz who reviewed and helped
-   improve this document.
+   Matt Johnston, Jakub Jelen, Rich Salz and Caspar Schutijser who
+   reviewed and helped improve this document.
 
 Author's Address
 
