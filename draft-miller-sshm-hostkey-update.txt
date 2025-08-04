@@ -9,7 +9,7 @@ Expires: 5 February 2026
 
 
                    Host key update mechanism for SSH
-                  draft-miller-sshm-hostkey-update-00
+                  draft-miller-sshm-hostkey-update-01
 
 Abstract
 

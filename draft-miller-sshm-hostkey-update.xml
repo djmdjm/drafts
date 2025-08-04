@@ -10,7 +10,7 @@
 <rfc
   xmlns:xi="http://www.w3.org/2001/XInclude"
   category="std"
-  docName="draft-miller-sshm-hostkey-update-00"
+  docName="draft-miller-sshm-hostkey-update-01"
   ipr="trust200902"
   obsoletes=""
   updates=""
@@ -28,7 +28,7 @@
 
 <front>
 	<title>Host key update mechanism for SSH</title>
-	<seriesInfo name="Internet-Draft" value="draft-miller-sshm-hostkey-update-00"/>
+	<seriesInfo name="Internet-Draft" value="draft-miller-sshm-hostkey-update-01"/>
 	<author fullname="Damien Miller" initials="D." surname="Miller">
 		<organization>OpenSSH</organization>
 		<address>
