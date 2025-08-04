@@ -317,7 +317,7 @@
 		<t>
 		Support for this extension may be advertised by a SSH
 		protocol server using the <xref target="RFC8308" /> extension
-		mechanism using the name "agent-forward" in the
+		mechanism using the name "hostkeys" in the
 		SSH_MSG_EXT_INFO message.
 		</t>
 		<sourcecode>
