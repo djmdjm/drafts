@@ -4,8 +4,8 @@
 
 Internet Engineering Task Force                                D. Miller
 Internet-Draft                                                   OpenSSH
-Intended status: Standards Track                           1 August 2025
-Expires: 2 February 2026
+Intended status: Standards Track                           4 August 2025
+Expires: 5 February 2026
 
 
                            SSH Agent Protocol
@@ -38,7 +38,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 2 February 2026.
+   This Internet-Draft will expire on 5 February 2026.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Miller                   Expires 2 February 2026                [Page 1]
+Miller                   Expires 5 February 2026                [Page 1]
 
 Internet-Draft             SSH Agent Protocol                August 2025
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Miller                   Expires 2 February 2026                [Page 2]
+Miller                   Expires 5 February 2026                [Page 2]
 
 Internet-Draft             SSH Agent Protocol                August 2025
 
@@ -165,7 +165,7 @@ Internet-Draft             SSH Agent Protocol                August 2025
 
 
 
-Miller                   Expires 2 February 2026                [Page 3]
+Miller                   Expires 5 February 2026                [Page 3]
 
 Internet-Draft             SSH Agent Protocol                August 2025
 
@@ -221,7 +221,7 @@ Internet-Draft             SSH Agent Protocol                August 2025
 
 
 
-Miller                   Expires 2 February 2026                [Page 4]
+Miller                   Expires 5 February 2026                [Page 4]
 
 Internet-Draft             SSH Agent Protocol                August 2025
 
@@ -277,7 +277,7 @@ Internet-Draft             SSH Agent Protocol                August 2025
 
 
 
-Miller                   Expires 2 February 2026                [Page 5]
+Miller                   Expires 5 February 2026                [Page 5]
 
 Internet-Draft             SSH Agent Protocol                August 2025
 
@@ -333,7 +333,7 @@ Internet-Draft             SSH Agent Protocol                August 2025
 
 
 
-Miller                   Expires 2 February 2026                [Page 6]
+Miller                   Expires 5 February 2026                [Page 6]
 
 Internet-Draft             SSH Agent Protocol                August 2025
 
@@ -389,7 +389,7 @@ Internet-Draft             SSH Agent Protocol                August 2025
 
 
 
-Miller                   Expires 2 February 2026                [Page 7]
+Miller                   Expires 5 February 2026                [Page 7]
 
 Internet-Draft             SSH Agent Protocol                August 2025
 
@@ -445,7 +445,7 @@ Internet-Draft             SSH Agent Protocol                August 2025
 
 
 
-Miller                   Expires 2 February 2026                [Page 8]
+Miller                   Expires 5 February 2026                [Page 8]
 
 Internet-Draft             SSH Agent Protocol                August 2025
 
@@ -501,7 +501,7 @@ Internet-Draft             SSH Agent Protocol                August 2025
 
 
 
-Miller                   Expires 2 February 2026                [Page 9]
+Miller                   Expires 5 February 2026                [Page 9]
 
 Internet-Draft             SSH Agent Protocol                August 2025
 
@@ -557,7 +557,7 @@ Internet-Draft             SSH Agent Protocol                August 2025
 
 
 
-Miller                   Expires 2 February 2026               [Page 10]
+Miller                   Expires 5 February 2026               [Page 10]
 
 Internet-Draft             SSH Agent Protocol                August 2025
 
@@ -613,7 +613,7 @@ Internet-Draft             SSH Agent Protocol                August 2025
 
 
 
-Miller                   Expires 2 February 2026               [Page 11]
+Miller                   Expires 5 February 2026               [Page 11]
 
 Internet-Draft             SSH Agent Protocol                August 2025
 
@@ -669,7 +669,7 @@ Internet-Draft             SSH Agent Protocol                August 2025
 
 
 
-Miller                   Expires 2 February 2026               [Page 12]
+Miller                   Expires 5 February 2026               [Page 12]
 
 Internet-Draft             SSH Agent Protocol                August 2025
 
@@ -725,7 +725,7 @@ Internet-Draft             SSH Agent Protocol                August 2025
 
 
 
-Miller                   Expires 2 February 2026               [Page 13]
+Miller                   Expires 5 February 2026               [Page 13]
 
 Internet-Draft             SSH Agent Protocol                August 2025
 
@@ -781,7 +781,7 @@ Internet-Draft             SSH Agent Protocol                August 2025
 
 
 
-Miller                   Expires 2 February 2026               [Page 14]
+Miller                   Expires 5 February 2026               [Page 14]
 
 Internet-Draft             SSH Agent Protocol                August 2025
 
@@ -837,7 +837,7 @@ Internet-Draft             SSH Agent Protocol                August 2025
 
 
 
-Miller                   Expires 2 February 2026               [Page 15]
+Miller                   Expires 5 February 2026               [Page 15]
 
 Internet-Draft             SSH Agent Protocol                August 2025
 
@@ -893,7 +893,7 @@ Internet-Draft             SSH Agent Protocol                August 2025
 
 
 
-Miller                   Expires 2 February 2026               [Page 16]
+Miller                   Expires 5 February 2026               [Page 16]
 
 Internet-Draft             SSH Agent Protocol                August 2025
 
@@ -949,7 +949,7 @@ Internet-Draft             SSH Agent Protocol                August 2025
 
 
 
-Miller                   Expires 2 February 2026               [Page 17]
+Miller                   Expires 5 February 2026               [Page 17]
 
 Internet-Draft             SSH Agent Protocol                August 2025
 
@@ -1005,7 +1005,7 @@ Internet-Draft             SSH Agent Protocol                August 2025
 
 
 
-Miller                   Expires 2 February 2026               [Page 18]
+Miller                   Expires 5 February 2026               [Page 18]
 
 Internet-Draft             SSH Agent Protocol                August 2025
 
@@ -1061,7 +1061,7 @@ Internet-Draft             SSH Agent Protocol                August 2025
 
 
 
-Miller                   Expires 2 February 2026               [Page 19]
+Miller                   Expires 5 February 2026               [Page 19]
 
 Internet-Draft             SSH Agent Protocol                August 2025
 
@@ -1117,7 +1117,7 @@ Internet-Draft             SSH Agent Protocol                August 2025
 
 
 
-Miller                   Expires 2 February 2026               [Page 20]
+Miller                   Expires 5 February 2026               [Page 20]
 
 Internet-Draft             SSH Agent Protocol                August 2025
 
@@ -1173,7 +1173,7 @@ Internet-Draft             SSH Agent Protocol                August 2025
 
 
 
-Miller                   Expires 2 February 2026               [Page 21]
+Miller                   Expires 5 February 2026               [Page 21]
 
 Internet-Draft             SSH Agent Protocol                August 2025
 
@@ -1229,7 +1229,7 @@ Internet-Draft             SSH Agent Protocol                August 2025
 
 
 
-Miller                   Expires 2 February 2026               [Page 22]
+Miller                   Expires 5 February 2026               [Page 22]
 
 Internet-Draft             SSH Agent Protocol                August 2025
 
@@ -1285,7 +1285,7 @@ Internet-Draft             SSH Agent Protocol                August 2025
 
 
 
-Miller                   Expires 2 February 2026               [Page 23]
+Miller                   Expires 5 February 2026               [Page 23]
 
 Internet-Draft             SSH Agent Protocol                August 2025
 
@@ -1341,7 +1341,7 @@ Internet-Draft             SSH Agent Protocol                August 2025
 
 
 
-Miller                   Expires 2 February 2026               [Page 24]
+Miller                   Expires 5 February 2026               [Page 24]
 
 Internet-Draft             SSH Agent Protocol                August 2025
 
@@ -1397,7 +1397,7 @@ Internet-Draft             SSH Agent Protocol                August 2025
 
 
 
-Miller                   Expires 2 February 2026               [Page 25]
+Miller                   Expires 5 February 2026               [Page 25]
 
 Internet-Draft             SSH Agent Protocol                August 2025
 
@@ -1453,4 +1453,4 @@ Author's Address
 
 
 
-Miller                   Expires 2 February 2026               [Page 26]
+Miller                   Expires 5 February 2026               [Page 26]
