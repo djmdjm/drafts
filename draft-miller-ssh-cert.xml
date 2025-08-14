@@ -10,7 +10,7 @@
 <rfc
   xmlns:xi="http://www.w3.org/2001/XInclude"
   category="info"
-  docName="draft-miller-ssh-cert-03"
+  docName="draft-miller-ssh-cert-02"
   ipr="trust200902"
   obsoletes=""
   updates=""
@@ -28,7 +28,7 @@
 
 <front>
 	<title>SSH Certificate Format</title>
-	<seriesInfo name="Internet-Draft" value="draft-miller-ssh-cert-03"/>
+	<seriesInfo name="Internet-Draft" value="draft-miller-ssh-cert-02"/>
 	<author fullname="Damien Miller" initials="D." surname="Miller">
 		<organization>OpenSSH</organization>
 		<address>
