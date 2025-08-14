@@ -9,7 +9,7 @@ Expires: 15 February 2026
 
 
                          SSH Certificate Format
-                        draft-miller-ssh-cert-02
+                        draft-miller-ssh-cert-03
 
 Abstract
 
@@ -203,7 +203,7 @@ Internet-Draft           SSH Certificate Format              August 2025
    1970) except for two special values.  A zero value in the "valid
    after" field indicates that the certificate is valid from any time to
    the "valid before" date.  A all-1s (i.e. 0xFFFFFFFFFFFFFFFF) value in
-   the "valid after" field indicates that the certificate has no end
+   the "valid before" field indicates that the certificate has no end
    expiry date.
 
    The "critical options" field contains zero or more of the certificate
