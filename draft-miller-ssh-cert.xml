@@ -10,7 +10,7 @@
 <rfc
   xmlns:xi="http://www.w3.org/2001/XInclude"
   category="info"
-  docName="draft-miller-ssh-cert-02"
+  docName="draft-miller-ssh-cert-03"
   ipr="trust200902"
   obsoletes=""
   updates=""
@@ -28,7 +28,7 @@
 
 <front>
 	<title>SSH Certificate Format</title>
-	<seriesInfo name="Internet-Draft" value="draft-miller-ssh-cert-02"/>
+	<seriesInfo name="Internet-Draft" value="draft-miller-ssh-cert-03"/>
 	<author fullname="Damien Miller" initials="D." surname="Miller">
 		<organization>OpenSSH</organization>
 		<address>
@@ -162,7 +162,7 @@
 			the Unix epoch (00:00:00 UTC on 1 January 1970) except
 			for two special values. A zero value in the
 			"valid after" field indicates that the certificate
-			is valid from any time to the "valid after" date.
+			is valid from any time to the "valid before" date.
 			A all-1s (i.e. 0xFFFFFFFFFFFFFFFF) value in the
 			"valid after" field indicates that the certificate has
 			no end expiry date.
@@ -1185,7 +1185,7 @@
 
 <section anchor="Acknowledgements" numbered="false"><name>Acknowledgements</name>
 	<t>
-	Jeremy Norris offered valuable feedback on this document.
+	Jeremy Norris and Yiyue Wang offered valuable feedback on this document.
 	</t>
 </section>
 
