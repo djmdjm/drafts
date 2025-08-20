@@ -76,14 +76,15 @@
 	presents a smaller attack surface than a key loaded into
 	a full SSH server or client.
 	</t>
-	<t>
-	This agent protocol is already widely used and a de-facto
-	standard, having been implemented by a number of popular
-	SSH clients and servers for many years. The purpose of
-	this document is to describe the protocol as it has been
-	implemented.
-	</t>
-	      
+	<section removeInRFC="true"><name>Background</name>
+		<t>
+		This agent protocol is already widely used and a de-facto
+		standard, having been implemented by a number of popular
+		SSH clients and servers for many years. The purpose of
+		this document is to describe the protocol as it has been
+		implemented.
+		</t>
+	</section>      
 	<section anchor="requirements"><name>Requirements Language</name>
 		<t>
 		The key words "MUST", "MUST NOT", "REQUIRED", "SHALL",
@@ -114,12 +115,14 @@
 	For this reason, clients of the agent SHOULD be prepared to
 	fail gracefully if any operation is refused.
 	</t>
-	<t>
-	Note that this protocol is separate to and incompatible with
-	the one described in the similarly-named
-	<xref target="draft-ietf-secsh-agent-02" /> which expired
-	in 2004.
-	</t>
+	<section removeInRFC="true"><name>Background</name>
+		<t>
+		Note that this protocol is separate to and incompatible with
+		the one described in the similarly-named
+		<xref target="draft-ietf-secsh-agent-02" /> which expired
+		in 2004.
+		</t>
+	</section>
 </section>
     
 <section><name>Protocol Messages</name>
@@ -144,22 +147,22 @@
 		<t>
 		The following generic messages may be sent by the server
 		in response to requests from the client. On success the
-		agent may reply either with:
+		agent MUST reply either with:
 		</t>
 		<sourcecode>
     byte              SSH_AGENT_SUCCESS
 		</sourcecode>
 		<t>
 		or a request-specific success message.
-		On failure, the agent may reply with:
+		On failure, the agent MUST reply with:
 		</t>
 		<sourcecode>
     byte              SSH_AGENT_FAILURE
 		</sourcecode>
 		<t>
 		or a request-specific success message.
-		SSH_AGENT_FAILURE messages are also sent in reply to
-		requests with unknown types.
+		SSH_AGENT_FAILURE messages MUST also be sent in reply to
+		requests with unknown or unsupported types.
 		</t>
 	</section>
 	<section><name>Adding keys to the agent</name>
@@ -216,7 +219,7 @@
 		</t>
 		<t>
 		An agent MAY support only a subset of the key types defined
-		here and may support additional key types as described below.
+		here and MAY support additional key types as described below.
 		If an agent does not recognise the type name in a request to
 		add a key, then it MUST fail gracefully and respond with a
 		SSH_AGENT_FAILURE reply.
@@ -397,7 +400,7 @@
 		</section>
 		<section title="Key Constraints" anchor="constraints">
 			<t>
-			A number of constraints and may be used in the
+			A number of constraints may be used in the
 			constrained variants of the key add messages.
 			Each constraint is represented by a type byte
 			followed by zero or more value bytes.
@@ -499,7 +502,7 @@
 		<t>
 		On receipt of such a message, an agent
 		shall delete all keys that it is holding
-		and reply with SSH_AGENT_SUCCESS.
+		and MUST reply with SSH_AGENT_SUCCESS.
 		</t>
 		<t>
 		Specific keys may also be removed:
@@ -513,7 +516,7 @@
 		key to be removed (<xref target="pubkeyblob" />).
 		</t>
 		<t>
-		An agent shall reply with SSH_AGENT_SUCCESS if the key was
+		An agent MUST reply with SSH_AGENT_SUCCESS if the key was
 		deleted or SSH_AGENT_FAILURE if it was not found.
 		</t>
 		<t>
@@ -532,7 +535,7 @@
 		cause the agent to remove all keys loaded from that smartcard.
 		</t>
 		<t>
-		An agent shall reply with SSH_AGENT_SUCCESS if the key was
+		An agent MUST reply with SSH_AGENT_SUCCESS if the key was
 		deleted or SSH_AGENT_FAILURE if it was not found.
 		</t>
 	</section>
@@ -545,7 +548,7 @@
     byte             SSH_AGENTC_REQUEST_IDENTITIES
 		</sourcecode>
 		<t>
-		The agent shall reply with a message with the following
+		The agent MUST reply with a message with the following
 		preamble.
 		</t>
 		<sourcecode>
@@ -589,11 +592,11 @@
 		If the agent does not support the requested flags, or is
 		otherwise unable or unwilling to generate the signature (e.g.
 		because it doesn't have the specified key, or the user
-		refused confirmation of a constrained key), it must reply
+		refused confirmation of a constrained key), it MUST reply
 		with a SSH_AGENT_FAILURE message.
 		</t>
 		<t>
-		On success, the agent shall reply with:
+		On success, the agent MUST reply with:
 		</t>
 		<sourcecode>
     byte             SSH_AGENT_SIGN_RESPONSE
@@ -638,7 +641,7 @@
     string           passphrase
 		</sourcecode>
 		<t>
-		The agent shall reply with SSH_AGENT_SUCCESS if locked
+		The agent MUST reply with SSH_AGENT_SUCCESS if locked
 		successfully or SSH_AGENT_FAILURE otherwise (e.g. if the agent
 		was already locked).
 		</t>
@@ -685,7 +688,8 @@
 		</t>
 		<t>
 		The contents of successful extension reply messages are
-		specific to the extension type.  Extension requests may return
+		specific to the extension type.
+		Successful extension requests MUST return
 		either SSH_AGENT_SUCCESS on success or an extension-specific
 		response message:
 		</t>
@@ -816,7 +820,7 @@
 		advertise this fact to the subordinate session. Most
 		implementations on Unix-like systems do this by providing a
 		user-private listening Unix domain socket and recording its
-		location in an environment variable $SSH_AUTH_SOCK.
+		location in an environment variable SSH_AUTH_SOCK.
 		</t>
 		<t>
 		As mentioned previously, many deployed implementations only
@@ -955,9 +959,9 @@
 
 <section anchor="IANA"><name>IANA Considerations</name>
 	<t>
-	This protocol requires three registries be established, one for
-	message numbers, one for constraints and one for signature request
-	flags.
+	This protocol requires four registries be established, one for
+	message numbers, one for constraints, one for signature request
+	flags and one for extension request names.
 	</t>
 	<section><name>New registry: SSH agent protocol numbers</name>
 		<t>
@@ -1212,7 +1216,7 @@
 	to use this information as they see fit".
 	</t>
 	<t>
-	The following example projects maintain an implementation of this
+	The following projects maintain an implementation of this
 	protocol:
 	</t>
 	<dl>
@@ -1388,8 +1392,8 @@
 	</t>
 	<t>
 	Thanks to Simon Tatham, Niels Möller, James Spencer, Simon Josefsson,
-	Matt Johnston, Jakub Jelen, Rich Salz and Caspar Schutijser
-	who reviewed and helped improve this document.
+	Matt Johnston, Jakub Jelen, Rich Salz, Caspar Schutijser and
+	Florian Obser who reviewed and helped improve this document.
 	</t>
 </section>
 

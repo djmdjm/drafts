@@ -4,8 +4,8 @@
 
 Internet Engineering Task Force                                D. Miller
 Internet-Draft                                                   OpenSSH
-Intended status: Standards Track                           4 August 2025
-Expires: 5 February 2026
+Intended status: Standards Track                          20 August 2025
+Expires: 21 February 2026
 
 
                            SSH Agent Protocol
@@ -38,7 +38,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 5 February 2026.
+   This Internet-Draft will expire on 21 February 2026.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Miller                   Expires 5 February 2026                [Page 1]
+Miller                  Expires 21 February 2026                [Page 1]
 
 Internet-Draft             SSH Agent Protocol                August 2025
 
@@ -65,11 +65,13 @@ Internet-Draft             SSH Agent Protocol                August 2025
 Table of Contents
 
    1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   3
-     1.1.  Requirements Language . . . . . . . . . . . . . . . . . .   3
+     1.1.  Background  . . . . . . . . . . . . . . . . . . . . . . .   3
+     1.2.  Requirements Language . . . . . . . . . . . . . . . . . .   3
    2.  Protocol Overview . . . . . . . . . . . . . . . . . . . . . .   3
+     2.1.  Background  . . . . . . . . . . . . . . . . . . . . . . .   4
    3.  Protocol Messages . . . . . . . . . . . . . . . . . . . . . .   4
      3.1.  Generic server responses  . . . . . . . . . . . . . . . .   4
-     3.2.  Adding keys to the agent  . . . . . . . . . . . . . . . .   4
+     3.2.  Adding keys to the agent  . . . . . . . . . . . . . . . .   5
        3.2.1.  DSA keys  . . . . . . . . . . . . . . . . . . . . . .   5
        3.2.2.  ECDSA keys  . . . . . . . . . . . . . . . . . . . . .   6
        3.2.3.  EDDSA keys  . . . . . . . . . . . . . . . . . . . . .   6
@@ -104,16 +106,16 @@ Table of Contents
      7.6.  Additions to SSH Connection Protocol Channel Request
            Names . . . . . . . . . . . . . . . . . . . . . . . . . .  21
      7.7.  Additions to SSH Connection Protocol Channel Types  . . .  22
-   8.  Security Considerations . . . . . . . . . . . . . . . . . . .  22
-   9.  Implementation Status . . . . . . . . . . . . . . . . . . . .  23
 
 
 
-Miller                   Expires 5 February 2026                [Page 2]
+Miller                  Expires 21 February 2026                [Page 2]
 
 Internet-Draft             SSH Agent Protocol                August 2025
 
 
+   8.  Security Considerations . . . . . . . . . . . . . . . . . . .  22
+   9.  Implementation Status . . . . . . . . . . . . . . . . . . . .  23
    10. References  . . . . . . . . . . . . . . . . . . . . . . . . .  24
      10.1.  Normative References . . . . . . . . . . . . . . . . . .  24
      10.2.  Informative References . . . . . . . . . . . . . . . . .  26
@@ -135,12 +137,16 @@ Internet-Draft             SSH Agent Protocol                August 2025
    implements a simple protocol and presents a smaller attack surface
    than a key loaded into a full SSH server or client.
 
+1.1.  Background
+
+   This section is to be removed before publishing as an RFC.
+
    This agent protocol is already widely used and a de-facto standard,
    having been implemented by a number of popular SSH clients and
    servers for many years.  The purpose of this document is to describe
    the protocol as it has been implemented.
 
-1.1.  Requirements Language
+1.2.  Requirements Language
 
    The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
    "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
@@ -159,13 +165,7 @@ Internet-Draft             SSH Agent Protocol                August 2025
 
 
 
-
-
-
-
-
-
-Miller                   Expires 5 February 2026                [Page 3]
+Miller                  Expires 21 February 2026                [Page 3]
 
 Internet-Draft             SSH Agent Protocol                August 2025
 
@@ -177,6 +177,10 @@ Internet-Draft             SSH Agent Protocol                August 2025
    of keys available to a given client.  For this reason, clients of the
    agent SHOULD be prepared to fail gracefully if any operation is
    refused.
+
+2.1.  Background
+
+   This section is to be removed before publishing as an RFC.
 
    Note that this protocol is separate to and incompatible with the one
    described in the similarly-named [draft-ietf-secsh-agent-02] which
@@ -199,32 +203,34 @@ Internet-Draft             SSH Agent Protocol                August 2025
 3.1.  Generic server responses
 
    The following generic messages may be sent by the server in response
-   to requests from the client.  On success the agent may reply either
+   to requests from the client.  On success the agent MUST reply either
    with:
 
        byte              SSH_AGENT_SUCCESS
 
-   or a request-specific success message.  On failure, the agent may
+   or a request-specific success message.  On failure, the agent MUST
    reply with:
 
        byte              SSH_AGENT_FAILURE
 
    or a request-specific success message.  SSH_AGENT_FAILURE messages
-   are also sent in reply to requests with unknown types.
+   MUST also be sent in reply to requests with unknown or unsupported
+   types.
+
+
+
+
+
+Miller                  Expires 21 February 2026                [Page 4]
+
+Internet-Draft             SSH Agent Protocol                August 2025
+
 
 3.2.  Adding keys to the agent
 
    Keys may be added to the agent using the SSH_AGENTC_ADD_IDENTITY or
    SSH_AGENTC_ADD_ID_CONSTRAINED messages.  The latter variant allows
    adding keys with optional constraints on their usage.
-
-
-
-
-Miller                   Expires 5 February 2026                [Page 4]
-
-Internet-Draft             SSH Agent Protocol                August 2025
-
 
    The generic format for the key SSH_AGENTC_ADD_IDENTITY message is:
 
@@ -256,7 +262,7 @@ Internet-Draft             SSH Agent Protocol                August 2025
    SSH_AGENT_FAILURE otherwise.
 
    An agent MAY support only a subset of the key types defined here and
-   may support additional key types as described below.  If an agent
+   MAY support additional key types as described below.  If an agent
    does not recognise the type name in a request to add a key, then it
    MUST fail gracefully and respond with a SSH_AGENT_FAILURE reply.
 
@@ -271,13 +277,7 @@ Internet-Draft             SSH Agent Protocol                August 2025
 
 
 
-
-
-
-
-
-
-Miller                   Expires 5 February 2026                [Page 5]
+Miller                  Expires 21 February 2026                [Page 5]
 
 Internet-Draft             SSH Agent Protocol                August 2025
 
@@ -333,7 +333,7 @@ Internet-Draft             SSH Agent Protocol                August 2025
 
 
 
-Miller                   Expires 5 February 2026                [Page 6]
+Miller                  Expires 21 February 2026                [Page 6]
 
 Internet-Draft             SSH Agent Protocol                August 2025
 
@@ -389,7 +389,7 @@ Internet-Draft             SSH Agent Protocol                August 2025
 
 
 
-Miller                   Expires 5 February 2026                [Page 7]
+Miller                  Expires 21 February 2026                [Page 7]
 
 Internet-Draft             SSH Agent Protocol                August 2025
 
@@ -418,9 +418,9 @@ Internet-Draft             SSH Agent Protocol                August 2025
 
 3.2.7.  Key Constraints
 
-   A number of constraints and may be used in the constrained variants
-   of the key add messages.  Each constraint is represented by a type
-   byte followed by zero or more value bytes.
+   A number of constraints may be used in the constrained variants of
+   the key add messages.  Each constraint is represented by a type byte
+   followed by zero or more value bytes.
 
    Zero or more constraints may be specified when adding a key with one
    of the *_CONSTRAINED requests.  Multiple constraints are appended
@@ -445,7 +445,7 @@ Internet-Draft             SSH Agent Protocol                August 2025
 
 
 
-Miller                   Expires 5 February 2026                [Page 8]
+Miller                  Expires 21 February 2026                [Page 8]
 
 Internet-Draft             SSH Agent Protocol                August 2025
 
@@ -496,12 +496,12 @@ Internet-Draft             SSH Agent Protocol                August 2025
        byte             SSH_AGENTC_REMOVE_ALL_IDENTITIES
 
    On receipt of such a message, an agent shall delete all keys that it
-   is holding and reply with SSH_AGENT_SUCCESS.
+   is holding and MUST reply with SSH_AGENT_SUCCESS.
 
 
 
 
-Miller                   Expires 5 February 2026                [Page 9]
+Miller                  Expires 21 February 2026                [Page 9]
 
 Internet-Draft             SSH Agent Protocol                August 2025
 
@@ -514,7 +514,7 @@ Internet-Draft             SSH Agent Protocol                August 2025
    Where "key blob" is the standard public key encoding of the key to be
    removed (Section 3.3).
 
-   An agent shall reply with SSH_AGENT_SUCCESS if the key was deleted or
+   An agent MUST reply with SSH_AGENT_SUCCESS if the key was deleted or
    SSH_AGENT_FAILURE if it was not found.
 
    Smartcard keys may be removed using:
@@ -528,7 +528,7 @@ Internet-Draft             SSH Agent Protocol                August 2025
    encoded using UTF-8.  Requesting deletion of smartcard-hosted keys
    SHOULD cause the agent to remove all keys loaded from that smartcard.
 
-   An agent shall reply with SSH_AGENT_SUCCESS if the key was deleted or
+   An agent MUST reply with SSH_AGENT_SUCCESS if the key was deleted or
    SSH_AGENT_FAILURE if it was not found.
 
 3.5.  Requesting a list of keys
@@ -538,7 +538,7 @@ Internet-Draft             SSH Agent Protocol                August 2025
 
        byte             SSH_AGENTC_REQUEST_IDENTITIES
 
-   The agent shall reply with a message with the following preamble.
+   The agent MUST reply with a message with the following preamble.
 
        byte             SSH_AGENT_IDENTITIES_ANSWER
        uint32           nkeys
@@ -557,7 +557,7 @@ Internet-Draft             SSH Agent Protocol                August 2025
 
 
 
-Miller                   Expires 5 February 2026               [Page 10]
+Miller                  Expires 21 February 2026               [Page 10]
 
 Internet-Draft             SSH Agent Protocol                August 2025
 
@@ -580,9 +580,9 @@ Internet-Draft             SSH Agent Protocol                August 2025
    If the agent does not support the requested flags, or is otherwise
    unable or unwilling to generate the signature (e.g.  because it
    doesn't have the specified key, or the user refused confirmation of a
-   constrained key), it must reply with a SSH_AGENT_FAILURE message.
+   constrained key), it MUST reply with a SSH_AGENT_FAILURE message.
 
-   On success, the agent shall reply with:
+   On success, the agent MUST reply with:
 
        byte             SSH_AGENT_SIGN_RESPONSE
        string           signature
@@ -613,7 +613,7 @@ Internet-Draft             SSH Agent Protocol                August 2025
 
 
 
-Miller                   Expires 5 February 2026               [Page 11]
+Miller                  Expires 21 February 2026               [Page 11]
 
 Internet-Draft             SSH Agent Protocol                August 2025
 
@@ -621,9 +621,8 @@ Internet-Draft             SSH Agent Protocol                August 2025
        byte             SSH_AGENTC_LOCK
        string           passphrase
 
-   The agent shall reply with SSH_AGENT_SUCCESS if locked successfully
-   or SSH_AGENT_FAILURE otherwise (e.g. if the agent was already
-   locked).
+   The agent MUST reply with SSH_AGENT_SUCCESS if locked successfully or
+   SSH_AGENT_FAILURE otherwise (e.g. if the agent was already locked).
 
    The following message requests unlocking an agent:
 
@@ -657,7 +656,7 @@ Internet-Draft             SSH Agent Protocol                August 2025
    sent by agents that do not support the extension mechanism at all.
 
    The contents of successful extension reply messages are specific to
-   the extension type.  Extension requests may return either
+   the extension type.  Successful extension requests MUST return either
    SSH_AGENT_SUCCESS on success or an extension-specific response
    message:
 
@@ -669,7 +668,8 @@ Internet-Draft             SSH Agent Protocol                August 2025
 
 
 
-Miller                   Expires 5 February 2026               [Page 12]
+
+Miller                  Expires 21 February 2026               [Page 12]
 
 Internet-Draft             SSH Agent Protocol                August 2025
 
@@ -725,7 +725,7 @@ Internet-Draft             SSH Agent Protocol                August 2025
 
 
 
-Miller                   Expires 5 February 2026               [Page 13]
+Miller                  Expires 21 February 2026               [Page 13]
 
 Internet-Draft             SSH Agent Protocol                August 2025
 
@@ -774,14 +774,14 @@ Internet-Draft             SSH Agent Protocol                August 2025
    this fact to the subordinate session.  Most implementations on Unix-
    like systems do this by providing a user-private listening Unix
    domain socket and recording its location in an environment variable
-   $SSH_AUTH_SOCK.
+   SSH_AUTH_SOCK.
 
 
 
 
 
 
-Miller                   Expires 5 February 2026               [Page 14]
+Miller                  Expires 21 February 2026               [Page 14]
 
 Internet-Draft             SSH Agent Protocol                August 2025
 
@@ -837,7 +837,7 @@ Internet-Draft             SSH Agent Protocol                August 2025
 
 
 
-Miller                   Expires 5 February 2026               [Page 15]
+Miller                  Expires 21 February 2026               [Page 15]
 
 Internet-Draft             SSH Agent Protocol                August 2025
 
@@ -893,7 +893,7 @@ Internet-Draft             SSH Agent Protocol                August 2025
 
 
 
-Miller                   Expires 5 February 2026               [Page 16]
+Miller                  Expires 21 February 2026               [Page 16]
 
 Internet-Draft             SSH Agent Protocol                August 2025
 
@@ -911,9 +911,9 @@ Internet-Draft             SSH Agent Protocol                August 2025
 
 7.  IANA Considerations
 
-   This protocol requires three registries be established, one for
-   message numbers, one for constraints and one for signature request
-   flags.
+   This protocol requires four registries be established, one for
+   message numbers, one for constraints, one for signature request flags
+   and one for extension request names.
 
 7.1.  New registry: SSH agent protocol numbers
 
@@ -949,7 +949,7 @@ Internet-Draft             SSH Agent Protocol                August 2025
 
 
 
-Miller                   Expires 5 February 2026               [Page 17]
+Miller                  Expires 21 February 2026               [Page 17]
 
 Internet-Draft             SSH Agent Protocol                August 2025
 
@@ -1005,7 +1005,7 @@ Internet-Draft             SSH Agent Protocol                August 2025
 
 
 
-Miller                   Expires 5 February 2026               [Page 18]
+Miller                  Expires 21 February 2026               [Page 18]
 
 Internet-Draft             SSH Agent Protocol                August 2025
 
@@ -1061,7 +1061,7 @@ Internet-Draft             SSH Agent Protocol                August 2025
 
 
 
-Miller                   Expires 5 February 2026               [Page 19]
+Miller                  Expires 21 February 2026               [Page 19]
 
 Internet-Draft             SSH Agent Protocol                August 2025
 
@@ -1117,7 +1117,7 @@ Internet-Draft             SSH Agent Protocol                August 2025
 
 
 
-Miller                   Expires 5 February 2026               [Page 20]
+Miller                  Expires 21 February 2026               [Page 20]
 
 Internet-Draft             SSH Agent Protocol                August 2025
 
@@ -1173,7 +1173,7 @@ Internet-Draft             SSH Agent Protocol                August 2025
 
 
 
-Miller                   Expires 5 February 2026               [Page 21]
+Miller                  Expires 21 February 2026               [Page 21]
 
 Internet-Draft             SSH Agent Protocol                August 2025
 
@@ -1229,7 +1229,7 @@ Internet-Draft             SSH Agent Protocol                August 2025
 
 
 
-Miller                   Expires 5 February 2026               [Page 22]
+Miller                  Expires 21 February 2026               [Page 22]
 
 Internet-Draft             SSH Agent Protocol                August 2025
 
@@ -1280,12 +1280,12 @@ Internet-Draft             SSH Agent Protocol                August 2025
    It is up to the individual working groups to use this information as
    they see fit".
 
-   The following example projects maintain an implementation of this
-   protocol:
+   The following projects maintain an implementation of this protocol:
 
 
 
-Miller                   Expires 5 February 2026               [Page 23]
+
+Miller                  Expires 21 February 2026               [Page 23]
 
 Internet-Draft             SSH Agent Protocol                August 2025
 
@@ -1341,7 +1341,7 @@ Internet-Draft             SSH Agent Protocol                August 2025
 
 
 
-Miller                   Expires 5 February 2026               [Page 24]
+Miller                  Expires 21 February 2026               [Page 24]
 
 Internet-Draft             SSH Agent Protocol                August 2025
 
@@ -1397,7 +1397,7 @@ Internet-Draft             SSH Agent Protocol                August 2025
 
 
 
-Miller                   Expires 5 February 2026               [Page 25]
+Miller                  Expires 21 February 2026               [Page 25]
 
 Internet-Draft             SSH Agent Protocol                August 2025
 
@@ -1441,8 +1441,8 @@ Acknowledgments
    version 1 by Tatu Ylonen.
 
    Thanks to Simon Tatham, Niels Möller, James Spencer, Simon Josefsson,
-   Matt Johnston, Jakub Jelen, Rich Salz and Caspar Schutijser who
-   reviewed and helped improve this document.
+   Matt Johnston, Jakub Jelen, Rich Salz, Caspar Schutijser and Florian
+   Obser who reviewed and helped improve this document.
 
 Author's Address
 
@@ -1453,4 +1453,4 @@ Author's Address
 
 
 
-Miller                   Expires 5 February 2026               [Page 26]
+Miller                  Expires 21 February 2026               [Page 26]
