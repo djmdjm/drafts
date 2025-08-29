@@ -10,7 +10,7 @@
 <rfc
   xmlns:xi="http://www.w3.org/2001/XInclude"
   category="std"
-  docName="draft-miller-sshm-hostkey-update-01"
+  docName="draft-miller-sshm-hostkey-update-02"
   ipr="trust200902"
   obsoletes=""
   updates=""
@@ -28,7 +28,7 @@
 
 <front>
 	<title>Host key update mechanism for SSH</title>
-	<seriesInfo name="Internet-Draft" value="draft-miller-sshm-hostkey-update-01"/>
+	<seriesInfo name="Internet-Draft" value="draft-miller-sshm-hostkey-update-02"/>
 	<author fullname="Damien Miller" initials="D." surname="Miller">
 		<organization>OpenSSH</organization>
 		<address>
@@ -67,10 +67,14 @@
 	negotiated algorithm.
 	</t>
 	<t>
-	For non-certificate keys, the SSH protocol does not specify any way
-	for a client to learn the host keys of a server. Public keys may
-	be shared out-of-band but are more commonly learned for a given server
-	the first time a client connects to it and trusted thereafter.
+	Excluding certified keys such as "pgp-sign-rsa"
+	(<xref target="RFC4253" section="6.6" />) or OpenSSH certificates
+	(<xref target="I-D.miller-ssh-cert" />), the SSH protocol does not
+	specify any way for a client to learn the host keys of a server.
+	Public keys may be shared out-of-band but are more commonly learned
+	for a given server the first time a client connects to it and
+	trusted thereafter. This is the origin of the Trust on First Use (TOFU)
+	pattern.
 	</t>
 	<t>
 	There is no facility in the SSH transport protocol that allows a
@@ -146,7 +150,7 @@
 	<section anchor="hostkeys" title="hostkeys advertisment">
 		<t>
 		This message is sent by a server to inform a client of the
-		full set of public keys it supports. It is typically sent
+		public keys it supports. It is typically sent
 		immediately after user authentication succeeds, but MAY be
 		sent at any time later. It MUST NOT be sent more than once
 		by a server over the course of a given SSH transport connection.
@@ -154,7 +158,7 @@
 		<sourcecode>
     byte             SSH_MSG_GLOBAL_REQUEST
     string           "hostkeys" or "hostkeys-00@openssh.com"
-    char             0 /* want reply */
+    char             0 /* do not want reply */
     string[]         hostkeys
 		</sourcecode>
 		<t>
@@ -186,7 +190,7 @@
 		<sourcecode>
     byte             SSH_MSG_GLOBAL_REQUEST
     string           "hostkeys-prove"
-    char             1 /* want reply */
+    char             1 /* do want reply */
     string[]         hostkeys
 		</sourcecode>
 		<t>
@@ -196,10 +200,14 @@
 		repeated.
 		</t>
 		<t>
-		A server
-		MUST reply to this request either with a SSH_MSG_REQUEST_FAILURE
-		(in case of failure or unwillness to service the request) or
-		the folloing message:
+		A server MUST reply to this request either with the success
+		message defined below or a SSH_MSG_REQUEST_FAILURE if the server
+		(in case of failure or unwillness to service the request).
+		If a client receives such a failure, it MUST NOT trust any new
+		keys provided in the initial "hostkeys" message.
+		</t>
+		<t>
+		On success, the server returns the following message:
 		</t>
 		<sourcecode>
     byte             SSH_MSG_REQUEST_SUCCESS
@@ -286,7 +294,7 @@
 			<sourcecode>
     byte             SSH_MSG_GLOBAL_REQUEST
     string           "hostkeys-prove-00@openssh.com"
-    char             1 /* want reply */
+    char             1 /* do want reply */
     string[]         hostkeys
 			</sourcecode>
 			<t>
@@ -334,9 +342,9 @@
 		As global request messages are required by
 		<xref target="RFC4254" /> to be gracefully ignored by an
 		endpoint that does not support them, implementations MAY
-		opportunistically use this extension in
-		the absence of an <xref target="RFC8308" /> advertisement
-		using the vendor-specific names mentioned above.
+		opportunistically use this extension via the vendor-specific
+		names in the absence of an <xref target="RFC8308" />
+		advertisement using the vendor-specific names mentioned above.
 		</t>
 		<t>
 		Likewise, clients and server MAY implement the vendor-specific
@@ -350,7 +358,7 @@
 	</section>
 </section>
 
-<section><name>Applications</name>
+<section><name>Motivations</name>
 	<t>
 	There are two motivating applications for this extension: graceful
 	host key rotation and signature algorithm agility.
@@ -435,8 +443,8 @@
 	<section title="Trusting keys">
 		<t>
 	This mechanism cannot be used to estabish trust in a SSH server where
-	it did not previously exist. Specifically, if a client learned a host
-	key from an on-path adversary rather than the intended destination
+	it no key was previously trusted. Specifically, if a client learned a
+	host key from an on-path adversary rather than the intended destination
 	host, then this extension cannot improve this situation. Keys learned
 	though this mechanism can never be more trustworthy than the key used
 	to establish the SSH transport session.
@@ -447,7 +455,7 @@
 	This host key update mechanism operates using two messages: an
 	advertisement of host keys and a proof of private key possession.
 	SSH implementations that implement this extension MUST implement
-	support for both messages and MUST not record new host keys without
+	support for both messages and MUST NOT record new host keys without
 	verifying private key possession proofs.
 		</t>
 		<t>
@@ -595,6 +603,7 @@
 		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8174.xml" />
 		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8308.xml" />
 		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8709.xml" />
+		<xi:include href="https://datatracker.ietf.org/doc/bibxml3/draft-miller-ssh-cert-03.xml" />
 	</references>
 
 	<references><name>Informative References</name>
@@ -617,7 +626,7 @@
 <section anchor="Acknowledgments" numbered="false"><name>Acknowledgments</name>
 	<t>
 	Jann Horn provided valuable feedback during the development of
-	this extension.
+	this extension. Rich Salz helped improve this document.
 	</t>
 </section>
 
