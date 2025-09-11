@@ -10,7 +10,7 @@
 <rfc
   xmlns:xi="http://www.w3.org/2001/XInclude"
   category="info"
-  docName="draft-miller-ssh-cert-03"
+  docName="draft-miller-ssh-cert-04"
   ipr="trust200902"
   obsoletes=""
   updates=""
@@ -28,7 +28,7 @@
 
 <front>
 	<title>SSH Certificate Format</title>
-	<seriesInfo name="Internet-Draft" value="draft-miller-ssh-cert-03"/>
+	<seriesInfo name="Internet-Draft" value="draft-miller-ssh-cert-04"/>
 	<author fullname="Damien Miller" initials="D." surname="Miller">
 		<organization>OpenSSH</organization>
 		<address>
@@ -671,7 +671,6 @@
 			<sourcecode>
     string              "ssh-dss-cert"
     string              certificate blob
-    byte[]              private key fields
     mpint               x
 			</sourcecode>
 			<t>
@@ -689,7 +688,6 @@
                         "ecdsa-sha2-nistp384-cert" |
                         "ecdsa-sha2-nistp521-cert"
     string              certificate blob
-    byte[]              private key fields
     mpint               d
 			</sourcecode>
 			<t>
@@ -705,7 +703,6 @@
 			<sourcecode>
     string              "ssh-ed25519-cert" | "ssh-ed448-cert"
     string              certificate blob
-    byte[]              private key fields
     string              k || ENC(A)
 			</sourcecode>
 			<t>
@@ -724,7 +721,6 @@
 			<sourcecode>
     string              "ssh-rsa-cert"
     string              certificate blob
-    byte[]              private key fields
     mpint               d
     mpint               iqmp
     mpint               p
