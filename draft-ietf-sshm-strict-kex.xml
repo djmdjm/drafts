@@ -244,14 +244,14 @@
 	For the client, typically the first messages of the
 	encrypted transport are an optional SSH_MSG_EXT_INFO followed by a
 	SSH_MSG_SERVICE_REQUEST to initiate user authentication. If the
-	SSH_MSG_EXT_INFO was sent by the client, then it's deletion by a
+	SSH_MSG_EXT_INFO was sent by the client, then its deletion by a
 	successful Terrapin attack would not be noticed by the server.
 	However, deleting the SSH_MSG_SERVICE_REQUEST would almost certainly
 	cause the connection to fail, as the user authentication phase that is
 	necessary for all popular SSH implementation would never be initiated.
 	</t>
 	<t>
-	The server follows a very similar pattern for it's early messages over
+	The server follows a very similar pattern for its early messages over
 	the encrypted transport: an optional SSH_MSG_EXT_INFO followed by a
 	SSH_MSG_SERVICE_ACCEPT reply to the client's request to start user
 	authentication. Again, the SSH_MSG_EXT_INFO is the only message that
@@ -468,10 +468,10 @@
 		<t>
 		When strict KEX is enabled, there should be no ambiguity
 		in which packet elicited SSH_MSG_UNIMPLEMENTED.
-		The last paragraps of
+		The last paragraphs of
 		<xref target="RFC4253" section="7.1" />
 		require endpoints drain most non-KEX messages before
-		syncronously completing key exchange, and strict KEX requires
+		synchronously completing key exchange, and strict KEX requires
 		sequence number reset only on SSH_MSG_NEWKEYS (which cannot
 		be unrecognised), so there is no possibility of an unrecognised
 		message and its reply spanning a sequence number reset.
