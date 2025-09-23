@@ -9,7 +9,7 @@ Expires: 27 March 2026
 
 
                            SSH Agent Protocol
-                      draft-ietf-sshm-ssh-agent-06
+                      draft-ietf-sshm-ssh-agent-07
 
 Abstract
 
