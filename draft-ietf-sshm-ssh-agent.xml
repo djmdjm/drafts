@@ -10,7 +10,7 @@
 <rfc
   xmlns:xi="http://www.w3.org/2001/XInclude"
   category="std"
-  docName="draft-ietf-sshm-ssh-agent-05"
+  docName="draft-ietf-sshm-ssh-agent-06"
   ipr="trust200902"
   obsoletes=""
   updates=""
@@ -28,7 +28,7 @@
 
 <front>
 	<title>SSH Agent Protocol</title>
-	<seriesInfo name="Internet-Draft" value="draft-ietf-sshm-ssh-agent-05"/>
+	<seriesInfo name="Internet-Draft" value="draft-ietf-sshm-ssh-agent-06"/>
 	<author fullname="Damien Miller" initials="D." surname="Miller">
 		<organization>OpenSSH</organization>
 		<address>
@@ -929,7 +929,7 @@
 			</t>
 		</section>
 	</section>
-	<section anchor="constraintnum" title="Constraint identifiers">
+	<section anchor="constraintid" title="Constraint identifiers">
 		<t>
 		The following numbers are used to identify key constraints.
 		These are only used in key constraints and are not sent as
@@ -963,7 +963,7 @@
 	message numbers, one for constraints, one for signature request
 	flags and one for extension request names.
 	</t>
-	<section><name>New registry: SSH agent protocol numbers</name>
+	<section anchor="agentnum"><name>New registry: SSH agent protocol numbers</name>
 		<t>
 		This registry, titled "SSH agent protocol numbers"
 		records the message numbers for client requests and
@@ -1011,7 +1011,7 @@
 </tbody>
 </table>
 	</section>
-	<section><name>New registry: SSH agent key constraint numbers</name>
+	<section anchor="constraintnum"><name>New registry: SSH agent key constraint numbers</name>
 		<t>
 		This registry, titled "SSH agent key constraint numbers"
 		records the message numbers for key use constraints.
@@ -1025,13 +1025,13 @@
 <tr><th>Number</th><th>Identifier</th><th>Reference</th></tr>
 </thead>
 <tbody>
-<tr><td>1</td><td>SSH_AGENT_CONSTRAIN_LIFETIME</td><td>thisrfc, <xref target="constraintnum" /></td></tr>
-<tr><td>2</td><td>SSH_AGENT_CONSTRAIN_CONFIRM</td><td>thisrfc, <xref target="constraintnum" /></td></tr>
-<tr><td>255</td><td>SSH_AGENT_CONSTRAIN_EXTENSION</td><td>thisrfc, <xref target="constraintnum" /></td></tr>
+<tr><td>1</td><td>SSH_AGENT_CONSTRAIN_LIFETIME</td><td>thisrfc, <xref target="constraintid" /></td></tr>
+<tr><td>2</td><td>SSH_AGENT_CONSTRAIN_CONFIRM</td><td>thisrfc, <xref target="constraintid" /></td></tr>
+<tr><td>255</td><td>SSH_AGENT_CONSTRAIN_EXTENSION</td><td>thisrfc, <xref target="constraintid" /></td></tr>
 </tbody>
 </table>
 	</section>
-	<section><name>New registry: SSH agent signature flags</name>
+	<section anchor="sigflag"><name>New registry: SSH agent signature flags</name>
 		<t>
 		This registry, titled "SSH agent signature flags"
 		records the values for signature request
@@ -1057,7 +1057,7 @@
 </tbody>
 </table>
 	</section>
-	<section><name>New registry: SSH agent extension request names</name>
+	<section anchor="reqname"><name>New registry: SSH agent extension request names</name>
 		<t>
 		This registry, titled "SSH agent extension request names"
 		records the names used in the generic extension request
@@ -1125,6 +1125,32 @@
 <tr><td>agent-connect</td><td>thisrfc, <xref target="fwdtype" /></td></tr>
 </tbody>
 </table>
+	</section>
+	<section><name>Guidance for Designated Experts</name>
+	<t>
+	When a Designated Expert (DE) is asked to review additions to the
+	new registries described above (<xref target="agentnum" />,
+	<xref target="constraintnum" />, <xref target="sigflag" /> and
+	<xref target="reqname" />), they are requested to verify that
+	suitable documentation as described in <xref target="RFC5226" />
+	exists and is permanently and publicly available.
+	The DE is also requested to check the clarity of purpose and use of
+	the requested code points. The DE should also verify that specifications
+	produced in the IETF that request code points in these registries have
+	been made available to the SSHM working group for review. Requests for
+	code points made for specifications produced outside the IETF should
+	not conflict with active IETF work or prior IETF specifications.
+	</t>
+	<t>
+	The available number of code points in the SSH agent protocol
+	numbers (<xref target="agentnum" />) and SSH agent signature
+	flags (<xref target="sigflag" />) registries are limited,
+	so the DE is requested to ensure the use of code points is very well
+	justified. For the SSH agent protocol numbers, named extension
+	requests (<xref target="reqname" />) provide an alternative for most
+	uses with no practical limitation on the number of available code
+	points.
+	</t>
 	</section>
 </section>
 
@@ -1293,6 +1319,7 @@
 		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.4251.xml" />
 		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.4253.xml" />
 		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.4254.xml" />
+		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.5226.xml" />
 		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.5656.xml" />
 		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.7942.xml" />
 		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8032.xml" />
