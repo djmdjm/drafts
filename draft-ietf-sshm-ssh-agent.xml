@@ -10,7 +10,7 @@
 <rfc
   xmlns:xi="http://www.w3.org/2001/XInclude"
   category="std"
-  docName="draft-ietf-sshm-ssh-agent-07"
+  docName="draft-ietf-sshm-ssh-agent-08"
   ipr="trust200902"
   obsoletes=""
   updates=""
@@ -28,7 +28,7 @@
 
 <front>
 	<title>SSH Agent Protocol</title>
-	<seriesInfo name="Internet-Draft" value="draft-ietf-sshm-ssh-agent-07"/>
+	<seriesInfo name="Internet-Draft" value="draft-ietf-sshm-ssh-agent-08"/>
 	<author fullname="Damien Miller" initials="D." surname="Miller">
 		<organization>OpenSSH</organization>
 		<address>
@@ -63,18 +63,24 @@
 	connections and login over untrusted networks.
 	It supports multiple authentication mechanisms,
 	including public key authentication. This document
-	describes the protocol for interacting with an agent
-	that holds private keys. Clients (and possibly
-	servers) can invoke the agent via this protocol
+	describes the protocol for interacting with a key
+	management compoonent, usually referred to as "an agent",
+	that holds private keys. SSH clients (and possibly
+	SSH servers) can invoke the agent via this protocol
 	to perform operations using public and private keys
 	held in the agent.
 	</t>
 	<t>
 	Holding keys in an agent offers usability and security
-	advantages to loading and unwrapping them at each use.
-	Moreover, the agent implements a simple protocol and
+	advantages to loading and unwrapping them at each use, as
+	each key unwrapping may require entry of a passphrase.
+	Access to an agent may optionally be forwarded across an SSH connection,
+	thereby allowing remote systems to use stored keys without directly
+	exposing the key material to the remote system.
+	Finally, the agent may be implemented as a dedicated component that
 	presents a smaller attack surface than a key loaded into
-	a full SSH server or client.
+	a full SSH server or client, and which may be subject to special
+	protection from the wider system.
 	</t>
 	<section removeInRFC="true"><name>Background</name>
 		<t>
@@ -101,10 +107,15 @@
 	<t>
 	The agent protocol is a packetised request-response protocol,
 	solely driven by the client. It consists of a number of
-	requests sent from the client to the server and a set of reply
-	messages that are sent in response. At no time does the server
+	requests sent from a client to an agent and a set of reply
+	messages that are sent in response. At no time does the agent
 	send messages except in response to a client request. Replies
 	are sent in order.
+	</t>
+	<t>
+	These requests include the ability to load keys into an agent,
+	remove some or all keys from an agent and to perform signature
+	operations using previously-loaded keys.
 	</t>
 	<t>
 	Agents MAY implement support for only a subset of operations
@@ -121,6 +132,19 @@
 		the one described in the similarly-named
 		<xref target="draft-ietf-secsh-agent-02" /> which expired
 		in 2004.
+		</t>
+	</section>
+	<section><name>Terminology</name>
+		<t>
+		Henceforth in this document, "agent" will be used to refer to a
+		key management component that implements the responder side of
+		this protocol. "Client" will refer to a tool that implements
+		the requester side of the protocol to communicate with an agent.
+		If it is pertainent that the client in question is a
+		<xref target="RFC4251" /> Secure Shell client, then it will be
+		explicitly referred to as an "SSH client".
+		Similarly "SSH server" will be used to refer to Secure Shell
+		servers.
 		</t>
 	</section>
 </section>
@@ -143,24 +167,26 @@
 	below.
 	</t>
 
-	<section><name>Generic server responses</name>
+	<section><name>Generic agent responses</name>
 		<t>
-		The following generic messages may be sent by the server
+		The following generic messages may be sent by the agent
 		in response to requests from the client. On success the
-		agent MUST reply either with:
+		agent MUST reply either with the single-byte response:
 		</t>
 		<sourcecode>
     byte              SSH_AGENT_SUCCESS
 		</sourcecode>
 		<t>
-		or a request-specific success message.
-		On failure, the agent MUST reply with:
+		or a request-specific success message that may contain
+		additional fields.
+		On failure, the agent MUST reply with the single-byte response:
 		</t>
 		<sourcecode>
     byte              SSH_AGENT_FAILURE
 		</sourcecode>
 		<t>
-		or a request-specific success message.
+		or a request-specific success message that may contain
+		additional fields.
 		SSH_AGENT_FAILURE messages MUST also be sent in reply to
 		requests with unknown or unsupported types.
 		</t>
@@ -367,15 +393,15 @@
 			<sourcecode>
     byte             SSH_AGENTC_ADD_SMARTCARD_KEY or
                      SSH_AGENTC_ADD_SMARTCARD_KEY_CONSTRAINED
-    string           id
+    string           token id
     string           PIN
     constraint[]     constraints
 			</sourcecode>
 			<t>
-			Here "id" is an opaque identifier for the
+			Here "token id" is an opaque identifier for the
 			hardware token and "PIN" is an optional
 			password or PIN to unlock the key.
-			The interpretation of "id" is not defined
+			The interpretation of "token id" is not defined
 			by the protocol but is left solely up to
 			the agent.
 			</t>
@@ -393,7 +419,7 @@
 			as a result of one of these messages, or
 			SSH_AGENT_FAILURE if no keys were found.
 			The agent SHOULD also return SSH_AGENT_FAILURE
-			if the token "id" was not recognised or if
+			if the "token id" was not recognised or if
 			the agent doesn't support token-hosted keys
 			at all.
 			</t>
@@ -421,9 +447,13 @@
     byte[]           constraintN_data
 			</sourcecode>
 			<t>
-			If an agent does not recognise or support a
-			requested constraint it MUST refuse the request
-			and return a SSH_AGENT_FAILURE message to the
+			To fully parse a constraint, it is necessary to
+			know its structure beforehand and it is not
+			possible to safely recover when an unrecognised
+			constraint is encountered.
+			Given this, if an agent does not recognise or support a
+			requested constraint it MUST abort parsing, refuse the
+			request and return an SSH_AGENT_FAILURE message to the
 			client.
 			</t>
 			<t>
@@ -524,11 +554,11 @@
 		</t>
 		<sourcecode>
     byte             SSH_AGENTC_REMOVE_SMARTCARD_KEY
-    string           reader id
+    string           token id
     string           PIN
 		</sourcecode>
 		<t>
-		Where "reader id" is an opaque identifier for the hardware token
+		Where "token id" is an opaque identifier for the hardware token
 		and "PIN" is an optional password or PIN (not typically
 		used), both encoded using UTF-8.
 		Requesting deletion of smartcard-hosted keys SHOULD
@@ -593,7 +623,7 @@
 		otherwise unable or unwilling to generate the signature (e.g.
 		because it doesn't have the specified key, or the user
 		refused confirmation of a constrained key), it MUST reply
-		with a SSH_AGENT_FAILURE message.
+		with an SSH_AGENT_FAILURE message.
 		</t>
 		<t>
 		On success, the agent MUST reply with:
@@ -614,7 +644,8 @@
 			<t>
 			Two flags are currently defined for
 			signature request messages:
-			SSH_AGENT_RSA_SHA2_256 and SSH_AGENT_RSA_SHA2_512.
+			SSH_AGENT_RSA_SHA2_256 and SSH_AGENT_RSA_SHA2_512
+			(defined in <xref target="sigflagnum" />).
 			These two flags are only valid for
 			"ssh-rsa" keys and request that the agent
 			return a signature using
@@ -625,7 +656,7 @@
 		</t>
 		</section>
 	</section>
-	<section><name>Locking and unlocking an agent</name>
+	<section anchor="lock"><name>Locking and unlocking an agent</name>
 		<t>
 		The agent protocol supports requesting that an agent
 		temporarily lock itself with a pass-phrase. When locked, an
@@ -657,8 +688,7 @@
 		one used to lock it then it MUST unlock and reply with
 		SSH_AGENT_SUCCESS. If the agent is already unlocked or if the
 		the pass-phrase does not match it MUST reply with
-		SSH_AGENT_FAILURE. An agent SHOULD take countermeasures
-		against brute-force guessing attacks against the pass-phrase.
+		SSH_AGENT_FAILURE.
 		</t>
 	</section>
 	<section><name>Extension mechanism</name>
@@ -758,21 +788,17 @@
 
 <section anchor="fwd"><name>Forwarding access to an agent</name>
 	<t>
-	The agent protocol may be forwarded over a SSH connection, using the
+	The agent protocol may be forwarded over an SSH connection, using the
 	<xref target="RFC4254" /> connection protocol, allowing agent
 	forwarding to be requested for any session channel, using a model
 	that is similar to the connection protocol's support for X11 Forwarding
 	(<xref target="RFC4254" section="6.3"/>).
 	This feature is OPTIONAL for SSH protocol and agent implementations.
 	</t>
-	<t>
-	Note that the deployed integration with the SSH protocol uses
-	vendor-specific names.
-	</t>
 	<section anchor="fwdext" title="Advertising agent forwarding support">
 		<t>
-		Support for agent forwarding may be advertised by a SSH
-		protocol server using the <xref target="RFC8308" /> extension
+		Support for agent forwarding may be advertised by an SSH
+		server using the <xref target="RFC8308" /> extension
 		mechanism using the name "agent-forward" in the
 		SSH_MSG_EXT_INFO message.
 		</t>
@@ -788,14 +814,15 @@
 		MAY opportunistically attempt to request agent forwarding in
 		the absence of an <xref target="RFC8308" /> advertisement
 		using the vendor-specific names mentioned below.
-		Likewise, servers MAY implement the vendor-specific names in
+		Likewise, SSH servers MAY implement the vendor-specific names in
 		addition to the one described here.
 		</t>
 	</section>
 	<section anchor="fwdreq"><name>Requesting agent forwarding</name>
 		<t>
-		A client may request agent forwarding for a previously-opened
-		session (<xref target="RFC4254" section="6.1" />) using the
+		An SSH client may request agent forwarding for a
+		previously-opened session
+		(<xref target="RFC4254" section="6.1" />) using the
 		following channel request. This request is sent after the
 		channel has been opened, but before a shell, command or
 		subsystem has been executed.
@@ -809,13 +836,13 @@
 		<t>
 		Where channel_id is the identifier for an established session
 		channel (as returned from a previous SSH_MSG_CHANNEL_OPEN
-		request, and the want_reply flag indicates whether the server
-		should respond with a confirmation of whether the request was
-		successful (as specified in
+		request, and the want_reply flag indicates whether the SSH
+		server should respond with a confirmation of whether the request
+		was successful (as specified in
 		<xref target="RFC4254" section="5.4"/>)
 		</t>
 		<t>
-		If a SSH server accepts this request, typically it will arrange
+		If an SSH server accepts this request, typically it will arrange
 		to make a endpoint (e.g. a listening socket) available and
 		advertise this fact to the subordinate session. Most
 		implementations on Unix-like systems do this by providing a
@@ -832,11 +859,11 @@
 	</section>
 	<section anchor="fwdtype"><name>Agent connection requests</name>
 		<t>
-		After a client has requested that a session have agent
-		forwarding enabled, the server later may request a
-		connection to the forwarded agent. The server does this by
+		After an SSH client has requested that a session have agent
+		forwarding enabled, the SSH server later may request a
+		connection to the forwarded agent. The SSH server does this by
 		requesting a dedicated channel to communicate with the
-		client's agent.
+		SSH client's agent.
 		</t>
 		<sourcecode>
     byte             SSH_MSG_CHANNEL_OPEN
@@ -856,26 +883,26 @@
 		<xref target="fwdext" />.
 		</t>
 		<t>
-		A client SHOULD be prepared to handle multiple concurrent
+		An SSH client SHOULD be prepared to handle multiple concurrent
 		active agent connections.
-		A client MAY accept agent connection requests (subject to
+		An SSH client MAY accept agent connection requests (subject to
 		authorisation) without a prior agent forwarding request having
 		been made to support the situation where agent forwarding
 		without opening a session is desired.
-		Similarly, a client MAY continue to accept agent connection
+		Similarly, an SSH client MAY continue to accept agent connection
 		requests after the session for which agent forwarding was
 		requested has closed.
 		</t>
 		<t>
-		A client MUST refuse unauthorised agent connection requests,
+		An SSH client MUST refuse unauthorised agent connection requests,
 		i.e. when agent forwarding was not desired or requested but
-		a server sends an agent connection request anyway.
+		an SSH server sends an agent connection request anyway.
 		</t>
 		<t>
 		Note the connection request provides no way to identify which
 		session channel a given agent connection request relates to.
-		This implies that a SSH connection can functionally forward
-		access to only a single client-side agent concurrently using
+		This implies that an SSH connection can functionally forward
+		access to only a single SSH client-side agent concurrently using
 		this protocol.
 		</t>
 	</section>
@@ -1178,8 +1205,8 @@
 	</t>
 	<t>
 	Given this, the agent should, as far as possible, prevent its
-	memory being read by other processes to direct theft of loaded keys.
-	This typically include disabling debugging interfaces and
+	memory being read by other processes to prevent theft of loaded keys.
+	This typically includes disabling debugging interfaces and
 	preventing process memory dumps on abnormal termination.
 	</t>
 	<t>
@@ -1199,23 +1226,29 @@
 	private key operations.
 	</t>
 	<t>
-	Forwarding access to a local agent over a SSH connection
+	Forwarding access to a local agent over an SSH connection
 	(<xref target="fwd" />) inherently creates a transitive trust
 	relationship. SSH implementations SHOULD NOT forward use of an agent
 	by default and MAY implement additional controls over key visibility
 	and use for forwarded agent connections.
 	</t>
 	<t>
-	Implementation of smartcard keys requires some care too. On some systems
-	smartcards are invoked via shared libraries that must be loaded
-	to make use of keys hosted on the device (a path to a PKCS#11 module,
-	for example). Loading a shared libraries on most platforms implies
-	automatic execution of code in that library in the address space of
+	Implementation of smartcard keys requires some care too. On some
+	systems, smartcards may invoked by providing a path to shared library
+	that must be loaded to make use of keys hosted on the device
+	(a path to a library for a particular PKCS#11 module, for example).
+	Loading a shared library on most platforms implies automatic
+	execution of code in that library in the address space of
 	the process that loads it. Agents that support loading smartcard keys
 	via library path SHOULD ensure that only trusted smartcard provider
 	libraries are loadable, SHOULD ensure that loaded smartcard library code
 	cannot gain access to other keys loaded in the agent and MAY disallow
 	remote clients from loading smartcard keys entirely.
+	</t>
+	<t>
+	Finally, with respect to the agent locking functionality in
+	<xref target="lock" />, an agent SHOULD take countermeasures
+	against brute-force guessing attacks against the pass-phrase.
 	</t>
 </section>
 <section anchor="implstatus"><name>Implementation Status</name>
@@ -1272,7 +1305,7 @@
 		<dt>Dropbear</dt>
 		<dd>
 		<t>
-		Dropbear is a SSH client and server implementation for Unix-
+		Dropbear is an SSH client and server implementation for Unix-
 		like systems. It has supported the agent protocol since 2005.
 		</t>
 		<t>
@@ -1283,7 +1316,7 @@
 		<dt>Paramiko</dt>
 		<dd>
 		<t>
-		Paramiko is a SSH client and server implementation in the
+		Paramiko is an SSH client and server implementation in the
 		Python programming language. It has supported an agent protocol
 		implementation since 2005.
 		</t>
@@ -1419,8 +1452,9 @@
 	</t>
 	<t>
 	Thanks to Simon Tatham, Niels Möller, James Spencer, Simon Josefsson,
-	Matt Johnston, Jakub Jelen, Rich Salz, Caspar Schutijser and
-	Florian Obser who reviewed and helped improve this document.
+	Matt Johnston, Jakub Jelen, Rich Salz, Caspar Schutijser,
+	Florian Obser and Martin Thomson who reviewed and helped improve this
+	document.
 	</t>
 </section>
 
