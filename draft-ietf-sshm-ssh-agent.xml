@@ -10,7 +10,7 @@
 <rfc
   xmlns:xi="http://www.w3.org/2001/XInclude"
   category="std"
-  docName="draft-ietf-sshm-ssh-agent-08"
+  docName="draft-ietf-sshm-ssh-agent-09"
   ipr="trust200902"
   obsoletes=""
   updates=""
@@ -28,7 +28,7 @@
 
 <front>
 	<title>SSH Agent Protocol</title>
-	<seriesInfo name="Internet-Draft" value="draft-ietf-sshm-ssh-agent-08"/>
+	<seriesInfo name="Internet-Draft" value="draft-ietf-sshm-ssh-agent-09"/>
 	<author fullname="Damien Miller" initials="D." surname="Miller">
 		<organization>OpenSSH</organization>
 		<address>
@@ -64,7 +64,7 @@
 	It supports multiple authentication mechanisms,
 	including public key authentication. This document
 	describes the protocol for interacting with a key
-	management compoonent, usually referred to as "an agent",
+	management component, usually referred to as "an agent",
 	that holds private keys. SSH clients (and possibly
 	SSH servers) can invoke the agent via this protocol
 	to perform operations using public and private keys
@@ -134,7 +134,7 @@
 		in 2004.
 		</t>
 	</section>
-	<section><name>Terminology</name>
+	<section><name>Terminology and units</name>
 		<t>
 		Henceforth in this document, "agent" will be used to refer to a
 		key management component that implements the responder side of
@@ -145,6 +145,9 @@
 		explicitly referred to as an "SSH client".
 		Similarly "SSH server" will be used to refer to Secure Shell
 		servers.
+		</t>
+		<t>
+		All length units are given in bytes unless otherwise specified.
 		</t>
 	</section>
 </section>
@@ -361,13 +364,15 @@
 			</sourcecode>
 			<t>
 			"n" is the public composite modulus.
+			"e" is the public exponent.
+			"d" is the private exponent.
 			"p" and "q" are its constituent private
-			prime factors. "e" is the public exponent.
+			prime factors.
 			"iqmp" is the inverse of "q" modulo
 			"p". All these values except "iqmp"
 			(which can be calculated from the others)
 			are defined by Section 5.1 of
-			<xref target="FIPS.186-4" />.
+			<xref target="FIPS.186-5" />.
 			</t>
 		</section>
 		<section><name>Other keys</name>
@@ -550,7 +555,7 @@
 		deleted or SSH_AGENT_FAILURE if it was not found.
 		</t>
 		<t>
-		Smartcard keys may be removed using:
+		Token-hosted keys may be removed from an agent using:
 		</t>
 		<sourcecode>
     byte             SSH_AGENTC_REMOVE_SMARTCARD_KEY
@@ -561,8 +566,9 @@
 		Where "token id" is an opaque identifier for the hardware token
 		and "PIN" is an optional password or PIN (not typically
 		used), both encoded using UTF-8.
-		Requesting deletion of smartcard-hosted keys SHOULD
-		cause the agent to remove all keys loaded from that smartcard.
+		Requesting deletion of token-hosted keys SHOULD
+		cause the agent to remove all keys it loaded from the device
+		matching "token id".
 		</t>
 		<t>
 		An agent MUST reply with SSH_AGENT_SUCCESS if the key was
@@ -894,9 +900,10 @@
 		requested has closed.
 		</t>
 		<t>
-		An SSH client MUST refuse unauthorised agent connection requests,
-		i.e. when agent forwarding was not desired or requested but
-		an SSH server sends an agent connection request anyway.
+		An SSH client MUST refuse unauthorised agent connection
+		requests, i.e. when agent forwarding was not desired or
+		requested but an SSH server sends an agent connection
+		request anyway.
 		</t>
 		<t>
 		Note the connection request provides no way to identify which
@@ -944,7 +951,8 @@
 			<t>
 			The following message numbers are reserved for
 			implementations that implement support for the legacy
-			SSH protocol version 1: 1-4, 7-9 and 24 (inclusive).
+			SSH protocol version 1: 1-4, 7-10, 15-16 and
+			24 (inclusive).
 			These message numbers MAY be used by an
 			implementation supporting the legacy protocol but
 			MUST NOT be reused otherwise.
@@ -1093,7 +1101,7 @@
 		following names.
 		</t>
 		<t>
-		Future message number allocations shall occur via
+		Future name allocations shall occur via
 		EXPERT REVIEW as per <xref target="RFC8126" />.
 		</t>
 <table>
@@ -1164,9 +1172,10 @@
 	The DE is also requested to check the clarity of purpose and use of
 	the requested code points. The DE should also verify that specifications
 	produced in the IETF that request code points in these registries have
-	been made available to the SSHM working group for review. Requests for
-	code points made for specifications produced outside the IETF should
-	not conflict with active IETF work or prior IETF specifications.
+	been made available to the SSHM working group and the ssh@ietf.org
+	mailing list for review. Requests for code points made for
+	specifications produced outside the IETF should not conflict with
+	active IETF work or prior IETF specifications.
 	</t>
 	<t>
 	The available number of code points in the SSH agent protocol
@@ -1233,17 +1242,17 @@
 	and use for forwarded agent connections.
 	</t>
 	<t>
-	Implementation of smartcard keys requires some care too. On some
-	systems, smartcards may invoked by providing a path to shared library
-	that must be loaded to make use of keys hosted on the device
+	Implementation of token/smartcard-hosted keys requires some care too.
+	On some systems, tokens may invoked by providing a path to sharedcw
+	library that must be loaded to make use of keys hosted on the device
 	(a path to a library for a particular PKCS#11 module, for example).
 	Loading a shared library on most platforms implies automatic
 	execution of code in that library in the address space of
-	the process that loads it. Agents that support loading smartcard keys
-	via library path SHOULD ensure that only trusted smartcard provider
-	libraries are loadable, SHOULD ensure that loaded smartcard library code
+	the process that loads it. Agents that support loading token-hosted keys
+	via library path SHOULD ensure that only trusted token provider
+	libraries are loadable, SHOULD ensure that loaded token library code
 	cannot gain access to other keys loaded in the agent and MAY disallow
-	remote clients from loading smartcard keys entirely.
+	remote clients from loading token keys entirely.
 	</t>
 	<t>
 	Finally, with respect to the agent locking functionality in
@@ -1251,7 +1260,10 @@
 	against brute-force guessing attacks against the pass-phrase.
 	</t>
 </section>
-<section anchor="implstatus"><name>Implementation Status</name>
+<section removeInRFC="true" anchor="implstatus"><name>Implementation Status</name>
+	<t>
+	Note to editor: please also remove the orphaned reference to RFC7942.
+	</t>
 	<t>
 	This section records the status of known implementations of the
 	protocol defined by this specification at the time of posting of
