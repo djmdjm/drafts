@@ -852,7 +852,7 @@
 		</t>
 		<t>
 		To make a user authentication attempt using a certificate
-		host key, the certificate takes the place of the plain
+		user key, the certificate takes the place of the plain
 		public key in a SSH_MSG_USERAUTH_REQUEST message.
 		For example:
 		</t>
