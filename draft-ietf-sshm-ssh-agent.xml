@@ -10,7 +10,7 @@
 <rfc
   xmlns:xi="http://www.w3.org/2001/XInclude"
   category="std"
-  docName="draft-ietf-sshm-ssh-agent-09"
+  docName="draft-ietf-sshm-ssh-agent-10"
   ipr="trust200902"
   obsoletes=""
   updates=""
@@ -28,7 +28,7 @@
 
 <front>
 	<title>SSH Agent Protocol</title>
-	<seriesInfo name="Internet-Draft" value="draft-ietf-sshm-ssh-agent-09"/>
+	<seriesInfo name="Internet-Draft" value="draft-ietf-sshm-ssh-agent-10"/>
 	<author fullname="Damien Miller" initials="D." surname="Miller">
 		<organization>OpenSSH</organization>
 		<address>
@@ -891,6 +891,8 @@
 		<t>
 		An SSH client SHOULD be prepared to handle multiple concurrent
 		active agent connections.
+		</t>
+		<t>
 		An SSH client MAY accept agent connection requests (subject to
 		authorisation) without a prior agent forwarding request having
 		been made to support the situation where agent forwarding
@@ -901,16 +903,17 @@
 		</t>
 		<t>
 		An SSH client MUST refuse unauthorised agent connection
-		requests, i.e. when agent forwarding was not desired or
-		requested but an SSH server sends an agent connection
+		requests, when agent forwarding is not desired by the SSH client
+		or requested but an SSH server sends an agent connection
 		request anyway.
 		</t>
 		<t>
-		Note the connection request provides no way to identify which
-		session channel a given agent connection request relates to.
-		This implies that an SSH connection can functionally forward
-		access to only a single SSH client-side agent concurrently using
-		this protocol.
+		Because the "agent-connect" request contains no identifier to
+		distinguish which session channel originated the connection
+		request, an SSH connection can effectively forward
+		access to only a single SSH client-side agent using
+		this protocol (although there may be multiple concurrent
+		connections to that single agent).
 		</t>
 	</section>
 </section>

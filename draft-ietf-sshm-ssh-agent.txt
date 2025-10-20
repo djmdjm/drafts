@@ -4,12 +4,12 @@
 
 Internet Engineering Task Force                                D. Miller
 Internet-Draft                                                   OpenSSH
-Intended status: Standards Track                         17 October 2025
-Expires: 20 April 2026
+Intended status: Standards Track                         21 October 2025
+Expires: 24 April 2026
 
 
                            SSH Agent Protocol
-                      draft-ietf-sshm-ssh-agent-09
+                      draft-ietf-sshm-ssh-agent-10
 
 Abstract
 
@@ -38,7 +38,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 20 April 2026.
+   This Internet-Draft will expire on 24 April 2026.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Miller                    Expires 20 April 2026                 [Page 1]
+Miller                    Expires 24 April 2026                 [Page 1]
 
 Internet-Draft             SSH Agent Protocol               October 2025
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Miller                    Expires 20 April 2026                 [Page 2]
+Miller                    Expires 24 April 2026                 [Page 2]
 
 Internet-Draft             SSH Agent Protocol               October 2025
 
@@ -165,7 +165,7 @@ Internet-Draft             SSH Agent Protocol               October 2025
 
 
 
-Miller                    Expires 20 April 2026                 [Page 3]
+Miller                    Expires 24 April 2026                 [Page 3]
 
 Internet-Draft             SSH Agent Protocol               October 2025
 
@@ -221,7 +221,7 @@ Internet-Draft             SSH Agent Protocol               October 2025
 
 
 
-Miller                    Expires 20 April 2026                 [Page 4]
+Miller                    Expires 24 April 2026                 [Page 4]
 
 Internet-Draft             SSH Agent Protocol               October 2025
 
@@ -277,7 +277,7 @@ Internet-Draft             SSH Agent Protocol               October 2025
 
 
 
-Miller                    Expires 20 April 2026                 [Page 5]
+Miller                    Expires 24 April 2026                 [Page 5]
 
 Internet-Draft             SSH Agent Protocol               October 2025
 
@@ -333,7 +333,7 @@ Internet-Draft             SSH Agent Protocol               October 2025
 
 
 
-Miller                    Expires 20 April 2026                 [Page 6]
+Miller                    Expires 24 April 2026                 [Page 6]
 
 Internet-Draft             SSH Agent Protocol               October 2025
 
@@ -389,7 +389,7 @@ Internet-Draft             SSH Agent Protocol               October 2025
 
 
 
-Miller                    Expires 20 April 2026                 [Page 7]
+Miller                    Expires 24 April 2026                 [Page 7]
 
 Internet-Draft             SSH Agent Protocol               October 2025
 
@@ -445,7 +445,7 @@ Internet-Draft             SSH Agent Protocol               October 2025
 
 
 
-Miller                    Expires 20 April 2026                 [Page 8]
+Miller                    Expires 24 April 2026                 [Page 8]
 
 Internet-Draft             SSH Agent Protocol               October 2025
 
@@ -501,7 +501,7 @@ Internet-Draft             SSH Agent Protocol               October 2025
 
 
 
-Miller                    Expires 20 April 2026                 [Page 9]
+Miller                    Expires 24 April 2026                 [Page 9]
 
 Internet-Draft             SSH Agent Protocol               October 2025
 
@@ -557,7 +557,7 @@ Internet-Draft             SSH Agent Protocol               October 2025
 
 
 
-Miller                    Expires 20 April 2026                [Page 10]
+Miller                    Expires 24 April 2026                [Page 10]
 
 Internet-Draft             SSH Agent Protocol               October 2025
 
@@ -613,7 +613,7 @@ Internet-Draft             SSH Agent Protocol               October 2025
 
 
 
-Miller                    Expires 20 April 2026                [Page 11]
+Miller                    Expires 24 April 2026                [Page 11]
 
 Internet-Draft             SSH Agent Protocol               October 2025
 
@@ -669,7 +669,7 @@ Internet-Draft             SSH Agent Protocol               October 2025
 
 
 
-Miller                    Expires 20 April 2026                [Page 12]
+Miller                    Expires 24 April 2026                [Page 12]
 
 Internet-Draft             SSH Agent Protocol               October 2025
 
@@ -725,7 +725,7 @@ Internet-Draft             SSH Agent Protocol               October 2025
 
 
 
-Miller                    Expires 20 April 2026                [Page 13]
+Miller                    Expires 24 April 2026                [Page 13]
 
 Internet-Draft             SSH Agent Protocol               October 2025
 
@@ -781,7 +781,7 @@ Internet-Draft             SSH Agent Protocol               October 2025
 
 
 
-Miller                    Expires 20 April 2026                [Page 14]
+Miller                    Expires 24 April 2026                [Page 14]
 
 Internet-Draft             SSH Agent Protocol               October 2025
 
@@ -837,7 +837,7 @@ Internet-Draft             SSH Agent Protocol               October 2025
 
 
 
-Miller                    Expires 20 April 2026                [Page 15]
+Miller                    Expires 24 April 2026                [Page 15]
 
 Internet-Draft             SSH Agent Protocol               October 2025
 
@@ -849,21 +849,24 @@ Internet-Draft             SSH Agent Protocol               October 2025
    used if support was explicitly advertised as per Section 5.1.
 
    An SSH client SHOULD be prepared to handle multiple concurrent active
-   agent connections.  An SSH client MAY accept agent connection
-   requests (subject to authorisation) without a prior agent forwarding
-   request having been made to support the situation where agent
-   forwarding without opening a session is desired.  Similarly, an SSH
-   client MAY continue to accept agent connection requests after the
-   session for which agent forwarding was requested has closed.
+   agent connections.
+
+   An SSH client MAY accept agent connection requests (subject to
+   authorisation) without a prior agent forwarding request having been
+   made to support the situation where agent forwarding without opening
+   a session is desired.  Similarly, an SSH client MAY continue to
+   accept agent connection requests after the session for which agent
+   forwarding was requested has closed.
 
    An SSH client MUST refuse unauthorised agent connection requests,
-   i.e. when agent forwarding was not desired or requested but an SSH
-   server sends an agent connection request anyway.
+   when agent forwarding is not desired by the SSH client or requested
+   but an SSH server sends an agent connection request anyway.
 
-   Note the connection request provides no way to identify which session
-   channel a given agent connection request relates to.  This implies
-   that an SSH connection can functionally forward access to only a
-   single SSH client-side agent concurrently using this protocol.
+   Because the "agent-connect" request contains no identifier to
+   distinguish which session channel originated the connection request,
+   an SSH connection can effectively forward access to only a single SSH
+   client-side agent using this protocol (although there may be multiple
+   concurrent connections to that single agent).
 
 6.  Protocol numbers
 
@@ -890,10 +893,7 @@ Internet-Draft             SSH Agent Protocol               October 2025
 
 
 
-
-
-
-Miller                    Expires 20 April 2026                [Page 16]
+Miller                    Expires 24 April 2026                [Page 16]
 
 Internet-Draft             SSH Agent Protocol               October 2025
 
@@ -949,7 +949,7 @@ Internet-Draft             SSH Agent Protocol               October 2025
 
 
 
-Miller                    Expires 20 April 2026                [Page 17]
+Miller                    Expires 24 April 2026                [Page 17]
 
 Internet-Draft             SSH Agent Protocol               October 2025
 
@@ -1005,7 +1005,7 @@ Internet-Draft             SSH Agent Protocol               October 2025
 
 
 
-Miller                    Expires 20 April 2026                [Page 18]
+Miller                    Expires 24 April 2026                [Page 18]
 
 Internet-Draft             SSH Agent Protocol               October 2025
 
@@ -1061,7 +1061,7 @@ Internet-Draft             SSH Agent Protocol               October 2025
 
 
 
-Miller                    Expires 20 April 2026                [Page 19]
+Miller                    Expires 24 April 2026                [Page 19]
 
 Internet-Draft             SSH Agent Protocol               October 2025
 
@@ -1117,7 +1117,7 @@ Internet-Draft             SSH Agent Protocol               October 2025
 
 
 
-Miller                    Expires 20 April 2026                [Page 20]
+Miller                    Expires 24 April 2026                [Page 20]
 
 Internet-Draft             SSH Agent Protocol               October 2025
 
@@ -1173,7 +1173,7 @@ Internet-Draft             SSH Agent Protocol               October 2025
 
 
 
-Miller                    Expires 20 April 2026                [Page 21]
+Miller                    Expires 24 April 2026                [Page 21]
 
 Internet-Draft             SSH Agent Protocol               October 2025
 
@@ -1229,7 +1229,7 @@ Internet-Draft             SSH Agent Protocol               October 2025
 
 
 
-Miller                    Expires 20 April 2026                [Page 22]
+Miller                    Expires 24 April 2026                [Page 22]
 
 Internet-Draft             SSH Agent Protocol               October 2025
 
@@ -1285,7 +1285,7 @@ Internet-Draft             SSH Agent Protocol               October 2025
 
 
 
-Miller                    Expires 20 April 2026                [Page 23]
+Miller                    Expires 24 April 2026                [Page 23]
 
 Internet-Draft             SSH Agent Protocol               October 2025
 
@@ -1341,7 +1341,7 @@ Internet-Draft             SSH Agent Protocol               October 2025
 
 
 
-Miller                    Expires 20 April 2026                [Page 24]
+Miller                    Expires 24 April 2026                [Page 24]
 
 Internet-Draft             SSH Agent Protocol               October 2025
 
@@ -1397,7 +1397,7 @@ Internet-Draft             SSH Agent Protocol               October 2025
 
 
 
-Miller                    Expires 20 April 2026                [Page 25]
+Miller                    Expires 24 April 2026                [Page 25]
 
 Internet-Draft             SSH Agent Protocol               October 2025
 
@@ -1453,7 +1453,7 @@ Internet-Draft             SSH Agent Protocol               October 2025
 
 
 
-Miller                    Expires 20 April 2026                [Page 26]
+Miller                    Expires 24 April 2026                [Page 26]
 
 Internet-Draft             SSH Agent Protocol               October 2025
 
@@ -1509,7 +1509,7 @@ Internet-Draft             SSH Agent Protocol               October 2025
 
 
 
-Miller                    Expires 20 April 2026                [Page 27]
+Miller                    Expires 24 April 2026                [Page 27]
 
 Internet-Draft             SSH Agent Protocol               October 2025
 
@@ -1565,4 +1565,4 @@ Author's Address
 
 
 
-Miller                    Expires 20 April 2026                [Page 28]
+Miller                    Expires 24 April 2026                [Page 28]
