@@ -4,12 +4,12 @@
 
 Internet Engineering Task Force                                D. Miller
 Internet-Draft                                                   OpenSSH
-Intended status: Standards Track                         21 October 2025
-Expires: 24 April 2026
+Intended status: Standards Track                         28 October 2025
+Expires: 1 May 2026
 
 
                            SSH Agent Protocol
-                      draft-ietf-sshm-ssh-agent-10
+                      draft-ietf-sshm-ssh-agent-11
 
 Abstract
 
@@ -38,7 +38,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 24 April 2026.
+   This Internet-Draft will expire on 1 May 2026.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Miller                    Expires 24 April 2026                 [Page 1]
+Miller                     Expires 1 May 2026                   [Page 1]
 
 Internet-Draft             SSH Agent Protocol               October 2025
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Miller                    Expires 24 April 2026                 [Page 2]
+Miller                     Expires 1 May 2026                   [Page 2]
 
 Internet-Draft             SSH Agent Protocol               October 2025
 
@@ -165,7 +165,7 @@ Internet-Draft             SSH Agent Protocol               October 2025
 
 
 
-Miller                    Expires 24 April 2026                 [Page 3]
+Miller                     Expires 1 May 2026                   [Page 3]
 
 Internet-Draft             SSH Agent Protocol               October 2025
 
@@ -221,7 +221,7 @@ Internet-Draft             SSH Agent Protocol               October 2025
 
 
 
-Miller                    Expires 24 April 2026                 [Page 4]
+Miller                     Expires 1 May 2026                   [Page 4]
 
 Internet-Draft             SSH Agent Protocol               October 2025
 
@@ -277,7 +277,7 @@ Internet-Draft             SSH Agent Protocol               October 2025
 
 
 
-Miller                    Expires 24 April 2026                 [Page 5]
+Miller                     Expires 1 May 2026                   [Page 5]
 
 Internet-Draft             SSH Agent Protocol               October 2025
 
@@ -333,7 +333,7 @@ Internet-Draft             SSH Agent Protocol               October 2025
 
 
 
-Miller                    Expires 24 April 2026                 [Page 6]
+Miller                     Expires 1 May 2026                   [Page 6]
 
 Internet-Draft             SSH Agent Protocol               October 2025
 
@@ -389,7 +389,7 @@ Internet-Draft             SSH Agent Protocol               October 2025
 
 
 
-Miller                    Expires 24 April 2026                 [Page 7]
+Miller                     Expires 1 May 2026                   [Page 7]
 
 Internet-Draft             SSH Agent Protocol               October 2025
 
@@ -445,7 +445,7 @@ Internet-Draft             SSH Agent Protocol               October 2025
 
 
 
-Miller                    Expires 24 April 2026                 [Page 8]
+Miller                     Expires 1 May 2026                   [Page 8]
 
 Internet-Draft             SSH Agent Protocol               October 2025
 
@@ -501,7 +501,7 @@ Internet-Draft             SSH Agent Protocol               October 2025
 
 
 
-Miller                    Expires 24 April 2026                 [Page 9]
+Miller                     Expires 1 May 2026                   [Page 9]
 
 Internet-Draft             SSH Agent Protocol               October 2025
 
@@ -557,7 +557,7 @@ Internet-Draft             SSH Agent Protocol               October 2025
 
 
 
-Miller                    Expires 24 April 2026                [Page 10]
+Miller                     Expires 1 May 2026                  [Page 10]
 
 Internet-Draft             SSH Agent Protocol               October 2025
 
@@ -613,7 +613,7 @@ Internet-Draft             SSH Agent Protocol               October 2025
 
 
 
-Miller                    Expires 24 April 2026                [Page 11]
+Miller                     Expires 1 May 2026                  [Page 11]
 
 Internet-Draft             SSH Agent Protocol               October 2025
 
@@ -669,7 +669,7 @@ Internet-Draft             SSH Agent Protocol               October 2025
 
 
 
-Miller                    Expires 24 April 2026                [Page 12]
+Miller                     Expires 1 May 2026                  [Page 12]
 
 Internet-Draft             SSH Agent Protocol               October 2025
 
@@ -725,7 +725,7 @@ Internet-Draft             SSH Agent Protocol               October 2025
 
 
 
-Miller                    Expires 24 April 2026                [Page 13]
+Miller                     Expires 1 May 2026                  [Page 13]
 
 Internet-Draft             SSH Agent Protocol               October 2025
 
@@ -781,7 +781,7 @@ Internet-Draft             SSH Agent Protocol               October 2025
 
 
 
-Miller                    Expires 24 April 2026                [Page 14]
+Miller                     Expires 1 May 2026                  [Page 14]
 
 Internet-Draft             SSH Agent Protocol               October 2025
 
@@ -837,7 +837,7 @@ Internet-Draft             SSH Agent Protocol               October 2025
 
 
 
-Miller                    Expires 24 April 2026                [Page 15]
+Miller                     Expires 1 May 2026                  [Page 15]
 
 Internet-Draft             SSH Agent Protocol               October 2025
 
@@ -893,7 +893,7 @@ Internet-Draft             SSH Agent Protocol               October 2025
 
 
 
-Miller                    Expires 24 April 2026                [Page 16]
+Miller                     Expires 1 May 2026                  [Page 16]
 
 Internet-Draft             SSH Agent Protocol               October 2025
 
@@ -932,8 +932,8 @@ Internet-Draft             SSH Agent Protocol               October 2025
    (SSH_AGENTC_SIGN_REQUEST) messages.  These flags form a bit field by
    taking the logical OR of zero or more flags.
 
-       SSH_AGENT_RSA_SHA2_256                          2
-       SSH_AGENT_RSA_SHA2_512                          4
+       SSH_AGENT_RSA_SHA2_256                          0x00000002
+       SSH_AGENT_RSA_SHA2_512                          0x00000004
 
    The flag value 1 is reserved for historical implementations.
 
@@ -949,7 +949,7 @@ Internet-Draft             SSH Agent Protocol               October 2025
 
 
 
-Miller                    Expires 24 April 2026                [Page 17]
+Miller                     Expires 1 May 2026                  [Page 17]
 
 Internet-Draft             SSH Agent Protocol               October 2025
 
@@ -1005,7 +1005,7 @@ Internet-Draft             SSH Agent Protocol               October 2025
 
 
 
-Miller                    Expires 24 April 2026                [Page 18]
+Miller                     Expires 1 May 2026                  [Page 18]
 
 Internet-Draft             SSH Agent Protocol               October 2025
 
@@ -1061,7 +1061,7 @@ Internet-Draft             SSH Agent Protocol               October 2025
 
 
 
-Miller                    Expires 24 April 2026                [Page 19]
+Miller                     Expires 1 May 2026                  [Page 19]
 
 Internet-Draft             SSH Agent Protocol               October 2025
 
@@ -1117,7 +1117,7 @@ Internet-Draft             SSH Agent Protocol               October 2025
 
 
 
-Miller                    Expires 24 April 2026                [Page 20]
+Miller                     Expires 1 May 2026                  [Page 20]
 
 Internet-Draft             SSH Agent Protocol               October 2025
 
@@ -1173,7 +1173,7 @@ Internet-Draft             SSH Agent Protocol               October 2025
 
 
 
-Miller                    Expires 24 April 2026                [Page 21]
+Miller                     Expires 1 May 2026                  [Page 21]
 
 Internet-Draft             SSH Agent Protocol               October 2025
 
@@ -1229,7 +1229,7 @@ Internet-Draft             SSH Agent Protocol               October 2025
 
 
 
-Miller                    Expires 24 April 2026                [Page 22]
+Miller                     Expires 1 May 2026                  [Page 22]
 
 Internet-Draft             SSH Agent Protocol               October 2025
 
@@ -1285,7 +1285,7 @@ Internet-Draft             SSH Agent Protocol               October 2025
 
 
 
-Miller                    Expires 24 April 2026                [Page 23]
+Miller                     Expires 1 May 2026                  [Page 23]
 
 Internet-Draft             SSH Agent Protocol               October 2025
 
@@ -1323,7 +1323,7 @@ Internet-Draft             SSH Agent Protocol               October 2025
    forwarded agent connections.
 
    Implementation of token/smartcard-hosted keys requires some care too.
-   On some systems, tokens may invoked by providing a path to sharedcw
+   On some systems, tokens may invoked by providing a path to shared
    library that must be loaded to make use of keys hosted on the device
    (a path to a library for a particular PKCS#11 module, for example).
    Loading a shared library on most platforms implies automatic
@@ -1341,7 +1341,7 @@ Internet-Draft             SSH Agent Protocol               October 2025
 
 
 
-Miller                    Expires 24 April 2026                [Page 24]
+Miller                     Expires 1 May 2026                  [Page 24]
 
 Internet-Draft             SSH Agent Protocol               October 2025
 
@@ -1397,7 +1397,7 @@ Internet-Draft             SSH Agent Protocol               October 2025
 
 
 
-Miller                    Expires 24 April 2026                [Page 25]
+Miller                     Expires 1 May 2026                  [Page 25]
 
 Internet-Draft             SSH Agent Protocol               October 2025
 
@@ -1453,25 +1453,15 @@ Internet-Draft             SSH Agent Protocol               October 2025
 
 
 
-Miller                    Expires 24 April 2026                [Page 26]
+Miller                     Expires 1 May 2026                  [Page 26]
 
 Internet-Draft             SSH Agent Protocol               October 2025
 
-
-   [RFC7942]  Sheffer, Y. and A. Farrel, "Improving Awareness of Running
-              Code: The Implementation Status Section", BCP 205,
-              RFC 7942, DOI 10.17487/RFC7942, July 2016,
-              <https://www.rfc-editor.org/info/rfc7942>.
 
    [RFC8032]  Josefsson, S. and I. Liusvaara, "Edwards-Curve Digital
               Signature Algorithm (EdDSA)", RFC 8032,
               DOI 10.17487/RFC8032, January 2017,
               <https://www.rfc-editor.org/info/rfc8032>.
-
-   [RFC8126]  Cotton, M., Leiba, B., and T. Narten, "Guidelines for
-              Writing an IANA Considerations Section in RFCs", BCP 26,
-              RFC 8126, DOI 10.17487/RFC8126, June 2017,
-              <https://www.rfc-editor.org/info/rfc8126>.
 
    [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
@@ -1505,11 +1495,21 @@ Internet-Draft             SSH Agent Protocol               October 2025
 
 10.2.  Informative References
 
+   [RFC7942]  Sheffer, Y. and A. Farrel, "Improving Awareness of Running
+              Code: The Implementation Status Section", BCP 205,
+              RFC 7942, DOI 10.17487/RFC7942, July 2016,
+              <https://www.rfc-editor.org/info/rfc7942>.
+
+   [RFC8126]  Cotton, M., Leiba, B., and T. Narten, "Guidelines for
+              Writing an IANA Considerations Section in RFCs", BCP 26,
+              RFC 8126, DOI 10.17487/RFC8126, June 2017,
+              <https://www.rfc-editor.org/info/rfc8126>.
 
 
 
 
-Miller                    Expires 24 April 2026                [Page 27]
+
+Miller                     Expires 1 May 2026                  [Page 27]
 
 Internet-Draft             SSH Agent Protocol               October 2025
 
@@ -1540,8 +1540,8 @@ Acknowledgments
 
    Thanks to Simon Tatham, Niels Möller, James Spencer, Simon Josefsson,
    Matt Johnston, Jakub Jelen, Rich Salz, Caspar Schutijser, Florian
-   Obser and Martin Thomson who reviewed and helped improve this
-   document.
+   Obser, Martin Thomson, Deb Cooley and Tero Kivinen who reviewed and
+   helped improve this document.
 
 Author's Address
 
@@ -1565,4 +1565,4 @@ Author's Address
 
 
 
-Miller                    Expires 24 April 2026                [Page 28]
+Miller                     Expires 1 May 2026                  [Page 28]

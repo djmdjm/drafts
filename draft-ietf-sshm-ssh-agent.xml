@@ -10,7 +10,7 @@
 <rfc
   xmlns:xi="http://www.w3.org/2001/XInclude"
   category="std"
-  docName="draft-ietf-sshm-ssh-agent-10"
+  docName="draft-ietf-sshm-ssh-agent-11"
   ipr="trust200902"
   obsoletes=""
   updates=""
@@ -28,7 +28,7 @@
 
 <front>
 	<title>SSH Agent Protocol</title>
-	<seriesInfo name="Internet-Draft" value="draft-ietf-sshm-ssh-agent-10"/>
+	<seriesInfo name="Internet-Draft" value="draft-ietf-sshm-ssh-agent-11"/>
 	<author fullname="Damien Miller" initials="D." surname="Miller">
 		<organization>OpenSSH</organization>
 		<address>
@@ -986,8 +986,8 @@
 		field by taking the logical OR of zero or more flags.
 		</t>
 		<sourcecode>
-    SSH_AGENT_RSA_SHA2_256                          2
-    SSH_AGENT_RSA_SHA2_512                          4
+    SSH_AGENT_RSA_SHA2_256                          0x00000002
+    SSH_AGENT_RSA_SHA2_512                          0x00000004
 		</sourcecode>
 		<t>
 		The flag value 1 is reserved for historical implementations.
@@ -1246,7 +1246,7 @@
 	</t>
 	<t>
 	Implementation of token/smartcard-hosted keys requires some care too.
-	On some systems, tokens may invoked by providing a path to sharedcw
+	On some systems, tokens may invoked by providing a path to shared
 	library that must be loaded to make use of keys hosted on the device
 	(a path to a library for a particular PKCS#11 module, for example).
 	Loading a shared library on most platforms implies automatic
@@ -1369,9 +1369,7 @@
 		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.4254.xml" />
 		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.5226.xml" />
 		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.5656.xml" />
-		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.7942.xml" />
 		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8032.xml" />
-		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8126.xml" />
 		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8174.xml" />
 		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8308.xml" />
 		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8332.xml" />
@@ -1407,19 +1405,21 @@
 	</references>
 
 	<references><name>Informative References</name>
-			<reference anchor="IANA-SSH-CHANREQ" target="https://www.iana.org/assignments/ssh-parameters/"><front>
+		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.7942.xml" />
+		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8126.xml" />
+		<reference anchor="IANA-SSH-CHANREQ" target="https://www.iana.org/assignments/ssh-parameters/"><front>
 			<title>Connection Protocol Channel Types</title>
 			<author>
 				<organization>IANA</organization>
 			</author>
 		</front></reference>       
-			<reference anchor="IANA-SSH-CHANTYPE" target="https://www.iana.org/assignments/ssh-parameters/"><front>
+		<reference anchor="IANA-SSH-CHANTYPE" target="https://www.iana.org/assignments/ssh-parameters/"><front>
 			<title>Extension Names</title>
 			<author>
 				<organization>IANA</organization>
 			</author>
 		</front></reference>       
-			<reference anchor="IANA-SSH-EXT" target="https://www.iana.org/assignments/ssh-parameters/"><front>
+		<reference anchor="IANA-SSH-EXT" target="https://www.iana.org/assignments/ssh-parameters/"><front>
 			<title>Connection Protocol Channel Request Names</title>
 			<author>
 				<organization>IANA</organization>
@@ -1468,8 +1468,8 @@
 	<t>
 	Thanks to Simon Tatham, Niels Möller, James Spencer, Simon Josefsson,
 	Matt Johnston, Jakub Jelen, Rich Salz, Caspar Schutijser,
-	Florian Obser and Martin Thomson who reviewed and helped improve this
-	document.
+	Florian Obser, Martin Thomson, Deb Cooley and Tero Kivinen who reviewed
+	and helped improve this document.
 	</t>
 </section>
 
