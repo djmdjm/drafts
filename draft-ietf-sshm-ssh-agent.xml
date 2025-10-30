@@ -999,13 +999,17 @@
 	<t>
 	This protocol requires four registries be established, one for
 	message numbers, one for constraints, one for signature request
-	flags and one for extension request names.
+	flags and one for extension request names. Additionally,
+	new codepoints are requested in three existing registries.
+
 	</t>
 	<section anchor="agentnum"><name>New registry: SSH agent protocol numbers</name>
 		<t>
 		This registry, titled "SSH agent protocol numbers"
 		records the message numbers for client requests and
 		agent responses.
+		It should be created in the Secure Shell (SSH) Protocol
+		Parameters registry group <xref target="RFC4250" />.
 		Its initial state should consist of the following
 		numbers and reservations.
 		Future message number allocations shall occur via
@@ -1053,6 +1057,8 @@
 		<t>
 		This registry, titled "SSH agent key constraint numbers"
 		records the message numbers for key use constraints.
+		It should be created in the Secure Shell (SSH) Protocol
+		Parameters registry group <xref target="RFC4250" />.
 		Its initial state should consist of the
 		following numbers.
 		Future message number allocations shall occur via
@@ -1074,6 +1080,8 @@
 		This registry, titled "SSH agent signature flags"
 		records the values for signature request
 		(SSH_AGENTC_SIGN_REQUEST) flag values.
+		It should be created in the Secure Shell (SSH) Protocol
+		Parameters registry group <xref target="RFC4250" />.
 		Its initial state should consist of the
 		following numbers. Note that as the flags are
 		combined by bitwise OR, all flag values must be
@@ -1100,6 +1108,8 @@
 		This registry, titled "SSH agent extension request names"
 		records the names used in the generic extension request
 		message (SSH_AGENTC_EXTENSION).
+		It should be created in the Secure Shell (SSH) Protocol
+		Parameters registry group <xref target="RFC4250" />.
 		Its initial state should consist of the
 		following names.
 		</t>
@@ -1119,8 +1129,8 @@
 	<section title="Additions to SSH Extension Names">
 		<t>
 		IANA is requested to insert the following entries into the
-		table Extension Names <xref target="IANA-SSH-EXT" /> under
-		Secure Shell (SSH) Protocol Parameters
+		table Extension Names <xref target="IANA-SSH-EXT" /> in
+		the Secure Shell (SSH) Protocol Parameters registry group
 		<xref target="RFC4250" />.
 		</t>
 <table>
@@ -1135,13 +1145,14 @@
 	<section title="Additions to SSH Connection Protocol Channel Request Names">
 		<t>
 		IANA is requested to insert the following entries into the
-		table Connection Protocol Channel Request Names <xref target="IANA-SSH-CHANREQ" /> under
-		Secure Shell (SSH) Protocol Parameters
+		table Connection Protocol Channel Request Names
+		<xref target="IANA-SSH-CHANREQ" /> in the
+		Secure Shell (SSH) Protocol Parameters registry group
 		<xref target="RFC4250" />.
 		</t>
 <table>
 <thead>
-<tr><th>Extension Name</th><th>Reference</th></tr>
+<tr><th>Request Type</th><th>Reference</th></tr>
 </thead>
 <tbody>
 <tr><td>agent-req</td><td>thisrfc, <xref target="fwdreq" /></td></tr>
@@ -1157,7 +1168,7 @@
 		</t>
 <table>
 <thead>
-<tr><th>Extension Name</th><th>Reference</th></tr>
+<tr><th>Request Type</th><th>Reference</th></tr>
 </thead>
 <tbody>
 <tr><td>agent-connect</td><td>thisrfc, <xref target="fwdtype" /></td></tr>

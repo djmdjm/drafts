@@ -4,8 +4,8 @@
 
 Internet Engineering Task Force                                D. Miller
 Internet-Draft                                                   OpenSSH
-Intended status: Standards Track                         28 October 2025
-Expires: 1 May 2026
+Intended status: Standards Track                         31 October 2025
+Expires: 4 May 2026
 
 
                            SSH Agent Protocol
@@ -38,7 +38,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 1 May 2026.
+   This Internet-Draft will expire on 4 May 2026.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Miller                     Expires 1 May 2026                   [Page 1]
+Miller                     Expires 4 May 2026                   [Page 1]
 
 Internet-Draft             SSH Agent Protocol               October 2025
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Miller                     Expires 1 May 2026                   [Page 2]
+Miller                     Expires 4 May 2026                   [Page 2]
 
 Internet-Draft             SSH Agent Protocol               October 2025
 
@@ -165,7 +165,7 @@ Internet-Draft             SSH Agent Protocol               October 2025
 
 
 
-Miller                     Expires 1 May 2026                   [Page 3]
+Miller                     Expires 4 May 2026                   [Page 3]
 
 Internet-Draft             SSH Agent Protocol               October 2025
 
@@ -221,7 +221,7 @@ Internet-Draft             SSH Agent Protocol               October 2025
 
 
 
-Miller                     Expires 1 May 2026                   [Page 4]
+Miller                     Expires 4 May 2026                   [Page 4]
 
 Internet-Draft             SSH Agent Protocol               October 2025
 
@@ -277,7 +277,7 @@ Internet-Draft             SSH Agent Protocol               October 2025
 
 
 
-Miller                     Expires 1 May 2026                   [Page 5]
+Miller                     Expires 4 May 2026                   [Page 5]
 
 Internet-Draft             SSH Agent Protocol               October 2025
 
@@ -333,7 +333,7 @@ Internet-Draft             SSH Agent Protocol               October 2025
 
 
 
-Miller                     Expires 1 May 2026                   [Page 6]
+Miller                     Expires 4 May 2026                   [Page 6]
 
 Internet-Draft             SSH Agent Protocol               October 2025
 
@@ -389,7 +389,7 @@ Internet-Draft             SSH Agent Protocol               October 2025
 
 
 
-Miller                     Expires 1 May 2026                   [Page 7]
+Miller                     Expires 4 May 2026                   [Page 7]
 
 Internet-Draft             SSH Agent Protocol               October 2025
 
@@ -445,7 +445,7 @@ Internet-Draft             SSH Agent Protocol               October 2025
 
 
 
-Miller                     Expires 1 May 2026                   [Page 8]
+Miller                     Expires 4 May 2026                   [Page 8]
 
 Internet-Draft             SSH Agent Protocol               October 2025
 
@@ -501,7 +501,7 @@ Internet-Draft             SSH Agent Protocol               October 2025
 
 
 
-Miller                     Expires 1 May 2026                   [Page 9]
+Miller                     Expires 4 May 2026                   [Page 9]
 
 Internet-Draft             SSH Agent Protocol               October 2025
 
@@ -557,7 +557,7 @@ Internet-Draft             SSH Agent Protocol               October 2025
 
 
 
-Miller                     Expires 1 May 2026                  [Page 10]
+Miller                     Expires 4 May 2026                  [Page 10]
 
 Internet-Draft             SSH Agent Protocol               October 2025
 
@@ -613,7 +613,7 @@ Internet-Draft             SSH Agent Protocol               October 2025
 
 
 
-Miller                     Expires 1 May 2026                  [Page 11]
+Miller                     Expires 4 May 2026                  [Page 11]
 
 Internet-Draft             SSH Agent Protocol               October 2025
 
@@ -669,7 +669,7 @@ Internet-Draft             SSH Agent Protocol               October 2025
 
 
 
-Miller                     Expires 1 May 2026                  [Page 12]
+Miller                     Expires 4 May 2026                  [Page 12]
 
 Internet-Draft             SSH Agent Protocol               October 2025
 
@@ -725,7 +725,7 @@ Internet-Draft             SSH Agent Protocol               October 2025
 
 
 
-Miller                     Expires 1 May 2026                  [Page 13]
+Miller                     Expires 4 May 2026                  [Page 13]
 
 Internet-Draft             SSH Agent Protocol               October 2025
 
@@ -781,7 +781,7 @@ Internet-Draft             SSH Agent Protocol               October 2025
 
 
 
-Miller                     Expires 1 May 2026                  [Page 14]
+Miller                     Expires 4 May 2026                  [Page 14]
 
 Internet-Draft             SSH Agent Protocol               October 2025
 
@@ -837,7 +837,7 @@ Internet-Draft             SSH Agent Protocol               October 2025
 
 
 
-Miller                     Expires 1 May 2026                  [Page 15]
+Miller                     Expires 4 May 2026                  [Page 15]
 
 Internet-Draft             SSH Agent Protocol               October 2025
 
@@ -893,7 +893,7 @@ Internet-Draft             SSH Agent Protocol               October 2025
 
 
 
-Miller                     Expires 1 May 2026                  [Page 16]
+Miller                     Expires 4 May 2026                  [Page 16]
 
 Internet-Draft             SSH Agent Protocol               October 2025
 
@@ -941,15 +941,15 @@ Internet-Draft             SSH Agent Protocol               October 2025
 
    This protocol requires four registries be established, one for
    message numbers, one for constraints, one for signature request flags
-   and one for extension request names.
+   and one for extension request names.  Additionally, new codepoints
+   are requested in three existing registries.
 
 
 
 
 
 
-
-Miller                     Expires 1 May 2026                  [Page 17]
+Miller                     Expires 4 May 2026                  [Page 17]
 
 Internet-Draft             SSH Agent Protocol               October 2025
 
@@ -957,10 +957,11 @@ Internet-Draft             SSH Agent Protocol               October 2025
 7.1.  New registry: SSH agent protocol numbers
 
    This registry, titled "SSH agent protocol numbers" records the
-   message numbers for client requests and agent responses.  Its initial
-   state should consist of the following numbers and reservations.
-   Future message number allocations shall occur via EXPERT REVIEW as
-   per [RFC8126].
+   message numbers for client requests and agent responses.  It should
+   be created in the Secure Shell (SSH) Protocol Parameters registry
+   group [RFC4250].  Its initial state should consist of the following
+   numbers and reservations.  Future message number allocations shall
+   occur via EXPERT REVIEW as per [RFC8126].
 
    +===========+==========================================+===========+
    | Number(s) | Identifier                               | Reference |
@@ -1001,15 +1002,15 @@ Internet-Draft             SSH Agent Protocol               October 2025
    |           |                                          | Section   |
    |           |                                          | 6.1.1     |
    +-----------+------------------------------------------+-----------+
-   | 10        | reserved                                 | thisrfc,  |
 
 
 
-Miller                     Expires 1 May 2026                  [Page 18]
+Miller                     Expires 4 May 2026                  [Page 18]
 
 Internet-Draft             SSH Agent Protocol               October 2025
 
 
+   | 10        | reserved                                 | thisrfc,  |
    |           |                                          | Section   |
    |           |                                          | 6.1.1     |
    +-----------+------------------------------------------+-----------+
@@ -1057,15 +1058,15 @@ Internet-Draft             SSH Agent Protocol               October 2025
    |           |                                          | Section   |
    |           |                                          | 6.1       |
    +-----------+------------------------------------------+-----------+
-   | 22        | SSH_AGENTC_LOCK                          | thisrfc,  |
 
 
 
-Miller                     Expires 1 May 2026                  [Page 19]
+Miller                     Expires 4 May 2026                  [Page 19]
 
 Internet-Draft             SSH Agent Protocol               October 2025
 
 
+   | 22        | SSH_AGENTC_LOCK                          | thisrfc,  |
    |           |                                          | Section   |
    |           |                                          | 6.1       |
    +-----------+------------------------------------------+-----------+
@@ -1107,17 +1108,16 @@ Internet-Draft             SSH Agent Protocol               October 2025
 7.2.  New registry: SSH agent key constraint numbers
 
    This registry, titled "SSH agent key constraint numbers" records the
-   message numbers for key use constraints.  Its initial state should
-   consist of the following numbers.  Future message number allocations
-   shall occur via EXPERT REVIEW as per [RFC8126].
+   message numbers for key use constraints.  It should be created in the
+   Secure Shell (SSH) Protocol Parameters registry group [RFC4250].  Its
+   initial state should consist of the following numbers.  Future
+   message number allocations shall occur via EXPERT REVIEW as per
+   [RFC8126].
 
 
 
 
-
-
-
-Miller                     Expires 1 May 2026                  [Page 20]
+Miller                     Expires 4 May 2026                  [Page 20]
 
 Internet-Draft             SSH Agent Protocol               October 2025
 
@@ -1137,10 +1137,12 @@ Internet-Draft             SSH Agent Protocol               October 2025
 7.3.  New registry: SSH agent signature flags
 
    This registry, titled "SSH agent signature flags" records the values
-   for signature request (SSH_AGENTC_SIGN_REQUEST) flag values.  Its
-   initial state should consist of the following numbers.  Note that as
-   the flags are combined by bitwise OR, all flag values must be powers
-   of two and the maximum available flag value is 0x80000000.
+   for signature request (SSH_AGENTC_SIGN_REQUEST) flag values.  It
+   should be created in the Secure Shell (SSH) Protocol Parameters
+   registry group [RFC4250].  Its initial state should consist of the
+   following numbers.  Note that as the flags are combined by bitwise
+   OR, all flag values must be powers of two and the maximum available
+   flag value is 0x80000000.
 
    Future message number allocations shall occur via EXPERT REVIEW as
    per [RFC8126].
@@ -1161,8 +1163,9 @@ Internet-Draft             SSH Agent Protocol               October 2025
 
    This registry, titled "SSH agent extension request names" records the
    names used in the generic extension request message
-   (SSH_AGENTC_EXTENSION).  Its initial state should consist of the
-   following names.
+   (SSH_AGENTC_EXTENSION).  It should be created in the Secure Shell
+   (SSH) Protocol Parameters registry group [RFC4250].  Its initial
+   state should consist of the following names.
 
    Future name allocations shall occur via EXPERT REVIEW as per
    [RFC8126].
@@ -1170,10 +1173,7 @@ Internet-Draft             SSH Agent Protocol               October 2025
 
 
 
-
-
-
-Miller                     Expires 1 May 2026                  [Page 21]
+Miller                     Expires 4 May 2026                  [Page 21]
 
 Internet-Draft             SSH Agent Protocol               October 2025
 
@@ -1189,8 +1189,8 @@ Internet-Draft             SSH Agent Protocol               October 2025
 7.5.  Additions to SSH Extension Names
 
    IANA is requested to insert the following entries into the table
-   Extension Names [IANA-SSH-EXT] under Secure Shell (SSH) Protocol
-   Parameters [RFC4250].
+   Extension Names [IANA-SSH-EXT] in the Secure Shell (SSH) Protocol
+   Parameters registry group [RFC4250].
 
                  +================+======================+
                  | Extension Name | Reference            |
@@ -1203,14 +1203,14 @@ Internet-Draft             SSH Agent Protocol               October 2025
 7.6.  Additions to SSH Connection Protocol Channel Request Names
 
    IANA is requested to insert the following entries into the table
-   Connection Protocol Channel Request Names [IANA-SSH-CHANREQ] under
-   Secure Shell (SSH) Protocol Parameters [RFC4250].
+   Connection Protocol Channel Request Names [IANA-SSH-CHANREQ] in the
+   Secure Shell (SSH) Protocol Parameters registry group [RFC4250].
 
-                 +================+======================+
-                 | Extension Name | Reference            |
-                 +================+======================+
-                 | agent-req      | thisrfc, Section 5.2 |
-                 +----------------+----------------------+
+                  +==============+======================+
+                  | Request Type | Reference            |
+                  +==============+======================+
+                  | agent-req    | thisrfc, Section 5.2 |
+                  +--------------+----------------------+
 
                                   Table 6
 
@@ -1229,18 +1229,18 @@ Internet-Draft             SSH Agent Protocol               October 2025
 
 
 
-Miller                     Expires 1 May 2026                  [Page 22]
+Miller                     Expires 4 May 2026                  [Page 22]
 
 Internet-Draft             SSH Agent Protocol               October 2025
 
 
-                 +================+======================+
-                 | Extension Name | Reference            |
-                 +================+======================+
-                 | agent-connect  | thisrfc, Section 5.3 |
-                 +----------------+----------------------+
+                 +===============+======================+
+                 | Request Type  | Reference            |
+                 +===============+======================+
+                 | agent-connect | thisrfc, Section 5.3 |
+                 +---------------+----------------------+
 
-                                  Table 7
+                                 Table 7
 
 7.8.  Guidance for Designated Experts
 
@@ -1285,7 +1285,7 @@ Internet-Draft             SSH Agent Protocol               October 2025
 
 
 
-Miller                     Expires 1 May 2026                  [Page 23]
+Miller                     Expires 4 May 2026                  [Page 23]
 
 Internet-Draft             SSH Agent Protocol               October 2025
 
@@ -1304,7 +1304,7 @@ Internet-Draft             SSH Agent Protocol               October 2025
    Another, more subtle, means by which keys may be stolen are via
    cryptographic side-channels.  Private key operations may leak
    information about the contents of keys via differences in timing,
-   power use or by side-effects in the memory subsystems (e.g.  CPU
+   power use or by side-effects in the memory subsystems (e.g. CPU
    caches) of the host running the agent.  For the case of a local
    attacker and an agent holding unconstrained keys, the only limit on
    the number of private key operations the attacker may be able to
@@ -1341,7 +1341,7 @@ Internet-Draft             SSH Agent Protocol               October 2025
 
 
 
-Miller                     Expires 1 May 2026                  [Page 24]
+Miller                     Expires 4 May 2026                  [Page 24]
 
 Internet-Draft             SSH Agent Protocol               October 2025
 
@@ -1397,7 +1397,7 @@ Internet-Draft             SSH Agent Protocol               October 2025
 
 
 
-Miller                     Expires 1 May 2026                  [Page 25]
+Miller                     Expires 4 May 2026                  [Page 25]
 
 Internet-Draft             SSH Agent Protocol               October 2025
 
@@ -1453,7 +1453,7 @@ Internet-Draft             SSH Agent Protocol               October 2025
 
 
 
-Miller                     Expires 1 May 2026                  [Page 26]
+Miller                     Expires 4 May 2026                  [Page 26]
 
 Internet-Draft             SSH Agent Protocol               October 2025
 
@@ -1509,7 +1509,7 @@ Internet-Draft             SSH Agent Protocol               October 2025
 
 
 
-Miller                     Expires 1 May 2026                  [Page 27]
+Miller                     Expires 4 May 2026                  [Page 27]
 
 Internet-Draft             SSH Agent Protocol               October 2025
 
@@ -1565,4 +1565,4 @@ Author's Address
 
 
 
-Miller                     Expires 1 May 2026                  [Page 28]
+Miller                     Expires 4 May 2026                  [Page 28]
