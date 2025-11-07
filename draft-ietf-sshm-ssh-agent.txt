@@ -204,7 +204,7 @@ Internet-Draft             SSH Agent Protocol              November 2025
    management component that implements the responder side of this
    protocol.  "Client" will refer to a tool that implements the
    requester side of the protocol to communicate with an agent.  If it
-   is pertainent that the client in question is a [RFC4251] Secure Shell
+   is pertinent that the client in question is a [RFC4251] Secure Shell
    client, then it will be explicitly referred to as an "SSH client".
    Similarly "SSH server" will be used to refer to Secure Shell servers.
 
@@ -272,8 +272,8 @@ Internet-Draft             SSH Agent Protocol              November 2025
    is an optional human-readable key name or comment as a UTF-8 string
    that may serve to identify the key in user-visible messages.
 
-   The SSH_AGENTC_ADD_ID_CONSTRAINED is similar, but adds a extra field:
-
+   The SSH_AGENTC_ADD_ID_CONSTRAINED is similar, but adds an extra
+   field:
 
 
 

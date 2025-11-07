@@ -140,7 +140,7 @@
 		key management component that implements the responder side of
 		this protocol. "Client" will refer to a tool that implements
 		the requester side of the protocol to communicate with an agent.
-		If it is pertainent that the client in question is a
+		If it is pertinent that the client in question is a
 		<xref target="RFC4251" /> Secure Shell client, then it will be
 		explicitly referred to as an "SSH client".
 		Similarly "SSH server" will be used to refer to Secure Shell
@@ -224,7 +224,7 @@
 		key in user-visible messages.
 		</t>
 		<t>
-		The SSH_AGENTC_ADD_ID_CONSTRAINED is similar, but adds a
+		The SSH_AGENTC_ADD_ID_CONSTRAINED is similar, but adds an
 		extra field:
 		</t>
 		<sourcecode>
