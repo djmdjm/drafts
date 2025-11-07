@@ -333,7 +333,9 @@
 			The second value is a concatenation of
 			the private key k
 			and the public
-			ENC(A) key.
+			ENC(A) key (this redundant repetition of the public key
+			is to maintain compatibility with widely deployed
+			implementations).
 			The contents and interpretation of the
 			ENC(A)
 			and k values are
@@ -511,6 +513,18 @@
 				the naming scheme defined in
 				<xref target="RFC4251" section="4.2" />,
 				e.g.  "foo@example.com".
+				</t>
+				<t>
+				Note, given the above requirement to reject
+				keys with unsupported constraints, a constraint
+				extension is only usable when both client
+				and agent support it. Otherwise, the agent
+				will be required to reject the key. This is
+				desirable, as the constraint extension may
+				specify limits on the key that, if ignored,
+				may result in the key being available in
+				situations the user did not intend (i.e. the
+				agent will fail in a safe way).
 				</t>
 			</section>
 		</section>
