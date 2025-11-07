@@ -938,6 +938,8 @@
 		<t>
 		This registry, titled "Certificate Critical Option Identifiers"
 		records identifiers for certificate criticial options.
+		It should be created in the Secure Shell (SSH) Protocol
+		Parameters registry group <xref target="RFC4250" />.
 		Its initial state should consist of the
 		following names.
 		Future names allocations shall occur via
@@ -958,6 +960,8 @@
 		<t>
 		This registry, titled "Certificate Type Numbers"
 		records the numbers used to indicate the types of certificates.
+		It should be created in the Secure Shell (SSH) Protocol
+		Parameters registry group <xref target="RFC4250" />.
 		Its initial state should consist of the
 		following numbers.
 		Future message number allocations shall occur via
