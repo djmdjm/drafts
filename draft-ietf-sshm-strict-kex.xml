@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <?xml-model href="rfc7991bis.rnc"?>
-<!-- <?xml-stylesheet type="text/xsl" href="rfc2629.xslt" ?> --> 
+<!-- <?xml-stylesheet type="text/xsl" href="rfc2629.xslt" ?> -->
 <!DOCTYPE rfc [
   <!ENTITY nbsp    "&#160;">
   <!ENTITY zwsp   "&#8203;">
@@ -18,12 +18,12 @@
   submissionType="IETF"
   xml:lang="en"
   version="3">
-<!-- 
+<!--
     * docName should be the name of your draft
     * category should be one of std, bcp, info, exp, historic
     * ipr should be one of trust200902, noModificationTrust200902, noDerivativesTrust200902, pre5378Trust200902
     * updates can be an RFC number as NNNN.
-    * obsoletes can be an RFC number as NNNN 
+    * obsoletes can be an RFC number as NNNN
 -->
 
 <front>
@@ -32,7 +32,7 @@
 	<author fullname="Damien Miller" initials="D." surname="Miller">
 		<organization>OpenSSH</organization>
 		<address>
-			<email>djm@openssh.com</email>  
+			<email>djm@openssh.com</email>
 			<uri>https://www.openssh.com/</uri>
 		</address>
 	</author>
@@ -77,10 +77,10 @@
 	In response to this, many SSH implementation deployed the
 	modifications to the SSH transport protocol and KEX sub-protocol
 	described in this document, collectively referred to as "strict KEX".
-	These modifications provide a minimally invasive but comprehensive 
+	These modifications provide a minimally invasive but comprehensive
 	defence against the Terrapin attack.
 	</t>
-	      
+
 	<section anchor="requirements"><name>Requirements Language</name>
 		<t>
 		The key words "MUST", "MUST NOT", "REQUIRED", "SHALL",
@@ -92,7 +92,7 @@
 		</t>
 	</section>
 </section>
-    
+
 <section><name>Terrapin Attack</name>
 	<section><name>Protocol background</name>
 	<t>
@@ -134,20 +134,22 @@
 	endpoints (i.e. it is not a "full session transcript").
 	</t>
 	</section>
-    
+
 	<section><name>Attack Mechanics</name>
 	<t>
-	The Terrapin attack exploits these preconditions to allow an on-path
-	adversary (a.k.a MITM) to perform selective deletion of one or more
+	The Terrapin attack exploits these preconditions to offer an on-path
+	adversary (a.k.a MITM) two unexpected and undesirable capabilities:
+	1) the ability to insert messages into the initial key exchange without
+	detection and 2) the ability to selectively delete of one or more
 	consecutive messages from the beginning of the post-KEX transport
 	protocol, despite this supposedly being confidential and
-	integrity-protected by the transport's symmetric cryptography.
+	integrity-protected by the transport's symmetric cryptography
 	</t>
 	<t>
 	To perform this attack, an on-path adversary injects one or more
 	packets (such as SSH_MSG_IGNORE) between the SSH banner and initial
 	SSH_MSG_KEXINIT packet, or between other packets before the conclusion
-	of the KEX sub-protocol. These inserted packets will be functionally
+	of the KEX sub-protocol. These inserted packets should be functionally
 	ignored by the peer but will have the side-effect of incrementing the
 	peer's implicit sequence number.
 	</t>
@@ -197,8 +199,8 @@
 	the sequence number with the client's expectation.
 	</t>
 	<t>
-	In practice, successfully performing this attack also
-	depends on the symmetric cryptography in use, and it is not possible
+	Successfully performing this attack also
+	depends on the symmetric cryptography in use, and it is not practical
 	to achieve for many potential algorithm choices.
 	</t>
 	<t>
@@ -234,9 +236,22 @@
 
 	<section><name>Attack Impact</name>
 	<t>
-	As mentioned previously, the Terrapin attack allows selective
-	deletion of one or more consecutive packets from the initial
-	encrypted SSH transport. Fortunately, most packets from this phase
+	As mentioned previously, the Terrapin attack allows 1) undetectable
+	insertion of packets prior to the completion of the initial key exchange
+	and 2) selective deletion of one or more consecutive packets from the
+	initial encrypted SSH transport.
+	</t>
+	<t>
+	Insertion of additional packets should be harmless, as implementations
+	would be expected to either ignore them or terminate the connection.
+	However, some SSH protocol implementations were found to suffer from
+	serious state machine vulnerabilities that could be attacked by this
+	mechanism (<xref target="TERRAPIN" /> section 6).
+	</t>
+	<t>
+	Deletion of packets from after the conclusion of the initial key
+	exchange also has a notable impact.
+	Fortunately, most packets from this phase
 	of the protocol are necessary for it to successfully proceed, and so
 	deleting them will cause the connection to fail.
 	</t>
@@ -292,31 +307,23 @@
 	the SSH_MSG_EXT_INFO that signals the presence of this feature would
 	disable this countermeasure.
 	</t>
-	<t>
-	More generally, the ability to inject non-KEX messages during the
-	initial key agreement without desynchronising the sequence number
-	can expose other implementation bugs. For example, one SSH
-	implementation (<xref target="TERRAPIN" /> section 6.2)
-	was found to accept messages relevant to the the user-authentication
-	phase of the protocol prior to the conclusion of KEX.
-	</t>
 	</section>
 </section>
 
 <section><name>Strict KEX</name>
 	<t>
 	Strict KEX is a set of two small SSH transport protocol changes to
-	prevent the Terrapin attack: disallowing non-KEX messages prior to
+	prevent the Terrapin attack: disallowing unnecessary messages prior to
 	the completion of the initial key exchange, and changing the SSH
 	transport protocol to reset the sequence number at the conclusion
 	of the initial KEX and each subsequent KEX.
 	</t>
 	<t>
-	By disallowing non-KEX messages, this extension greatly limits the
-	ability of an on-path adversary to inject data into the SSH transport
-	that is not included in the exchange hash. In the presence of this
-	modification, an attacker can no longer send arbitrary messages to
-	change the sequence number.
+	By disallowing messages that are not strictly required, this
+	extension greatly limits the ability of an on-path adversary to inject
+	data into the SSH transport that is not included in the exchange hash.
+	In the presence of this modification, an attacker can no longer send
+	arbitrary messages to change the sequence number.
 	</t>
 	<t>
 	Resetting the sequence number after KEX completes eliminates the key
@@ -639,7 +646,6 @@
 		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.4419.xml" />
 		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.5656.xml" />
 		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.5647.xml" />
-		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.7942.xml" />
 		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8174.xml" />
 		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8308.xml" />
 		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8446.xml" />
@@ -648,14 +654,24 @@
 	</references>
 
 	<references><name>Informative References</name>
-			<reference anchor="IANA-SSH-EXT" target="https://www.iana.org/assignments/ssh-parameters/"><front>
-			<title>Key Exchange Method Names</title>
-			<author>
-				<organization>IANA</organization>
-			</author>
-		</front></reference>       
-		<reference anchor="TERRAPIN" target="https://arxiv.org/abs/2312.12422"><front><title>Terrapin Attack: Breaking SSH Channel Integrity By Sequence Number Manipulation</title><author surname="B&#228;umer" fullname="Fabian B&#228;umer" /><author surname="Brinkmann" fullname="Marcus Brinkmann" /><author surname="Schwenk" fullname="J&#246;rg Schwenk" /><date year="2024" /></front></reference>
-
+		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.7942.xml" />
+		<reference anchor="IANA-SSH-EXT" target="https://www.iana.org/assignments/ssh-parameters/">
+			<front>
+				<title>Key Exchange Method Names</title>
+				<author>
+					<organization>IANA</organization>
+				</author>
+			</front>
+		</reference>
+		<reference anchor="TERRAPIN" target="https://arxiv.org/abs/2312.12422">
+			<front>
+				<title>Terrapin Attack: Breaking SSH Channel Integrity By Sequence Number Manipulation</title>
+				<author surname="B&#228;umer" fullname="Fabian B&#228;umer" />
+				<author surname="Brinkmann" fullname="Marcus Brinkmann" />
+				<author surname="Schwenk" fullname="J&#246;rg Schwenk" />
+				<date year="2024" />
+			</front>
+		</reference>
 	</references>
 </references>
 
