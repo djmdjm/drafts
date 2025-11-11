@@ -10,7 +10,7 @@
 <rfc
   xmlns:xi="http://www.w3.org/2001/XInclude"
   category="std"
-  docName="draft-ietf-sshm-ssh-agent-11"
+  docName="draft-ietf-sshm-ssh-agent-12"
   ipr="trust200902"
   obsoletes=""
   updates=""
@@ -28,7 +28,7 @@
 
 <front>
 	<title>SSH Agent Protocol</title>
-	<seriesInfo name="Internet-Draft" value="draft-ietf-sshm-ssh-agent-11"/>
+	<seriesInfo name="Internet-Draft" value="draft-ietf-sshm-ssh-agent-12"/>
 	<author fullname="Damien Miller" initials="D." surname="Miller">
 		<organization>OpenSSH</organization>
 		<address>
@@ -147,6 +147,13 @@
 		servers.
 		</t>
 		<t>
+		All encoding data types ("byte", "uint32", "string", etc.) are
+		as specified in <xref target="RFC4251" section="5" />.
+		Additionally, the type "byte[]" without a specified length
+		within the square brackets indicates an unadorned sequence of
+		zero or more bytes where the length is determined by context.
+		</t>
+		<t>
 		All length units are given in bytes unless otherwise specified.
 		</t>
 	</section>
@@ -154,8 +161,6 @@
     
 <section><name>Protocol Messages</name>
 	<t>
-	All values in the agent protocol are encoded using the SSH wire
-	representations specified by <xref target="RFC4251" />.
 	Messages consist of a length, type and contents.
 	</t>
 	<sourcecode>
@@ -239,6 +244,9 @@
 		or use of keys.
 		<xref target="constraints" /> details constraint types
 		and their format.
+		Clients SHOULD prefer the SSH_AGENTC_ADD_IDENTITY message
+		over sending a SSH_AGENTC_ADD_ID_CONSTRAINED with an empty
+		constraints section, though both are valid and equivalent.
 		</t>
 		<t>
 		An agent MUST reply with SSH_AGENT_SUCCESS
@@ -511,7 +519,7 @@
 				a UTF-8 string suffixed by the
 				implementation domain following
 				the naming scheme defined in
-				<xref target="RFC4251" section="4.2" />,
+				<xref target="RFC4251" section="6" />,
 				e.g.  "foo@example.com".
 				</t>
 				<t>
@@ -728,7 +736,7 @@
 		as a UTF-8 string.  Implementation-specific extensions MUST
 		be suffixed by the implementation domain following the
 		extension naming scheme defined in
-		<xref target="RFC4251" section="4.2" />, e.g. "foo@example.com".
+		<xref target="RFC4251" section="6" />, e.g. "foo@example.com".
 		</t>
 		<t>
 		An agent that does not support extensions of the supplied type
@@ -830,7 +838,7 @@
 		Note that this protocol substantially predates the existence
 		of the <xref target="RFC8308" /> extension mechanism and
 		several widely-deployed SSH implementations that support agent
-		forwarding do not advertise their ability to do so. Clients
+		forwarding do not advertise their ability to do so. SSH Clients
 		MAY opportunistically attempt to request agent forwarding in
 		the absence of an <xref target="RFC8308" /> advertisement
 		using the vendor-specific names mentioned below.
@@ -871,10 +879,10 @@
 		</t>
 		<t>
 		As mentioned previously, many deployed implementations only
-		support the former, pre-standardisation
-		"auth-agent-req@openssh.com" request name. The latter
-		"agent-req" name SHOULD only be used if support was explicitly
-		advertised as per <xref target="fwdext" />.
+		support the pre-standardisation
+		"auth-agent-req@openssh.com" request name. The "agent-req" name
+		SHOULD only be used if support was explicitly advertised as
+		per <xref target="fwdext" />.
 		</t>
 	</section>
 	<section anchor="fwdtype"><name>Agent connection requests</name>
@@ -898,8 +906,8 @@
 		<xref target="RFC4254" section="5.1"/>.
 		</t>
 		<t>
-		As above, the latter "agent-connect" open type name SHOULD
-		only be used if support was explicitly advertised as per
+		As above, the "agent-connect" open type name SHOULD only be
+		used if support was explicitly advertised as per
 		<xref target="fwdext" />.
 		</t>
 		<t>
@@ -1232,6 +1240,11 @@
 	Since being able to access an agent is usually sufficient to perform
 	private key operations, it is critically important that the agent
 	only be exposed to its owner and their authorised delegates.
+	On Unix-like systems this may be achieved via filesystem permissions
+	on the agent socket and/or identity checks on the client connected
+	to a socket (e.g. SO_PEERCRED on some Unix-like systems).
+	On Windows, access to a named pipe may controlled by attaching a
+	security descriptor at the time of its creation.
 	</t>
 	<t>
 	The primary design intention of an agent is that an attacker with
@@ -1266,7 +1279,7 @@
 	Forwarding access to a local agent over an SSH connection
 	(<xref target="fwd" />) inherently creates a transitive trust
 	relationship. SSH implementations SHOULD NOT forward use of an agent
-	by default and MAY implement additional controls over key visibility
+	by default and SHOULD implement additional controls over key visibility
 	and use for forwarded agent connections.
 	</t>
 	<t>
@@ -1281,11 +1294,21 @@
 	libraries are loadable, SHOULD ensure that loaded token library code
 	cannot gain access to other keys loaded in the agent and MAY disallow
 	remote clients from loading token keys entirely.
+	Protection for existing keys from tokey library code may be achieved
+	by loading the token library into a separate process to the agent
+	and arranging for the agent to invoke token operations to this
+	process via IPC.
 	</t>
 	<t>
 	Finally, with respect to the agent locking functionality in
 	<xref target="lock" />, an agent SHOULD take countermeasures
 	against brute-force guessing attacks against the pass-phrase.
+	This may take the form of enforced delays when an unlock attempt is
+	made with an incorrect password (potentially increasing for subsequent
+	failures), a lockout period where the agent refuses to accept further
+	requests after some threshold of failed unlock attempts has been made
+	and/or deletion of all keys held by the agent after a threshold of
+	failed unlock attempts.
 	</t>
 </section>
 <section removeInRFC="true" anchor="implstatus"><name>Implementation Status</name>
