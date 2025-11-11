@@ -9,7 +9,7 @@ Expires: 15 May 2026
 
 
                          SSH Certificate Format
-                        draft-miller-ssh-cert-05
+                        draft-miller-ssh-cert-06
 
 Abstract
 
