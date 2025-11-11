@@ -210,11 +210,11 @@ Internet-Draft             SSH Agent Protocol              November 2025
 
    All encoding data types ("byte", "uint32", "string", etc.) are as
    specified in Section 5 of [RFC4251].  Additionally, the type "byte[]"
-   indicates a sequence of bytes where the length is determined by
-   context.
+   without a specified length within the square brackets indicates an
+   unadorned sequence of zero or more bytes where the length is
+   determined by context.
 
    All length units are given in bytes unless otherwise specified.
-
 
 
 
