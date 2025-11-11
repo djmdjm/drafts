@@ -75,18 +75,13 @@
 	</section>
 </section>
 
-<!--
-<section><name>Format Overview</name>
-	<t>
-	XXX
-	</t>
-</section>
--->
-
 <section><name>Certificate Format</name>
 	<t>
 	All values in a certificate are encoded using the SSH wire
-	representations specified by <xref target="RFC4251" />.
+	representations specified by <xref target="RFC4251" section="5"/>.
+	Additionally, the type "byte[]" indicates a sequence of bytes where
+	the length is determined by context.
+	All lengths are in bytes unless otherwise specified.
 	</t>
 	<section anchor="fmt"><name>Public certificate format</name>
 		<section><name>General structure and common fields</name>
@@ -191,8 +186,9 @@
 			if it is not empty.
 			</t>
 			<t>
-			The "signature key" field contains the CA key used to
-			sign the certificate, encoded as a SSH public key blob.
+			The "signature key" field contains the certification
+			authority (CA) key used to sign the certificate, encoded
+			as a SSH public key blob.
 			Implementations MUST NOT accept certificate keys
 			as CA keys.
 			</t>
@@ -401,7 +397,7 @@
 		name.
 		</t>
 		<t>
-		A common patten for flag-type options is for the
+		A common pattern for flag-type options is for the
 		value to be the empty string. For example, this is a complete
 		extensions section that encodes a single flag value
 		"permit-user-rc".
@@ -415,7 +411,7 @@
 		<t>
 		For options whose values encode textual values, it is common
 		for the value to contain a nested string. For example, the
-		following is a complete criticial options section that sets
+		following is a complete critical options section that sets
 		a string-values option "force-command" to the value "sftp".
 		</t>
 		<sourcecode>
@@ -804,7 +800,7 @@
 		<t>
 		Certificates used for host authentication MUST have
 		"certificate role" of SSH2_CERT_TYPE_HOST. Other certificate
-		types MUST not be accepted.
+		types MUST NOT be accepted.
 		</t>
 		<t>
 		Certificate host keys list hostnames and/or IP addresses for
@@ -832,7 +828,7 @@
 		clients may wish to filter the ones they send against the
 		server's list of accepted publickey authentication signature
 		algorithms if one was provided via the
-		<xref target="RFC8308" />SSH_MSG_EXT_INFO mechanism.
+		<xref target="RFC8308" /> SSH_MSG_EXT_INFO mechanism.
 		</t>
 		<t>
 		Certificates used for user authentication MUST have
@@ -891,7 +887,7 @@
 		IANA is requested to insert the following entries into the
 		table Public Key Algorithm Names
 		<xref target="IANA-SSH-KEYTYPES" /> under
-		Secure Shell (SSH) Protocol Parameters
+		Secure Shell (SSH) Protocol Parameters registry group
 		<xref target="RFC4250" />.
 		</t>
 		<table>
@@ -915,6 +911,8 @@
 		<t>
 		This registry, titled "Certificate Extension Identifiers"
 		records identifiers for certificate extensions.
+		It should be created in the Secure Shell (SSH) Protocol
+		Parameters registry group <xref target="RFC4250" />.
 		Its initial state should consist of the
 		following names.
 		Future name allocations shall occur via
@@ -937,7 +935,7 @@
 	<section title="New registry: Certificate Criticial Option Identifiers">
 		<t>
 		This registry, titled "Certificate Critical Option Identifiers"
-		records identifiers for certificate criticial options.
+		records identifiers for certificate critical options.
 		It should be created in the Secure Shell (SSH) Protocol
 		Parameters registry group <xref target="RFC4250" />.
 		Its initial state should consist of the
@@ -981,7 +979,69 @@
 
 <section anchor="Security"><name>Security Considerations</name>
 	<t>
-	XXX TODO XXX
+	The security of any public key certificate system depends ultimately
+	on the certification authority (CA). If the certification authority
+	can be pursuaded by an attacker to sign certificates that are not
+	intended, or if the private key material for the CA is leaked to an
+	attacker, then the attacker gains the ability to create improper
+	certificates that will be accepted by all endpoints that trust the CA.
+	Specifying the exact process by which certificates are issued and the
+	operational requirements of running a CA is beyond the scope of this
+	document, but certification authorities
+	MUST ensure that signing requests are authentic and that they are
+	authorised by the CA's policy. Similarly, CAs MUST protect their
+	private key material against theft, accidental disclosure or leakage.
+	Such protection may be afforded by isolating the CA private key in
+	a separate signing service, storing it in a hardware token or security
+	module and/or by keeping it offline except when it is explicitly needed.
+	Certification authorities MUST select their signing key algorithm and
+	strength to be sufficiently secure for the expected operational
+	life of the signing key.
+	</t>
+	<t>
+	For completeness, this document specifies certificate formats that are
+	peers for all currently-specified SSH key and signature types, but not
+	all SSH key and signature types are currently recommended for use.
+	Specifically, the DSA key type (and associated certificate format)
+	SHOULD NOT be used as the algorithm, as instantiated in SSH, is
+	unacceptable weak as it uses a fixed 1024 bit key length, which is
+	insufficient, and requires
+	the use of SHA1, which is known to be broken, as a signature hash.
+	Similarly the original "ssh-rsa" signature type also uses SHA1 as a
+	signature hash and so SHOULD NOT be used.
+	SSH clients, servers and other tools processing SSH certificates
+	SHOULD implement allowlists of accepted key and signature types and
+	SHOULD by default disallow the ssh-dss-cert certificate type and
+	certificate signatures made using the ssh-rsa signature algorithm.
+	</t>
+	<t>
+	This specification does not define a revocation mechanism for
+	certificates that should no longer be accepted, for example if their
+	private key material is known to have been compromised or if it is
+	no longer desirable to accept the principal they identify for policy or
+	operational reasons.
+	Implementations that accept SSH certificates SHOULD have some mechanism
+	to disallow individual certificates that are no longer acceptable
+	despite their being otherwise valid.
+	In its simplest form, this mechanism could be a simple list of
+	certificate serial numbers to disallow, or an explicit list of
+	certificates, encoded as serialised public keys using
+	<xref target="RFC4716" /> or another public key encoding.
+	</t>
+	<t>
+	This document does not specify how SSH clients or servers come
+	to trust CA keys. It is RECOMMENDED that implementations define a
+	clear mechanism to define trust of a CA public key and its desired
+	scope. For example, a SSH client SHOULD allow trusting a CA key for
+	only a defined set of domain names such as subdomains of an
+	organisation's TLD.
+	Any limits that a client or server places on the scope of a trusted
+	CA key MUST compose sensibly and safely with restrictions specified
+	within certificates issued from that CA. For example, if a SSH server
+	supports trusting a CA key but selectively disallows SSH TCP/IP port
+	forwarding (<xref target="RFC4254" section="7" />), then the
+	"permit-port-forwarding" critical option would not be expected to
+	re-enable it.
 	</t>
 </section>
 
@@ -1128,7 +1188,6 @@
 		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.4253.xml" />
 		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.4254.xml" />
 		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.5656.xml" />
-		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.7942.xml" />
 		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8032.xml" />
 		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8126.xml" />
 		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8174.xml" />
@@ -1167,18 +1226,24 @@
 	</references>
 
 	<references><name>Informative References</name>
-			<reference anchor="IANA-SSH-KEYTYPES" target="https://www.iana.org/assignments/ssh-parameters/"><front>
-			<title>Public Key Algorithm Names</title>
-			<author>
-				<organization>IANA</organization>
-			</author>
-		</front></reference>
-			<reference anchor="HIBA" target="https://github.com/google/hiba"><front>
-			<title>HIBA: Host Identity Based Authorization</title>
-			<author>
-				<organization>Google</organization>
-			</author>
-		</front></reference>
+		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.4716.xml" />
+		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.7942.xml" />
+		<reference anchor="IANA-SSH-KEYTYPES" target="https://www.iana.org/assignments/ssh-parameters/">
+			<front>
+				<title>Public Key Algorithm Names</title>
+				<author>
+					<organization>IANA</organization>
+				</author>
+			</front>
+		</reference>
+		<reference anchor="HIBA" target="https://github.com/google/hiba">
+			<front>
+				<title>HIBA: Host Identity Based Authorization</title>
+				<author>
+					<organization>Google</organization>
+				</author>
+			</front>
+		</reference>
 	</references>
 </references>
 
