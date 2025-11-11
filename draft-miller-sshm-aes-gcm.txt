@@ -4,8 +4,8 @@
 
 Internet Engineering Task Force                                D. Miller
 Internet-Draft                                                   OpenSSH
-Intended status: Standards Track                           1 August 2025
-Expires: 2 February 2026
+Intended status: Standards Track                        11 November 2025
+Expires: 15 May 2026
 
 
                 Fixed AES-GCM modes for the SSH protocol
@@ -32,7 +32,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 2 February 2026.
+   This Internet-Draft will expire on 15 May 2026.
 
 Copyright Notice
 
@@ -53,9 +53,9 @@ Copyright Notice
 
 
 
-Miller                   Expires 2 February 2026                [Page 1]
+Miller                     Expires 15 May 2026                  [Page 1]
 
-Internet-Draft  Fixed AES-GCM modes for the SSH protocol     August 2025
+Internet-Draft  Fixed AES-GCM modes for the SSH protocol   November 2025
 
 
 Table of Contents
@@ -71,7 +71,7 @@ Table of Contents
    5.  Implementation Status . . . . . . . . . . . . . . . . . . . .   5
    6.  References  . . . . . . . . . . . . . . . . . . . . . . . . .   6
      6.1.  Normative References  . . . . . . . . . . . . . . . . . .   6
-     6.2.  Informative References  . . . . . . . . . . . . . . . . .   7
+     6.2.  Informative References  . . . . . . . . . . . . . . . . .   6
    Acknowledgments . . . . . . . . . . . . . . . . . . . . . . . . .   7
    Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .   7
 
@@ -109,9 +109,9 @@ Table of Contents
 
 
 
-Miller                   Expires 2 February 2026                [Page 2]
+Miller                     Expires 15 May 2026                  [Page 2]
 
-Internet-Draft  Fixed AES-GCM modes for the SSH protocol     August 2025
+Internet-Draft  Fixed AES-GCM modes for the SSH protocol   November 2025
 
 
    Most SSH implementations have since adopted a different approach to
@@ -165,9 +165,9 @@ Internet-Draft  Fixed AES-GCM modes for the SSH protocol     August 2025
 
 
 
-Miller                   Expires 2 February 2026                [Page 3]
+Miller                     Expires 15 May 2026                  [Page 3]
 
-Internet-Draft  Fixed AES-GCM modes for the SSH protocol     August 2025
+Internet-Draft  Fixed AES-GCM modes for the SSH protocol   November 2025
 
 
 2.1.  aes128-gcm
@@ -198,13 +198,13 @@ Internet-Draft  Fixed AES-GCM modes for the SSH protocol     August 2025
    Encryption Algorithm Names [IANA-SSH-EXT] under Secure Shell (SSH)
    Protocol Parameters [RFC4250].
 
-                     +================+=============+
-                     | Algorithm name | Reference   |
-                     +================+=============+
-                     | aes128-gcm     | Section 2.1 |
-                     +----------------+-------------+
-                     | aes256-gcm     | Section 2.2 |
-                     +----------------+-------------+
+            +================+=============+=================+
+            | Algorithm name | Reference   | OK to implement |
+            +================+=============+=================+
+            | aes128-gcm     | Section 2.1 | SHOULD          |
+            +----------------+-------------+-----------------+
+            | aes256-gcm     | Section 2.2 | SHOULD          |
+            +----------------+-------------+-----------------+
 
                                  Table 1
 
@@ -221,9 +221,9 @@ Internet-Draft  Fixed AES-GCM modes for the SSH protocol     August 2025
 
 
 
-Miller                   Expires 2 February 2026                [Page 4]
+Miller                     Expires 15 May 2026                  [Page 4]
 
-Internet-Draft  Fixed AES-GCM modes for the SSH protocol     August 2025
+Internet-Draft  Fixed AES-GCM modes for the SSH protocol   November 2025
 
 
 5.  Implementation Status
@@ -277,9 +277,9 @@ Internet-Draft  Fixed AES-GCM modes for the SSH protocol     August 2025
 
 
 
-Miller                   Expires 2 February 2026                [Page 5]
+Miller                     Expires 15 May 2026                  [Page 5]
 
-Internet-Draft  Fixed AES-GCM modes for the SSH protocol     August 2025
+Internet-Draft  Fixed AES-GCM modes for the SSH protocol   November 2025
 
 
       Website: https://libssh.org/
@@ -313,11 +313,6 @@ Internet-Draft  Fixed AES-GCM modes for the SSH protocol     August 2025
               DOI 10.17487/RFC5647, August 2009,
               <https://www.rfc-editor.org/info/rfc5647>.
 
-   [RFC7942]  Sheffer, Y. and A. Farrel, "Improving Awareness of Running
-              Code: The Implementation Status Section", BCP 205,
-              RFC 7942, DOI 10.17487/RFC7942, July 2016,
-              <https://www.rfc-editor.org/info/rfc7942>.
-
    [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
               May 2017, <https://www.rfc-editor.org/info/rfc8174>.
@@ -330,15 +325,23 @@ Internet-Draft  Fixed AES-GCM modes for the SSH protocol     August 2025
               <https://datatracker.ietf.org/doc/html/draft-ietf-sshm-
               chacha20-poly1305-01>.
 
-
-
-
-Miller                   Expires 2 February 2026                [Page 6]
-
-Internet-Draft  Fixed AES-GCM modes for the SSH protocol     August 2025
-
-
 6.2.  Informative References
+
+
+
+
+
+
+
+Miller                     Expires 15 May 2026                  [Page 6]
+
+Internet-Draft  Fixed AES-GCM modes for the SSH protocol   November 2025
+
+
+   [RFC7942]  Sheffer, Y. and A. Farrel, "Improving Awareness of Running
+              Code: The Implementation Status Section", BCP 205,
+              RFC 7942, DOI 10.17487/RFC7942, July 2016,
+              <https://www.rfc-editor.org/info/rfc7942>.
 
    [IANA-SSH-EXT]
               IANA, "Encryption Algorithm Names",
@@ -386,7 +389,4 @@ Author's Address
 
 
 
-
-
-
-Miller                   Expires 2 February 2026                [Page 7]
+Miller                     Expires 15 May 2026                  [Page 7]

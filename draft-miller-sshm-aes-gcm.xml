@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <?xml-model href="rfc7991bis.rnc"?>
-<!-- <?xml-stylesheet type="text/xsl" href="rfc2629.xslt" ?> --> 
+<!-- <?xml-stylesheet type="text/xsl" href="rfc2629.xslt" ?> -->
 <!DOCTYPE rfc [
   <!ENTITY nbsp    "&#160;">
   <!ENTITY zwsp   "&#8203;">
@@ -18,12 +18,12 @@
   submissionType="IETF"
   xml:lang="en"
   version="3">
-<!-- 
+<!--
     * docName should be the name of your draft
     * category should be one of std, bcp, info, exp, historic
     * ipr should be one of trust200902, noModificationTrust200902, noDerivativesTrust200902, pre5378Trust200902
     * updates can be an RFC number as NNNN.
-    * obsoletes can be an RFC number as NNNN 
+    * obsoletes can be an RFC number as NNNN
 -->
 
 <front>
@@ -32,7 +32,7 @@
 	<author fullname="Damien Miller" initials="D." surname="Miller">
 		<organization>OpenSSH</organization>
 		<address>
-			<email>djm@openssh.com</email>  
+			<email>djm@openssh.com</email>
 			<uri>https://www.openssh.com/</uri>
 		</address>
 	</author>
@@ -113,7 +113,7 @@
 		</t>
 	</section>
 </section>
-    
+
 <section><name>Revised AES-GCM modes</name>
 	<t>
 	This document defines two new AEAD modes for the SSH transport protocol,
@@ -181,11 +181,11 @@
 		</t>
 <table>
 <thead>
-<tr><th>Algorithm name</th><th>Reference</th></tr>
+<tr><th>Algorithm name</th><th>Reference</th><th>OK to implement</th></tr>
 </thead>
 <tbody>
-<tr><td>aes128-gcm</td><td><xref target="aes128-gcm" /></td></tr>
-<tr><td>aes256-gcm</td><td><xref target="aes256-gcm" /></td></tr>
+<tr><td>aes128-gcm</td><td><xref target="aes128-gcm" /></td><td>SHOULD</td></tr>
+<tr><td>aes256-gcm</td><td><xref target="aes256-gcm" /></td><td>SHOULD</td></tr>
 </tbody>
 </table>
 	</section>
@@ -304,19 +304,20 @@
 		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.4250.xml" />
 		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.4253.xml" />
 		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.5647.xml" />
-		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.7942.xml" />
 		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8174.xml" />
 		<xi:include href="https://datatracker.ietf.org/doc/bibxml3/draft-ietf-sshm-chacha20-poly1305-01.xml" />
 	</references>
 
 	<references><name>Informative References</name>
-			<reference anchor="IANA-SSH-EXT" target="https://www.iana.org/assignments/ssh-parameters/"><front>
-			<title>Encryption Algorithm Names</title>
-			<author>
-				<organization>IANA</organization>
-			</author>
-		</front></reference>       
-
+		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.7942.xml" />
+		<reference anchor="IANA-SSH-EXT" target="https://www.iana.org/assignments/ssh-parameters/">
+			<front>
+				<title>Encryption Algorithm Names</title>
+				<author>
+					<organization>IANA</organization>
+				</author>
+			</front>
+		</reference>
 	</references>
 </references>
 
