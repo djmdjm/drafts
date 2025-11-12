@@ -73,7 +73,7 @@
 	<t>
 	Holding keys in an agent offers usability and security
 	advantages to loading and unwrapping them at each use, as
-	each key unwrapping may require entry of a passphrase.
+	each key unwrapping may require entry of a pass-phrase.
 	Access to an agent may optionally be forwarded across an SSH connection,
 	thereby allowing remote systems to use stored keys without directly
 	exposing the key material to the remote system.
@@ -714,7 +714,7 @@
 		<t>
 		If the agent is already locked and the pass-phrase matches the
 		one used to lock it then it MUST unlock and reply with
-		SSH_AGENT_SUCCESS. If the agent is already unlocked or if the
+		SSH_AGENT_SUCCESS. If the agent is already unlocked or if
 		the pass-phrase does not match it MUST reply with
 		SSH_AGENT_FAILURE.
 		</t>
