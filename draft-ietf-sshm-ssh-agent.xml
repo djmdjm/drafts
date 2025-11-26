@@ -10,7 +10,7 @@
 <rfc
   xmlns:xi="http://www.w3.org/2001/XInclude"
   category="std"
-  docName="draft-ietf-sshm-ssh-agent-12"
+  docName="draft-ietf-sshm-ssh-agent-13"
   ipr="trust200902"
   obsoletes=""
   updates=""
@@ -28,7 +28,7 @@
 
 <front>
 	<title>SSH Agent Protocol</title>
-	<seriesInfo name="Internet-Draft" value="draft-ietf-sshm-ssh-agent-12"/>
+	<seriesInfo name="Internet-Draft" value="draft-ietf-sshm-ssh-agent-13"/>
 	<author fullname="Damien Miller" initials="D." surname="Miller">
 		<organization>OpenSSH</organization>
 		<address>
@@ -121,7 +121,7 @@
 	Agents MAY implement support for only a subset of operations
 	or available key types, and MAY additionally refuse arbitrary
 	operations in particular contexts. For example, an agent may
-	allow only local clients of an agent to add or remove keys, or
+	allow only clients local to itself to add or remove keys, or
 	make particular subsets of keys available to a given client.
 	For this reason, clients of the agent SHOULD be prepared to
 	fail gracefully if any operation is refused.
@@ -170,7 +170,7 @@
 	</sourcecode>
 	<t>
 	In the sections below, the "length" field is omitted. For
-	clarity, the symbolic names of the messages are shown;
+	clarity, the symbolic names of the message types are shown;
 	their numeric values are listed in <xref target="messagenum"/>
 	below.
 	</t>
@@ -193,7 +193,7 @@
     byte              SSH_AGENT_FAILURE
 		</sourcecode>
 		<t>
-		or a request-specific success message that may contain
+		or a request-specific failure message that may contain
 		additional fields.
 		SSH_AGENT_FAILURE messages MUST also be sent in reply to
 		requests with unknown or unsupported types.
@@ -214,19 +214,19 @@
 		<sourcecode>
     byte             SSH_AGENTC_ADD_IDENTITY
     string           key type
-    byte[]           contents
+    byte[]           key data
     string           comment
 		</sourcecode>
 		<t>
 		Here "key type" is the specified key type name, for example
 		"ssh-rsa" for a RSA key as defined by
-		<xref target="RFC4253" />. "contents"
+		<xref target="RFC4253" />. "key data"
 		consists of the public and private components of the key
 		and vary by key type, they are listed below for
 		standard and commonly used key types. "comment" is
-		an optional human-readable key name or comment
+		a human-readable key name or comment
 		as a UTF-8 string that may serve to identify the
-		key in user-visible messages.
+		key in user-visible messages. This string may be of zero length.
 		</t>
 		<t>
 		The SSH_AGENTC_ADD_ID_CONSTRAINED is similar, but adds an
@@ -235,7 +235,7 @@
 		<sourcecode>
     byte             SSH_AGENTC_ADD_ID_CONSTRAINED
     string           key type
-    byte[]           contents
+    byte[]           key data
     string           comment
     constraint[]     constraints
 		</sourcecode>
@@ -246,7 +246,7 @@
 		and their format.
 		Clients SHOULD prefer the SSH_AGENTC_ADD_IDENTITY message
 		over sending a SSH_AGENTC_ADD_ID_CONSTRAINED with an empty
-		constraints section, though both are valid and equivalent.
+		constraints field, though both are valid and equivalent.
 		</t>
 		<t>
 		An agent MUST reply with SSH_AGENT_SUCCESS
@@ -258,8 +258,7 @@
 		An agent MAY support only a subset of the key types defined
 		here and MAY support additional key types as described below.
 		If an agent does not recognise the type name in a request to
-		add a key, then it MUST fail gracefully and respond with a
-		SSH_AGENT_FAILURE reply.
+		add a key, then it MUST respond with a SSH_AGENT_FAILURE reply.
 		</t>
 		<section><name>DSA keys</name>
 			<t>
@@ -345,8 +344,7 @@
 			is to maintain compatibility with widely deployed
 			implementations).
 			The contents and interpretation of the
-			ENC(A)
-			and k values are
+			ENC(A) and k values are
 			defined by <xref target="RFC8032" section="3.2"/>.
 			</t>
 		</section>
@@ -390,7 +388,7 @@
 			Agents and their clients MAY support additional key
 			types not documented here. Vendor-specific key types
 			MUST use the domain-qualified naming convention
-			defined in <xref target="RFC4251" section="4.2" />
+			defined in <xref target="RFC4251" section="6" />
 			until code-points are allocated by IANA.
 			</t>
 		</section>
@@ -558,7 +556,7 @@
 		</sourcecode>
 		<t>
 		On receipt of such a message, an agent
-		shall delete all keys that it is holding
+		MUST delete all keys that it is holding
 		and MUST reply with SSH_AGENT_SUCCESS.
 		</t>
 		<t>
@@ -588,9 +586,11 @@
 		Where "token id" is an opaque identifier for the hardware token
 		and "PIN" is an optional password or PIN (not typically
 		used), both encoded using UTF-8.
-		Requesting deletion of token-hosted keys SHOULD
+		Requesting deletion of token-hosted keys MUST
 		cause the agent to remove all keys it loaded from the device
 		matching "token id".
+		Note: this operation affects the agent only, it SHOULD NOT
+		caese the keys be deleted from the token itself.
 		</t>
 		<t>
 		An agent MUST reply with SSH_AGENT_SUCCESS if the key was
@@ -912,7 +912,7 @@
 		</t>
 		<t>
 		An SSH client SHOULD be prepared to handle multiple concurrent
-		active agent connections.
+		forwarded connections to a client-side agent.
 		</t>
 		<t>
 		An SSH client MAY accept agent connection requests (subject to
@@ -925,9 +925,9 @@
 		</t>
 		<t>
 		An SSH client MUST refuse unauthorised agent connection
-		requests, when agent forwarding is not desired by the SSH client
-		or requested but an SSH server sends an agent connection
-		request anyway.
+		requests, when agent forwarding is neither requested nor
+		desired by the SSH client but an SSH server sends an agent
+		connection request anyway.
 		</t>
 		<t>
 		Because the "agent-connect" request contains no identifier to
@@ -941,10 +941,10 @@
 </section>
 
 <section><name>Protocol numbers</name>
-	<section anchor="messagenum" title="Message numbers">
+	<section anchor="messagenum" title="Message type numbers">
 		<t>
-		The following numbers are used for requests from the client
-		to the agent.
+		The following numbers are used as message types for requests
+		from the client to the agent.
 		</t>
 		<sourcecode>
     SSH_AGENTC_REQUEST_IDENTITIES                  11
@@ -961,8 +961,8 @@
     SSH_AGENTC_EXTENSION                           27
 		</sourcecode>
 		<t>
-		The following numbers are used for replies from the agent to
-		the client.
+		The following numbers are used as message types for replies
+		from the agent to the client.
 		</t>
 		<sourcecode>
     SSH_AGENT_FAILURE                               5
@@ -972,15 +972,19 @@
     SSH_AGENT_EXTENSION_FAILURE                     28
     SSH_AGENT_EXTENSION_RESPONSE                    29
 		</sourcecode>
-		<section anchor="reservednum"><name>Reserved message numbers</name>
+		<section anchor="reservednum"><name>Reserved message type numbers</name>
 			<t>
-			The following message numbers are reserved for
+			The following message type numbers are reserved for
 			implementations that implement support for the legacy
 			SSH protocol version 1: 1-4, 7-10, 15-16 and
 			24 (inclusive).
 			These message numbers MAY be used by an
 			implementation supporting the legacy protocol but
 			MUST NOT be reused otherwise.
+			</t>
+			<t>
+			Message number 0 is also reserved and MUST NOT
+			be used.
 			</t>
 			<t>
 			The range of message numbers 240-255 are reserved for
@@ -1000,6 +1004,9 @@
     SSH_AGENT_CONSTRAIN_CONFIRM                     2
     SSH_AGENT_CONSTRAIN_EXTENSION                   255
 		</sourcecode>
+		<t>
+		The constraint identifier 0 is reserved.
+		</t>
 	</section>
 	<section anchor="sigflagnum" title="Signature flags">
 		<t>
@@ -1020,15 +1027,15 @@
 <section anchor="IANA"><name>IANA Considerations</name>
 	<t>
 	This protocol requires four registries be established, one for
-	message numbers, one for constraints, one for signature request
+	message type numbers, one for constraints, one for signature request
 	flags and one for extension request names. Additionally,
 	new codepoints are requested in three existing registries.
 
 	</t>
-	<section anchor="agentnum"><name>New registry: SSH agent protocol numbers</name>
+	<section anchor="agentnum"><name>New registry: SSH agent protocol message type numbers</name>
 		<t>
-		This registry, titled "SSH agent protocol numbers"
-		records the message numbers for client requests and
+		This registry, titled "SSH agent protocol message type numbers"
+		records the message type numbers for client requests and
 		agent responses.
 		It should be created in the Secure Shell (SSH) Protocol
 		Parameters registry group <xref target="RFC4250" />.
@@ -1042,6 +1049,7 @@
 <tr><th>Number(s)</th><th>Identifier</th><th>Reference</th></tr>
 </thead>
 <tbody>
+<tr><td>0</td><td>reserved</td><td>thisrfc, <xref target="reservednum" /></td></tr>
 <tr><td>1</td><td>reserved</td><td>thisrfc, <xref target="reservednum" /></td></tr>
 <tr><td>2</td><td>reserved</td><td>thisrfc, <xref target="reservednum" /></td></tr>
 <tr><td>3</td><td>reserved</td><td>thisrfc, <xref target="reservednum" /></td></tr>
@@ -1083,7 +1091,7 @@
 		Parameters registry group <xref target="RFC4250" />.
 		Its initial state should consist of the
 		following numbers.
-		Future message number allocations shall occur via
+		Future key constraint number allocations shall occur via
 		EXPERT REVIEW as per <xref target="RFC8126" />.
 		</t>
 <table>
@@ -1111,7 +1119,7 @@
 		flag value is 0x80000000.
 		</t>
 		<t>
-		Future message number allocations shall occur via
+		Future signature flag allocations shall occur via
 		EXPERT REVIEW as per <xref target="RFC8126" />.
 		</t>
 <table>
