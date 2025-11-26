@@ -44,7 +44,7 @@
 	<keyword>ssh-agent</keyword>
 	<abstract>
 		<t>
-		This document describes a key agent protocol for use in
+		This document specifies a key agent protocol for use in
 		the Secure Shell (SSH) protocol.
 		</t>
 	</abstract>
@@ -59,11 +59,17 @@
 <middle>
 <section><name>Introduction</name>
 	<t>
-	Secure Shell (SSH) is a protocol for secure remote
-	connections and login over untrusted networks.
-	It supports multiple authentication mechanisms,
+	Secure Shell (SSH)
+	<xref target="RFC4251" />
+	is a protocol for secure remote connections
+	<xref target="RFC4253" />
+	and login
+	<xref target="RFC4254" />
+	over untrusted networks.
+	It supports multiple authentication mechanisms
+	<xref target="RFC4252" />,
 	including public key authentication. This document
-	describes the protocol for interacting with a key
+	specifies the protocol for interacting with a key
 	management component, usually referred to as "an agent",
 	that holds private keys. SSH clients (and possibly
 	SSH servers) can invoke the agent via this protocol
@@ -220,10 +226,13 @@
 		<t>
 		Here "key type" is the specified key type name, for example
 		"ssh-rsa" for a RSA key as defined by
-		<xref target="RFC4253" />. "key data"
-		consists of the public and private components of the key
-		and vary by key type, they are listed below for
-		standard and commonly used key types. "comment" is
+		<xref target="RFC4253" />.
+		"key data" consists of the public and private components
+		of the key and vary by key type, as specified in sub-sections
+		<xref target="add-dsa" format="counter" /> through
+		<xref target="add-rsa" format="counter" />
+		for commonly used key types.
+		"comment" is
 		a human-readable key name or comment
 		as a UTF-8 string that may serve to identify the
 		key in user-visible messages. This string may be of zero length.
@@ -260,7 +269,7 @@
 		If an agent does not recognise the type name in a request to
 		add a key, then it MUST respond with a SSH_AGENT_FAILURE reply.
 		</t>
-		<section><name>DSA keys</name>
+		<section anchor="add-dsa"><name>DSA keys</name>
 			<t>
 			DSA keys have key type "ssh-dss" and are
 			defined in <xref target="RFC4253" />. They
@@ -289,7 +298,7 @@
 			<xref target="FIPS.186-4"/>.
 			</t>
 		</section>
-		<section><name>ECDSA keys</name>
+		<section anchor="add-ecdsa"><name>ECDSA keys</name>
 			<t>
 			ECDSA keys have key types starting with
 			"ecdsa-sha2-" and are defined in
@@ -315,7 +324,7 @@
 			by Section 6.2 of <xref target="FIPS.186-5"/>.
 			</t>
 		</section>
-		<section><name>EDDSA keys</name>
+		<section anchor="add-eddsa"><name>EDDSA keys</name>
 			<t>
 			<xref target="RFC8709" /> defines Ed25519 and
 			Ed448 with key type names "ssh-ed25519" and
@@ -348,7 +357,7 @@
 			defined by <xref target="RFC8032" section="3.2"/>.
 			</t>
 		</section>
-		<section><name>RSA keys</name>
+		<section anchor="add-rsa"><name>RSA keys</name>
 			<t>
 			RSA keys have key type "ssh-rsa" and are
 			defined in <xref target="RFC4253" />. They
@@ -383,7 +392,7 @@
 			<xref target="FIPS.186-5" />.
 			</t>
 		</section>
-		<section><name>Other keys</name>
+		<section anchor="add-other"><name>Other keys</name>
 			<t>
 			Agents and their clients MAY support additional key
 			types not documented here. Vendor-specific key types
@@ -431,7 +440,7 @@
 			if one or more keys were successfully loaded
 			as a result of one of these messages, or
 			SSH_AGENT_FAILURE if no keys were found.
-			The agent SHOULD also return SSH_AGENT_FAILURE
+			The agent MUST also return SSH_AGENT_FAILURE
 			if the "token id" was not recognised or if
 			the agent doesn't support token-hosted keys
 			at all.
@@ -912,7 +921,13 @@
 		</t>
 		<t>
 		An SSH client SHOULD be prepared to handle multiple concurrent
-		forwarded connections to a client-side agent.
+		forwarded connections to a client-side agent, otherwise requests
+		to access the agent from the remote side that happen to overlap
+		prior requests may fail. Overlapping requests may occur because
+		the SSH connection protocol <xref target="RFC4254" /> allows
+		multiple user sessions over a single <xref target="RFC4253" />
+		transport, which may each request use of the agentcw
+		independently and potentially concurrently.
 		</t>
 		<t>
 		An SSH client MAY accept agent connection requests (subject to
@@ -988,7 +1003,7 @@
 			</t>
 			<t>
 			The range of message numbers 240-255 are reserved for
-			organization-local extensions to the agent protocol and
+			Private Use extensions to the agent protocol and
 			MUST NOT be used by generic implementations.
 			</t>
 		</section>
@@ -1030,15 +1045,41 @@
 	message type numbers, one for constraints, one for signature request
 	flags and one for extension request names. Additionally,
 	new codepoints are requested in three existing registries.
-
 	</t>
+	<section><name>Guidance for Designated Experts</name>
+	<t>
+	When a Designated Expert (DE) is asked to review additions to the
+	new registries described above (<xref target="agentnum" />,
+	<xref target="constraintnum" />, <xref target="sigflag" /> and
+	<xref target="reqname" />), they are requested to verify that
+	suitable documentation as described in <xref target="RFC5226" />
+	exists and is permanently and publicly available.
+	The DE is also requested to check the clarity of purpose and use of
+	the requested code points. The DE should also verify that specifications
+	produced in the IETF that request code points in these registries have
+	been made available to the SSHM working group and the ssh@ietf.org
+	mailing list for review. Requests for code points made for
+	specifications produced outside the IETF should not conflict with
+	active IETF work or prior IETF specifications.
+	</t>
+	<t>
+	The available number of code points in the SSH agent protocol
+	numbers (<xref target="agentnum" />) and SSH agent signature
+	flags (<xref target="sigflag" />) registries are limited,
+	so the DE is requested to ensure the use of code points is very well
+	justified. For the SSH agent protocol numbers, named extension
+	requests (<xref target="reqname" />) provide an alternative for most
+	uses with no practical limitation on the number of available code
+	points.
+	</t>
+	</section>
 	<section anchor="agentnum"><name>New registry: SSH agent protocol message type numbers</name>
 		<t>
 		This registry, titled "SSH agent protocol message type numbers"
 		records the message type numbers for client requests and
 		agent responses.
 		It should be created in the Secure Shell (SSH) Protocol
-		Parameters registry group <xref target="RFC4250" />.
+		Parameters registry group <xref target="IANA-SSH" />.
 		Its initial state should consist of the following
 		numbers and reservations.
 		Future message number allocations shall occur via
@@ -1079,7 +1120,7 @@
 <tr><td>27</td><td>SSH_AGENTC_EXTENSION</td><td>thisrfc, <xref target="messagenum" /></td></tr>
 <tr><td>28</td><td>SSH_AGENT_EXTENSION_FAILURE</td><td>thisrfc, <xref target="messagenum" /></td></tr>
 <tr><td>29</td><td>SSH_AGENT_EXTENSION_RESPONSE</td><td>thisrfc, <xref target="messagenum" /></td></tr>
-<tr><td>240-255</td><td>Reserved for organizational use</td><td>thisrfc, <xref target="messagenum" /></td></tr>
+<tr><td>240-255</td><td>Private Use</td><td>thisrfc, <xref target="messagenum" /></td></tr>
 </tbody>
 </table>
 	</section>
@@ -1088,7 +1129,7 @@
 		This registry, titled "SSH agent key constraint numbers"
 		records the message numbers for key use constraints.
 		It should be created in the Secure Shell (SSH) Protocol
-		Parameters registry group <xref target="RFC4250" />.
+		Parameters registry group <xref target="IANA-SSH" />.
 		Its initial state should consist of the
 		following numbers.
 		Future key constraint number allocations shall occur via
@@ -1111,7 +1152,7 @@
 		records the values for signature request
 		(SSH_AGENTC_SIGN_REQUEST) flag values.
 		It should be created in the Secure Shell (SSH) Protocol
-		Parameters registry group <xref target="RFC4250" />.
+		Parameters registry group <xref target="IANA-SSH" />.
 		Its initial state should consist of the
 		following numbers. Note that as the flags are
 		combined by bitwise OR, all flag values must be
@@ -1139,7 +1180,7 @@
 		records the names used in the generic extension request
 		message (SSH_AGENTC_EXTENSION).
 		It should be created in the Secure Shell (SSH) Protocol
-		Parameters registry group <xref target="RFC4250" />.
+		Parameters registry group <xref target="IANA-SSH" />.
 		Its initial state should consist of the
 		following names.
 		</t>
@@ -1161,7 +1202,7 @@
 		IANA is requested to insert the following entries into the
 		table Extension Names <xref target="IANA-SSH-EXT" /> in
 		the Secure Shell (SSH) Protocol Parameters registry group
-		<xref target="RFC4250" />.
+		<xref target="IANA-SSH" />.
 		</t>
 <table>
 <thead>
@@ -1178,7 +1219,7 @@
 		table Connection Protocol Channel Request Names
 		<xref target="IANA-SSH-CHANREQ" /> in the
 		Secure Shell (SSH) Protocol Parameters registry group
-		<xref target="RFC4250" />.
+		<xref target="IANA-SSH" />.
 		</t>
 <table>
 <thead>
@@ -1194,7 +1235,7 @@
 		IANA is requested to insert the following entries into the
 		table Connection Protocol Channel Types <xref target="IANA-SSH-CHANTYPE" /> under
 		Secure Shell (SSH) Protocol Parameters
-		<xref target="RFC4250" />.
+		<xref target="IANA-SSH" />.
 		</t>
 <table>
 <thead>
@@ -1204,33 +1245,6 @@
 <tr><td>agent-connect</td><td>thisrfc, <xref target="fwdtype" /></td></tr>
 </tbody>
 </table>
-	</section>
-	<section><name>Guidance for Designated Experts</name>
-	<t>
-	When a Designated Expert (DE) is asked to review additions to the
-	new registries described above (<xref target="agentnum" />,
-	<xref target="constraintnum" />, <xref target="sigflag" /> and
-	<xref target="reqname" />), they are requested to verify that
-	suitable documentation as described in <xref target="RFC5226" />
-	exists and is permanently and publicly available.
-	The DE is also requested to check the clarity of purpose and use of
-	the requested code points. The DE should also verify that specifications
-	produced in the IETF that request code points in these registries have
-	been made available to the SSHM working group and the ssh@ietf.org
-	mailing list for review. Requests for code points made for
-	specifications produced outside the IETF should not conflict with
-	active IETF work or prior IETF specifications.
-	</t>
-	<t>
-	The available number of code points in the SSH agent protocol
-	numbers (<xref target="agentnum" />) and SSH agent signature
-	flags (<xref target="sigflag" />) registries are limited,
-	so the DE is requested to ensure the use of code points is very well
-	justified. For the SSH agent protocol numbers, named extension
-	requests (<xref target="reqname" />) provide an alternative for most
-	uses with no practical limitation on the number of available code
-	points.
-	</t>
 	</section>
 </section>
 
@@ -1281,14 +1295,18 @@
 	the scope of this specification, agents SHOULD use cryptographic
 	implementations that are resistant to side-channel attacks and MAY
 	take additional measures to hide the actual time spent processing
-	private key operations.
+	private key operations. Failure to do so may expose keys to recovery
+	through these side-channels.
 	</t>
 	<t>
 	Forwarding access to a local agent over an SSH connection
 	(<xref target="fwd" />) inherently creates a transitive trust
 	relationship. SSH implementations SHOULD NOT forward use of an agent
-	by default and SHOULD implement additional controls over key visibility
-	and use for forwarded agent connections.
+	by default, as doing so could expose access to the user's keys to
+	untrusted hosts they connect to. Agents SHOULD implement additional
+	controls over key visibility and use for forwarded agent connections,
+	otherwise the user has only an all-or-nothing choice over whether to
+	forward an agent.
 	</t>
 	<t>
 	Implementation of token/smartcard-hosted keys requires some care too.
@@ -1297,9 +1315,11 @@
 	(a path to a library for a particular PKCS#11 module, for example).
 	Loading a shared library on most platforms implies automatic
 	execution of code in that library in the address space of
-	the process that loads it. Agents that support loading token-hosted keys
-	via library path SHOULD ensure that only trusted token provider
-	libraries are loadable, SHOULD ensure that loaded token library code
+	the process that loads it.
+	To avoid loading of potentially-hostile code, agents that support
+	loading token-hosted keys via library path SHOULD ensure that only
+	trusted token provider libraries are loadable.
+	Additionaly agents SHOULD ensure that loaded token library code
 	cannot gain access to other keys loaded in the agent and MAY disallow
 	remote clients from loading token keys entirely.
 	Protection for existing keys from tokey library code may be achieved
@@ -1419,7 +1439,6 @@
 	<name>References</name>
 	<references><name>Normative References</name>
 		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.2119.xml" />
-		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.4250.xml" />
 		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.4251.xml" />
 		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.4253.xml" />
 		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.4254.xml" />
@@ -1461,10 +1480,17 @@
 	</references>
 
 	<references><name>Informative References</name>
+		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.4252.xml" />
 		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.7942.xml" />
 		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8126.xml" />
 		<reference anchor="IANA-SSH-CHANREQ" target="https://www.iana.org/assignments/ssh-parameters/"><front>
 			<title>Connection Protocol Channel Types</title>
+			<author>
+				<organization>IANA</organization>
+			</author>
+		</front></reference>       
+		<reference anchor="IANA-SSH" target="https://www.iana.org/assignments/ssh-parameters/ssh-parameters.xhtml"><front>
+			<title>Secure Shell (SSH) Protocol Parameters</title>
 			<author>
 				<organization>IANA</organization>
 			</author>
