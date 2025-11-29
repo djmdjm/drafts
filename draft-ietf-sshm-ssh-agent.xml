@@ -10,7 +10,7 @@
 <rfc
   xmlns:xi="http://www.w3.org/2001/XInclude"
   category="std"
-  docName="draft-ietf-sshm-ssh-agent-13"
+  docName="draft-ietf-sshm-ssh-agent-14"
   ipr="trust200902"
   obsoletes=""
   updates=""
@@ -28,7 +28,7 @@
 
 <front>
 	<title>SSH Agent Protocol</title>
-	<seriesInfo name="Internet-Draft" value="draft-ietf-sshm-ssh-agent-13"/>
+	<seriesInfo name="Internet-Draft" value="draft-ietf-sshm-ssh-agent-14"/>
 	<author fullname="Damien Miller" initials="D." surname="Miller">
 		<organization>OpenSSH</organization>
 		<address>
@@ -1052,7 +1052,7 @@
 	new registries described above (<xref target="agentnum" />,
 	<xref target="constraintnum" />, <xref target="sigflag" /> and
 	<xref target="reqname" />), they are requested to verify that
-	suitable documentation as described in <xref target="RFC5226" />
+	suitable documentation as described in <xref target="RFC8126" />
 	exists and is permanently and publicly available.
 	The DE is also requested to check the clarity of purpose and use of
 	the requested code points. The DE should also verify that specifications
@@ -1083,7 +1083,7 @@
 		Its initial state should consist of the following
 		numbers and reservations.
 		Future message number allocations shall occur via
-		EXPERT REVIEW as per <xref target="RFC8126" />.
+		Expert Review as per <xref target="RFC8126" />.
 		</t>
 <table>
 <thead>
@@ -1133,7 +1133,7 @@
 		Its initial state should consist of the
 		following numbers.
 		Future key constraint number allocations shall occur via
-		EXPERT REVIEW as per <xref target="RFC8126" />.
+		Expert Review as per <xref target="RFC8126" />.
 		</t>
 <table>
 <thead>
@@ -1161,7 +1161,7 @@
 		</t>
 		<t>
 		Future signature flag allocations shall occur via
-		EXPERT REVIEW as per <xref target="RFC8126" />.
+		Expert Review as per <xref target="RFC8126" />.
 		</t>
 <table>
 <thead>
@@ -1186,7 +1186,7 @@
 		</t>
 		<t>
 		Future name allocations shall occur via
-		EXPERT REVIEW as per <xref target="RFC8126" />.
+		Expert Review as per <xref target="RFC8126" />.
 		</t>
 <table>
 <thead>
@@ -1442,7 +1442,6 @@
 		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.4251.xml" />
 		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.4253.xml" />
 		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.4254.xml" />
-		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.5226.xml" />
 		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.5656.xml" />
 		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8032.xml" />
 		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8174.xml" />
