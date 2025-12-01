@@ -149,7 +149,7 @@
 		If it is pertinent that the client in question is a
 		<xref target="RFC4251" /> Secure Shell client, then it will be
 		explicitly referred to as an "SSH client".
-		Similarly "SSH server" will be used to refer to Secure Shell
+		Similarly, "SSH server" will be used to refer to Secure Shell
 		servers.
 		</t>
 		<t>
@@ -225,10 +225,10 @@
 		</sourcecode>
 		<t>
 		Here "key type" is the specified key type name, for example
-		"ssh-rsa" for a RSA key as defined by
+		"ssh-rsa" for an RSA key as defined by
 		<xref target="RFC4253" />.
 		"key data" consists of the public and private components
-		of the key and vary by key type, as specified in sub-sections
+		of the key and vary by key type, as specified in subsections
 		<xref target="add-dsa" format="counter" /> through
 		<xref target="add-rsa" format="counter" />
 		for commonly used key types.
@@ -254,7 +254,7 @@
 		<xref target="constraints" /> details constraint types
 		and their format.
 		Clients SHOULD prefer the SSH_AGENTC_ADD_IDENTITY message
-		over sending a SSH_AGENTC_ADD_ID_CONSTRAINED with an empty
+		over sending an SSH_AGENTC_ADD_ID_CONSTRAINED with an empty
 		constraints field, though both are valid and equivalent.
 		</t>
 		<t>
@@ -267,7 +267,7 @@
 		An agent MAY support only a subset of the key types defined
 		here and MAY support additional key types as described below.
 		If an agent does not recognise the type name in a request to
-		add a key, then it MUST respond with a SSH_AGENT_FAILURE reply.
+		add a key, then it MUST respond with an SSH_AGENT_FAILURE reply.
 		</t>
 		<section anchor="add-dsa"><name>DSA keys</name>
 			<t>
@@ -428,7 +428,7 @@
 			the agent.
 			</t>
 			<t>
-			Typically only the public components of
+			Typically, only the public components of
 			any keys supported on a hardware token
 			will be loaded into an agent so, strictly
 			speaking, this message really arranges
@@ -513,7 +513,7 @@
 				<t>
 				Agents may implement experimental
 				or private-use constraints through
-				a extension constraint that supports
+				an extension constraint that supports
 				named constraints.
 				</t>
 				<sourcecode>
@@ -539,7 +539,7 @@
 				specify limits on the key that, if ignored,
 				may result in the key being available in
 				situations the user did not intend (i.e. the
-				agent will fail in a safe way).
+				agent will fail safely).
 				</t>
 			</section>
 		</section>
@@ -657,10 +657,10 @@
 		</t>
 		<t>
 		If the agent does not support the requested flags, or is
-		otherwise unable or unwilling to generate the signature (e.g.
-		because it doesn't have the specified key, or the user
-		refused confirmation of a constrained key), it MUST reply
-		with an SSH_AGENT_FAILURE message.
+		otherwise unable or unwilling to generate the signature
+		(for example, because it doesn't have the specified key,
+		or the user refused confirmation of a constrained key),
+		it MUST reply with an SSH_AGENT_FAILURE message.
 		</t>
 		<t>
 		On success, the agent MUST reply with:
@@ -769,7 +769,7 @@
 		Where the extension type is the same as that in the request.
 		</t>
 		<t>
-		Extension failure SHOULD be signaled using a
+		Extension failure SHOULD be signaled using an
 		SSH_AGENT_EXTENSION_FAILURE message:
 		</t>
 		<sourcecode>
@@ -880,7 +880,7 @@
 		</t>
 		<t>
 		If an SSH server accepts this request, typically it will arrange
-		to make a endpoint (e.g. a listening socket) available and
+		to make an endpoint (e.g. a listening socket) available and
 		advertise this fact to the subordinate session. Most
 		implementations on Unix-like systems do this by providing a
 		user-private listening Unix domain socket and recording its
@@ -1265,7 +1265,7 @@
 	On Unix-like systems this may be achieved via filesystem permissions
 	on the agent socket and/or identity checks on the client connected
 	to a socket (e.g. SO_PEERCRED on some Unix-like systems).
-	On Windows, access to a named pipe may controlled by attaching a
+	On Windows, access to a named pipe may be controlled by attaching a
 	security descriptor at the time of its creation.
 	</t>
 	<t>
@@ -1285,7 +1285,7 @@
 	Another, more subtle, means by which keys may be stolen are via
 	cryptographic side-channels. Private key operations may leak
 	information about the contents of keys via differences in timing,
-	power use or by side-effects in the memory subsystems (e.g. CPU
+	power use or by side effects in the memory subsystems (e.g. CPU
 	caches) of the host running the agent. For the case of a local
 	attacker and an agent holding unconstrained keys, the only limit
 	on the number of private key operations the attacker may be able
@@ -1302,8 +1302,9 @@
 	Forwarding access to a local agent over an SSH connection
 	(<xref target="fwd" />) inherently creates a transitive trust
 	relationship. SSH implementations SHOULD NOT forward use of an agent
-	by default, as doing so could expose access to the user's keys to
-	untrusted hosts they connect to. Agents SHOULD implement additional
+	by default and users SHOULD NOT forward use of an agent to hosts that
+	are not fully trusted, as doing so could expose access to the user's
+	keys to attackers on remote hosts. Agents SHOULD implement additional
 	controls over key visibility and use for forwarded agent connections,
 	otherwise the user has only an all-or-nothing choice over whether to
 	forward an agent.
@@ -1396,8 +1397,9 @@
 		<dt>Dropbear</dt>
 		<dd>
 		<t>
-		Dropbear is an SSH client and server implementation for Unix-
-		like systems. It has supported the agent protocol since 2005.
+		Dropbear is an SSH client and server implementation for
+		Unix-like systems. It has supported the agent protocol since
+		2005.
 		</t>
 		<t>
 		Website: https://matt.ucc.asn.au/dropbear/dropbear.html
