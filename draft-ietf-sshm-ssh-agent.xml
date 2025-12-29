@@ -10,7 +10,7 @@
 <rfc
   xmlns:xi="http://www.w3.org/2001/XInclude"
   category="std"
-  docName="draft-ietf-sshm-ssh-agent-14"
+  docName="draft-ietf-sshm-ssh-agent-15"
   ipr="trust200902"
   obsoletes=""
   updates=""
@@ -28,7 +28,7 @@
 
 <front>
 	<title>SSH Agent Protocol</title>
-	<seriesInfo name="Internet-Draft" value="draft-ietf-sshm-ssh-agent-14"/>
+	<seriesInfo name="Internet-Draft" value="draft-ietf-sshm-ssh-agent-15"/>
 	<author fullname="Damien Miller" initials="D." surname="Miller">
 		<organization>OpenSSH</organization>
 		<address>
@@ -124,11 +124,11 @@
 	operations using previously-loaded keys.
 	</t>
 	<t>
-	Agents MAY implement support for only a subset of operations
-	or available key types, and MAY additionally refuse arbitrary
-	operations in particular contexts. For example, an agent may
-	allow only clients local to itself to add or remove keys, or
-	make particular subsets of keys available to a given client.
+	Agents MAY implement support for only a subset of available key type
+	and MAY additionally refuse some operations in particular contexts.
+	For example, an agent may allow only clients local to itself to
+	add keys, or may make particular subsets of keys available to a
+	given client.
 	For this reason, clients of the agent SHOULD be prepared to
 	fail gracefully if any operation is refused.
 	</t>
@@ -165,7 +165,7 @@
 	</section>
 </section>
     
-<section><name>Protocol Messages</name>
+<section anchor="protomess"><name>Protocol Messages</name>
 	<t>
 	Messages consist of a length, type and contents.
 	</t>
@@ -181,7 +181,7 @@
 	below.
 	</t>
 
-	<section><name>Generic agent responses</name>
+	<section anchor="genericresp"><name>Generic agent responses</name>
 		<t>
 		The following generic messages may be sent by the agent
 		in response to requests from the client. On success the
@@ -205,7 +205,7 @@
 		requests with unknown or unsupported types.
 		</t>
 	</section>
-	<section><name>Adding keys to the agent</name>
+	<section anchor="addkeys"><name>Adding keys to the agent</name>
 		<t>
 		Keys may be added to the agent using the
 		SSH_AGENTC_ADD_IDENTITY or
@@ -214,7 +214,7 @@
 		optional constraints on their usage.
 		</t>
 		<t>
-		The generic format for the key
+		The generic format for the
 		SSH_AGENTC_ADD_IDENTITY message is:
 		</t>
 		<sourcecode>
@@ -228,7 +228,7 @@
 		"ssh-rsa" for an RSA key as defined by
 		<xref target="RFC4253" />.
 		"key data" consists of the public and private components
-		of the key and vary by key type, as specified in subsections
+		of the key and varies by key type, as specified in subsections
 		<xref target="add-dsa" format="counter" /> through
 		<xref target="add-rsa" format="counter" />
 		for commonly used key types.
@@ -238,8 +238,8 @@
 		key in user-visible messages. This string may be of zero length.
 		</t>
 		<t>
-		The SSH_AGENTC_ADD_ID_CONSTRAINED is similar, but adds an
-		extra field:
+		The SSH_AGENTC_ADD_ID_CONSTRAINED message is similar,
+		but adds an extra field:
 		</t>
 		<sourcecode>
     byte             SSH_AGENTC_ADD_ID_CONSTRAINED
@@ -262,6 +262,14 @@
 		if the key was successfully loaded
 		as a result of one of these messages, or
 		SSH_AGENT_FAILURE otherwise.
+		</t>
+		<t>
+		Adding a key that is already present in an agent SHOULD replace
+		any constraints it was previously loaded with those (if any)
+		present in the subsequent add request, as this ensures that
+		security-relevant constraints on a loaded key best match user
+		expectations. Otherwise an agent MAY refuse to load a key that
+		has already been loaded.
 		</t>
 		<t>
 		An agent MAY support only a subset of the key types defined
@@ -401,7 +409,7 @@
 			until code-points are allocated by IANA.
 			</t>
 		</section>
-		<section><name>Adding keys from a token</name>
+		<section anchor="addtoken"><name>Adding keys from a token</name>
 			<t>
 			Keys hosted on smart-cards or other hardware
 			tokens may be added using the
@@ -441,7 +449,8 @@
 			as a result of one of these messages, or
 			SSH_AGENT_FAILURE if no keys were found.
 			The agent MUST also return SSH_AGENT_FAILURE
-			if the "token id" was not recognised or if
+			if the "token id" was not recognised, if the request
+			was against agent policy, or if
 			the agent doesn't support token-hosted keys
 			at all.
 			</t>
@@ -509,7 +518,7 @@
     byte             SSH_AGENT_CONSTRAIN_CONFIRM
 				</sourcecode>
 			</section>
-			<section><name>Constraint extensions</name>
+			<section anchor="contraintext"><name>Constraint extensions</name>
 				<t>
 				Agents may implement experimental
 				or private-use constraints through
@@ -523,7 +532,8 @@
 				</sourcecode>
 				<t>
 				The extension name MUST consist of
-				a UTF-8 string suffixed by the
+				a UTF-8 string.
+				Vendor extensions MUST be suffixed by the
 				implementation domain following
 				the naming scheme defined in
 				<xref target="RFC4251" section="6" />,
@@ -555,7 +565,7 @@
 		keys.
 		</t>
 	</section>
-	<section><name>Removing keys from the agent</name>
+	<section anchor="rmkeys"><name>Removing keys from the agent</name>
 		<t>
 		A client may request that an agent remove
 		all keys that it stores:
@@ -564,9 +574,16 @@
     byte             SSH_AGENTC_REMOVE_ALL_IDENTITIES
 		</sourcecode>
 		<t>
-		On receipt of such a message, an agent
-		MUST delete all keys that it is holding
-		and MUST reply with SSH_AGENT_SUCCESS.
+		On receipt of such a message,
+		an agent SHOULD delete all keys that it is holding
+		and reply with SSH_AGENT_SUCCESS, otherwise it MUST
+		reply with SSH_AGENT_FAILURE if the request was refused.
+		</t>
+		<t>
+		This request SHOULD be honoured regardless of
+		any agent policy that limits actions that a given
+		client may take, as otherwise a user would be unable to
+		quickly and completely remove their keys in an urgent situation.
 		</t>
 		<t>
 		Specific keys may also be removed:
@@ -595,18 +612,21 @@
 		Where "token id" is an opaque identifier for the hardware token
 		and "PIN" is an optional password or PIN (not typically
 		used), both encoded using UTF-8.
-		Requesting deletion of token-hosted keys MUST
+		Requesting deletion of token-hosted keys SHOULD
 		cause the agent to remove all keys it loaded from the device
 		matching "token id".
+		Similarly to SSH_AGENTC_REMOVE_ALL_IDENTITIES, agents SHOULD
+		honour this request regardless of local policy to allow
+		fast and complete removal of keys.
 		Note: this operation affects the agent only, it SHOULD NOT
-		caese the keys be deleted from the token itself.
+		cause the keys be deleted from the token itself.
 		</t>
 		<t>
-		An agent MUST reply with SSH_AGENT_SUCCESS if the key was
-		deleted or SSH_AGENT_FAILURE if it was not found.
+		An agent MUST reply with SSH_AGENT_SUCCESS keys were
+		deleted or SSH_AGENT_FAILURE if none were found.
 		</t>
 	</section>
-	<section><name>Requesting a list of keys</name>
+	<section anchor="listkeys"><name>Requesting a list of keys</name>
 		<t>
 		A client may request a list of keys from an agent using the
 		following message:
@@ -624,7 +644,9 @@
 		</sourcecode>
 		<t>
 		Where "nkeys" indicates the number of keys to follow.
-		Following the preamble are zero or more keys, each encoded as:
+		Following the preamble are zero or more keys, representing the
+		keys the agent makes available to the client with each
+		encoded as:
 		</t>
 		<sourcecode>
     string           key blob
@@ -636,7 +658,7 @@
 		human-readable comment encoded as a UTF-8 string.
 		</t>
 	</section>
-	<section><name>Private key operations</name>
+	<section anchor="privkeyops"><name>Private key operations</name>
 		<t>
 		A client may request the agent perform a
 		private key signature operation using the
@@ -728,7 +750,7 @@
 		SSH_AGENT_FAILURE.
 		</t>
 	</section>
-	<section><name>Extension mechanism</name>
+	<section anchor="extreq"><name>Extension mechanism</name>
 		<t>
 		The agent protocol includes an optional extension mechanism
 		that allows vendor-specific and experimental messages to be
@@ -810,8 +832,9 @@
 	endpoint. On Unix-like systems, it is typical to arrange for
 	the agent to listen on a filesystem-based Unix domain socket.
 	On Microsoft Windows, it is usual to use a Windows Named Pipe.
-	Access to these endpoints should be controlled as discussed in
-	<xref target="Security" />.
+	Access to these endpoints SHOULD be controlled as discussed in
+	<xref target="Security" />. Multiple clients may access a single
+	agent by making connections to these sockets.
 	</t>
 	<t>
 	In both cases, it is common to expose the name or address of the
@@ -1041,9 +1064,11 @@
 
 <section anchor="IANA"><name>IANA Considerations</name>
 	<t>
-	This protocol requires four registries be established, one for
-	message type numbers, one for constraints, one for signature request
-	flags and one for extension request names. Additionally,
+	This protocol requires five registries be established, one for
+	message type numbers, one for constraint numbers,
+	one for signature request
+	flags, one for constraint extension names
+	and one for extension request names. Additionally,
 	new codepoints are requested in three existing registries.
 	</t>
 	<section><name>Guidance for Designated Experts</name>
@@ -1064,13 +1089,17 @@
 	</t>
 	<t>
 	The available number of code points in the SSH agent protocol
-	numbers (<xref target="agentnum" />) and SSH agent signature
+	numbers (<xref target="agentnum" />), constraint numbers
+	(<xref target="constraintnum" />) and SSH agent signature
 	flags (<xref target="sigflag" />) registries are limited,
 	so the DE is requested to ensure the use of code points is very well
-	justified. For the SSH agent protocol numbers, named extension
+	justified. For the SSH agent protocol message numbers, named extension
 	requests (<xref target="reqname" />) provide an alternative for most
 	uses with no practical limitation on the number of available code
 	points.
+	For key constraint numbers, the constraint extension
+	mechanism (<xref target="contraintext" />) provides a similar
+	alternative that is not limited by available code points.
 	</t>
 	</section>
 	<section anchor="agentnum"><name>New registry: SSH agent protocol message type numbers</name>
@@ -1095,31 +1124,31 @@
 <tr><td>2</td><td>reserved</td><td>thisrfc, <xref target="reservednum" /></td></tr>
 <tr><td>3</td><td>reserved</td><td>thisrfc, <xref target="reservednum" /></td></tr>
 <tr><td>4</td><td>reserved</td><td>thisrfc, <xref target="reservednum" /></td></tr>
-<tr><td>5</td><td>SSH_AGENT_FAILURE</td><td>thisrfc, <xref target="messagenum" /></td></tr>
-<tr><td>6</td><td>SSH_AGENT_SUCCESS</td><td>thisrfc, <xref target="messagenum" /></td></tr>
+<tr><td>5</td><td>SSH_AGENT_FAILURE</td><td>thisrfc, Sections <xref target="genericresp" format="counter" /> and <xref target="messagenum" format="counter" /></td></tr>
+<tr><td>6</td><td>SSH_AGENT_SUCCESS</td><td>thisrfc, Sections <xref target="genericresp" format="counter" /> and <xref target="messagenum" format="counter" /></td></tr>
 <tr><td>7</td><td>reserved</td><td>thisrfc, <xref target="reservednum" /></td></tr>
 <tr><td>8</td><td>reserved</td><td>thisrfc, <xref target="reservednum" /></td></tr>
 <tr><td>9</td><td>reserved</td><td>thisrfc, <xref target="reservednum" /></td></tr>
 <tr><td>10</td><td>reserved</td><td>thisrfc, <xref target="reservednum" /></td></tr>
-<tr><td>11</td><td>SSH_AGENTC_REQUEST_IDENTITIES</td><td>thisrfc, <xref target="messagenum" /></td></tr>
-<tr><td>12</td><td>SSH_AGENT_IDENTITIES_ANSWER</td><td>thisrfc, <xref target="messagenum" /></td></tr>
-<tr><td>13</td><td>SSH_AGENTC_SIGN_REQUEST</td><td>thisrfc, <xref target="messagenum" /></td></tr>
-<tr><td>14</td><td>SSH_AGENT_SIGN_RESPONSE</td><td>thisrfc, <xref target="messagenum" /></td></tr>
+<tr><td>11</td><td>SSH_AGENTC_REQUEST_IDENTITIES</td><td>thisrfc, Sections <xref target="listkeys" format="counter" /> and <xref target="messagenum" format="counter" /></td></tr>
+<tr><td>12</td><td>SSH_AGENT_IDENTITIES_ANSWER</td><td>thisrfc, Sections <xref target="listkeys" format="counter" /> and <xref target="messagenum" format="counter" /></td></tr>
+<tr><td>13</td><td>SSH_AGENTC_SIGN_REQUEST</td><td>thisrfc, Sections <xref target="privkeyops" format="counter" /> and <xref target="messagenum" format="counter" /></td></tr>
+<tr><td>14</td><td>SSH_AGENT_SIGN_RESPONSE</td><td>thisrfc, Sections <xref target="privkeyops" format="counter" /> and <xref target="messagenum" format="counter" /></td></tr>
 <tr><td>15</td><td>reserved</td><td>thisrfc, <xref target="reservednum" /></td></tr>
 <tr><td>16</td><td>reserved</td><td>thisrfc, <xref target="reservednum" /></td></tr>
-<tr><td>17</td><td>SSH_AGENTC_ADD_IDENTITY</td><td>thisrfc, <xref target="messagenum" /></td></tr>
-<tr><td>18</td><td>SSH_AGENTC_REMOVE_IDENTITY</td><td>thisrfc, <xref target="messagenum" /></td></tr>
-<tr><td>19</td><td>SSH_AGENTC_REMOVE_ALL_IDENTITIES</td><td>thisrfc, <xref target="messagenum" /></td></tr>
-<tr><td>20</td><td>SSH_AGENTC_ADD_SMARTCARD_KEY</td><td>thisrfc, <xref target="messagenum" /></td></tr>
-<tr><td>21</td><td>SSH_AGENTC_REMOVE_SMARTCARD_KEY</td><td>thisrfc, <xref target="messagenum" /></td></tr>
-<tr><td>22</td><td>SSH_AGENTC_LOCK</td><td>thisrfc, <xref target="messagenum" /></td></tr>
-<tr><td>23</td><td>SSH_AGENTC_UNLOCK</td><td>thisrfc, <xref target="messagenum" /></td></tr>
+<tr><td>17</td><td>SSH_AGENTC_ADD_IDENTITY</td><td>thisrfc, Sections <xref target="addkeys" format="counter" /> and <xref target="messagenum" format="counter" /></td></tr>
+<tr><td>18</td><td>SSH_AGENTC_REMOVE_IDENTITY</td><td>thisrfc, Sections <xref target="rmkeys" format="counter" /> and <xref target="messagenum" format="counter" /></td></tr>
+<tr><td>19</td><td>SSH_AGENTC_REMOVE_ALL_IDENTITIES</td><td>thisrfc, Sections <xref target="rmkeys" format="counter" /> and <xref target="messagenum" format="counter" /></td></tr>
+<tr><td>20</td><td>SSH_AGENTC_ADD_SMARTCARD_KEY</td><td>thisrfc, Sections <xref target="addtoken" format="counter" /> and <xref target="messagenum" format="counter" /></td></tr>
+<tr><td>21</td><td>SSH_AGENTC_REMOVE_SMARTCARD_KEY</td><td>thisrfc, Sections <xref target="rmkeys" format="counter" /> and <xref target="messagenum" format="counter" /></td></tr>
+<tr><td>22</td><td>SSH_AGENTC_LOCK</td><td>thisrfc, Sections <xref target="lock" format="counter" /> and <xref target="messagenum" format="counter" /></td></tr>
+<tr><td>23</td><td>SSH_AGENTC_UNLOCK</td><td>thisrfc, Sections <xref target="lock" format="counter" /> and <xref target="messagenum" format="counter" /></td></tr>
 <tr><td>24</td><td>reserved</td><td>thisrfc, <xref target="reservednum" /></td></tr>
-<tr><td>25</td><td>SSH_AGENTC_ADD_ID_CONSTRAINED</td><td>thisrfc, <xref target="messagenum" /></td></tr>
-<tr><td>26</td><td>SSH_AGENTC_ADD_SMARTCARD_KEY_CONSTRAINED</td><td>thisrfc, <xref target="messagenum" /></td></tr>
-<tr><td>27</td><td>SSH_AGENTC_EXTENSION</td><td>thisrfc, <xref target="messagenum" /></td></tr>
-<tr><td>28</td><td>SSH_AGENT_EXTENSION_FAILURE</td><td>thisrfc, <xref target="messagenum" /></td></tr>
-<tr><td>29</td><td>SSH_AGENT_EXTENSION_RESPONSE</td><td>thisrfc, <xref target="messagenum" /></td></tr>
+<tr><td>25</td><td>SSH_AGENTC_ADD_ID_CONSTRAINED</td><td>thisrfc, Sections <xref target="addkeys" format="counter" /> and <xref target="messagenum" format="counter" /></td></tr>
+<tr><td>26</td><td>SSH_AGENTC_ADD_SMARTCARD_KEY_CONSTRAINED</td><td>thisrfc, Sections <xref target="addtoken" format="counter" /> and <xref target="messagenum" format="counter" /></td></tr>
+<tr><td>27</td><td>SSH_AGENTC_EXTENSION</td><td>thisrfc, Sections <xref target="extreq" format="counter" /> and <xref target="messagenum" format="counter" /></td></tr>
+<tr><td>28</td><td>SSH_AGENT_EXTENSION_FAILURE</td><td>thisrfc, Sections <xref target="extreq" format="counter" /> and <xref target="messagenum" format="counter" /></td></tr>
+<tr><td>29</td><td>SSH_AGENT_EXTENSION_RESPONSE</td><td>thisrfc, Sections <xref target="extreq" format="counter" /> and <xref target="messagenum" format="counter" /></td></tr>
 <tr><td>240-255</td><td>Private Use</td><td>thisrfc, <xref target="messagenum" /></td></tr>
 </tbody>
 </table>
@@ -1145,6 +1174,18 @@
 <tr><td>255</td><td>SSH_AGENT_CONSTRAIN_EXTENSION</td><td>thisrfc, <xref target="constraintid" /></td></tr>
 </tbody>
 </table>
+	</section>
+	<section anchor="constraintexts"><name>New registry: SSH agent key constraint extension names</name>
+		<t>
+		This registry, titled "SSH agent key constraint extension names"
+		records the names used in the SSH_AGENT_CONSTRAIN_EXTENSION
+		constraint extension type (<xref target="contraintext" />).
+		It should be created in the Secure Shell (SSH) Protocol
+		Parameters registry group <xref target="IANA-SSH" />.
+		Its initial state should be empty.
+		Future key constraint number allocations shall occur via
+		Expert Review as per <xref target="RFC8126" />.
+		</t>
 	</section>
 	<section anchor="sigflag"><name>New registry: SSH agent signature flags</name>
 		<t>
