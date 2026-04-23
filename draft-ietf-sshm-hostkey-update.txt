@@ -4,12 +4,12 @@
 
 Internet Engineering Task Force                                D. Miller
 Internet-Draft                                                   OpenSSH
-Intended status: Standards Track                          29 August 2025
-Expires: 2 March 2026
+Intended status: Standards Track                            6 April 2026
+Expires: 8 October 2026
 
 
                    Host key update mechanism for SSH
-                  draft-miller-sshm-hostkey-update-02
+                   draft-ietf-sshm-hostkey-update-00
 
 Abstract
 
@@ -34,11 +34,11 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 2 March 2026.
+   This Internet-Draft will expire on 8 October 2026.
 
 Copyright Notice
 
-   Copyright (c) 2025 IETF Trust and the persons identified as the
+   Copyright (c) 2026 IETF Trust and the persons identified as the
    document authors.  All rights reserved.
 
    This document is subject to BCP 78 and the IETF Trust's Legal
@@ -53,9 +53,9 @@ Copyright Notice
 
 
 
-Miller                    Expires 2 March 2026                  [Page 1]
+Miller                   Expires 8 October 2026                 [Page 1]
 
-Internet-Draft      Host key update mechanism for SSH        August 2025
+Internet-Draft      Host key update mechanism for SSH         April 2026
 
 
 Table of Contents
@@ -109,9 +109,9 @@ Table of Contents
 
 
 
-Miller                    Expires 2 March 2026                  [Page 2]
+Miller                   Expires 8 October 2026                 [Page 2]
 
-Internet-Draft      Host key update mechanism for SSH        August 2025
+Internet-Draft      Host key update mechanism for SSH         April 2026
 
 
    Excluding certified keys such as "pgp-sign-rsa" (Section 6.6 of
@@ -165,9 +165,9 @@ Internet-Draft      Host key update mechanism for SSH        August 2025
 
 
 
-Miller                    Expires 2 March 2026                  [Page 3]
+Miller                   Expires 8 October 2026                 [Page 3]
 
-Internet-Draft      Host key update mechanism for SSH        August 2025
+Internet-Draft      Host key update mechanism for SSH         April 2026
 
 
 1.1.  Requirements Language
@@ -221,9 +221,9 @@ Internet-Draft      Host key update mechanism for SSH        August 2025
 
 
 
-Miller                    Expires 2 March 2026                  [Page 4]
+Miller                   Expires 8 October 2026                 [Page 4]
 
-Internet-Draft      Host key update mechanism for SSH        August 2025
+Internet-Draft      Host key update mechanism for SSH         April 2026
 
 
 2.2.  hostkeys-prove request
@@ -277,9 +277,9 @@ Internet-Draft      Host key update mechanism for SSH        August 2025
 
 
 
-Miller                    Expires 2 March 2026                  [Page 5]
+Miller                   Expires 8 October 2026                 [Page 5]
 
-Internet-Draft      Host key update mechanism for SSH        August 2025
+Internet-Draft      Host key update mechanism for SSH         April 2026
 
 
    When a client receives a proof for new host keys, it MUST verify the
@@ -333,9 +333,9 @@ Internet-Draft      Host key update mechanism for SSH        August 2025
 
 
 
-Miller                    Expires 2 March 2026                  [Page 6]
+Miller                   Expires 8 October 2026                 [Page 6]
 
-Internet-Draft      Host key update mechanism for SSH        August 2025
+Internet-Draft      Host key update mechanism for SSH         April 2026
 
 
        string           "hostkeys-prove-00@openssh.com"
@@ -389,9 +389,9 @@ Internet-Draft      Host key update mechanism for SSH        August 2025
 
 
 
-Miller                    Expires 2 March 2026                  [Page 7]
+Miller                   Expires 8 October 2026                 [Page 7]
 
-Internet-Draft      Host key update mechanism for SSH        August 2025
+Internet-Draft      Host key update mechanism for SSH         April 2026
 
 
 3.1.  Host key rotation
@@ -445,9 +445,9 @@ Internet-Draft      Host key update mechanism for SSH        August 2025
 
 
 
-Miller                    Expires 2 March 2026                  [Page 8]
+Miller                   Expires 8 October 2026                 [Page 8]
 
-Internet-Draft      Host key update mechanism for SSH        August 2025
+Internet-Draft      Host key update mechanism for SSH         April 2026
 
 
 4.2.  Additions to SSH Extension Names
@@ -501,9 +501,9 @@ Internet-Draft      Host key update mechanism for SSH        August 2025
 
 
 
-Miller                    Expires 2 March 2026                  [Page 9]
+Miller                   Expires 8 October 2026                 [Page 9]
 
-Internet-Draft      Host key update mechanism for SSH        August 2025
+Internet-Draft      Host key update mechanism for SSH         April 2026
 
 
 5.3.  Denial of service
@@ -557,9 +557,9 @@ Internet-Draft      Host key update mechanism for SSH        August 2025
 
 
 
-Miller                    Expires 2 March 2026                 [Page 10]
+Miller                   Expires 8 October 2026                [Page 10]
 
-Internet-Draft      Host key update mechanism for SSH        August 2025
+Internet-Draft      Host key update mechanism for SSH         April 2026
 
 
    The following example projects maintain an implementation of this
@@ -613,9 +613,9 @@ Internet-Draft      Host key update mechanism for SSH        August 2025
 
 
 
-Miller                    Expires 2 March 2026                 [Page 11]
+Miller                   Expires 8 October 2026                [Page 11]
 
-Internet-Draft      Host key update mechanism for SSH        August 2025
+Internet-Draft      Host key update mechanism for SSH         April 2026
 
 
    [RFC4252]  Ylonen, T. and C. Lonvick, Ed., "The Secure Shell (SSH)
@@ -669,9 +669,9 @@ Internet-Draft      Host key update mechanism for SSH        August 2025
 
 
 
-Miller                    Expires 2 March 2026                 [Page 12]
+Miller                   Expires 8 October 2026                [Page 12]
 
-Internet-Draft      Host key update mechanism for SSH        August 2025
+Internet-Draft      Host key update mechanism for SSH         April 2026
 
 
    [IANA-SSH-EXT]
@@ -725,4 +725,4 @@ Author's Address
 
 
 
-Miller                    Expires 2 March 2026                 [Page 13]
+Miller                   Expires 8 October 2026                [Page 13]
