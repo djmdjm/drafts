@@ -1,0 +1,401 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-model href="rfc7991bis.rnc"?>
+<rfc
+  xmlns:xi="http://www.w3.org/2001/XInclude"
+  category="std"
+  docName="draft-miller-sshm-mldsa65-ed25519-composite-sigs-00"
+  ipr="trust200902"
+  obsoletes=""
+  updates=""
+  consensus="true"
+  submissionType="IETF"
+  xml:lang="en"
+  version="3">
+
+<front>
+	<title abbrev="MLDSA65-Ed25519 SSH">ML-DSA 65/Ed255192 Composite Signatures in SSH</title>
+	<seriesInfo name="Internet-Draft" value="draft-miller-sshm-mldsa65-ed25519-composite-sigs-00"/>
+	<author fullname="Damien Miller" initials="D." surname="Miller">
+		<organization>OpenSSH</organization>
+		<address>
+			<email>djm@openssh.com</email>
+			<uri>https://www.openssh.com/</uri>
+		</address>
+	</author>
+	<date />
+	<area>Security</area>
+	<workgroup>Secure Shell (SSHM)</workgroup>
+	<keyword>ssh</keyword>
+	<keyword>mldsa</keyword>
+	<keyword>ed25519</keyword>
+	<keyword>hybrid</keyword>
+	<keyword>post-quantum</keyword>
+	<abstract>
+		<t>
+		This document specifies the integration of the
+		MLDSA65-Ed25519-SHA512 composite signature scheme
+		into the Secure Shell (SSH) protocol.
+		This scheme combines the post-quantum Module-Lattice
+		Digital Signature Algorithm (ML-DSA) with the
+		classical elliptic curve Ed25519 signature algorithm
+		to provide security against both quantum and classical
+		adversaries.
+		</t>
+	</abstract>
+</front>
+
+<middle>
+<section><name>Introduction</name>
+	<t>
+	The Secure Shell (SSH) protocol <xref target="RFC4251" /> is
+	a protocol for secure remote login and other secure network
+	services over an untrusted network.
+	</t>
+	<t>
+	The expected arrival of quantum computing poses a threat to
+	traditional asymmetric cryptography. Post-quantum algorithms
+	such as ML-DSA <xref target="FIPS204" /> have been developed
+	to remain secure against a quantum computer-equipped
+	adversary.
+	However, given the relative novelty of the post-quantum
+	algoritms, it is desirable to use composite schemes that
+	combine post-quantum and classical algorithms to protect
+	against quantum attacks while promising to be "no worse" than
+	the chosen classical algorithm should a vulnerability be
+	discovered in the post-quantum algorithm or its
+	implementation.
+	</t>
+	<t>
+	This document specifies a composite signature scheme for SSH,
+	mapping the COMPSIG-MLDSA65-Ed25519-SHA512 scheme defined in
+	<xref target="I-D.ietf-lamps-pq-composite-sigs" /> to the SSH
+	protocol <xref target="RFC4253" /> using the identifier
+	ssh-mldsa65-ed25519@openssh.com.
+	</t>
+</section>
+
+<section anchor="requirements"><name>Requirements Language</name>
+	<t>
+	The key words "MUST", "MUST NOT", "REQUIRED", "SHALL",
+	"SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED",
+	"NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document
+	are to be interpreted as described in BCP 14
+	<xref target="RFC2119"/> <xref target="RFC8174"/> when,
+	and only when, they appear in all capitals, as shown here.
+	</t>
+</section>
+
+<section><name>Terminology</name>
+	<t>
+	All encoding data types ("byte", "string", etc.) are
+	as specified in <xref target="RFC4251" section="5" />.
+<!--
+	Additionally, the type "byte[]" without a specified length
+	within the square brackets indicates an unadorned sequence of
+	zero or more bytes where the length is determined by context.
+-->
+	</t>
+	<t>
+	All length units are given in bytes unless otherwise specified.
+	</t>
+</section>
+
+<section><name>The ssh-mldsa65-ed25519@openssh.com Algorithm</name>
+	<t>
+	The algorithm name for this composite signature scheme is
+	"ssh-mldsa65-ed25519@openssh.com". The underlying key
+	generation, signing and verification primitives are as
+	specified in
+	<xref target="I-D.ietf-lamps-pq-composite-sigs" />, but are
+	also described briefly below.
+	</t>
+
+	<section><name>Key generation</name>
+		<t>
+		Keys are generated using the process specified in
+		<xref target="I-D.ietf-lamps-pq-composite-sigs" section="3.1" />.
+		Specifically, ML-DSA and Ed25519 keys are generated
+		separately from seeds and the resultant public for
+		each are combined to form the composite public key.
+		Private keys are combined as seeds and not as
+		expanded keys.
+		</t>
+		<t>
+		ML-DSA key generation uses the ML-DSA.KeyGen_internal
+		algorithm as defined in <xref target="FIPS204" />
+		section 6.1 and not the usual ML-DSA.KeyGen algorithm
+		as the latter emits an expanded private key and not
+		the required seed.
+		</t>
+		<t>
+		Ed25519 key generation is described in
+		<xref target="RFC8032" section="5.1.5" />.
+		</t>
+		<t>
+		Seeds to both ML-DSA and Ed25519 MUST be sourced from a
+		cryptographically sound source, such as a CSPRNG/RBG.
+		</t>
+		<section anchor="pubkey"><name>Composite raw public key</name>
+			<t>
+			The resultant public keys from the respective
+			ML-DSA and Ed25519 key generation algorithms
+			are combined by simple concatenation to form
+			a composite public key. Specifically it
+			consists of the raw ML-DSA-65 public key
+			(1952 bytes) and the Ed25519 public key (32
+			bytes), for a total of 1984 bytes:
+			</t>
+			<sourcecode>
+    byte[1952] mldsa_pk
+    byte[32]   ed25519_pk
+			</sourcecode>
+			<t>
+			This 1984-byte combination is referred to as
+			"composite_public_key" henceforth in this
+			document.
+			</t>
+		</section>
+		<section anchor="privkey"><name>Composite raw private key</name>
+			<t>
+			The composite private key is also a
+			concatenation, but its elements are the
+			private key seeds for the respective
+			algorithms. Each of these seeds is 32 bytes.
+			</t>
+			<sourcecode>
+    byte[32]  mldsa_seed
+    byte[32]  ed25519_seed
+			</sourcecode>
+			<t>
+			This 64-byte combination is referred to as
+			"composite_private_key" henceforth in this
+			document.
+			</t>
+		</section>
+	</section>
+
+	<section><name>SSH Public Key Format</name>
+		<t>
+		The "ssh-mldsa65-ed25519@openssh.com" public key as
+		it appears in the SSH protocol has the following
+		format:
+		</t>
+		<sourcecode>
+    string    "ssh-mldsa65-ed25519@openssh.com"
+    string    composite_public_key
+		</sourcecode>
+		<t>
+		Where "composite_public_key" is as described in
+		<xref target="pubkey" />.
+		</t>
+	</section>
+
+	<section><name>SSH Private Key Format</name>
+		<t>
+		When adding a key to an agent
+		<xref target="I-D.ietf-sshm-ssh-agent" />
+		using the SSH_AGENTC_ADD_IDENTITY or
+		SSH_AGENTC_ADD_ID_CONSTRAINED
+		messages, the key data MUST have the following
+		format:
+		</t>
+		<sourcecode>
+    string    "ssh-mldsa65-ed25519@openssh.com"
+    string    composite_public_key
+    string    composite_private_key
+		</sourcecode>
+		<t>
+		Where "composite_public_key" is as described in
+		<xref target="pubkey" /> and "composite_private_key"
+		is as described in <xref target="privkey" />.
+		</t>
+		<t>
+		This private key serialisation may also be used as the basis of
+		on-disk key formats, though these are beyond the scope of this
+		document.
+		</t>
+	</section>
+
+	<section><name>Signatures</name>
+		<section anchor="sig"><name>Signature Generation</name>
+			<t>
+		To sign a message M, the signer first constructs a message
+		representative M' as follows:
+			</t>
+			<sourcecode>
+    M' = Prefix || Label || len(ctx) || ctx || SHA512(M)
+			</sourcecode>
+			<t>
+		Where:
+			</t>
+			<ul>
+				<li>
+				Prefix: The ASCII string
+				"CompositeAlgorithmSignatures2025"
+			        [43 6F 6D 70 6F 73 69 74 65 41 6C 67
+				6F 72 69 74 68 6D 53 69 67 6E 61 74
+				75 72 65 73 32 30 32 35].
+				</li>
+				<li>
+				Label: The ASCII string
+				"COMPSIG-MLDSA65-Ed25519-SHA512"
+			        [43 4F 4D 50 53 49 47 2D 4D 4C 44 53
+				41 36 35 2D 45 64 32 35 35 31 39 2D
+				53 48 41 35 31 32].
+				</li>
+				<li>
+				len(ctx): A single byte representing
+				the length of the context string.
+				</li>
+				<li>
+				ctx: The context string.
+				</li>
+				<li>
+				SHA512(M): The SHA-512 hash of the
+				original message M.
+				</li>
+			</ul>
+			<t>
+			The signer then computes:
+			</t>
+			<ul>
+				<li>
+				mldsa_sig = ML-DSA-65.Sign(mldsa_sk, M', ctx=Label)
+				</li>
+				<li>
+				ed25519_sig = Ed25519.Sign(ed25519_sk, M')
+				</li>
+			</ul>
+			<t>
+			The final composite signature is the concatenation of
+			mldsa_sig and ed25519_sig.
+			</t>
+			<sourcecode>
+    byte[3309] mldsa_sig
+    byte[64]   ed25519_sig
+			</sourcecode>
+			<t>
+			This 3373-byte combination is henceforth
+			referred to as "composite_signature".
+			</t>
+		</section>
+
+		<section><name>Signature Verification</name>
+			<t>
+			To verify a signature, the verifiere
+			reconstructs M' using the same process as
+			defined for generation. The signature is
+			valid if and only if both underlying
+			signature verifications succeed:
+			</t>
+			<ul>
+				<li>
+				ML-DSA-65.Verify(mldsa_pk, M', mldsa_sig, ctx=Label)
+				</li>
+				<li>
+				Ed25519.Verify(ed25519_pk, M', ed25519_sig)
+				</li>
+			</ul>
+		</section>
+
+		<section><name>SSH signature wire encoding</name>
+			<t>
+			Signatures are represented in SSH using
+			the following format:
+			</t>
+			<sourcecode>
+    string    "ssh-mldsa65-ed25519@openssh.com"
+    string    composite_signature
+			</sourcecode>
+			<t>
+		Where "composite_signature" is as defined in
+		<xref target="sig" />.
+			</t>
+		</section>
+
+		<section><name>Signture contexts</name>
+			<t>
+			The COMPSIG-MLDSA65-Ed25519-SHA512 signature
+			algorithm, like its underlying ML-DSA
+			component, accepts a Context parameter that
+			may be used to enforce domain separation
+			between signatues.
+			</t>
+			<t>
+			TODO TODO TODO
+			In all cases in the SSH protocol, this
+			context value is the empty string, but
+			if we ever change our minds then this is
+			where we'd describe what contexts are used
+			for each signature/verification operation.
+			TODO TODO TODO.
+			</t>
+		</section>
+	</section>
+</section>
+
+<section><name>Security Considerations</name>
+	<t>
+	The security of this composite scheme depends on the strength of
+	both component algorithms. An adversary must break both ML-DSA-65
+	and Ed25519 to forge a signature.
+	</t>
+	<t>
+	Implementations MUST NOT reuse component key material between
+	composite and non-composite keys, or between multiple composite
+	keys.
+	</t>
+</section>
+
+<!--
+<section><name>IANA Considerations</name>
+	<t>
+	IANA is requested to register the algorithm name
+	"ssh-mldsa65-ed25519" in the "Public Key Algorithm Names"
+	registry.
+	</t>
+</section>
+-->
+
+</middle>
+
+<back>
+	<references><name>References</name>
+		<references><name>Normative References</name>
+			<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.2119.xml" />
+			<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.4251.xml" />
+			<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.4253.xml" />
+			<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8032.xml" />
+			<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8174.xml" />
+			<xi:include href="https://datatracker.ietf.org/doc/bibxml3/draft-ietf-lamps-pq-composite-sigs-19.xml" />
+
+		<reference anchor="FIPS204">
+			<front>
+				<title>Module-lattice-based digital signature standard</title>
+				<author><organization/></author>
+				<date month="August" year="2024"/>
+			</front>
+			<seriesInfo name="FIPS" value="204" />
+			<seriesInfo name="DOI" value="10.6028/nist.fips.204"/>
+			<refcontent>National Institute of Standards and Technology (U.S.)</refcontent>
+		</reference>
+<!--
+			<reference anchor="FIPS204">
+				<front>
+					<title>Module-Lattice-Based Digital Signature Standard</title>
+					<author>
+						<organization>National Institute of Standards and Technology</organization>
+					</author>
+					<date month="August" year="2024" />
+				</front>
+				<seriesInfo name="FIPS" value="204" />
+				<seriesInfo name="DOI" value="10.6028/NIST.FIPS.204" />
+			</reference> -->
+		</references>
+
+		<references><name>Informative References</name>
+			<xi:include href="https://datatracker.ietf.org/doc/bibxml3/draft-ietf-sshm-ssh-agent-15.xml" />
+		</references>
+	</references>
+</back>
+</rfc>
