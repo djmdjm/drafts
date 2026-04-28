@@ -9,7 +9,7 @@
 ]>
 <rfc
   xmlns:xi="http://www.w3.org/2001/XInclude"
-  category="info"
+  category="std"
   docName="draft-ietf-sshm-cert-00"
   ipr="trust200902"
   obsoletes=""
@@ -43,7 +43,7 @@
 	<keyword>certificate</keyword>
 	<abstract>
 		<t>
-		This document presents a simple certificate format that may
+		This document presents a lightweight certificate format that may
 		be used in the context of the Secure Shell (SSH) protocol for
 		user and host authentication.
 		</t>
