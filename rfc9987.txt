@@ -248,10 +248,10 @@ Table of Contents
 
 5.2.1.  DSA Keys
 
-   Digital Signature Algorithm (DSA) keys have key type "ssh-dss" and
-   are defined in [RFC4253].  They may be added to the agent using the
-   following message.  The "constraints" field is only present for the
-   SSH_AGENTC_ADD_ID_CONSTRAINED message.
+   Digital Signature Algorithm (DSA) keys have key type name "ssh-dss"
+   and are defined in [RFC4253].  They may be added to the agent using
+   the following message.  The "constraints" field is only present for
+   the SSH_AGENTC_ADD_ID_CONSTRAINED message.
 
        byte             SSH_AGENTC_ADD_IDENTITY or
                         SSH_AGENTC_ADD_ID_CONSTRAINED
@@ -306,15 +306,14 @@ Table of Contents
 
    The first value is the EdDSA public key ENC(A).  The second value is
    a concatenation of the private key k and the public ENC(A) key (this
-   redundant repetition of the public key is to maintain compatibility
-   with widely deployed implementations).  The contents and
-   interpretation of the ENC(A) and k values are defined by Section 3.2
-   of [RFC8032].
+   repetition of the public key is to maintain compatibility with widely
+   deployed implementations).  The contents and interpretation of the
+   ENC(A) and k values are defined by Section 3.2 of [RFC8032].
 
 5.2.4.  RSA Keys
 
-   RSA keys have key type "ssh-rsa" and are defined in [RFC4253].  They
-   may be added to the agent using the following message.  The
+   RSA keys have key type name "ssh-rsa" and are defined in [RFC4253].
+   They may be added to the agent using the following message.  The
    "constraints" field is only present for the
    SSH_AGENTC_ADD_ID_CONSTRAINED message.
 
@@ -488,8 +487,9 @@ Table of Contents
    cause the agent to remove all keys it loaded from the device matching
    "token id".  Similarly to SSH_AGENTC_REMOVE_ALL_IDENTITIES, agents
    SHOULD honour this request regardless of local policy to allow fast
-   and complete removal of keys.  Note: this operation affects the agent
-   only; it SHOULD NOT cause the keys be deleted from the token itself.
+   and complete removal of keys.  Removing a token-hosted key affects
+   the agent only; it SHOULD NOT cause the keys be deleted from the
+   token itself.
 
    An agent MUST reply with SSH_AGENT_SUCCESS if the keys were deleted
    or SSH_AGENT_FAILURE if none were found.
@@ -655,12 +655,12 @@ Table of Contents
 
 7.  Forwarding Access to an Agent
 
-   The agent protocol may be forwarded over an SSH connection, using the
-   [RFC4254] connection protocol, allowing agent forwarding to be
-   requested for any session channel, using a model that is similar to
-   the connection protocol's support for X11 Forwarding (Section 6.3 of
-   [RFC4254]).  This feature is OPTIONAL for the SSH protocol and agent
-   implementations.
+   Using the connection protocol described in [RFC4254], the agent
+   protocol may be forwarded over an SSH connection.  This allows agent
+   forwarding to be requested for any session channel using a model that
+   is similar to the connection protocol's support for X11 Forwarding
+   (Section 6.3 of [RFC4254]).  This feature is OPTIONAL for the SSH
+   protocol and agent implementations.
 
 7.1.  Advertising Agent Forwarding Support
 
@@ -735,7 +735,7 @@ Table of Contents
    requests may fail.  Overlapping requests may occur because the SSH
    connection protocol [RFC4254] allows multiple user sessions over a
    single transport (see [RFC4253]), which may each request use of the
-   agentcw independently and potentially concurrently.
+   agent independently and potentially concurrently.
 
    An SSH client MAY accept agent connection requests (subject to
    authorisation) without a prior agent forwarding request having been
@@ -1168,22 +1168,22 @@ Table of Contents
    otherwise, the user has only an all-or-nothing choice about whether
    to forward an agent.
 
-   Implementation of token/smartcard-hosted keys requires some care,
-   too.  On some systems, tokens may be invoked by providing a path to a
-   shared library that must be loaded to make use of keys hosted on the
-   device (a path to a library for a particular PKCS#11 module, for
-   example).  Loading a shared library on most platforms implies
-   automatic execution of code in that library in the address space of
-   the process that loads it.  To avoid the loading of potentially
-   hostile code, agents that support loading token-hosted keys via a
-   library path SHOULD ensure that only trusted token provider libraries
-   are loadable.  Additionally, agents SHOULD ensure that loaded token
-   library code cannot gain access to other keys loaded in the agent and
-   MAY disallow remote clients from loading token keys entirely.
-   Protection for existing keys from a token library code may be
-   achieved by loading the token library into a separate process to the
-   agent and arranging for the agent to invoke token operations to this
-   process via IPC.
+   Implementation of keys hosted by a token or smartcard requires some
+   care, too.  On some systems, tokens may be invoked by providing a
+   path to a shared library that must be loaded to make use of keys
+   hosted on the device (a path to a library for a particular PKCS#11
+   module, for example).  Loading a shared library on most platforms
+   implies automatic execution of code in that library in the address
+   space of the process that loads it.  To avoid the loading of
+   potentially hostile code, agents that support loading token-hosted
+   keys via a library path SHOULD ensure that only trusted token
+   provider libraries are loadable.  Additionally, agents SHOULD ensure
+   that loaded token library code cannot gain access to other keys
+   loaded in the agent and MAY disallow remote clients from loading
+   token keys entirely.  Protection for existing keys from a token
+   library code may be achieved by loading the token library into a
+   separate process to the agent and arranging for the agent to invoke
+   token operations to this process via IPC.
 
    Finally, with respect to the agent locking functionality in
    Section 5.7, an agent SHOULD take countermeasures against brute-force
@@ -1265,23 +1265,23 @@ Table of Contents
               RFC 8126, DOI 10.17487/RFC8126, June 2017,
               <https://www.rfc-editor.org/info/rfc8126>.
 
-   [IANA-SSH-CHANREQ]
-              IANA, "Connection Protocol Channel Types",
+   [IANA-SSH-EXT]
+              IANA, "Connection Protocol Channel Request Names",
               <https://www.iana.org/assignments/ssh-parameters/>.
 
-   [IANA-SSH] IANA, "Secure Shell (SSH) Protocol Parameters",
+   [IANA-SSH-CHANREQ]
+              IANA, "Connection Protocol Channel Types",
               <https://www.iana.org/assignments/ssh-parameters/>.
 
    [IANA-SSH-CHANTYPE]
               IANA, "Extension Names",
               <https://www.iana.org/assignments/ssh-parameters/>.
 
-   [IANA-SSH-EXT]
-              IANA, "Connection Protocol Channel Request Names",
-              <https://www.iana.org/assignments/ssh-parameters/>.
-
    [IANA-PUBKEYS]
               IANA, "Public Key Algorithm Names",
+              <https://www.iana.org/assignments/ssh-parameters/>.
+
+   [IANA-SSH] IANA, "Secure Shell (SSH) Protocol Parameters",
               <https://www.iana.org/assignments/ssh-parameters/>.
 
 Acknowledgments

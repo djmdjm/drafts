@@ -255,7 +255,7 @@ Secure Shell (SSH) Agent Protocol
 		</t>
 		<section anchor="add-dsa"><name>DSA Keys</name>
 			<t>
-			Digital Signature Algorithm (DSA) keys have key type "ssh-dss" and are
+			Digital Signature Algorithm (DSA) keys have key type name "ssh-dss" and are
 			defined in <xref target="RFC4253" />. They
 			may be added to the agent using the following
 			message. The "constraints" field is only
@@ -358,7 +358,7 @@ compatibility with widely deployed implementations).
 			The second value is a concatenation of
 			the private key k
 			and the public
-			ENC(A) key (this redundant repetition of the public key
+			ENC(A) key (this repetition of the public key
 			is to maintain compatibility with widely deployed
 			implementations).
 			The contents and interpretation of the
@@ -368,7 +368,7 @@ compatibility with widely deployed implementations).
 		</section>
 		<section anchor="add-rsa"><name>RSA Keys</name>
 			<t>
-			RSA keys have key type "ssh-rsa" and are
+			RSA keys have key type name "ssh-rsa" and are
 			defined in <xref target="RFC4253" />. They
 			may be added to the agent using the following
 			message. The "constraints" field is only
@@ -638,7 +638,8 @@ SSH_AGENT_FAILURE if none were found.
 
 -->
 		
-		Note: this operation affects the agent only; it <bcp14>SHOULD NOT</bcp14>
+		Removing a token-hosted key affects the agent only;
+		it <bcp14>SHOULD NOT</bcp14>
 		cause the keys be deleted from the token itself.
 		</t>
 		<t>
@@ -875,11 +876,11 @@ is similar to the connection protocol's support for X11 Forwarding
 (Section 6.3 of [RFC4254]).
 
 -->
-	The agent protocol may be forwarded over an SSH connection, using the
-	<xref target="RFC4254" /> connection protocol, allowing agent
-	forwarding to be requested for any session channel, using a model
-	that is similar to the connection protocol's support for X11 Forwarding
-	(<xref target="RFC4254" section="6.3"/>).
+	Using the connection protocol described in <xref target="RFC4254" />,
+	the agent protocol may be forwarded over an SSH connection.
+	This allows agent forwarding to be requested for any session channel
+	using a model that is similar to the connection protocol's support
+	for X11 Forwarding (<xref target="RFC4254" section="6.3"/>).
 	This feature is <bcp14>OPTIONAL</bcp14> for the SSH protocol and agent implementations.
 	</t>
 	<section anchor="fwdext">
@@ -972,7 +973,7 @@ is similar to the connection protocol's support for X11 Forwarding
 		to access the agent from the remote side that happen to overlap
 		prior requests may fail. Overlapping requests may occur because
 		the SSH connection protocol <xref target="RFC4254" /> allows
-		multiple user sessions over a single transport (see <xref target="RFC4253" />), which may each request use of the agentcw
+		multiple user sessions over a single transport (see <xref target="RFC4253" />), which may each request use of the agent
 		independently and potentially concurrently.
 		</t>
 		<t>
@@ -1407,7 +1408,7 @@ Implementation of token keys or smartcard-hosted keys...
 
 	
 	<t>
-	Implementation of token/smartcard-hosted keys requires some care, too.
+	Implementation of keys hosted by a token or smartcard requires some care, too.
 	On some systems, tokens may be invoked by providing a path to a shared
 	library that must be loaded to make use of keys hosted on the device
 	(a path to a library for a particular PKCS#11 module, for example).
@@ -1483,14 +1484,14 @@ Implementation of token keys or smartcard-hosted keys...
 	<references><name>Informative References</name>
 		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.4252.xml" />
 		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8126.xml" />
-		<reference anchor="IANA-SSH-CHANREQ" target="https://www.iana.org/assignments/ssh-parameters/"><front>
-			<title>Connection Protocol Channel Types</title>
+		<reference anchor="IANA-SSH-EXT" target="https://www.iana.org/assignments/ssh-parameters/"><front>
+			<title>Connection Protocol Channel Request Names</title>
 			<author>
 				<organization>IANA</organization>
 			</author>
 		</front></reference>
-		<reference anchor="IANA-SSH" target="https://www.iana.org/assignments/ssh-parameters/"><front>
-			<title>Secure Shell (SSH) Protocol Parameters</title>
+		<reference anchor="IANA-SSH-CHANREQ" target="https://www.iana.org/assignments/ssh-parameters/"><front>
+			<title>Connection Protocol Channel Types</title>
 			<author>
 				<organization>IANA</organization>
 			</author>
@@ -1501,14 +1502,14 @@ Implementation of token keys or smartcard-hosted keys...
 				<organization>IANA</organization>
 			</author>
 		</front></reference>
-		<reference anchor="IANA-SSH-EXT" target="https://www.iana.org/assignments/ssh-parameters/"><front>
-			<title>Connection Protocol Channel Request Names</title>
+		<reference anchor="IANA-PUBKEYS" target="https://www.iana.org/assignments/ssh-parameters/"><front>
+			<title>Public Key Algorithm Names</title>
 			<author>
 				<organization>IANA</organization>
 			</author>
 		</front></reference>
-		<reference anchor="IANA-PUBKEYS" target="https://www.iana.org/assignments/ssh-parameters/"><front>
-			<title>Public Key Algorithm Names</title>
+		<reference anchor="IANA-SSH" target="https://www.iana.org/assignments/ssh-parameters/"><front>
+			<title>Secure Shell (SSH) Protocol Parameters</title>
 			<author>
 				<organization>IANA</organization>
 			</author>
