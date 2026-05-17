@@ -7,24 +7,10 @@
   <!ENTITY wj     "&#8288;">
 ]>
 
-<rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="std" docName="draft-ietf-sshm-ssh-agent-16" number="9987"  ipr="trust200902" obsoletes="" updates="" consensus="true" submissionType="IETF" xml:lang="en" sortRefs="false" symRefs="true" tocInclude="true" version="3">
+<rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="std" docName="draft-ietf-sshm-ssh-agent-16" number="9987"  ipr="trust200902" obsoletes="" updates="" consensus="true" submissionType="IETF" xml:lang="en" sortRefs="true" symRefs="true" tocInclude="true" version="3">
 
 <front>
   <title abbrev="SSH Agent Protocol">Secure Shell (SSH) Agent Protocol</title>
-
-<!-- [rfced] Please note that the title of the document has been
-     updated as follows:
-
-Abbreviations have been expanded per Section 3.6 of RFC 7322 ("RFC
-Style Guide"). Please review.
-
-Original:
-SSH Agent Protocol
-
-Current:
-Secure Shell (SSH) Agent Protocol
--->
-
   
   <seriesInfo name="RFC" value="9987"/>
   <author fullname="Damien Miller" initials="D." surname="Miller">
@@ -308,21 +294,6 @@ Secure Shell (SSH) Agent Protocol
 		</section>
 		<section anchor="add-eddsa"><name>EdDSA Keys</name>
 		<t>
-<!--[rfced] Please review both how we added in an expansion for the
-     abbreviation EdDSA and the possible citation add in the following
-     text.  Note also that we have updated one instance of "EDDSA" to
-     "EdDSA".  Please let us know any objections.
-		      
-Original:
-[RFC8709] defines Ed25519 and Ed448 with key type names "ssh-ed25519"
-and "ssh-ed448" respectively.
-
-
-Current:
-[RFC8709] defines Edwards-curve Digital Signature Algorithm (EdDSA)
-keys (see [RFC8032]) Ed25519 and Ed448 with key type names
-"ssh-ed25519" and "ssh-ed448", respectively.
--->
 		  
 			<xref target="RFC8709" /> defines Edwards-curve Digital Signature Algorithm (EdDSA) keys (see <xref target="RFC8032"/>) Ed25519 and
 			Ed448 with key type names "ssh-ed25519" and
@@ -340,19 +311,7 @@ keys (see [RFC8032]) Ed25519 and Ed448 with key type names
     string           k || ENC(A)
     string           comment
     constraint[]     constraints]]></sourcecode>
-			<t>
-
-<!--[rfced] Do we need both "redundant" and "repetition" here?
-
-Original:
-...(this redundant repetition of the public key is to maintain
-compatibility with widely deployed implementations).
-
-Perhaps:
-...(this repetition of the public key is to maintain
-compatibility with widely deployed implementations).
--->
-			  
+			<t>			  
 			The first value is the EdDSA public key
 			ENC(A).
 			The second value is a concatenation of
@@ -611,33 +570,7 @@ compatibility with widely deployed implementations).
 		matching "token id".
 		Similarly to SSH_AGENTC_REMOVE_ALL_IDENTITIES, agents <bcp14>SHOULD</bcp14>
 		honour this request regardless of local policy to allow
-		fast and complete removal of keys.
-
-<!--[rfced] Please review if any text marked "Note:" should be put in
-     the <aside> element (defined as "a container for content that is
-     semantically less important or tangential to the content that
-     surrounds it" at
-     https://authors.ietf.org/en/rfcxml-vocabulary#aside.
-
-Original:
-Note: this operation affects the agent only, it SHOULD NOT cause the
-keys be deleted from the token itself.
-
--->
-
-<!--[rfced] Please confirm that the following update maintains your
-     intended meaning:
-
-Original:
-An agent MUST reply with SSH_AGENT_SUCCESS keys were deleted or
-SSH_AGENT_FAILURE if none were found.
-
-Current:
-An agent MUST reply with SSH_AGENT_SUCCESS if the keys were deleted or
-SSH_AGENT_FAILURE if none were found.
-
--->
-		
+		fast and complete removal of keys.	
 		Removing a token-hosted key affects the agent only;
 		it <bcp14>SHOULD NOT</bcp14>
 		cause the keys be deleted from the token itself.
@@ -857,25 +790,6 @@ SSH_AGENT_FAILURE if none were found.
 
 <section anchor="fwd"><name>Forwarding Access to an Agent</name>
 <t>
-
-<!--[rfced] Please clarify how these two "using" clauses relate to the
-     sentence:
-
-Original:
-The agent protocol may be forwarded over an SSH connection, using the
-[RFC4254] connection protocol, allowing agent forwarding to be
-requested for any session channel, using a model that is similar to
-the connection protocol's support for X11 Forwarding (Section 6.3 of
-[RFC4254]).
-
-Perhaps:
-Using the connection protocol described in [RFC4254], the agent
-protocol may be forwarded over an SSH connection.  This allows agent
-forwarding to be requested for any session channel using a model that
-is similar to the connection protocol's support for X11 Forwarding
-(Section 6.3 of [RFC4254]).
-
--->
 	Using the connection protocol described in <xref target="RFC4254" />,
 	the agent protocol may be forwarded over an SSH connection.
 	This allows agent forwarding to be requested for any session channel
@@ -1085,22 +999,6 @@ is similar to the connection protocol's support for X11 Forwarding
 	</section>
 </section>
 
-<!--[rfced] We had the following questions related to the IANA
-     registries:
-
-a) We see no mention in the tables in this document of unassigned
-values as appears at the corresponding IANA registries.
-
-Please let us know if this document should be updated to match the
-registries in this regard.
-
-b) Please note that we have updated the column title in the Connection
-Protocol Channel Types section (Table 7) to read as "Channel Type"
-instead of "Request Type" to match the registry at
-https://www.iana.org/assignments/ssh-parameters/ssh-parameters.xhtml#ssh-parameters-11.
-Please let us know any objections.
-
--->
 
 <section anchor="IANA"><name>IANA Considerations</name>
 	<t>
@@ -1393,19 +1291,6 @@ Please let us know any objections.
 	forward an agent.
 	</t>
 
-<!--[rfced] How would we separate this slashed phrase?
-
-Original:
-Implementation of token/smartcard-hosted keys...
-
-Perhaps A:
-
-Implementation of keys hosted by a token or smartcard....
-
-Perhaps B:
-Implementation of token keys or smartcard-hosted keys...
--->
-
 	
 	<t>
 	Implementation of keys hosted by a token or smartcard requires some care, too.
@@ -1515,11 +1400,6 @@ Implementation of token keys or smartcard-hosted keys...
 			</author>
 		</front></reference>
 
-<!-- [rfced] Note that the reference [I-D.ietf-secsh-agent] has been
-     removed as it had no corresponding citation in the document.
-     Please let us know any objections.
-                -->
-
 	</references>
 </references>
 
@@ -1541,12 +1421,7 @@ Implementation of token keys or smartcard-hosted keys...
 	</t>
 </section>
 
-<!-- [rfced] Would you like the references to be alphabetized or left
-     in their current order?
--->
 
-<!--[rfced] Please note that we have expanded abbreviations on first
-     use.  Please review these expansions for accuracy. -->
 
 <!-- [rfced] We had the following questions/comments regarding
      responses from the document intake email:
@@ -1587,31 +1462,5 @@ necessary (as these same terms seem to be used in the general sense,
 this was not always clear to us).
 
  -->
-
-<!--[rfced] We had the following questions/comments related to
-    terminology use throughout the document:
-
-a) Should the use of "type" and "key type" be made uniform here?
-
-type "ssh-dss" vs. key type "ssh-rsa"
-
-b) We see both "Windows Named Pipe" and "On Windows, access to a named
-pipe".  Please review and let us know if updates should be made for
-uniformity.
--->
-
-<!-- [rfced] Please review the "Inclusive Language" portion of the
-     online Style Guide
-     <https://www.rfc-editor.org/styleguide/part2/#inclusive_language>
-     and let us know if any changes are needed.  Updates of this
-     nature typically result in more precise language, which is
-     helpful for readers.
-
-Note that our script did not flag any words in particular, but this
-should still be reviewed as a best practice.
-
--->
-
-
 </back>
 </rfc>

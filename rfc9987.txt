@@ -1199,6 +1199,16 @@ Table of Contents
 
 11.1.  Normative References
 
+   [FIPS.186-4]
+              NIST, "Digital Signature Standard (DSS)", NIST FIPS 186-4,
+              DOI 10.6028/NIST.FIPS.186-4, June 2013,
+              <https://doi.org/10.6028/NIST.FIPS.186-4>.
+
+   [FIPS.186-5]
+              NIST, "Digital Signature Standard (DSS)", NIST FIPS 186-5,
+              DOI 10.6028/NIST.FIPS.186-5, February 2023,
+              <https://doi.org/10.6028/NIST.FIPS.186-5>.
+
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
               DOI 10.17487/RFC2119, March 1997,
@@ -1244,29 +1254,13 @@ Table of Contents
               RFC 8709, DOI 10.17487/RFC8709, February 2020,
               <https://www.rfc-editor.org/info/rfc8709>.
 
-   [FIPS.186-4]
-              NIST, "Digital Signature Standard (DSS)", NIST FIPS 186-4,
-              DOI 10.6028/NIST.FIPS.186-4, June 2013,
-              <https://doi.org/10.6028/NIST.FIPS.186-4>.
-
-   [FIPS.186-5]
-              NIST, "Digital Signature Standard (DSS)", NIST FIPS 186-5,
-              DOI 10.6028/NIST.FIPS.186-5, February 2023,
-              <https://doi.org/10.6028/NIST.FIPS.186-5>.
-
 11.2.  Informative References
 
-   [RFC4252]  Ylonen, T. and C. Lonvick, Ed., "The Secure Shell (SSH)
-              Authentication Protocol", RFC 4252, DOI 10.17487/RFC4252,
-              January 2006, <https://www.rfc-editor.org/info/rfc4252>.
+   [IANA-PUBKEYS]
+              IANA, "Public Key Algorithm Names",
+              <https://www.iana.org/assignments/ssh-parameters/>.
 
-   [RFC8126]  Cotton, M., Leiba, B., and T. Narten, "Guidelines for
-              Writing an IANA Considerations Section in RFCs", BCP 26,
-              RFC 8126, DOI 10.17487/RFC8126, June 2017,
-              <https://www.rfc-editor.org/info/rfc8126>.
-
-   [IANA-SSH-EXT]
-              IANA, "Connection Protocol Channel Request Names",
+   [IANA-SSH] IANA, "Secure Shell (SSH) Protocol Parameters",
               <https://www.iana.org/assignments/ssh-parameters/>.
 
    [IANA-SSH-CHANREQ]
@@ -1277,12 +1271,18 @@ Table of Contents
               IANA, "Extension Names",
               <https://www.iana.org/assignments/ssh-parameters/>.
 
-   [IANA-PUBKEYS]
-              IANA, "Public Key Algorithm Names",
+   [IANA-SSH-EXT]
+              IANA, "Connection Protocol Channel Request Names",
               <https://www.iana.org/assignments/ssh-parameters/>.
 
-   [IANA-SSH] IANA, "Secure Shell (SSH) Protocol Parameters",
-              <https://www.iana.org/assignments/ssh-parameters/>.
+   [RFC4252]  Ylonen, T. and C. Lonvick, Ed., "The Secure Shell (SSH)
+              Authentication Protocol", RFC 4252, DOI 10.17487/RFC4252,
+              January 2006, <https://www.rfc-editor.org/info/rfc4252>.
+
+   [RFC8126]  Cotton, M., Leiba, B., and T. Narten, "Guidelines for
+              Writing an IANA Considerations Section in RFCs", BCP 26,
+              RFC 8126, DOI 10.17487/RFC8126, June 2017,
+              <https://www.rfc-editor.org/info/rfc8126>.
 
 Acknowledgments
 
