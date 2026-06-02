@@ -3,7 +3,7 @@
 <rfc
   xmlns:xi="http://www.w3.org/2001/XInclude"
   category="std"
-  docName="draft-miller-sshm-mldsa65-ed25519-composite-sigs-00"
+  docName="draft-miller-sshm-mldsa44-ed25519-composite-sigs-00"
   ipr="trust200902"
   obsoletes=""
   updates=""
@@ -13,8 +13,8 @@
   version="3">
 
 <front>
-	<title abbrev="MLDSA65-Ed25519 SSH">ML-DSA 65/Ed255192 Composite Signatures in SSH</title>
-	<seriesInfo name="Internet-Draft" value="draft-miller-sshm-mldsa65-ed25519-composite-sigs-00"/>
+	<title abbrev="MLDSA44-Ed25519 SSH">ML-DSA 44/Ed255192 Composite Signatures in SSH</title>
+	<seriesInfo name="Internet-Draft" value="draft-miller-sshm-mldsa44-ed25519-composite-sigs-00"/>
 	<author fullname="Damien Miller" initials="D." surname="Miller">
 		<organization>OpenSSH</organization>
 		<address>
@@ -33,7 +33,7 @@
 	<abstract>
 		<t>
 		This document specifies the integration of the
-		MLDSA65-Ed25519-SHA512 composite signature scheme
+		MLDSA44-Ed25519-SHA512 composite signature scheme
 		into the Secure Shell (SSH) protocol.
 		This scheme combines the post-quantum Module-Lattice
 		Digital Signature Algorithm (ML-DSA) with the
@@ -67,10 +67,10 @@
 	</t>
 	<t>
 	This document specifies a composite signature scheme for SSH,
-	mapping the COMPSIG-MLDSA65-Ed25519-SHA512 scheme defined in
+	mapping the COMPSIG-MLDSA44-Ed25519-SHA512 scheme defined in
 	<xref target="I-D.ietf-lamps-pq-composite-sigs" /> to the SSH
 	protocol <xref target="RFC4253" /> using the identifier
-	ssh-mldsa65-ed25519@openssh.com.
+	ssh-mldsa44-ed25519@openssh.com.
 	</t>
 </section>
 
@@ -100,10 +100,10 @@
 	</t>
 </section>
 
-<section><name>The ssh-mldsa65-ed25519@openssh.com Algorithm</name>
+<section><name>The ssh-mldsa44-ed25519@openssh.com Algorithm</name>
 	<t>
 	The algorithm name for this composite signature scheme is
-	"ssh-mldsa65-ed25519@openssh.com". The underlying key
+	"ssh-mldsa44-ed25519@openssh.com". The underlying key
 	generation, signing and verification primitives are as
 	specified in
 	<xref target="I-D.ietf-lamps-pq-composite-sigs" />, but are
@@ -141,16 +141,16 @@
 			ML-DSA and Ed25519 key generation algorithms
 			are combined by simple concatenation to form
 			a composite public key. Specifically it
-			consists of the raw ML-DSA-65 public key
-			(1952 bytes) and the Ed25519 public key (32
-			bytes), for a total of 1984 bytes:
+			consists of the raw ML-DSA-44 public key
+			(1312 bytes) and the Ed25519 public key (32
+			bytes), for a total of 1344 bytes:
 			</t>
 			<sourcecode>
-    byte[1952] mldsa_pk
+    byte[1312] mldsa_pk
     byte[32]   ed25519_pk
 			</sourcecode>
 			<t>
-			This 1984-byte combination is referred to as
+			This 1344-byte combination is referred to as
 			"composite_public_key" henceforth in this
 			document.
 			</t>
@@ -176,12 +176,12 @@
 
 	<section><name>SSH Public Key Format</name>
 		<t>
-		The "ssh-mldsa65-ed25519@openssh.com" public key as
+		The "ssh-mldsa44-ed25519@openssh.com" public key as
 		it appears in the SSH protocol has the following
 		format:
 		</t>
 		<sourcecode>
-    string    "ssh-mldsa65-ed25519@openssh.com"
+    string    "ssh-mldsa44-ed25519@openssh.com"
     string    composite_public_key
 		</sourcecode>
 		<t>
@@ -200,7 +200,7 @@
 		format:
 		</t>
 		<sourcecode>
-    string    "ssh-mldsa65-ed25519@openssh.com"
+    string    "ssh-mldsa44-ed25519@openssh.com"
     string    composite_public_key
     string    composite_private_key
 		</sourcecode>
@@ -238,9 +238,9 @@
 				</li>
 				<li>
 				Label: The ASCII string
-				"COMPSIG-MLDSA65-Ed25519-SHA512"
+				"COMPSIG-MLDSA44-Ed25519-SHA512"
 			        [43 4F 4D 50 53 49 47 2D 4D 4C 44 53
-				41 36 35 2D 45 64 32 35 35 31 39 2D
+				41 34 34 2D 45 64 32 35 35 31 39 2D
 				53 48 41 35 31 32].
 				</li>
 				<li>
@@ -260,7 +260,7 @@
 			</t>
 			<ul>
 				<li>
-				mldsa_sig = ML-DSA-65.Sign(mldsa_sk, M', ctx=Label)
+				mldsa_sig = ML-DSA-44.Sign(mldsa_sk, M', ctx=Label)
 				</li>
 				<li>
 				ed25519_sig = Ed25519.Sign(ed25519_sk, M')
@@ -290,7 +290,7 @@
 			</t>
 			<ul>
 				<li>
-				ML-DSA-65.Verify(mldsa_pk, M', mldsa_sig, ctx=Label)
+				ML-DSA-44.Verify(mldsa_pk, M', mldsa_sig, ctx=Label)
 				</li>
 				<li>
 				Ed25519.Verify(ed25519_pk, M', ed25519_sig)
@@ -304,7 +304,7 @@
 			the following format:
 			</t>
 			<sourcecode>
-    string    "ssh-mldsa65-ed25519@openssh.com"
+    string    "ssh-mldsa44-ed25519@openssh.com"
     string    composite_signature
 			</sourcecode>
 			<t>
@@ -315,7 +315,7 @@
 
 		<section><name>Signture contexts</name>
 			<t>
-			The COMPSIG-MLDSA65-Ed25519-SHA512 signature
+			The COMPSIG-MLDSA44-Ed25519-SHA512 signature
 			algorithm, like its underlying ML-DSA
 			component, accepts a Context parameter that
 			may be used to enforce domain separation
@@ -337,7 +337,7 @@
 <section><name>Security Considerations</name>
 	<t>
 	The security of this composite scheme depends on the strength of
-	both component algorithms. An adversary must break both ML-DSA-65
+	both component algorithms. An adversary must break both ML-DSA-44
 	and Ed25519 to forge a signature.
 	</t>
 	<t>
@@ -351,7 +351,7 @@
 <section><name>IANA Considerations</name>
 	<t>
 	IANA is requested to register the algorithm name
-	"ssh-mldsa65-ed25519" in the "Public Key Algorithm Names"
+	"ssh-mldsa44-ed25519" in the "Public Key Algorithm Names"
 	registry.
 	</t>
 </section>
