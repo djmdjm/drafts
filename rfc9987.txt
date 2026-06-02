@@ -761,28 +761,52 @@ Table of Contents
    The following numbers are used as message types for requests from the
    client to the agent.
 
-       SSH_AGENTC_REQUEST_IDENTITIES                  11
-       SSH_AGENTC_SIGN_REQUEST                        13
-       SSH_AGENTC_ADD_IDENTITY                        17
-       SSH_AGENTC_REMOVE_IDENTITY                     18
-       SSH_AGENTC_REMOVE_ALL_IDENTITIES               19
-       SSH_AGENTC_ADD_SMARTCARD_KEY                   20
-       SSH_AGENTC_REMOVE_SMARTCARD_KEY                21
-       SSH_AGENTC_LOCK                                22
-       SSH_AGENTC_UNLOCK                              23
-       SSH_AGENTC_ADD_ID_CONSTRAINED                  25
-       SSH_AGENTC_ADD_SMARTCARD_KEY_CONSTRAINED       26
-       SSH_AGENTC_EXTENSION                           27
+             +------------------------------------------+----+
+             | SSH_AGENTC_REQUEST_IDENTITIES            | 11 |
+             +------------------------------------------+----+
+             | SSH_AGENTC_SIGN_REQUEST                  | 13 |
+             +------------------------------------------+----+
+             | SSH_AGENTC_ADD_IDENTITY                  | 17 |
+             +------------------------------------------+----+
+             | SSH_AGENTC_REMOVE_IDENTITY               | 18 |
+             +------------------------------------------+----+
+             | SSH_AGENTC_REMOVE_ALL_IDENTITIES         | 19 |
+             +------------------------------------------+----+
+             | SSH_AGENTC_ADD_SMARTCARD_KEY             | 20 |
+             +------------------------------------------+----+
+             | SSH_AGENTC_REMOVE_SMARTCARD_KEY          | 21 |
+             +------------------------------------------+----+
+             | SSH_AGENTC_LOCK                          | 22 |
+             +------------------------------------------+----+
+             | SSH_AGENTC_UNLOCK                        | 23 |
+             +------------------------------------------+----+
+             | SSH_AGENTC_ADD_ID_CONSTRAINED            | 25 |
+             +------------------------------------------+----+
+             | SSH_AGENTC_ADD_SMARTCARD_KEY_CONSTRAINED | 26 |
+             +------------------------------------------+----+
+             | SSH_AGENTC_EXTENSION                     | 27 |
+             +------------------------------------------+----+
+
+                                  Table 1
 
    The following numbers are used as message types for replies from the
    agent to the client.
 
-       SSH_AGENT_FAILURE                               5
-       SSH_AGENT_SUCCESS                               6
-       SSH_AGENT_IDENTITIES_ANSWER                     12
-       SSH_AGENT_SIGN_RESPONSE                         14
-       SSH_AGENT_EXTENSION_FAILURE                     28
-       SSH_AGENT_EXTENSION_RESPONSE                    29
+                   +------------------------------+----+
+                   | SSH_AGENT_FAILURE            | 5  |
+                   +------------------------------+----+
+                   | SSH_AGENT_SUCCESS            | 6  |
+                   +------------------------------+----+
+                   | SSH_AGENT_IDENTITIES_ANSWER  | 12 |
+                   +------------------------------+----+
+                   | SSH_AGENT_SIGN_RESPONSE      | 14 |
+                   +------------------------------+----+
+                   | SSH_AGENT_EXTENSION_FAILURE  | 28 |
+                   +------------------------------+----+
+                   | SSH_AGENT_EXTENSION_RESPONSE | 29 |
+                   +------------------------------+----+
+
+                                  Table 2
 
 8.1.1.  Reserved Message Type Numbers
 
@@ -803,9 +827,15 @@ Table of Contents
    The following numbers are used to identify key constraints.  These
    are only used in key constraints and are not sent as message numbers.
 
-       SSH_AGENT_CONSTRAIN_LIFETIME                    1
-       SSH_AGENT_CONSTRAIN_CONFIRM                     2
-       SSH_AGENT_CONSTRAIN_EXTENSION                   255
+                  +-------------------------------+-----+
+                  | SSH_AGENT_CONSTRAIN_LIFETIME  | 1   |
+                  +-------------------------------+-----+
+                  | SSH_AGENT_CONSTRAIN_CONFIRM   | 2   |
+                  +-------------------------------+-----+
+                  | SSH_AGENT_CONSTRAIN_EXTENSION | 255 |
+                  +-------------------------------+-----+
+
+                                  Table 3
 
    The constraint identifier 0 is reserved.
 
@@ -815,8 +845,13 @@ Table of Contents
    (SSH_AGENTC_SIGN_REQUEST) messages.  These flags form a bit field by
    taking the logical OR of zero or more flags.
 
-       SSH_AGENT_RSA_SHA2_256                          0x00000002
-       SSH_AGENT_RSA_SHA2_512                          0x00000004
+                  +------------------------+------------+
+                  | SSH_AGENT_RSA_SHA2_256 | 0x00000002 |
+                  +------------------------+------------+
+                  | SSH_AGENT_RSA_SHA2_512 | 0x00000004 |
+                  +------------------------+------------+
+
+                                  Table 4
 
    The flag value 1 is reserved for historical implementations.
 
@@ -992,7 +1027,7 @@ Table of Contents
    |         |                                          | Section 8.1 |
    +---------+------------------------------------------+-------------+
 
-                                 Table 1
+                                 Table 5
 
 9.3.  "SSH Agent Key Constraint Numbers" Registry
 
@@ -1014,7 +1049,7 @@ Table of Contents
     | 255    | SSH_AGENT_CONSTRAIN_EXTENSION | RFC 9987, Section 8.2 |
     +--------+-------------------------------+-----------------------+
 
-                                 Table 2
+                                 Table 6
 
 9.4.  "SSH Agent Key Constraint Extension Names" Registry
 
@@ -1048,7 +1083,7 @@ Table of Contents
         | 0x04   | SSH_AGENT_RSA_SHA2_512 | RFC 9987, Section 8.3 |
         +--------+------------------------+-----------------------+
 
-                                  Table 3
+                                  Table 7
 
 9.6.  "SSH Agent Extension Request Names" Registry
 
@@ -1067,7 +1102,7 @@ Table of Contents
                | query          | RFC 9987, Section 5.8.1 |
                +----------------+-------------------------+
 
-                                 Table 4
+                                 Table 8
 
 9.7.  Additions to the "Extension Names" Registry
 
@@ -1081,7 +1116,7 @@ Table of Contents
                 | agent-forward  | RFC 9987, Section 7.1 |
                 +----------------+-----------------------+
 
-                                 Table 5
+                                 Table 9
 
 9.8.  Additions to the "Connection Protocol Channel Request Names"
       Registry
@@ -1096,7 +1131,7 @@ Table of Contents
                  | agent-req    | RFC 9987, Section 7.2 |
                  +--------------+-----------------------+
 
-                                 Table 6
+                                 Table 10
 
 9.9.  Additions to the "Connection Protocol Channel Types" Registry
 
@@ -1110,7 +1145,7 @@ Table of Contents
                  | agent-connect | RFC 9987, Section 7.3 |
                  +---------------+-----------------------+
 
-                                  Table 7
+                                  Table 11
 
 10.  Security Considerations
 

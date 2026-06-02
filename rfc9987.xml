@@ -923,30 +923,95 @@
 		The following numbers are used as message types for requests
 		from the client to the agent.
 		</t>
-		<sourcecode><![CDATA[
-    SSH_AGENTC_REQUEST_IDENTITIES                  11
-    SSH_AGENTC_SIGN_REQUEST                        13
-    SSH_AGENTC_ADD_IDENTITY                        17
-    SSH_AGENTC_REMOVE_IDENTITY                     18
-    SSH_AGENTC_REMOVE_ALL_IDENTITIES               19
-    SSH_AGENTC_ADD_SMARTCARD_KEY                   20
-    SSH_AGENTC_REMOVE_SMARTCARD_KEY                21
-    SSH_AGENTC_LOCK                                22
-    SSH_AGENTC_UNLOCK                              23
-    SSH_AGENTC_ADD_ID_CONSTRAINED                  25
-    SSH_AGENTC_ADD_SMARTCARD_KEY_CONSTRAINED       26
-    SSH_AGENTC_EXTENSION                           27]]></sourcecode>
+
+    <table>
+      <tbody>
+        <tr>
+          <td><tt>SSH_AGENTC_REQUEST_IDENTITIES</tt></td>
+          <td>11</td>
+        </tr>
+        <tr>
+          <td><tt>SSH_AGENTC_SIGN_REQUEST</tt></td>
+          <td>13</td>
+        </tr>
+        <tr>
+          <td><tt>SSH_AGENTC_ADD_IDENTITY</tt></td>
+          <td>17</td>
+        </tr>
+        <tr>
+          <td><tt>SSH_AGENTC_REMOVE_IDENTITY</tt></td>
+          <td>18</td>
+        </tr>
+        <tr>
+          <td><tt>SSH_AGENTC_REMOVE_ALL_IDENTITIES</tt></td>
+          <td>19</td>
+        </tr>
+        <tr>
+          <td><tt>SSH_AGENTC_ADD_SMARTCARD_KEY</tt></td>
+          <td>20</td>
+        </tr>
+        <tr>
+          <td><tt>SSH_AGENTC_REMOVE_SMARTCARD_KEY</tt></td>
+          <td>21</td>
+        </tr>
+        <tr>
+          <td><tt>SSH_AGENTC_LOCK</tt></td>
+          <td>22</td>
+        </tr>
+        <tr>
+          <td><tt>SSH_AGENTC_UNLOCK</tt></td>
+          <td>23</td>
+        </tr>
+        <tr>
+          <td><tt>SSH_AGENTC_ADD_ID_CONSTRAINED</tt></td>
+          <td>25</td>
+        </tr>
+        <tr>
+          <td><tt>SSH_AGENTC_ADD_SMARTCARD_KEY_CONSTRAINED</tt></td>
+          <td>26</td>
+        </tr>
+        <tr>
+          <td><tt>SSH_AGENTC_EXTENSION</tt></td>
+          <td>27</td>
+        </tr>
+      </tbody>
+    </table>
+		
 		<t>
 		The following numbers are used as message types for replies
 		from the agent to the client.
 		</t>
-		<sourcecode><![CDATA[
-    SSH_AGENT_FAILURE                               5
-    SSH_AGENT_SUCCESS                               6
-    SSH_AGENT_IDENTITIES_ANSWER                     12
-    SSH_AGENT_SIGN_RESPONSE                         14
-    SSH_AGENT_EXTENSION_FAILURE                     28
-    SSH_AGENT_EXTENSION_RESPONSE                    29]]></sourcecode>
+
+    <table>
+      <tbody>
+        <tr>
+          <td><tt>SSH_AGENT_FAILURE</tt></td>
+          <td>5</td>
+        </tr>
+        <tr>
+          <td><tt>SSH_AGENT_SUCCESS</tt></td>
+          <td>6</td>
+        </tr>
+        <tr>
+          <td><tt>SSH_AGENT_IDENTITIES_ANSWER</tt></td>
+          <td>12</td>
+        </tr>
+        <tr>
+          <td><tt>SSH_AGENT_SIGN_RESPONSE</tt></td>
+          <td>14</td>
+        </tr>
+        <tr>
+          <td><tt>SSH_AGENT_EXTENSION_FAILURE</tt></td>
+          <td>28</td>
+        </tr>
+        <tr>
+          <td><tt>SSH_AGENT_EXTENSION_RESPONSE</tt></td>
+          <td>29</td>
+        </tr>
+      </tbody>
+    </table>
+
+		
 		<section anchor="reservednum"><name>Reserved Message Type Numbers</name>
 			<t>
 			The following message type numbers are reserved for
@@ -975,10 +1040,24 @@
 		These are only used in key constraints and are not sent as
 		message numbers.
 		</t>
-		<sourcecode><![CDATA[
-    SSH_AGENT_CONSTRAIN_LIFETIME                    1
-    SSH_AGENT_CONSTRAIN_CONFIRM                     2
-    SSH_AGENT_CONSTRAIN_EXTENSION                   255]]></sourcecode>
+
+
+		    <table>
+      <tbody>
+        <tr>
+          <td><tt>SSH_AGENT_CONSTRAIN_LIFETIME</tt></td>
+          <td>1</td>
+        </tr>
+        <tr>
+          <td><tt>SSH_AGENT_CONSTRAIN_CONFIRM</tt></td>
+          <td>2</td>
+        </tr>
+        <tr>
+          <td><tt>SSH_AGENT_CONSTRAIN_EXTENSION</tt></td>
+          <td>255</td>
+        </tr>
+      </tbody>
+    </table>
 		<t>
 		The constraint identifier 0 is reserved.
 		</t>
@@ -990,9 +1069,20 @@
 		(SSH_AGENTC_SIGN_REQUEST) messages. These flags form a bit
 		field by taking the logical OR of zero or more flags.
 		</t>
-		<sourcecode><![CDATA[
-    SSH_AGENT_RSA_SHA2_256                          0x00000002
-    SSH_AGENT_RSA_SHA2_512                          0x00000004]]></sourcecode>
+
+    <table>
+      <tbody>
+        <tr>
+          <td><tt>SSH_AGENT_RSA_SHA2_256</tt></td>
+          <td>0x00000002</td>
+        </tr>
+        <tr>
+          <td><tt>SSH_AGENT_RSA_SHA2_512</tt></td>
+          <td>0x00000004</td>
+        </tr>
+      </tbody>
+    </table>
+		
 		<t>
 		The flag value 1 is reserved for historical implementations.
 		</t>
