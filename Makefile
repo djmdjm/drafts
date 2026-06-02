@@ -1,4 +1,4 @@
-TARGETS=rfc9987.txt draft-miller-ssh-ping.txt draft-ietf-sshm-cert.txt draft-ietf-sshm-strict-kex.txt draft-miller-sshm-aes-gcm.txt draft-ietf-sshm-hostkey-update.txt
+TARGETS=draft-miller-ssh-ping.txt draft-ietf-sshm-cert.txt draft-ietf-sshm-strict-kex.txt draft-miller-sshm-aes-gcm.txt draft-ietf-sshm-hostkey-update.txt
 
 all: $(TARGETS)
 
