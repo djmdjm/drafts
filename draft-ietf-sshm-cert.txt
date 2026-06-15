@@ -4,12 +4,12 @@
 
 Internet Engineering Task Force                                D. Miller
 Internet-Draft                                                   OpenSSH
-Intended status: Standards Track                           28 April 2026
-Expires: 30 October 2026
+Intended status: Standards Track                            15 June 2026
+Expires: 17 December 2026
 
 
                          SSH Certificate Format
-                        draft-ietf-sshm-cert-00
+                        draft-ietf-sshm-cert-01
 
 Abstract
 
@@ -32,7 +32,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 30 October 2026.
+   This Internet-Draft will expire on 17 December 2026.
 
 Copyright Notice
 
@@ -53,9 +53,9 @@ Copyright Notice
 
 
 
-Miller                   Expires 30 October 2026                [Page 1]
+Miller                  Expires 17 December 2026                [Page 1]
 
-Internet-Draft           SSH Certificate Format               April 2026
+Internet-Draft           SSH Certificate Format                June 2026
 
 
 Table of Contents
@@ -96,8 +96,12 @@ Table of Contents
      8.1.  Normative References  . . . . . . . . . . . . . . . . . .  21
      8.2.  Informative References  . . . . . . . . . . . . . . . . .  22
    Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .  23
-   Example certificates  . . . . . . . . . . . . . . . . . . . . . .  23
-   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .  26
+   Annotated example . . . . . . . . . . . . . . . . . . . . . . . .  23
+   Example certificates  . . . . . . . . . . . . . . . . . . . . . .  26
+     Example ssh-ed25519-cert  . . . . . . . . . . . . . . . . . . .  26
+     Example ssh-rsa-cert  . . . . . . . . . . . . . . . . . . . . .  28
+     Example ecdsa-sha2-nistp256-cert  . . . . . . . . . . . . . . .  34
+   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .  36
 
 
 
@@ -105,13 +109,9 @@ Table of Contents
 
 
 
-
-
-
-
-Miller                   Expires 30 October 2026                [Page 2]
+Miller                  Expires 17 December 2026                [Page 2]
 
-Internet-Draft           SSH Certificate Format               April 2026
+Internet-Draft           SSH Certificate Format                June 2026
 
 
 1.  Introduction
@@ -165,9 +165,9 @@ Internet-Draft           SSH Certificate Format               April 2026
 
 
 
-Miller                   Expires 30 October 2026                [Page 3]
+Miller                  Expires 17 December 2026                [Page 3]
 
-Internet-Draft           SSH Certificate Format               April 2026
+Internet-Draft           SSH Certificate Format                June 2026
 
 
    The "key type" string identifies the certificate type, e.g. "ssh-
@@ -221,9 +221,9 @@ Internet-Draft           SSH Certificate Format               April 2026
 
 
 
-Miller                   Expires 30 October 2026                [Page 4]
+Miller                  Expires 17 December 2026                [Page 4]
 
-Internet-Draft           SSH Certificate Format               April 2026
+Internet-Draft           SSH Certificate Format                June 2026
 
 
    The "extensions" field similarly contains zero or more of the
@@ -277,9 +277,9 @@ Internet-Draft           SSH Certificate Format               April 2026
 
 
 
-Miller                   Expires 30 October 2026                [Page 5]
+Miller                  Expires 17 December 2026                [Page 5]
 
-Internet-Draft           SSH Certificate Format               April 2026
+Internet-Draft           SSH Certificate Format                June 2026
 
 
 2.1.3.  ECDSA certificates
@@ -333,9 +333,9 @@ Internet-Draft           SSH Certificate Format               April 2026
 
 
 
-Miller                   Expires 30 October 2026                [Page 6]
+Miller                  Expires 17 December 2026                [Page 6]
 
-Internet-Draft           SSH Certificate Format               April 2026
+Internet-Draft           SSH Certificate Format                June 2026
 
 
        string              "ssh-ed25519-cert" | "ssh-ed448-cert"
@@ -389,9 +389,9 @@ Internet-Draft           SSH Certificate Format               April 2026
 
 
 
-Miller                   Expires 30 October 2026                [Page 7]
+Miller                  Expires 17 December 2026                [Page 7]
 
-Internet-Draft           SSH Certificate Format               April 2026
+Internet-Draft           SSH Certificate Format                June 2026
 
 
 2.1.5.1.  RSA SHA2 signature algorithms
@@ -445,9 +445,9 @@ Internet-Draft           SSH Certificate Format               April 2026
 
 
 
-Miller                   Expires 30 October 2026                [Page 8]
+Miller                  Expires 17 December 2026                [Page 8]
 
-Internet-Draft           SSH Certificate Format               April 2026
+Internet-Draft           SSH Certificate Format                June 2026
 
 
      00000016                           # Extensions section len=22
@@ -501,9 +501,9 @@ Internet-Draft           SSH Certificate Format               April 2026
 
 
 
-Miller                   Expires 30 October 2026                [Page 9]
+Miller                  Expires 17 December 2026                [Page 9]
 
-Internet-Draft           SSH Certificate Format               April 2026
+Internet-Draft           SSH Certificate Format                June 2026
 
 
       assertions in their signatures (such as FIDO-backed keys).  This
@@ -557,9 +557,9 @@ Internet-Draft           SSH Certificate Format               April 2026
 
 
 
-Miller                   Expires 30 October 2026               [Page 10]
+Miller                  Expires 17 December 2026               [Page 10]
 
-Internet-Draft           SSH Certificate Format               April 2026
+Internet-Draft           SSH Certificate Format                June 2026
 
 
       this certificate may request X11 protocol forwarding using the
@@ -613,9 +613,9 @@ Internet-Draft           SSH Certificate Format               April 2026
 
 
 
-Miller                   Expires 30 October 2026               [Page 11]
+Miller                  Expires 17 December 2026               [Page 11]
 
-Internet-Draft           SSH Certificate Format               April 2026
+Internet-Draft           SSH Certificate Format                June 2026
 
 
    SSH implementations may define additional vendor extensions using the
@@ -669,9 +669,9 @@ Internet-Draft           SSH Certificate Format               April 2026
 
 
 
-Miller                   Expires 30 October 2026               [Page 12]
+Miller                  Expires 17 December 2026               [Page 12]
 
-Internet-Draft           SSH Certificate Format               April 2026
+Internet-Draft           SSH Certificate Format                June 2026
 
 
        string              "ssh-ed25519-cert" | "ssh-ed448-cert"
@@ -725,9 +725,9 @@ Internet-Draft           SSH Certificate Format               April 2026
 
 
 
-Miller                   Expires 30 October 2026               [Page 13]
+Miller                  Expires 17 December 2026               [Page 13]
 
-Internet-Draft           SSH Certificate Format               April 2026
+Internet-Draft           SSH Certificate Format                June 2026
 
 
    *  MUST check that the "certificate role" matches the intended
@@ -781,9 +781,9 @@ Internet-Draft           SSH Certificate Format               April 2026
 
 
 
-Miller                   Expires 30 October 2026               [Page 14]
+Miller                  Expires 17 December 2026               [Page 14]
 
-Internet-Draft           SSH Certificate Format               April 2026
+Internet-Draft           SSH Certificate Format                June 2026
 
 
    where the endpoints negotiate use of a cerificate host key but the
@@ -837,9 +837,9 @@ Internet-Draft           SSH Certificate Format               April 2026
 
 
 
-Miller                   Expires 30 October 2026               [Page 15]
+Miller                  Expires 17 December 2026               [Page 15]
 
-Internet-Draft           SSH Certificate Format               April 2026
+Internet-Draft           SSH Certificate Format                June 2026
 
 
 5.  IANA Considerations
@@ -893,9 +893,9 @@ Internet-Draft           SSH Certificate Format               April 2026
 
 
 
-Miller                   Expires 30 October 2026               [Page 16]
+Miller                  Expires 17 December 2026               [Page 16]
 
-Internet-Draft           SSH Certificate Format               April 2026
+Internet-Draft           SSH Certificate Format                June 2026
 
 
                  +=========================+=============+
@@ -949,9 +949,9 @@ Internet-Draft           SSH Certificate Format               April 2026
 
 
 
-Miller                   Expires 30 October 2026               [Page 17]
+Miller                  Expires 17 December 2026               [Page 17]
 
-Internet-Draft           SSH Certificate Format               April 2026
+Internet-Draft           SSH Certificate Format                June 2026
 
 
               +========+=====================+=============+
@@ -1005,9 +1005,9 @@ Internet-Draft           SSH Certificate Format               April 2026
 
 
 
-Miller                   Expires 30 October 2026               [Page 18]
+Miller                  Expires 17 December 2026               [Page 18]
 
-Internet-Draft           SSH Certificate Format               April 2026
+Internet-Draft           SSH Certificate Format                June 2026
 
 
    This specification does not define a revocation mechanism for
@@ -1061,9 +1061,9 @@ Internet-Draft           SSH Certificate Format               April 2026
 
 
 
-Miller                   Expires 30 October 2026               [Page 19]
+Miller                  Expires 17 December 2026               [Page 19]
 
-Internet-Draft           SSH Certificate Format               April 2026
+Internet-Draft           SSH Certificate Format                June 2026
 
 
    The following example projects maintain implementations of SSH
@@ -1117,9 +1117,9 @@ Internet-Draft           SSH Certificate Format               April 2026
 
 
 
-Miller                   Expires 30 October 2026               [Page 20]
+Miller                  Expires 17 December 2026               [Page 20]
 
-Internet-Draft           SSH Certificate Format               April 2026
+Internet-Draft           SSH Certificate Format                June 2026
 
 
 8.  References
@@ -1173,9 +1173,9 @@ Internet-Draft           SSH Certificate Format               April 2026
 
 
 
-Miller                   Expires 30 October 2026               [Page 21]
+Miller                  Expires 17 December 2026               [Page 21]
 
-Internet-Draft           SSH Certificate Format               April 2026
+Internet-Draft           SSH Certificate Format                June 2026
 
 
    [RFC8332]  Bider, D., "Use of RSA Keys with SHA-256 and SHA-512 in
@@ -1229,9 +1229,9 @@ Internet-Draft           SSH Certificate Format               April 2026
 
 
 
-Miller                   Expires 30 October 2026               [Page 22]
+Miller                  Expires 17 December 2026               [Page 22]
 
-Internet-Draft           SSH Certificate Format               April 2026
+Internet-Draft           SSH Certificate Format                June 2026
 
 
    [HIBA]     Google, "HIBA: Host Identity Based Authorization",
@@ -1242,7 +1242,7 @@ Acknowledgements
    Jeremy Norris and Yiyue Wang offered valuable feedback on this
    document.
 
-Example certificates
+Annotated example
 
    This is an example of a hex-encoded certificate for an ecdsa-
    sha2-nistp256-cert public key, signed by a ssh-ed25519 certificate
@@ -1285,9 +1285,9 @@ Example certificates
 
 
 
-Miller                   Expires 30 October 2026               [Page 23]
+Miller                  Expires 17 December 2026               [Page 23]
 
-Internet-Draft           SSH Certificate Format               April 2026
+Internet-Draft           SSH Certificate Format                June 2026
 
 
        0000: 0000 0018 6563 6473 612d 7368 6132 2d6e  ....ecdsa-sha2-n
@@ -1341,9 +1341,9 @@ Internet-Draft           SSH Certificate Format               April 2026
 
 
 
-Miller                   Expires 30 October 2026               [Page 24]
+Miller                  Expires 17 December 2026               [Page 24]
 
-Internet-Draft           SSH Certificate Format               April 2026
+Internet-Draft           SSH Certificate Format                June 2026
 
 
        # 0091-0098: ab54 a98c eb1f 0ad2 (12345678901234567890)
@@ -1397,9 +1397,9 @@ Internet-Draft           SSH Certificate Format               April 2026
 
 
 
-Miller                   Expires 30 October 2026               [Page 25]
+Miller                  Expires 17 December 2026               [Page 25]
 
-Internet-Draft           SSH Certificate Format               April 2026
+Internet-Draft           SSH Certificate Format                June 2026
 
 
        # 0194-01ca: 0000 0033 0000 000b ... ff50
@@ -1407,7 +1407,616 @@ Internet-Draft           SSH Certificate Format               April 2026
        # 01cb-0222: 0000 0053 0000 000b ... 050a
        string              signature (ssh-ed25519)
 
+Example certificates
+
+   This section contains non-annotated example certificates for several
+   different signature algorithms, with both the public and private
+   encodings included.  All certificates in this section are self-signed
+   and have identical certificate fields.  In all cases, the validity
+   interval is 2020-01-01T00:00:00Z to 2050-12-31T23:59:59Z.
+
+   On each line, the first four characters before the colon represent a
+   hexadecimal offset from the start of the certificate.  This is
+   followed by up to sixteen bytes of data, also encoded as hexadecimal.
+   Only the final line of data may have fewer than sixteen characters
+   present.  Finally at the end of the line is an ASCII rendering of
+   that line's data, with non-printable characters replaced by '.'.
+
+Example ssh-ed25519-cert
+
+   Public certificate
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Miller                  Expires 17 December 2026               [Page 26]
+
+Internet-Draft           SSH Certificate Format                June 2026
+
+
+       0000: 0000 0010 7373 682d 6564 3235 3531 392d  ....ssh-ed25519-
+       0010: 6365 7274 0000 0020 28d4 8ffa 9efe c6d7  cert... (.......
+       0020: 65b5 f391 d05c 63f8 a2f3 d22a 51f3 d09f  e....\c....*Q...
+       0030: 4f7b 07db a2c6 83fd 0000 0020 447c 22f9  O{......... D|".
+       0040: 460f d95a 5eb8 da3e befc 3d64 14ca 0e1a  F..Z^..>..=d....
+       0050: f8e7 74d1 4044 bc5d 8be8 eec5 0000 0000  ..t.@D.]........
+       0060: 075b cd15 0000 0001 0000 0006 6772 6567  .[..........greg
+       0070: 6f72 0000 0019 0000 0006 6772 6567 6f72  or........gregor
+       0080: 0000 000b 6772 6567 6f72 7361 6d73 6100  ....gregorsamsa.
+       0090: 0000 005e 0be1 0000 0000 0098 5b1c df00  ...^........[...
+       00a0: 0000 4b00 0000 0d66 6f72 6365 2d63 6f6d  ..K....force-com
+       00b0: 6d61 6e64 0000 000d 0000 0009 2f62 696e  mand......../bin
+       00c0: 2f74 7275 6500 0000 0e73 6f75 7263 652d  /true....source-
+       00d0: 6164 6472 6573 7300 0000 1300 0000 0f31  address........1
+       00e0: 3237 2e30 2e30 2e30 2f38 2c3a 3a31 0000  27.0.0.0/8,::1..
+       00f0: 0082 0000 0015 7065 726d 6974 2d58 3131  ......permit-X11
+       0100: 2d66 6f72 7761 7264 696e 6700 0000 0000  -forwarding.....
+       0110: 0000 1770 6572 6d69 742d 6167 656e 742d  ...permit-agent-
+       0120: 666f 7277 6172 6469 6e67 0000 0000 0000  forwarding......
+       0130: 0016 7065 726d 6974 2d70 6f72 742d 666f  ..permit-port-fo
+       0140: 7277 6172 6469 6e67 0000 0000 0000 000a  rwarding........
+       0150: 7065 726d 6974 2d70 7479 0000 0000 0000  permit-pty......
+       0160: 000e 7065 726d 6974 2d75 7365 722d 7263  ..permit-user-rc
+       0170: 0000 0000 0000 0000 0000 0033 0000 000b  ...........3....
+       0180: 7373 682d 6564 3235 3531 3900 0000 2044  ssh-ed25519... D
+       0190: 7c22 f946 0fd9 5a5e b8da 3ebe fc3d 6414  |".F..Z^..>..=d.
+       01a0: ca0e 1af8 e774 d140 44bc 5d8b e8ee c500  .....t.@D.].....
+       01b0: 0000 5300 0000 0b73 7368 2d65 6432 3535  ..S....ssh-ed255
+       01c0: 3139 0000 0040 3131 1578 758b b5d8 64d5  19...@11.xu...d.
+       01d0: 5aad cd95 8d06 a7af eb87 6233 954c 4045  Z.........b3.L@E
+       01e0: 28c6 2b32 7bcf 5a9d 9193 6a9a f42b 74e1  (.+2{.Z...j..+t.
+       01f0: 7e37 0d4b 826e 7572 2e20 24c4 416a 7f0d  ~7.K.nur. $.Aj..
+       0200: 2df8 fff2 9e03 0a                              -......
+
+   Private certificate
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Miller                  Expires 17 December 2026               [Page 27]
+
+Internet-Draft           SSH Certificate Format                June 2026
+
+
+       0000: 0000 0010 7373 682d 6564 3235 3531 392d  ....ssh-ed25519-
+       0010: 6365 7274 0000 0206 0000 0010 7373 682d  cert........ssh-
+       0020: 6564 3235 3531 392d 6365 7274 0000 0020  ed25519-cert...
+       0030: 28d4 8ffa 9efe c6d7 65b5 f391 d05c 63f8  (.......e....\c.
+       0040: a2f3 d22a 51f3 d09f 4f7b 07db a2c6 83fd  ...*Q...O{......
+       0050: 0000 0020 447c 22f9 460f d95a 5eb8 da3e  ... D|".F..Z^..>
+       0060: befc 3d64 14ca 0e1a f8e7 74d1 4044 bc5d  ..=d......t.@D.]
+       0070: 8be8 eec5 0000 0000 075b cd15 0000 0001  .........[......
+       0080: 0000 0006 6772 6567 6f72 0000 0019 0000  ....gregor......
+       0090: 0006 6772 6567 6f72 0000 000b 6772 6567  ..gregor....greg
+       00a0: 6f72 7361 6d73 6100 0000 005e 0be1 0000  orsamsa....^....
+       00b0: 0000 0098 5b1c df00 0000 4b00 0000 0d66  ....[.....K....f
+       00c0: 6f72 6365 2d63 6f6d 6d61 6e64 0000 000d  orce-command....
+       00d0: 0000 0009 2f62 696e 2f74 7275 6500 0000  ..../bin/true...
+       00e0: 0e73 6f75 7263 652d 6164 6472 6573 7300  .source-address.
+       00f0: 0000 1300 0000 0f31 3237 2e30 2e30 2e30  .......127.0.0.0
+       0100: 2f38 2c3a 3a31 0000 0082 0000 0015 7065  /8,::1........pe
+       0110: 726d 6974 2d58 3131 2d66 6f72 7761 7264  rmit-X11-forward
+       0120: 696e 6700 0000 0000 0000 1770 6572 6d69  ing........permi
+       0130: 742d 6167 656e 742d 666f 7277 6172 6469  t-agent-forwardi
+       0140: 6e67 0000 0000 0000 0016 7065 726d 6974  ng........permit
+       0150: 2d70 6f72 742d 666f 7277 6172 6469 6e67  -port-forwarding
+       0160: 0000 0000 0000 000a 7065 726d 6974 2d70  ........permit-p
+       0170: 7479 0000 0000 0000 000e 7065 726d 6974  ty........permit
+       0180: 2d75 7365 722d 7263 0000 0000 0000 0000  -user-rc........
+       0190: 0000 0033 0000 000b 7373 682d 6564 3235  ...3....ssh-ed25
+       01a0: 3531 3900 0000 2044 7c22 f946 0fd9 5a5e  519... D|".F..Z^
+       01b0: b8da 3ebe fc3d 6414 ca0e 1af8 e774 d140  ..>..=d......t.@
+       01c0: 44bc 5d8b e8ee c500 0000 5300 0000 0b73  D.].......S....s
+       01d0: 7368 2d65 6432 3535 3139 0000 0040 3131  sh-ed25519...@11
+       01e0: 1578 758b b5d8 64d5 5aad cd95 8d06 a7af  .xu...d.Z.......
+       01f0: eb87 6233 954c 4045 28c6 2b32 7bcf 5a9d  ..b3.L@E(.+2{.Z.
+       0200: 9193 6a9a f42b 74e1 7e37 0d4b 826e 7572  ..j..+t.~7.K.nur
+       0210: 2e20 24c4 416a 7f0d 2df8 fff2 9e03 0000  . $.Aj..-.......
+       0220: 0020 447c 22f9 460f d95a 5eb8 da3e befc  . D|".F..Z^..>..
+       0230: 3d64 14ca 0e1a f8e7 74d1 4044 bc5d 8be8  =d......t.@D.]..
+       0240: eec5 0000 0040 341a d7c1 b87f 3eb5 2eb5  .....@4.....>...
+       0250: dd8c 4b23 5dc9 b67b 7fe4 8505 3704 6c3d  ..K#]..{....7.l=
+       0260: c191 ba63 3133 447c 22f9 460f d95a 5eb8  ...c13D|".F..Z^.
+       0270: da3e befc 3d64 14ca 0e1a f8e7 74d1 4044  .>..=d......t.@D
+       0280: bc5d 8be8 eec5                           .]....
+
+Example ssh-rsa-cert
+
+
+
+
+
+
+
+
+Miller                  Expires 17 December 2026               [Page 28]
+
+Internet-Draft           SSH Certificate Format                June 2026
+
+
+       0000: 0000 000c 7373 682d 7273 612d 6365 7274  ....ssh-rsa-cert
+       0010: 0000 0020 7213 39e9 f52b 3902 ed5d ebcb  ... r.9..+9..]..
+       0020: e13d a769 bacb f5c1 b324 0721 f8bc 95a2  .=.i.....$.!....
+       0030: 3e55 89d5 0000 0003 0100 0100 0001 8100  >U..............
+       0040: b2e1 917d 6ee9 3029 4f41 9736 3bf5 1869  ...}n.0)OA.6;..i
+       0050: d6ee 1a8a ee8a a0ef 6405 5fb9 42fa 255e  ........d._.B.%^
+       0060: 99f7 6982 b0ba ca6c e787 a943 2a39 3827  ..i....l...C*98'
+       0070: d49f c7dd 4897 9522 c7f1 b2d6 cd50 3bb6  ....H..".....P;.
+       0080: 6930 8c9f 82e2 a6e9 6816 0315 f0f4 e002  i0......h.......
+       0090: c832 4981 5f3c 05c4 842f 770e 08dc 132b  .2I._<.../w....+
+       00a0: 312f acf9 a24f 2ab8 f7b5 bf83 6f95 5b83  1/...O*.....o.[.
+       00b0: 21eb e291 c323 a07d dbb0 96dd d0cf 7bf7  !....#.}......{.
+       00c0: 1652 3a4e 9f6d bd35 054e 4630 b73a 3be6  .R:N.m.5.NF0.:;.
+       00d0: 1f4d 420f b498 883e b76f 4254 ab37 33f0  .MB....>.oBT.73.
+       00e0: 7a89 99c2 1155 8ae1 a6e0 54e1 096b cb96  z....U....T..k..
+       00f0: b368 c956 45f4 b08d f1eb ac62 ced4 4b51  .h.VE......b..KQ
+       0100: 24e2 2ecd 14cb 8805 3132 9c8e 2800 276a  $.......12..(.'j
+       0110: 4f2c f9bb 0847 11c0 301f fc88 d830 3c15  O,...G..0....0<.
+       0120: 360f f407 d893 5310 b37e 9838 79a8 8fbe  6.....S..~.8y...
+       0130: fc31 7b39 a13a 0195 0e21 6678 23cf ad14  .1{9.:...!fx#...
+       0140: be25 31c8 f2a6 108c 3d92 cf69 0c2e af2a  .%1.....=..i...*
+       0150: b673 ca4d 18a2 078b e726 cf41 02b3 0656  .s.M.....&.A...V
+       0160: fb7f aba4 6a30 7c6f ede0 5771 7afa 2206  ....j0|o..Wqz.".
+       0170: 9a1d 95c1 4c94 d496 a7c8 3722 bd0f 28e5  ....L.....7"..(.
+       0180: 244e b2c6 5307 0ec3 86a5 d0f0 26b1 b079  $N..S.......&..y
+       0190: 8732 c733 3966 fd10 c932 1502 3527 a779  .2.39f...2..5'.y
+       01a0: 26e6 5cbf ea0c 86bb 535b 8bc7 4330 7517  &.\.....S[..C0u.
+       01b0: fc7f 3506 2062 70d4 4598 ca7e 3777 8f13  ..5. bp.E..~7w..
+       01c0: 0000 0000 075b cd15 0000 0001 0000 0006  .....[..........
+       01d0: 6772 6567 6f72 0000 0019 0000 0006 6772  gregor........gr
+       01e0: 6567 6f72 0000 000b 6772 6567 6f72 7361  egor....gregorsa
+       01f0: 6d73 6100 0000 005e 0be1 0000 0000 0098  msa....^........
+       0200: 5b1c df00 0000 4b00 0000 0d66 6f72 6365  [.....K....force
+       0210: 2d63 6f6d 6d61 6e64 0000 000d 0000 0009  -command........
+       0220: 2f62 696e 2f74 7275 6500 0000 0e73 6f75  /bin/true....sou
+       0230: 7263 652d 6164 6472 6573 7300 0000 1300  rce-address.....
+       0240: 0000 0f31 3237 2e30 2e30 2e30 2f38 2c3a  ...127.0.0.0/8,:
+       0250: 3a31 0000 0082 0000 0015 7065 726d 6974  :1........permit
+       0260: 2d58 3131 2d66 6f72 7761 7264 696e 6700  -X11-forwarding.
+       0270: 0000 0000 0000 1770 6572 6d69 742d 6167  .......permit-ag
+       0280: 656e 742d 666f 7277 6172 6469 6e67 0000  ent-forwarding..
+       0290: 0000 0000 0016 7065 726d 6974 2d70 6f72  ......permit-por
+       02a0: 742d 666f 7277 6172 6469 6e67 0000 0000  t-forwarding....
+       02b0: 0000 000a 7065 726d 6974 2d70 7479 0000  ....permit-pty..
+       02c0: 0000 0000 000e 7065 726d 6974 2d75 7365  ......permit-use
+       02d0: 722d 7263 0000 0000 0000 0000 0000 0197  r-rc............
+       02e0: 0000 0007 7373 682d 7273 6100 0000 0301  ....ssh-rsa.....
+       02f0: 0001 0000 0181 00b2 e191 7d6e e930 294f  ..........}n.0)O
+
+
+
+Miller                  Expires 17 December 2026               [Page 29]
+
+Internet-Draft           SSH Certificate Format                June 2026
+
+
+       0300: 4197 363b f518 69d6 ee1a 8aee 8aa0 ef64  A.6;..i........d
+       0310: 055f b942 fa25 5e99 f769 82b0 baca 6ce7  ._.B.%^..i....l.
+       0320: 87a9 432a 3938 27d4 9fc7 dd48 9795 22c7  ..C*98'....H..".
+       0330: f1b2 d6cd 503b b669 308c 9f82 e2a6 e968  ....P;.i0......h
+       0340: 1603 15f0 f4e0 02c8 3249 815f 3c05 c484  ........2I._<...
+       0350: 2f77 0e08 dc13 2b31 2fac f9a2 4f2a b8f7  /w....+1/...O*..
+       0360: b5bf 836f 955b 8321 ebe2 91c3 23a0 7ddb  ...o.[.!....#.}.
+       0370: b096 ddd0 cf7b f716 523a 4e9f 6dbd 3505  .....{..R:N.m.5.
+       0380: 4e46 30b7 3a3b e61f 4d42 0fb4 9888 3eb7  NF0.:;..MB....>.
+       0390: 6f42 54ab 3733 f07a 8999 c211 558a e1a6  oBT.73.z....U...
+       03a0: e054 e109 6bcb 96b3 68c9 5645 f4b0 8df1  .T..k...h.VE....
+       03b0: ebac 62ce d44b 5124 e22e cd14 cb88 0531  ..b..KQ$.......1
+       03c0: 329c 8e28 0027 6a4f 2cf9 bb08 4711 c030  2..(.'jO,...G..0
+       03d0: 1ffc 88d8 303c 1536 0ff4 07d8 9353 10b3  ....0<.6.....S..
+       03e0: 7e98 3879 a88f befc 317b 39a1 3a01 950e  ~.8y....1{9.:...
+       03f0: 2166 7823 cfad 14be 2531 c8f2 a610 8c3d  !fx#....%1.....=
+       0400: 92cf 690c 2eaf 2ab6 73ca 4d18 a207 8be7  ..i...*.s.M.....
+       0410: 26cf 4102 b306 56fb 7fab a46a 307c 6fed  &.A...V....j0|o.
+       0420: e057 717a fa22 069a 1d95 c14c 94d4 96a7  .Wqz.".....L....
+       0430: c837 22bd 0f28 e524 4eb2 c653 070e c386  .7"..(.$N..S....
+       0440: a5d0 f026 b1b0 7987 32c7 3339 66fd 10c9  ...&..y.2.39f...
+       0450: 3215 0235 27a7 7926 e65c bfea 0c86 bb53  2..5'.y&.\.....S
+       0460: 5b8b c743 3075 17fc 7f35 0620 6270 d445  [..C0u...5. bp.E
+       0470: 98ca 7e37 778f 1300 0001 9400 0000 0c72  ..~7w..........r
+       0480: 7361 2d73 6861 322d 3531 3200 0001 8032  sa-sha2-512....2
+       0490: 472d 6129 fbbb ecac 4199 4bb1 1fc7 b140  G-a)....A.K....@
+       04a0: d857 2214 b4dc 1e5e 8712 0d43 d176 4647  .W"....^...C.vFG
+       04b0: 137a 58f5 c4ec c12c 6c94 615e c9fe 0fbc  .zX....,l.a^....
+       04c0: 895f a618 2076 486b e421 24e2 eafb a186  ._.. vHk.!$.....
+       04d0: d729 4052 47d5 c858 17a7 0292 83dc 27e4  .)@RG..X......'.
+       04e0: b310 5220 611d 04e0 4bab 0591 3fb6 fc5d  ..R a...K...?..]
+       04f0: 3b7d acf4 f32b a1d4 b16a bae3 0316 27e7  ;}...+...j....'.
+       0500: 5fb0 34ed 608f a1c0 dc31 d253 7807 5c08  _.4.`....1.Sx.\.
+       0510: 2806 b412 6265 ec78 51c7 473c 7d77 e4c1  (...be.xQ.G<}w..
+       0520: db8b 4876 d0d5 f479 e721 63d6 cfde 754b  ..Hv...y.!c...uK
+       0530: 1f59 7db1 5dbc d281 5ca5 dac7 4ab5 3dc3  .Y}.]...\...J.=.
+       0540: 3cef 211c 1b15 be36 442b cf29 e906 cbc2  <.!....6D+.)....
+       0550: 0c84 040b 1b9d 4b22 dca8 fd88 2e42 5089  ......K".....BP.
+       0560: 9606 158f a499 a057 948e e49a f612 b3fb  .......W........
+       0570: 3490 71b7 cfa9 f8c2 9bc4 c596 8466 4776  4.q..........fGv
+       0580: c265 47dc 43d7 4741 1fb3 2231 21e6 e5c7  .eG.C.GA.."1!...
+       0590: 92c8 f637 d1c0 2c53 0d04 0281 8593 26ad  ...7..,S......&.
+       05a0: c004 4f40 ee2a efef fdba 1b60 dfe9 187f  ..O@.*.....`....
+       05b0: 55e7 829d 4a6b e97b 94ae fe3d 8518 36ea  U...Jk.{...=..6.
+       05c0: d829 1665 af4a 2f52 03be 78de 8cf7 9861  .).e.J/R..x....a
+       05d0: 83ac 1347 2ab6 2ec4 5e2b f103 16f5 bc4d  ...G*...^+.....M
+       05e0: 1ba4 9e5d 14d4 ed5a 0e78 e76a 1e55 8d3c  ...]...Z.x.j.U.<
+       05f0: 58fc 4b01 726f 1a8e 56dd 86d4 16a7 fcea  X.K.ro..V.......
+
+
+
+Miller                  Expires 17 December 2026               [Page 30]
+
+Internet-Draft           SSH Certificate Format                June 2026
+
+
+       0600: 9d0f 009f 5b30 2719 cf83 4334 7045 c10a  ....[0'...C4pE..
+
+   Private certificate
+
+       0000: 0000 000c 7373 682d 7273 612d 6365 7274  ....ssh-rsa-cert
+       0010: 0000 060f 0000 000c 7373 682d 7273 612d  ........ssh-rsa-
+       0020: 6365 7274 0000 0020 7213 39e9 f52b 3902  cert... r.9..+9.
+       0030: ed5d ebcb e13d a769 bacb f5c1 b324 0721  .]...=.i.....$.!
+       0040: f8bc 95a2 3e55 89d5 0000 0003 0100 0100  ....>U..........
+       0050: 0001 8100 b2e1 917d 6ee9 3029 4f41 9736  .......}n.0)OA.6
+       0060: 3bf5 1869 d6ee 1a8a ee8a a0ef 6405 5fb9  ;..i........d._.
+       0070: 42fa 255e 99f7 6982 b0ba ca6c e787 a943  B.%^..i....l...C
+       0080: 2a39 3827 d49f c7dd 4897 9522 c7f1 b2d6  *98'....H.."....
+       0090: cd50 3bb6 6930 8c9f 82e2 a6e9 6816 0315  .P;.i0......h...
+       00a0: f0f4 e002 c832 4981 5f3c 05c4 842f 770e  .....2I._<.../w.
+       00b0: 08dc 132b 312f acf9 a24f 2ab8 f7b5 bf83  ...+1/...O*.....
+       00c0: 6f95 5b83 21eb e291 c323 a07d dbb0 96dd  o.[.!....#.}....
+       00d0: d0cf 7bf7 1652 3a4e 9f6d bd35 054e 4630  ..{..R:N.m.5.NF0
+       00e0: b73a 3be6 1f4d 420f b498 883e b76f 4254  .:;..MB....>.oBT
+       00f0: ab37 33f0 7a89 99c2 1155 8ae1 a6e0 54e1  .73.z....U....T.
+       0100: 096b cb96 b368 c956 45f4 b08d f1eb ac62  .k...h.VE......b
+       0110: ced4 4b51 24e2 2ecd 14cb 8805 3132 9c8e  ..KQ$.......12..
+       0120: 2800 276a 4f2c f9bb 0847 11c0 301f fc88  (.'jO,...G..0...
+       0130: d830 3c15 360f f407 d893 5310 b37e 9838  .0<.6.....S..~.8
+       0140: 79a8 8fbe fc31 7b39 a13a 0195 0e21 6678  y....1{9.:...!fx
+       0150: 23cf ad14 be25 31c8 f2a6 108c 3d92 cf69  #....%1.....=..i
+       0160: 0c2e af2a b673 ca4d 18a2 078b e726 cf41  ...*.s.M.....&.A
+       0170: 02b3 0656 fb7f aba4 6a30 7c6f ede0 5771  ...V....j0|o..Wq
+       0180: 7afa 2206 9a1d 95c1 4c94 d496 a7c8 3722  z.".....L.....7"
+       0190: bd0f 28e5 244e b2c6 5307 0ec3 86a5 d0f0  ..(.$N..S.......
+       01a0: 26b1 b079 8732 c733 3966 fd10 c932 1502  &..y.2.39f...2..
+       01b0: 3527 a779 26e6 5cbf ea0c 86bb 535b 8bc7  5'.y&.\.....S[..
+       01c0: 4330 7517 fc7f 3506 2062 70d4 4598 ca7e  C0u...5. bp.E..~
+       01d0: 3777 8f13 0000 0000 075b cd15 0000 0001  7w.......[......
+       01e0: 0000 0006 6772 6567 6f72 0000 0019 0000  ....gregor......
+       01f0: 0006 6772 6567 6f72 0000 000b 6772 6567  ..gregor....greg
+       0200: 6f72 7361 6d73 6100 0000 005e 0be1 0000  orsamsa....^....
+       0210: 0000 0098 5b1c df00 0000 4b00 0000 0d66  ....[.....K....f
+       0220: 6f72 6365 2d63 6f6d 6d61 6e64 0000 000d  orce-command....
+       0230: 0000 0009 2f62 696e 2f74 7275 6500 0000  ..../bin/true...
+       0240: 0e73 6f75 7263 652d 6164 6472 6573 7300  .source-address.
+       0250: 0000 1300 0000 0f31 3237 2e30 2e30 2e30  .......127.0.0.0
+       0260: 2f38 2c3a 3a31 0000 0082 0000 0015 7065  /8,::1........pe
+       0270: 726d 6974 2d58 3131 2d66 6f72 7761 7264  rmit-X11-forward
+       0280: 696e 6700 0000 0000 0000 1770 6572 6d69  ing........permi
+       0290: 742d 6167 656e 742d 666f 7277 6172 6469  t-agent-forwardi
+       02a0: 6e67 0000 0000 0000 0016 7065 726d 6974  ng........permit
+       02b0: 2d70 6f72 742d 666f 7277 6172 6469 6e67  -port-forwarding
+
+
+
+Miller                  Expires 17 December 2026               [Page 31]
+
+Internet-Draft           SSH Certificate Format                June 2026
+
+
+       02c0: 0000 0000 0000 000a 7065 726d 6974 2d70  ........permit-p
+       02d0: 7479 0000 0000 0000 000e 7065 726d 6974  ty........permit
+       02e0: 2d75 7365 722d 7263 0000 0000 0000 0000  -user-rc........
+       02f0: 0000 0197 0000 0007 7373 682d 7273 6100  ........ssh-rsa.
+       0300: 0000 0301 0001 0000 0181 00b2 e191 7d6e  ..............}n
+       0310: e930 294f 4197 363b f518 69d6 ee1a 8aee  .0)OA.6;..i.....
+       0320: 8aa0 ef64 055f b942 fa25 5e99 f769 82b0  ...d._.B.%^..i..
+       0330: baca 6ce7 87a9 432a 3938 27d4 9fc7 dd48  ..l...C*98'....H
+       0340: 9795 22c7 f1b2 d6cd 503b b669 308c 9f82  ..".....P;.i0...
+       0350: e2a6 e968 1603 15f0 f4e0 02c8 3249 815f  ...h........2I._
+       0360: 3c05 c484 2f77 0e08 dc13 2b31 2fac f9a2  <.../w....+1/...
+       0370: 4f2a b8f7 b5bf 836f 955b 8321 ebe2 91c3  O*.....o.[.!....
+       0380: 23a0 7ddb b096 ddd0 cf7b f716 523a 4e9f  #.}......{..R:N.
+       0390: 6dbd 3505 4e46 30b7 3a3b e61f 4d42 0fb4  m.5.NF0.:;..MB..
+       03a0: 9888 3eb7 6f42 54ab 3733 f07a 8999 c211  ..>.oBT.73.z....
+       03b0: 558a e1a6 e054 e109 6bcb 96b3 68c9 5645  U....T..k...h.VE
+       03c0: f4b0 8df1 ebac 62ce d44b 5124 e22e cd14  ......b..KQ$....
+       03d0: cb88 0531 329c 8e28 0027 6a4f 2cf9 bb08  ...12..(.'jO,...
+       03e0: 4711 c030 1ffc 88d8 303c 1536 0ff4 07d8  G..0....0<.6....
+       03f0: 9353 10b3 7e98 3879 a88f befc 317b 39a1  .S..~.8y....1{9.
+       0400: 3a01 950e 2166 7823 cfad 14be 2531 c8f2  :...!fx#....%1..
+       0410: a610 8c3d 92cf 690c 2eaf 2ab6 73ca 4d18  ...=..i...*.s.M.
+       0420: a207 8be7 26cf 4102 b306 56fb 7fab a46a  ....&.A...V....j
+       0430: 307c 6fed e057 717a fa22 069a 1d95 c14c  0|o..Wqz.".....L
+       0440: 94d4 96a7 c837 22bd 0f28 e524 4eb2 c653  .....7"..(.$N..S
+       0450: 070e c386 a5d0 f026 b1b0 7987 32c7 3339  .......&..y.2.39
+       0460: 66fd 10c9 3215 0235 27a7 7926 e65c bfea  f...2..5'.y&.\..
+       0470: 0c86 bb53 5b8b c743 3075 17fc 7f35 0620  ...S[..C0u...5.
+       0480: 6270 d445 98ca 7e37 778f 1300 0001 9400  bp.E..~7w.......
+       0490: 0000 0c72 7361 2d73 6861 322d 3531 3200  ...rsa-sha2-512.
+       04a0: 0001 8032 472d 6129 fbbb ecac 4199 4bb1  ...2G-a)....A.K.
+       04b0: 1fc7 b140 d857 2214 b4dc 1e5e 8712 0d43  ...@.W"....^...C
+       04c0: d176 4647 137a 58f5 c4ec c12c 6c94 615e  .vFG.zX....,l.a^
+       04d0: c9fe 0fbc 895f a618 2076 486b e421 24e2  ....._.. vHk.!$.
+       04e0: eafb a186 d729 4052 47d5 c858 17a7 0292  .....)@RG..X....
+       04f0: 83dc 27e4 b310 5220 611d 04e0 4bab 0591  ..'...R a...K...
+       0500: 3fb6 fc5d 3b7d acf4 f32b a1d4 b16a bae3  ?..];}...+...j..
+       0510: 0316 27e7 5fb0 34ed 608f a1c0 dc31 d253  ..'._.4.`....1.S
+       0520: 7807 5c08 2806 b412 6265 ec78 51c7 473c  x.\.(...be.xQ.G<
+       0530: 7d77 e4c1 db8b 4876 d0d5 f479 e721 63d6  }w....Hv...y.!c.
+       0540: cfde 754b 1f59 7db1 5dbc d281 5ca5 dac7  ..uK.Y}.]...\...
+       0550: 4ab5 3dc3 3cef 211c 1b15 be36 442b cf29  J.=.<.!....6D+.)
+       0560: e906 cbc2 0c84 040b 1b9d 4b22 dca8 fd88  ..........K"....
+       0570: 2e42 5089 9606 158f a499 a057 948e e49a  .BP........W....
+       0580: f612 b3fb 3490 71b7 cfa9 f8c2 9bc4 c596  ....4.q.........
+       0590: 8466 4776 c265 47dc 43d7 4741 1fb3 2231  .fGv.eG.C.GA.."1
+       05a0: 21e6 e5c7 92c8 f637 d1c0 2c53 0d04 0281  !......7..,S....
+       05b0: 8593 26ad c004 4f40 ee2a efef fdba 1b60  ..&...O@.*.....`
+
+
+
+Miller                  Expires 17 December 2026               [Page 32]
+
+Internet-Draft           SSH Certificate Format                June 2026
+
+
+       05c0: dfe9 187f 55e7 829d 4a6b e97b 94ae fe3d  ....U...Jk.{...=
+       05d0: 8518 36ea d829 1665 af4a 2f52 03be 78de  ..6..).e.J/R..x.
+       05e0: 8cf7 9861 83ac 1347 2ab6 2ec4 5e2b f103  ...a...G*...^+..
+       05f0: 16f5 bc4d 1ba4 9e5d 14d4 ed5a 0e78 e76a  ...M...]...Z.x.j
+       0600: 1e55 8d3c 58fc 4b01 726f 1a8e 56dd 86d4  .U.<X.K.ro..V...
+       0610: 16a7 fcea 9d0f 009f 5b30 2719 cf83 4334  ........[0'...C4
+       0620: 7045 c100 0001 8015 a7d5 3338 4026 c279  pE........38@&.y
+       0630: 83d9 4889 8dac 7cf3 b633 a46a 2882 3f38  ..H...|..3.j(.?8
+       0640: fea5 8e0a 1bba 766f 7152 66ad fa8f 130c  ......voqRf.....
+       0650: 1c92 533d 435c 1706 58a9 9b92 7437 6bd4  ..S=C\..X...t7k.
+       0660: 84e0 3fbc ef5f ab3f a4cf 0168 9903 d7f1  ..?.._.?...h....
+       0670: efe8 43b9 be0b 788a bffb c21b c36a 7756  ..C...x......jwV
+       0680: 0161 0a63 ec30 ade3 f07f a261 11f0 7c20  .a.c.0.....a..|
+       0690: 10f2 b478 c7be 226b f2e0 a500 d8c9 4f33  ...x.."k......O3
+       06a0: 4f77 9436 f947 6aac 5b1c 0ff4 a116 6cda  Ow.6.Gj.[.....l.
+       06b0: cd95 15c4 b8da 138b ea90 7ad2 443d 0a4a  ..........z.D=.J
+       06c0: aebf 7afc 975c 445a b159 d9f2 bb46 6af7  ..z..\DZ.Y...Fj.
+       06d0: 06e5 7fb0 e249 ed5e 9eea f0f4 db20 9cae  .....I.^..... ..
+       06e0: 92f7 75a6 d070 a597 df01 ce95 3153 01de  ..u..p......1S..
+       06f0: 6c77 2611 c3e7 f1fb 41f3 c8d9 58d2 58c7  lw&.....A...X.X.
+       0700: 3411 41b9 beee 4494 0f83 9a2a 2f4e e471  4.A...D....*/N.q
+       0710: 58ee b1f8 f905 8bc9 b2ce d8ec 6982 3771  X...........i.7q
+       0720: dbe1 7c7b 3575 cde4 658b 1e57 f8ed 9e34  ..|{5u..e..W...4
+       0730: 6918 a609 020a 0eee d393 9105 18f0 4f70  i.............Op
+       0740: e30d 9fa7 7e81 734f 2d3b 571d 5ad8 5cfe  ....~.sO-;W.Z.\.
+       0750: df6c ce68 7edf 2082 dfeb a637 2ebb f913  .l.h~. ....7....
+       0760: 6a53 f984 dd20 7911 a2cc 763c 2064 81c4  jS... y...v< d..
+       0770: 4751 6b2d be77 9786 ea25 9a2e 3a9c 95bc  GQk-.w...%..:...
+       0780: 8442 1daa d08a c9a5 7712 d475 fe89 b07c  .B......w..u...|
+       0790: 2ad3 0ac7 8af4 000d b283 bae0 7543 6f71  *...........uCoq
+       07a0: 989b 7477 bbd2 0100 0000 c058 44f0 f28a  ..tw.......XD...
+       07b0: 4557 209d 54e1 c06a e007 97ee 2d4a 0e3e  EW .T..j....-J.>
+       07c0: 677c 55a7 0678 3dc2 251b fb93 53ce e960  g|U..x=.%...S..`
+       07d0: 9a2b afb1 7ac2 9482 2f90 c565 7556 5166  .+..z.../..euVQf
+       07e0: 6b59 fcae 748a 53f3 b795 0439 cbb4 14ed  kY..t.S....9....
+       07f0: 739a b3a5 c2d1 ac58 e3d5 72b4 68f2 c5e5  s......X..r.h...
+       0800: bd65 208c 8939 3efe d7f2 58dc 9edf 4e75  .e ..9>...X...Nu
+       0810: 1833 85c4 3bc8 6e47 9eda 2606 c6fb 0255  .3..;.nG..&....U
+       0820: 24a6 fa11 34da 41e4 9384 7024 3a13 928c  $...4.A...p$:...
+       0830: ca13 4267 efdf 7ab2 0970 486b fc46 caba  ..Bg..z..pHk.F..
+       0840: 60bd cb1b cca7 5dbf b2c0 c85c b430 7a0b  `.....]....\.0z.
+       0850: 1856 d7a2 b3fc b399 30ec 4d60 0991 d2a8  .V......0.M`....
+       0860: 442e a930 4d2d f85d 6443 9500 0000 c100  D..0M-.]dC......
+       0870: f5e2 dadb cd2a 8bf3 3522 ff42 0561 628b  .....*..5".B.ab.
+       0880: 9068 b402 7517 a8e2 411d d44b 888b ee29  .h..u...A..K...)
+       0890: 5fde 4263 81a9 f593 d617 aaa5 c398 1a94  _.Bc............
+       08a0: 937f a387 626c 4a1e c835 6858 c57f 52e5  ....blJ..5hX..R.
+       08b0: 05f2 cabb f97d 0d07 7d38 071a a409 2277  .....}..}8...."w
+
+
+
+Miller                  Expires 17 December 2026               [Page 33]
+
+Internet-Draft           SSH Certificate Format                June 2026
+
+
+       08c0: 79df 1e4a 4d15 cbf1 f3f4 6324 34b8 85d6  y..JM.....c$4...
+       08d0: 67b8 cd99 c156 afc4 f7c1 730c 9e4f 879f  g....V....s..O..
+       08e0: 9932 6762 bcd4 4705 ed36 2db4 0993 14f5  .2gb..G..6-.....
+       08f0: 84a3 ba52 31fc b6b8 80a4 b950 267f 0426  ...R1......P&..&
+       0900: c280 e1b4 4dbb 61a1 6e36 4ed3 225e 38a9  ....M.a.n6N."^8.
+       0910: c8d7 2f61 8b4b e824 3b4f ae0f 74e7 8b28  ../a.K.$;O..t..(
+       0920: a28e 09a0 f83e 5b00 dbc7 dd15 d12b af81  .....>[......+..
+       0930: 0000 00c1 00ba 3d29 0aac 5ded d5aa 49a4  ......=)..]...I.
+       0940: 9282 b5af f719 8059 c3c4 5e97 baf8 b9bc  .......Y..^.....
+       0950: abb1 94af e5b2 0d91 103e 9991 8247 2054  .........>...G T
+       0960: 0575 e313 1d65 d607 125b a2b7 c0ff cc01  .u...e...[......
+       0970: 776e c582 ab4a e5b0 6d7a 81b1 c8b3 fca8  wn...J..mz......
+       0980: f8b8 090e 7183 9d4e 7bf7 2c4a d19a 51e5  ....q..N{.,J..Q.
+       0990: cc3b 6b98 c5bc 59a9 6fc2 682a c2dc f080  .;k...Y.o.h*....
+       09a0: f478 156a 9a90 9e4e 5f80 af7a a9da 0457  .x.j...N_..z...W
+       09b0: e8a3 e95a 4520 27f7 73c9 942a 27c7 9102  ...ZE '.s..*'...
+       09c0: 60b8 b51d 51d9 3a0b 0b06 9e8b 9d02 406a  `...Q.:.......@j
+       09d0: 8cdf 9b1c 8670 0a64 6e06 6016 d878 4953  .....p.dn.`..xIS
+       09e0: 9121 cc61 8ba8 96b6 acf9 ac51 0b33 5961  .!.a.......Q.3Ya
+       09f0: 24ec c5c8 93                                   $....
+
+Example ecdsa-sha2-nistp256-cert
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Miller                  Expires 17 December 2026               [Page 34]
+
+Internet-Draft           SSH Certificate Format                June 2026
+
+
+       0000: 0000 0018 6563 6473 612d 7368 6132 2d6e  ....ecdsa-sha2-n
+       0010: 6973 7470 3235 362d 6365 7274 0000 0020  istp256-cert...
+       0020: 569e e207 4580 0c0c 9d29 89d5 cee9 4ceb  V...E....)....L.
+       0030: 0770 ea4f fac8 09e2 c64e f5a0 0a20 3a2a  .p.O.....N... :*
+       0040: 0000 0008 6e69 7374 7032 3536 0000 0041  ....nistp256...A
+       0050: 046f d32e 1565 4d0d 5722 096c be53 b07a  .o...eM.W".l.S.z
+       0060: ea84 0ec1 dc1d d453 c1d9 17ae 2305 e3cf  .......S....#...
+       0070: 9089 5a0e 020e fc4f 2005 cb55 e4a6 dfa1  ..Z....O ..U....
+       0080: 0b33 d307 057f 0a20 c0e7 3b89 0f91 bf12  .3..... ..;.....
+       0090: e300 0000 0007 5bcd 1500 0000 0100 0000  ......[.........
+       00a0: 0667 7265 676f 7200 0000 1900 0000 0667  .gregor........g
+       00b0: 7265 676f 7200 0000 0b67 7265 676f 7273  regor....gregors
+       00c0: 616d 7361 0000 0000 5e0b e100 0000 0000  amsa....^.......
+       00d0: 985b 1cdf 0000 004b 0000 000d 666f 7263  .[.....K....forc
+       00e0: 652d 636f 6d6d 616e 6400 0000 0d00 0000  e-command.......
+       00f0: 092f 6269 6e2f 7472 7565 0000 000e 736f  ./bin/true....so
+       0100: 7572 6365 2d61 6464 7265 7373 0000 0013  urce-address....
+       0110: 0000 000f 3132 372e 302e 302e 302f 382c  ....127.0.0.0/8,
+       0120: 3a3a 3100 0000 8200 0000 1570 6572 6d69  ::1........permi
+       0130: 742d 5831 312d 666f 7277 6172 6469 6e67  t-X11-forwarding
+       0140: 0000 0000 0000 0017 7065 726d 6974 2d61  ........permit-a
+       0150: 6765 6e74 2d66 6f72 7761 7264 696e 6700  gent-forwarding.
+       0160: 0000 0000 0000 1670 6572 6d69 742d 706f  .......permit-po
+       0170: 7274 2d66 6f72 7761 7264 696e 6700 0000  rt-forwarding...
+       0180: 0000 0000 0a70 6572 6d69 742d 7074 7900  .....permit-pty.
+       0190: 0000 0000 0000 0e70 6572 6d69 742d 7573  .......permit-us
+       01a0: 6572 2d72 6300 0000 0000 0000 0000 0000  er-rc...........
+       01b0: 6800 0000 1365 6364 7361 2d73 6861 322d  h....ecdsa-sha2-
+       01c0: 6e69 7374 7032 3536 0000 0008 6e69 7374  nistp256....nist
+       01d0: 7032 3536 0000 0041 046f d32e 1565 4d0d  p256...A.o...eM.
+       01e0: 5722 096c be53 b07a ea84 0ec1 dc1d d453  W".l.S.z.......S
+       01f0: c1d9 17ae 2305 e3cf 9089 5a0e 020e fc4f  ....#.....Z....O
+       0200: 2005 cb55 e4a6 dfa1 0b33 d307 057f 0a20   ..U.....3.....
+       0210: c0e7 3b89 0f91 bf12 e300 0000 6400 0000  ..;.........d...
+       0220: 1365 6364 7361 2d73 6861 322d 6e69 7374  .ecdsa-sha2-nist
+       0230: 7032 3536 0000 0049 0000 0021 00d6 6898  p256...I...!..h.
+       0240: bbb6 cd2b 0806 d341 052c 2cba a9f0 f732  ...+...A.,,....2
+       0250: b9e9 8532 23b1 7089 157a 0705 0200 0000  ...2#.p..z......
+       0260: 203b 7985 c189 2b34 f184 076b 52a5 39d4   ;y...+4...kR.9.
+       0270: 54bb ed88 7b7f 6449 ff63 e46c 26e3 00e1  T...{.dI.c.l&...
+       0280: 0a0a                                     ..
+
+   Private certificate
+
+
+
+
+
+
+
+
+Miller                  Expires 17 December 2026               [Page 35]
+
+Internet-Draft           SSH Certificate Format                June 2026
+
+
+       0000: 0000 0018 6563 6473 612d 7368 6132 2d6e  ....ecdsa-sha2-n
+       0010: 6973 7470 3235 362d 6365 7274 0000 0281  istp256-cert....
+       0020: 0000 0018 6563 6473 612d 7368 6132 2d6e  ....ecdsa-sha2-n
+       0030: 6973 7470 3235 362d 6365 7274 0000 0020  istp256-cert...
+       0040: 569e e207 4580 0c0c 9d29 89d5 cee9 4ceb  V...E....)....L.
+       0050: 0770 ea4f fac8 09e2 c64e f5a0 0a20 3a2a  .p.O.....N... :*
+       0060: 0000 0008 6e69 7374 7032 3536 0000 0041  ....nistp256...A
+       0070: 046f d32e 1565 4d0d 5722 096c be53 b07a  .o...eM.W".l.S.z
+       0080: ea84 0ec1 dc1d d453 c1d9 17ae 2305 e3cf  .......S....#...
+       0090: 9089 5a0e 020e fc4f 2005 cb55 e4a6 dfa1  ..Z....O ..U....
+       00a0: 0b33 d307 057f 0a20 c0e7 3b89 0f91 bf12  .3..... ..;.....
+       00b0: e300 0000 0007 5bcd 1500 0000 0100 0000  ......[.........
+       00c0: 0667 7265 676f 7200 0000 1900 0000 0667  .gregor........g
+       00d0: 7265 676f 7200 0000 0b67 7265 676f 7273  regor....gregors
+       00e0: 616d 7361 0000 0000 5e0b e100 0000 0000  amsa....^.......
+       00f0: 985b 1cdf 0000 004b 0000 000d 666f 7263  .[.....K....forc
+       0100: 652d 636f 6d6d 616e 6400 0000 0d00 0000  e-command.......
+       0110: 092f 6269 6e2f 7472 7565 0000 000e 736f  ./bin/true....so
+       0120: 7572 6365 2d61 6464 7265 7373 0000 0013  urce-address....
+       0130: 0000 000f 3132 372e 302e 302e 302f 382c  ....127.0.0.0/8,
+       0140: 3a3a 3100 0000 8200 0000 1570 6572 6d69  ::1........permi
+       0150: 742d 5831 312d 666f 7277 6172 6469 6e67  t-X11-forwarding
+       0160: 0000 0000 0000 0017 7065 726d 6974 2d61  ........permit-a
+       0170: 6765 6e74 2d66 6f72 7761 7264 696e 6700  gent-forwarding.
+       0180: 0000 0000 0000 1670 6572 6d69 742d 706f  .......permit-po
+       0190: 7274 2d66 6f72 7761 7264 696e 6700 0000  rt-forwarding...
+       01a0: 0000 0000 0a70 6572 6d69 742d 7074 7900  .....permit-pty.
+       01b0: 0000 0000 0000 0e70 6572 6d69 742d 7573  .......permit-us
+       01c0: 6572 2d72 6300 0000 0000 0000 0000 0000  er-rc...........
+       01d0: 6800 0000 1365 6364 7361 2d73 6861 322d  h....ecdsa-sha2-
+       01e0: 6e69 7374 7032 3536 0000 0008 6e69 7374  nistp256....nist
+       01f0: 7032 3536 0000 0041 046f d32e 1565 4d0d  p256...A.o...eM.
+       0200: 5722 096c be53 b07a ea84 0ec1 dc1d d453  W".l.S.z.......S
+       0210: c1d9 17ae 2305 e3cf 9089 5a0e 020e fc4f  ....#.....Z....O
+       0220: 2005 cb55 e4a6 dfa1 0b33 d307 057f 0a20  ..U.....3.....
+       0230: c0e7 3b89 0f91 bf12 e300 0000 6400 0000  ..;.........d...
+       0240: 1365 6364 7361 2d73 6861 322d 6e69 7374  .ecdsa-sha2-nist
+       0250: 7032 3536 0000 0049 0000 0021 00d6 6898  p256...I...!..h.
+       0260: bbb6 cd2b 0806 d341 052c 2cba a9f0 f732  ...+...A.,,....2
+       0270: b9e9 8532 23b1 7089 157a 0705 0200 0000  ...2#.p..z......
+       0280: 203b 7985 c189 2b34 f184 076b 52a5 39d4  ;y...+4...kR.9.
+       0290: 54bb ed88 7b7f 6449 ff63 e46c 26e3 00e1  T...{.dI.c.l&...
+       02a0: 0a00 0000 2042 8814 0f41 9139 42d7 8d8d  .... B...A.9B...
+       02b0: 140f 56da e177 95cd b29f f08d a4b8 614e  ..V..w........aN
+       02c0: e22e 0b69 ee                                   ...i.
+
 Author's Address
+
+
+
+
+Miller                  Expires 17 December 2026               [Page 36]
+
+Internet-Draft           SSH Certificate Format                June 2026
+
 
    Damien Miller
    OpenSSH
@@ -1453,4 +2062,11 @@ Author's Address
 
 
 
-Miller                   Expires 30 October 2026               [Page 26]
+
+
+
+
+
+
+
+Miller                  Expires 17 December 2026               [Page 37]
