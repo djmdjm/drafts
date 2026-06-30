@@ -345,6 +345,21 @@
 	composite and non-composite keys, or between multiple composite
 	keys.
 	</t>
+	<t>
+	ML-DSA depends on high quality random numbers that are suitable for use in cryptography.
+	The use of inadequate pseudo-random number generators (PRNGs) to generate such values can
+	significantly undermine various security properties.
+	</t>
+	<t>
+	ML-DSA offers both deterministic and randomized signing. 
+	Signatures generated with either mode are compatible and a verifier 
+	cannot tell them apart. In the deterministic case, a signature only 
+	depends on the private key and the message to be signed. This makes the
+	implementation easier to test and does not require a randomness source during signing.
+	In the randomized case, signing mixes in a 256-bit random string from 
+	an approved random bit generator (RBG). 
+	When randomized, ML-DSA is easier to harden against fault and hardware side-channel attacks
+	</t>
 </section>
 
 <!--
