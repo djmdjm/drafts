@@ -271,11 +271,11 @@
 			mldsa_sig and ed25519_sig.
 			</t>
 			<sourcecode>
-    byte[3309] mldsa_sig
+    byte[2420] mldsa_sig
     byte[64]   ed25519_sig
 			</sourcecode>
 			<t>
-			This 3373-byte combination is henceforth
+			This 2420-byte combination is henceforth
 			referred to as "composite_signature".
 			</t>
 		</section>
