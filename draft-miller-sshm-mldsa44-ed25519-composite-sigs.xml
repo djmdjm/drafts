@@ -275,7 +275,7 @@
     byte[64]   ed25519_sig
 			</sourcecode>
 			<t>
-			This 2420-byte combination is henceforth
+			This 2484-byte combination is henceforth
 			referred to as "composite_signature".
 			</t>
 		</section>
