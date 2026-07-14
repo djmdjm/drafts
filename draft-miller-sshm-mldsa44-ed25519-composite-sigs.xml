@@ -275,7 +275,7 @@
     byte[64]   ed25519_sig
 			</sourcecode>
 			<t>
-			This 2420-byte combination is henceforth
+			This 2484-byte combination is henceforth
 			referred to as "composite_signature".
 			</t>
 		</section>
@@ -322,19 +322,18 @@
 			between signatues.
 			</t>
 			<t>
-			TODO TODO TODO
 			In all cases in the SSH protocol, this
-			context value is the empty string, but
-			if we ever change our minds then this is
-			where we'd describe what contexts are used
-			for each signature/verification operation.
-			TODO TODO TODO.
+			context value is the empty string.
 			</t>
 		</section>
 	</section>
 </section>
 
 <section><name>Security Considerations</name>
+	<t>
+	The security consideration of
+	<xref target="I-D.ietf-lamps-pq-composite-sigs" /> apply here.
+	</t>
 	<t>
 	The security of this composite scheme depends on the strength of
 	both component algorithms. An adversary must break both ML-DSA-44
@@ -347,7 +346,6 @@
 	</t>
 </section>
 
-<!--
 <section><name>IANA Considerations</name>
 	<t>
 	IANA is requested to register the algorithm name
@@ -355,7 +353,6 @@
 	registry.
 	</t>
 </section>
--->
 
 </middle>
 

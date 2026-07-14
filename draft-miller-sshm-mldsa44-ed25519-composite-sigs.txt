@@ -4,8 +4,8 @@
 
 Secure Shell (SSHM)                                            D. Miller
 Internet-Draft                                                   OpenSSH
-Intended status: Standards Track                             2 July 2026
-Expires: 3 January 2027
+Intended status: Standards Track                            14 July 2026
+Expires: 15 January 2027
 
 
              ML-DSA 44/Ed255192 Composite Signatures in SSH
@@ -35,7 +35,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 3 January 2027.
+   This Internet-Draft will expire on 15 January 2027.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Miller                   Expires 3 January 2027                 [Page 1]
+Miller                   Expires 15 January 2027                [Page 1]
 
 Internet-Draft             MLDSA44-Ed25519 SSH                 July 2026
 
@@ -75,9 +75,10 @@ Table of Contents
        4.4.3.  SSH signature wire encoding . . . . . . . . . . . . .   6
        4.4.4.  Signture contexts . . . . . . . . . . . . . . . . . .   6
    5.  Security Considerations . . . . . . . . . . . . . . . . . . .   6
-   6.  References  . . . . . . . . . . . . . . . . . . . . . . . . .   6
-     6.1.  Normative References  . . . . . . . . . . . . . . . . . .   6
-     6.2.  Informative References  . . . . . . . . . . . . . . . . .   7
+   6.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   6
+   7.  References  . . . . . . . . . . . . . . . . . . . . . . . . .   6
+     7.1.  Normative References  . . . . . . . . . . . . . . . . . .   6
+     7.2.  Informative References  . . . . . . . . . . . . . . . . .   7
    Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .   7
 
 1.  Introduction
@@ -108,8 +109,7 @@ Table of Contents
 
 
 
-
-Miller                   Expires 3 January 2027                 [Page 2]
+Miller                   Expires 15 January 2027                [Page 2]
 
 Internet-Draft             MLDSA44-Ed25519 SSH                 July 2026
 
@@ -165,7 +165,7 @@ Internet-Draft             MLDSA44-Ed25519 SSH                 July 2026
 
 
 
-Miller                   Expires 3 January 2027                 [Page 3]
+Miller                   Expires 15 January 2027                [Page 3]
 
 Internet-Draft             MLDSA44-Ed25519 SSH                 July 2026
 
@@ -221,7 +221,7 @@ Internet-Draft             MLDSA44-Ed25519 SSH                 July 2026
 
 
 
-Miller                   Expires 3 January 2027                 [Page 4]
+Miller                   Expires 15 January 2027                [Page 4]
 
 Internet-Draft             MLDSA44-Ed25519 SSH                 July 2026
 
@@ -262,7 +262,7 @@ Internet-Draft             MLDSA44-Ed25519 SSH                 July 2026
        byte[2420] mldsa_sig
        byte[64]   ed25519_sig
 
-   This 2420-byte combination is henceforth referred to as
+   This 2484-byte combination is henceforth referred to as
    "composite_signature".
 
 4.4.2.  Signature Verification
@@ -277,7 +277,7 @@ Internet-Draft             MLDSA44-Ed25519 SSH                 July 2026
 
 
 
-Miller                   Expires 3 January 2027                 [Page 5]
+Miller                   Expires 15 January 2027                [Page 5]
 
 Internet-Draft             MLDSA44-Ed25519 SSH                 July 2026
 
@@ -297,12 +297,13 @@ Internet-Draft             MLDSA44-Ed25519 SSH                 July 2026
    underlying ML-DSA component, accepts a Context parameter that may be
    used to enforce domain separation between signatues.
 
-   TODO TODO TODO In all cases in the SSH protocol, this context value
-   is the empty string, but if we ever change our minds then this is
-   where we'd describe what contexts are used for each signature/
-   verification operation.  TODO TODO TODO.
+   In all cases in the SSH protocol, this context value is the empty
+   string.
 
 5.  Security Considerations
+
+   The security consideration of [I-D.ietf-lamps-pq-composite-sigs]
+   apply here.
 
    The security of this composite scheme depends on the strength of both
    component algorithms.  An adversary must break both ML-DSA-44 and
@@ -311,9 +312,14 @@ Internet-Draft             MLDSA44-Ed25519 SSH                 July 2026
    Implementations MUST NOT reuse component key material between
    composite and non-composite keys, or between multiple composite keys.
 
-6.  References
+6.  IANA Considerations
 
-6.1.  Normative References
+   IANA is requested to register the algorithm name "ssh-
+   mldsa44-ed25519" in the "Public Key Algorithm Names" registry.
+
+7.  References
+
+7.1.  Normative References
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -324,19 +330,17 @@ Internet-Draft             MLDSA44-Ed25519 SSH                 July 2026
               Protocol Architecture", RFC 4251, DOI 10.17487/RFC4251,
               January 2006, <https://www.rfc-editor.org/info/rfc4251>.
 
-   [RFC4253]  Ylonen, T. and C. Lonvick, Ed., "The Secure Shell (SSH)
-              Transport Layer Protocol", RFC 4253, DOI 10.17487/RFC4253,
-              January 2006, <https://www.rfc-editor.org/info/rfc4253>.
 
 
 
-
-
-
-Miller                   Expires 3 January 2027                 [Page 6]
+Miller                   Expires 15 January 2027                [Page 6]
 
 Internet-Draft             MLDSA44-Ed25519 SSH                 July 2026
 
+
+   [RFC4253]  Ylonen, T. and C. Lonvick, Ed., "The Secure Shell (SSH)
+              Transport Layer Protocol", RFC 4253, DOI 10.17487/RFC4253,
+              January 2006, <https://www.rfc-editor.org/info/rfc4253>.
 
    [RFC8032]  Josefsson, S. and I. Liusvaara, "Edwards-Curve Digital
               Signature Algorithm (EdDSA)", RFC 8032,
@@ -361,7 +365,7 @@ Internet-Draft             MLDSA44-Ed25519 SSH                 July 2026
               FIPS 204, DOI 10.6028/nist.fips.204, August 2024,
               <https://doi.org/10.6028/nist.fips.204>.
 
-6.2.  Informative References
+7.2.  Informative References
 
    [I-D.ietf-sshm-ssh-agent]
               Miller, D., "SSH Agent Protocol", Work in Progress,
@@ -385,8 +389,4 @@ Author's Address
 
 
 
-
-
-
-
-Miller                   Expires 3 January 2027                 [Page 7]
+Miller                   Expires 15 January 2027                [Page 7]
