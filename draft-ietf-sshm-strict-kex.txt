@@ -4,12 +4,12 @@
 
 Internet Engineering Task Force                                D. Miller
 Internet-Draft                                                   OpenSSH
-Intended status: Standards Track                        12 November 2025
-Expires: 16 May 2026
+Intended status: Standards Track                            23 July 2026
+Expires: 24 January 2027
 
 
                         SSH Strict KEX extension
-                     draft-ietf-sshm-strict-kex-01
+                     draft-ietf-sshm-strict-kex-02
 
 Abstract
 
@@ -32,11 +32,11 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 16 May 2026.
+   This Internet-Draft will expire on 24 January 2027.
 
 Copyright Notice
 
-   Copyright (c) 2025 IETF Trust and the persons identified as the
+   Copyright (c) 2026 IETF Trust and the persons identified as the
    document authors.  All rights reserved.
 
    This document is subject to BCP 78 and the IETF Trust's Legal
@@ -53,9 +53,9 @@ Copyright Notice
 
 
 
-Miller                     Expires 16 May 2026                  [Page 1]
+Miller                   Expires 24 January 2027                [Page 1]
 
-Internet-Draft          SSH Strict KEX extension           November 2025
+Internet-Draft          SSH Strict KEX extension               July 2026
 
 
 Table of Contents
@@ -109,9 +109,9 @@ Table of Contents
 
 
 
-Miller                     Expires 16 May 2026                  [Page 2]
+Miller                   Expires 24 January 2027                [Page 2]
 
-Internet-Draft          SSH Strict KEX extension           November 2025
+Internet-Draft          SSH Strict KEX extension               July 2026
 
 
 1.1.  Requirements Language
@@ -165,9 +165,9 @@ Internet-Draft          SSH Strict KEX extension           November 2025
 
 
 
-Miller                     Expires 16 May 2026                  [Page 3]
+Miller                   Expires 24 January 2027                [Page 3]
 
-Internet-Draft          SSH Strict KEX extension           November 2025
+Internet-Draft          SSH Strict KEX extension               July 2026
 
 
 2.2.  Attack Mechanics
@@ -221,9 +221,9 @@ Internet-Draft          SSH Strict KEX extension           November 2025
 
 
 
-Miller                     Expires 16 May 2026                  [Page 4]
+Miller                   Expires 24 January 2027                [Page 4]
 
-Internet-Draft          SSH Strict KEX extension           November 2025
+Internet-Draft          SSH Strict KEX extension               July 2026
 
 
        sent_seq=0       SSH_MSG_KEXINIT           expected_seq=0
@@ -277,9 +277,9 @@ Internet-Draft          SSH Strict KEX extension           November 2025
 
 
 
-Miller                     Expires 16 May 2026                  [Page 5]
+Miller                   Expires 24 January 2027                [Page 5]
 
-Internet-Draft          SSH Strict KEX extension           November 2025
+Internet-Draft          SSH Strict KEX extension               July 2026
 
 
    Insertion of additional packets should be harmless, as
@@ -333,9 +333,9 @@ Internet-Draft          SSH Strict KEX extension           November 2025
 
 
 
-Miller                     Expires 16 May 2026                  [Page 6]
+Miller                   Expires 24 January 2027                [Page 6]
 
-Internet-Draft          SSH Strict KEX extension           November 2025
+Internet-Draft          SSH Strict KEX extension               July 2026
 
 
    Of the fields defined by [RFC8308], the "server-sig-algs" option is
@@ -389,9 +389,9 @@ Internet-Draft          SSH Strict KEX extension           November 2025
 
 
 
-Miller                     Expires 16 May 2026                  [Page 7]
+Miller                   Expires 24 January 2027                [Page 7]
 
-Internet-Draft          SSH Strict KEX extension           November 2025
+Internet-Draft          SSH Strict KEX extension               July 2026
 
 
    Similarly, a server indicates support by including either the
@@ -445,9 +445,9 @@ Internet-Draft          SSH Strict KEX extension           November 2025
 
 
 
-Miller                     Expires 16 May 2026                  [Page 8]
+Miller                   Expires 24 January 2027                [Page 8]
 
-Internet-Draft          SSH Strict KEX extension           November 2025
+Internet-Draft          SSH Strict KEX extension               July 2026
 
 
    *  SSH_MSG_KEX_HYBRID_INIT and SSH_MSG_KEX_HYBRID_REPLY for the
@@ -501,9 +501,9 @@ Internet-Draft          SSH Strict KEX extension           November 2025
 
 
 
-Miller                     Expires 16 May 2026                  [Page 9]
+Miller                   Expires 24 January 2027                [Page 9]
 
-Internet-Draft          SSH Strict KEX extension           November 2025
+Internet-Draft          SSH Strict KEX extension               July 2026
 
 
 4.  IANA Considerations
@@ -557,9 +557,9 @@ Internet-Draft          SSH Strict KEX extension           November 2025
 
 
 
-Miller                     Expires 16 May 2026                 [Page 10]
+Miller                   Expires 24 January 2027               [Page 10]
 
-Internet-Draft          SSH Strict KEX extension           November 2025
+Internet-Draft          SSH Strict KEX extension               July 2026
 
 
 6.  Implementation Status
@@ -613,9 +613,9 @@ Internet-Draft          SSH Strict KEX extension           November 2025
 
 
 
-Miller                     Expires 16 May 2026                 [Page 11]
+Miller                   Expires 24 January 2027               [Page 11]
 
-Internet-Draft          SSH Strict KEX extension           November 2025
+Internet-Draft          SSH Strict KEX extension               July 2026
 
 
       supported strict KEX in its external "x" repository since 2023.
@@ -669,9 +669,9 @@ Internet-Draft          SSH Strict KEX extension           November 2025
 
 
 
-Miller                     Expires 16 May 2026                 [Page 12]
+Miller                   Expires 24 January 2027               [Page 12]
 
-Internet-Draft          SSH Strict KEX extension           November 2025
+Internet-Draft          SSH Strict KEX extension               July 2026
 
 
    [RFC8308]  Bider, D., "Extension Negotiation in the Secure Shell
@@ -725,9 +725,9 @@ Acknowledgments
 
 
 
-Miller                     Expires 16 May 2026                 [Page 13]
+Miller                   Expires 24 January 2027               [Page 13]
 
-Internet-Draft          SSH Strict KEX extension           November 2025
+Internet-Draft          SSH Strict KEX extension               July 2026
 
 
    These changes were developed with assistance from Darren Tucker,
@@ -781,4 +781,4 @@ Author's Address
 
 
 
-Miller                     Expires 16 May 2026                 [Page 14]
+Miller                   Expires 24 January 2027               [Page 14]
