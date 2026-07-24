@@ -1,0 +1,574 @@
+<?xml-model href="rfc7991bis.rnc"?>
+<rfc
+  xmlns:xi="http://www.w3.org/2001/XInclude"
+  category="std"
+  docName="draft-miller-sshm-composite-sigs-00"
+  ipr="trust200902"
+  obsoletes=""
+  updates=""
+  consensus="true"
+  submissionType="IETF"
+  xml:lang="en"
+  version="3">
+
+<front>
+	<title abbrev="SSH PQ composite signatures">Post Quantum Composite Signatures in SSH</title>
+	<seriesInfo name="Internet-Draft" value="draft-miller-sshm-composite-sigs-00"/>
+	<author fullname="Damien Miller" initials="D." surname="Miller">
+		<organization>OpenSSH</organization>
+		<address>
+			<email>djm@openssh.com</email>
+			<uri>https://www.openssh.com/</uri>
+		</address>
+	</author>
+	<date />
+	<area>Security</area>
+	<workgroup>Secure Shell (SSHM)</workgroup>
+	<keyword>ssh</keyword>
+	<keyword>mldsa</keyword>
+	<keyword>ed25519</keyword>
+	<keyword>hybrid</keyword>
+	<keyword>post-quantum</keyword>
+	<abstract>
+		<t>
+		This document specifies the integration of two
+		composite post-quantum signature schemes
+		into the Secure Shell (SSH) protocol.
+		These schemes combine the post-quantum Module-Lattice
+		Digital Signature Algorithm (ML-DSA) with elliptic curve
+		signature algorithms (Ed25519 and ECDSA respectively)
+		to provide security against both quantum and classical
+		adversaries.
+		</t>
+	</abstract>
+</front>
+
+<middle>
+<section><name>Introduction</name>
+	<t>
+	The Secure Shell (SSH) protocol <xref target="RFC4251" /> is
+	a protocol for secure remote login and other secure network
+	services over an untrusted network.
+	</t>
+	<t>
+	The expected arrival of quantum computing poses a threat to
+	traditional asymmetric cryptography. Post-quantum algorithms
+	such as ML-DSA <xref target="FIPS204" /> have been developed
+	to remain secure against a quantum computer-equipped
+	adversary.
+	However, given the relative novelty of the post-quantum
+	algoritms, it is desirable to use composite schemes that
+	combine post-quantum and classical algorithms to protect
+	against quantum attacks while promising to be "no worse" than
+	the chosen classical algorithm should a vulnerability be
+	discovered in the post-quantum algorithm or its
+	implementation.
+	</t>
+	<t>
+	This document specifies two composite signature schemes for SSH,
+	mapping the COMPSIG-MLDSA44-Ed25519-SHA512 and
+	COMPSIG-MLDSA87-ECDSA-P384-SHA512 schemes defined in
+	<xref target="I-D.ietf-lamps-pq-composite-sigs" /> to the SSH
+	protocol <xref target="RFC4253" /> using the SSH
+	algorithm identifiers ssh-mldsa44-ed25519 and
+	ssh-mldsa87-p384 respectively.
+	</t>
+</section>
+
+<section anchor="requirements"><name>Requirements Language</name>
+	<t>
+	The key words "MUST", "MUST NOT", "REQUIRED", "SHALL",
+	"SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED",
+	"NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document
+	are to be interpreted as described in BCP 14
+	<xref target="RFC2119"/> <xref target="RFC8174"/> when,
+	and only when, they appear in all capitals, as shown here.
+	</t>
+</section>
+
+<section><name>Terminology</name>
+	<t>
+	All encoding data types ("byte", "string", etc.) are
+	as specified in <xref target="RFC4251" section="5" />.
+<!--
+	Additionally, the type "byte[]" without a specified length
+	within the square brackets indicates an unadorned sequence of
+	zero or more bytes where the length is determined by context.
+-->
+	</t>
+	<t>
+	All length units are given in bytes unless otherwise specified.
+	</t>
+</section>
+
+<section><name>Algorithm specifications</name>
+	<t>
+	For both the ssh-mldsa44-ed25519 and
+	ssh-mldsa87-p384 algorithms, the underlying key
+	generation, signing and verification primitives are as
+	specified in
+	<xref target="I-D.ietf-lamps-pq-composite-sigs" />, but are
+	also described briefly below.
+	</t>
+	<section><name>Key generation</name>
+		<t>
+		Keys are generated using the process specified in
+		<xref target="I-D.ietf-lamps-pq-composite-sigs" section="3.1" />.
+		Specifically, ML-DSA and Elliptic Curve keys are generated
+		separately and the resultant public for
+		each are combined to form the composite public key.
+		ML-DSA private keys are always represented in wire formats
+		as seeds and not as expanded keys.
+		</t>
+		<t>
+		ML-DSA key generation uses the ML-DSA.KeyGen_internal
+		algorithm as defined in <xref target="FIPS204" />
+		section 6.1 and not the usual ML-DSA.KeyGen algorithm
+		as the latter emits an expanded private key and not
+		the required seed.
+		</t>
+		<section><name>ssh-mldsa44-ed25519</name>
+			<t>
+			For the ssh-mldsa44-ed25519 algorithm,
+			Ed25519 key generation is described in
+			<xref target="RFC8032" section="5.1.5" />.
+			Ed25519 private keys are also represented as seeds in
+			wire formats.
+			</t>
+			<section anchor="pubkey-ed"><name>Composite raw public key</name>
+				<t>
+				The resultant public keys from the respective
+				ML-DSA and Ed25519 key generation algorithms
+				are combined by simple concatenation to form
+				a composite public key. Specifically it
+				consists of the raw ML-DSA-44 public key
+				(1312 bytes) and the Ed25519 public key (32
+				bytes), for a total of 1344 bytes:
+				</t>
+				<sourcecode>
+    byte[1312] mldsa_pk
+    byte[32]   ed25519_pk
+				</sourcecode>
+				<t>
+				This 1344-byte combination is referred to as
+				"composite_mldsa44_ed25519_public_key"
+				henceforth in this document.
+				</t>
+			</section>
+			<section anchor="privkey-ed"><name>Composite raw private key</name>
+				<t>
+				The composite private key is also a
+				concatenation, but its elements are the
+				private key seeds for the respective
+				algorithms. Each of these seeds is 32 bytes.
+				</t>
+				<sourcecode>
+    byte[32]  mldsa_seed
+    byte[32]  ed25519_seed
+				</sourcecode>
+				<t>
+				This 64-byte combination is referred to as
+				"composite_mldsa44_ed25519_private_key"
+				henceforth in this document.
+				</t>
+			</section>
+		</section>
+		<section><name>ssh-mldsa87-p384</name>
+			<t>
+			For ssh-mldsa87-p384, ECDSA key generation
+			is specified in Appendix A.2 of
+			<xref target="FIPS.186-5"/> using the Curve P-384 domain
+			parameters specified in section G.1.3 of
+			<xref target="SP.800-186"/>.
+			</t>
+
+			<section anchor="pubkey-ec"><name>Composite raw public key</name>
+				<t>
+				The resultant public keys from the respective
+				ML-DSA and ECDSA key generation algorithms
+				are combined to form a composite public key.
+				Specifically it consists of the raw ML-DSA-87
+				public key (2592 bytes) and the ECDSA public
+				key 'Q'.
+				</t>
+				<sourcecode>
+    byte[2592] mldsa_pk
+    string     Q
+				</sourcecode>
+				<t>
+				This combination is referred to as
+				"composite_mldsa67_p384_public_key" henceforth
+				in this document.
+				</t>
+			</section>
+			<section anchor="privkey-ec"><name>Composite raw private key</name>
+				<t>
+				The composite private key is similarly
+				constructed by the ML-DSA seed alongside the
+				ECDSA private key "d".
+				</t>
+				<sourcecode>
+    byte[32]  mldsa_seed
+    mpint     d
+				</sourcecode>
+				<t>
+				This combination is referred to as
+				"composite_mldsa67_p384_private_key"
+				henceforth in this document.
+				</t>
+			</section>
+		</section>
+		<section><name>SSH Public Key Format</name>
+			<t>
+			Both the "ssh-mldsa44-ed25519" and
+			"ssh-mldsa87-p384" public key formats as
+			they appear in the SSH protocol have the same overall
+			format:
+			</t>
+			<sourcecode>
+    string    key_type_name
+    string    composite_public_key
+			</sourcecode>
+			<t>
+			Where "key_type_name" is either
+			"ssh-mldsa44-ed25519" or
+			"ssh-mldsa87-p384" and
+			"composite_public_key"
+			is the corresponding
+			"composite_mldsa44_ed25519_public_key"
+			(<xref target="pubkey-ed" />) or
+			"composite_mldsa67_p384_public_key"
+			(<xref target="pubkey-ec" />).
+			</t>
+		</section>
+		<section><name>SSH Private Key Format</name>
+			<t>
+			When adding a key to an agent
+			<xref target="I-D.ietf-sshm-ssh-agent" />
+			using the SSH_AGENTC_ADD_IDENTITY or
+			SSH_AGENTC_ADD_ID_CONSTRAINED
+			messages, the key data MUST have the following
+			format:
+			</t>
+			<sourcecode>
+    string    key_type_name
+    string    composite_public_key
+    string    composite_private_key
+			</sourcecode>
+			<t>
+			Where "key_type_name" is either
+			"ssh-mldsa44-ed25519" or
+			"ssh-mldsa87-p384".
+			</t>
+			<t>
+			The "composite_public_key" is the corresponding
+			"composite_mldsa44_ed25519_public_key"
+			(<xref target="pubkey-ed" />) or
+			"composite_mldsa67_p384_public_key"
+			(<xref target="pubkey-ec" />).
+			</t>
+			<t>
+			The "composite_private_key" is the corresponding
+			"composite_mldsa44_ed25519_private_key"
+			(<xref target="privkey-ed" />) or
+			"composite_mldsa67_p384_privkey_key"
+			(<xref target="privkey-ec" />).
+			</t>
+			<t>
+			This private key serialisation may also be used as
+			the basis of on-disk key formats, though these are
+			beyond the scope of this document.
+			</t>
+		</section>
+	</section>
+
+	<section><name>Signatures</name>
+		<section><name>Signture contexts</name>
+			<t>
+			The <xref target="I-D.ietf-lamps-pq-composite-sigs" />
+			composite signature scheme, like its
+			underlying ML-DSA component, accepts a Context
+			parameter that may be used to enforce domain
+			separation between signatues.
+			</t>
+			<t>
+			In all cases in the SSH protocol, this
+			context value is the empty string.
+			</t>
+		</section>
+		<section anchor="sig"><name>Signature Generation</name>
+			<t>
+		To sign a message M, the signer first constructs a message
+		representative M' as follows:
+			</t>
+			<sourcecode>
+    M' = Prefix || Label || len(ctx) || ctx || SHA512(M)
+			</sourcecode>
+			<t>
+		Where:
+			</t>
+			<ul>
+				<li>
+				Prefix: The ASCII string
+				"CompositeAlgorithmSignatures2025"
+			        [43 6F 6D 70 6F 73 69 74 65 41 6C 67
+				6F 72 69 74 68 6D 53 69 67 6E 61 74
+				75 72 65 73 32 30 32 35].
+				</li>
+				<li>
+				Label: The ASCII algorithm label specific
+				to the signature algorithm.
+				</li>
+				<li>
+				len(ctx): A single byte representing
+				the length of the context string.
+				</li>
+				<li>
+				ctx: The context string.
+				</li>
+				<li>
+				SHA512(M): The SHA-512 hash of the
+				original message M.
+				</li>
+			</ul>
+			<t>
+			The signer then computes and combines the ML-DSA and
+			classical signatures as described in the following
+			sections.
+			</t>
+			<section anchor="sig-ed"><name>ssh-mldsa44-ed25519</name>
+				<t>
+				This algorithm uses the Label
+				"COMPSIG-MLDSA44-Ed25519-SHA512"
+			        [43 4F 4D 50 53 49 47 2D 4D 4C 44 53
+				41 34 34 2D 45 64 32 35 35 31 39 2D
+				53 48 41 35 31 32] when creating the M'
+				message to be signed.
+				</t>
+				<t>
+				The ML-DSA and classical signatures are then
+				calculated as:
+				</t>
+				<ul>
+				<li>
+				mldsa_sig = ML-DSA-44.Sign(mldsa_sk, M', ctx=Label)
+				</li>
+				<li>
+				ed25519_sig = Ed25519.Sign(ed25519_sk, M')
+				</li>
+				</ul>
+				<t>
+				The final composite signature is the
+				concatenation of mldsa_sig and ed25519_sig.
+				</t>
+				<sourcecode>
+    byte[2420] mldsa_sig
+    byte[64]   ed25519_sig
+				</sourcecode>
+				<t>
+				This 2484-byte combination is henceforth
+				referred to as
+				"composite_mldsa44_ed25519_signature".
+				</t>
+			</section>
+			<section anchor="sig-ec"><name>ssh-mldsa87-p384</name>
+				<t>
+				This algorithm uses the Label
+				"COMPSIG-MLDSA87-ECDSA-P384-SHA512"
+			        [43 4F 4D 50 53 49 47 2D 4D 4C 44 53 41 38 37
+				2D 45 43 44 53 41 2D 50 33 38 34 2D 53 48
+				41 35 31 32] when creating the M'
+				message to be signed.
+				</t>
+				<t>
+				The ML-DSA and classical signatures are then
+				calculated as:
+				</t>
+				<ul>
+				<li>
+				mldsa_sig = ML-DSA-87.Sign(mldsa_sk, M', ctx=Label)
+				</li>
+				<li>
+				r, s = ECDSA-P384.Sign(ecdsa_sk, M')
+				</li>
+				</ul>
+				<t>
+				The final composite signature is the
+				concatenation of mldsa_sig and ecdsa_sig.
+				</t>
+				<sourcecode>
+    byte[4896] mldsa_sig
+    mpint      r
+    mpint      s
+				</sourcecode>
+				<t>
+				This combination is henceforth referred to as
+				"composite_mldsa67_p384_signature".
+				</t>
+			</section>
+			<section><name>SSH signature wire encoding</name>
+				<t>
+				Signatures are represented in SSH using
+				the following format:
+				</t>
+				<sourcecode>
+    string    signature_type_name
+    string    composite_signature
+				</sourcecode>
+				<t>
+				Where "signature_type_name" is either
+				"ssh-mldsa44-ed25519" or
+				"ssh-mldsa87-p384" and
+				"composite_signature"
+				is the corresponding
+				"composite_mldsa44_ed25519_signature"
+				(<xref target="sig-ed" />) or
+				"composite_mldsa67_p384_signature"
+				(<xref target="sig-ec" />).
+				</t>
+			</section>
+			<section><name>Signature Verification</name>
+				<t>
+				To verify a signature, the verifier
+				reconstructs M' using the same process as
+				defined for generation. The verifier then
+				verifies the ML-DSA and Elliptic Curve
+				signatures as described in the following
+				sections.
+				</t>
+				<t>
+				Both verification operations MUST return success
+				for the composite signature to verify
+				successfully. Failure
+				of either ML-DSA or the Elliptic Curve
+				verification MUST cause the verification of
+				the composite signature to fail.
+				</t>
+				<section><name>ssh-mldsa44-ed25519</name>
+				<t>
+				To verify a ssh-mldsa44-ed25519
+				signature, the verifier performs:
+				</t>
+				<ul>
+					<li>
+					ML-DSA-44.Verify(mldsa_pk, M', mldsa_sig, ctx=Label)
+					</li>
+					<li>
+					Ed25519.Verify(ed25519_pk, M', ed25519_sig)
+					</li>
+				</ul>
+				<t>
+				And checks both results as described above.
+				</t>
+				</section>
+				<section><name>ssh-mldsa87-p384</name>
+				<t>
+				To verify a ssh-mldsa87-p384
+				signature, the verifier performs:
+				</t>
+				<ul>
+					<li>
+					ML-DSA-87.Verify(mldsa_pk, M', mldsa_sig, ctx=Label)
+					</li>
+					<li>
+					ECDSA-P384.Sign.Verify(ecdsa_pk, M', ecdsa_sig)
+					</li>
+				</ul>
+				<t>
+				And checks both results as described above.
+				</t>
+				</section>
+			</section>
+		</section>
+	</section>
+</section>
+
+<section><name>Security Considerations</name>
+	<t>
+	The security consideration of
+	<xref target="I-D.ietf-lamps-pq-composite-sigs" /> apply here.
+	</t>
+	<t>
+	The security of this composite scheme depends on the strength of
+	both component algorithms. An adversary must break both ML-DSA
+	and the Elliptic Curve algorithm to forge a signature.
+	</t>
+	<t>
+	Implementations MUST NOT reuse component key material between
+	composite and non-composite keys, or between multiple composite
+	keys.
+	</t>
+</section>
+
+<section><name>IANA Considerations</name>
+	<t>
+	IANA is requested to register the algorithm names
+	"ssh-mldsa44-ed25519" and "ssh-mldsa87-p384" to the
+	"Public Key Algorithm Names" registry (<xref target="IANA-PUBKEYS" />).
+	</t>
+</section>
+
+</middle>
+
+<back>
+	<references><name>References</name>
+		<references><name>Normative References</name>
+			<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.2119.xml" />
+			<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.4251.xml" />
+			<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.4253.xml" />
+			<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8032.xml" />
+			<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8174.xml" />
+			<xi:include href="https://datatracker.ietf.org/doc/bibxml3/draft-ietf-lamps-pq-composite-sigs-19.xml" />
+
+		<reference anchor="FIPS204">
+			<front>
+				<title>Module-lattice-based digital signature standard</title>
+				<author><organization/></author>
+				<date month="August" year="2024"/>
+			</front>
+			<seriesInfo name="FIPS" value="204" />
+			<seriesInfo name="DOI" value="10.6028/nist.fips.204"/>
+			<refcontent>National Institute of Standards and Technology (U.S.)</refcontent>
+		</reference>
+		<reference anchor="FIPS.186-5">                   
+			<front>                                          
+				<title>Digital Signature Standard (DSS)</title>
+				<author>                   
+					<organization> 
+						National Institute of    
+						Standards and Technology   
+					</organization>                     
+				</author>                              
+				<date month="February" year="2023" />      
+			</front>                                
+			<refcontent>FIPS PUB 186-5</refcontent>
+			<seriesInfo name="DOI" value="10.6028/NIST.FIPS.186-5"/>
+		</reference>
+		<reference anchor="SP.800-186">                   
+			<front>                                          
+				<title>Recommendations for Discrete Logarithm-based Cryptography: Elliptic Curve Domain Parameters</title>
+				<author>                   
+					<organization> 
+						National Institute of    
+						Standards and Technology   
+					</organization>                     
+				</author>                              
+				<date month="February" year="2023" />      
+			</front>                                
+			<refcontent>SP 800-186</refcontent>
+			<seriesInfo name="DOI" value="10.6028/NIST.SP.800-186"/>
+		</reference>
+		</references>
+
+		<references><name>Informative References</name>
+			<xi:include href="https://datatracker.ietf.org/doc/bibxml3/draft-ietf-sshm-ssh-agent-15.xml" />
+			<reference anchor="IANA-PUBKEYS" target="https://www.iana.org/assignments/ssh-parameters/" quoteTitle="true" derivedAnchor="IANA-PUBKEYS">
+				<front>
+					<title>Public Key Algorithm Names</title>
+					<author><organization showOnFrontPage="true">IANA</organization></author>
+				</front>
+			</reference>
+		</references>
+	</references>
+</back>
+</rfc>
