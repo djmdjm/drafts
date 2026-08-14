@@ -491,14 +491,32 @@
 	<xref target="I-D.ietf-lamps-pq-composite-sigs" /> apply here.
 	</t>
 	<t>
-	The security of this composite scheme depends on the strength of
-	both component algorithms. An adversary must break both ML-DSA
-	and the Elliptic Curve algorithm to forge a signature.
+	The security of this composite scheme depends on the security of both
+	component algorithms. An adversary must forge both ML-DSA and Elliptic Curve
+	signatures in order to forge a composite signature.
 	</t>
 	<t>
 	Implementations MUST NOT reuse component key material between
 	composite and non-composite keys, or between multiple composite
-	keys.
+	keys. See <xref target="I-D.ietf-lamps-pq-composite-sigs" /> section 9.3.
+	</t>
+	<t>
+	If neither of the component algorithms are broken, both
+	ssh-mldsa44-ed25519 and ssh-mldsa87-p384 are Existentially Unforgeable under
+	Chosen-Message Attack (EUF-CMA), since ML-DSA, Ed25519, and ECDSA are all
+	EUF-CMA and SHA-512 is collision-resistant. If one of the component
+	algorithms are broken. See
+	<xref target="I-D.ietf-lamps-pq-composite-sigs" /> section 9.2.1.
+	</t>
+	<t>
+	This composite scheme is not Strongly Unforgeable under Chosen-Message
+	Attack (SUF-CMA). Systems that rely on this property SHOULD NOT use this
+	scheme.
+	</t>
+	<t>
+	This composite scheme provides Weak Non-Separability (WNS) for both
+	components due to evidence of the composite in the Prefix in `M'`. See
+	<xref target="I-D.ietf-lamps-pq-composite-sigs" /> section 9.2.3.
 	</t>
 </section>
 
