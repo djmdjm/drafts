@@ -73,7 +73,7 @@ Table of Contents
        4.2.1.  Signature contexts  . . . . . . . . . . . . . . . . .   6
        4.2.2.  Signature Generation  . . . . . . . . . . . . . . . .   6
    5.  Security Considerations . . . . . . . . . . . . . . . . . . .   8
-   6.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   9
+   6.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   8
    7.  References  . . . . . . . . . . . . . . . . . . . . . . . . .   9
      7.1.  Normative References  . . . . . . . . . . . . . . . . . .   9
      7.2.  Informative References  . . . . . . . . . . . . . . . . .  10
@@ -284,12 +284,12 @@ Internet-Draft         SSH PQ Composite Signatures           August 2026
 
 4.2.1.  Signature contexts
 
-   The [I-D.ietf-lamps-pq-composite-sigs] composite signature scheme,
-   like its underlying ML-DSA component, accepts a Context parameter
-   that may be used to enforce domain separation between signatures.
+   The [I-D.ietf-lamps-pq-composite-sigs] composite signature scheme
+   used here, like its underlying ML-DSA component, accepts a Context
+   parameter that is used to domain separate signatures.
 
-   In all cases in the SSH protocol, this context value is the empty
-   string.
+   In all cases in the SSH protocol, this context value MUST be the
+   empty string.
 
 4.2.2.  Signature Generation
 
@@ -307,16 +307,15 @@ Internet-Draft         SSH PQ Composite Signatures           August 2026
    *  Label: The ASCII algorithm label specific to the signature
       algorithm.
 
-   *  len(ctx): A single byte representing the length of the context
-      string.
+   *  len(ctx): A single unsigned byte representing the length of the
+      context string.
 
    *  ctx: The context string.
 
    *  SHA512(M): The SHA-512 hash of the original message M.
 
-   The signer then computes and combines the ML-DSA and Elliptic Curve
-   signatures as described in the following sections.  In the algorithm
-   invocations below, mldsa_sk, ed25519_sk, and ecdsa_sk denote the
+   The signer computes and combines the ML-DSA and Elliptic Curve
+   signatures.  Below, mldsa_sk, ed25519_sk, and ecdsa_sk are the
    private signing keys derived from or represented by mldsa_seed,
    ed25519_seed, and d, respectively.
 
@@ -327,9 +326,10 @@ Internet-Draft         SSH PQ Composite Signatures           August 2026
    2D 53 48 41 35 31 32] as the Label when creating the M' message to be
    signed.
 
-   The ML-DSA and Ed25519 signatures are then calculated as:
+   The ML-DSA and Ed25519 signatures are calculated as:
 
    *  mldsa_sig = ML-DSA-44.Sign(mldsa_sk, M', ctx=Label)
+
 
 
 
@@ -341,7 +341,7 @@ Internet-Draft         SSH PQ Composite Signatures           August 2026
    *  ed25519_sig = Ed25519.Sign(ed25519_sk, M')
 
    The final composite signature is the concatenation of mldsa_sig and
-   ed25519_sig.
+   ed25519_sig in this order.
 
        byte[2420] mldsa_sig
        byte[64]   ed25519_sig
@@ -356,14 +356,14 @@ Internet-Draft         SSH PQ Composite Signatures           August 2026
    44 53 41 2D 50 33 38 34 2D 53 48 41 35 31 32] as the Label when
    creating the M' message to be signed.
 
-   The ML-DSA and ECDSA signatures are then calculated as:
+   The ML-DSA and ECDSA signatures are calculated as:
 
    *  mldsa_sig = ML-DSA-87.Sign(mldsa_sk, M', ctx=Label)
 
    *  r, s = ECDSA-P384.Sign(ecdsa_sk, M')
 
    The final composite signature is the concatenation of mldsa_sig, r,
-   and s.
+   and s in this order.
 
        byte[4896] mldsa_sig
        mpint      r
@@ -397,14 +397,13 @@ Internet-Draft         SSH PQ Composite Signatures           August 2026
 4.2.2.4.  Signature Verification
 
    To verify a signature, the verifier reconstructs M' using the same
-   process as defined for signature generation.  The verifier then
-   verifies the ML-DSA and Elliptic Curve signatures as described in the
-   following sections.
+   process as defined for signature generation and verifies the ML-DSA
+   and Elliptic Curve signatures.
 
-   Both verification operations MUST return success for the composite
-   signature to verify successfully.  Failure of either the ML-DSA or
-   Elliptic Curve verification MUST cause the verification of the
-   composite signature to fail.
+   Both ML-DSA and Elliptic Curve verification operations MUST return
+   success for the composite signature to verify successfully.  Failure
+   of either verification operation MUST cause the composite signature
+   verification to fail.
 
 4.2.2.4.1.  ssh-mldsa44-ed25519
 
@@ -414,7 +413,7 @@ Internet-Draft         SSH PQ Composite Signatures           August 2026
 
    *  Ed25519.Verify(ed25519_pk, M', ed25519_sig)
 
-   The verifier then checks both results as described above.
+   Both signatures must verify for the composite signature to verify.
 
 4.2.2.4.2.  ssh-mldsa87-p384
 
@@ -424,7 +423,7 @@ Internet-Draft         SSH PQ Composite Signatures           August 2026
 
    *  ECDSA-P384.Verify(Q, M', r, s)
 
-   The verifier then checks both results as described above.
+   Both signatures must verify for the composite signature to verify.
 
 5.  Security Considerations
 
@@ -438,10 +437,11 @@ Internet-Draft         SSH PQ Composite Signatures           August 2026
    Implementations MUST NOT reuse component key material between
    composite and non-composite keys, or between multiple composite keys.
 
+6.  IANA Considerations
 
-
-
-
+   IANA is requested to register the algorithm names "ssh-
+   mldsa44-ed25519" and "ssh-mldsa87-p384" in the "Public Key Algorithm
+   Names" registry ([IANA-PUBKEYS]).
 
 
 
@@ -449,12 +449,6 @@ Miller                  Expires 22 February 2027                [Page 8]
 
 Internet-Draft         SSH PQ Composite Signatures           August 2026
 
-
-6.  IANA Considerations
-
-   IANA is requested to register the algorithm names "ssh-
-   mldsa44-ed25519" and "ssh-mldsa87-p384" in the "Public Key Algorithm
-   Names" registry ([IANA-PUBKEYS]).
 
 7.  References
 
@@ -496,6 +490,12 @@ Internet-Draft         SSH PQ Composite Signatures           August 2026
               FIPS 204, DOI 10.6028/nist.fips.204, August 2024,
               <https://doi.org/10.6028/nist.fips.204>.
 
+   [FIPS.186-5]
+              National Institute of Standards and Technology, "Digital
+              Signature Standard (DSS)", FIPS PUB 186-5,
+              DOI 10.6028/NIST.FIPS.186-5, February 2023,
+              <https://doi.org/10.6028/NIST.FIPS.186-5>.
+
 
 
 
@@ -505,12 +505,6 @@ Miller                  Expires 22 February 2027                [Page 9]
 
 Internet-Draft         SSH PQ Composite Signatures           August 2026
 
-
-   [FIPS.186-5]
-              National Institute of Standards and Technology, "Digital
-              Signature Standard (DSS)", FIPS PUB 186-5,
-              DOI 10.6028/NIST.FIPS.186-5, February 2023,
-              <https://doi.org/10.6028/NIST.FIPS.186-5>.
 
    [SP.800-186]
               National Institute of Standards and Technology,
@@ -541,6 +535,12 @@ Author's Address
    OpenSSH
    Email: djm@openssh.com
    URI:   https://www.openssh.com/
+
+
+
+
+
+
 
 
 

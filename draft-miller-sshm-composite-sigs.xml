@@ -317,8 +317,8 @@
 				to the signature algorithm.
 				</li>
 				<li>
-				len(ctx): A single unsigned byte representing the length
-				of the context string.
+				len(ctx): A single unsigned byte representing
+				the length of the context string.
 				</li>
 				<li>
 				ctx: The context string.
@@ -329,8 +329,9 @@
 				</li>
 			</ul>
 			<t>
-			The signer computes and combines the ML-DSA and Elliptic Curve
-			signatures. Below, mldsa_sk, ed25519_sk, and ecdsa_sk are the
+			The signer computes and combines the ML-DSA and
+			Elliptic Curve signatures.
+			Below, mldsa_sk, ed25519_sk, and ecdsa_sk are the
 			private signing keys derived from or represented by
 			mldsa_seed, ed25519_seed, and d, respectively.
 			</t>
@@ -344,7 +345,8 @@
 				creating the M' message to be signed.
 				</t>
 				<t>
-				The ML-DSA and Ed25519 signatures are calculated as:
+				The ML-DSA and Ed25519 signatures are
+				calculated as:
 				</t>
 				<ul>
 				<li>
@@ -355,8 +357,9 @@
 				</li>
 				</ul>
 				<t>
-				The final composite signature is the concatenation of
-				mldsa_sig and ed25519_sig in this order.
+				The final composite signature is the
+				concatenation of mldsa_sig and ed25519_sig
+				in this order.
 				</t>
 				<sourcecode>
     byte[2420] mldsa_sig
@@ -378,7 +381,8 @@
 				the M' message to be signed.
 				</t>
 				<t>
-				The ML-DSA and ECDSA signatures are calculated as:
+				The ML-DSA and ECDSA signatures are
+				calculated as:
 				</t>
 				<ul>
 				<li>
@@ -425,15 +429,16 @@
 			</section>
 			<section><name>Signature Verification</name>
 				<t>
-				To verify a signature, the verifier reconstructs M'
-				using the same process as defined for signature
-				generation and verifies the ML-DSA and Elliptic Curve
-				signatures.
+				To verify a signature, the verifier
+				reconstructs M' using the same process as
+				defined for signature generation and verifies
+				the ML-DSA and Elliptic Curve signatures.
 				</t>
 				<t>
-				Both ML-DSA and Elliptic Curve verification operations
-				MUST return success for the composite signature to
-				verify successfully. Failure of either verification
+				Both ML-DSA and Elliptic Curve verification
+				operations MUST return success for the
+				composite signature to verify successfully.
+				Failure of either verification
 				operation MUST cause the composite signature
 				verification to fail.
 				</t>
@@ -451,8 +456,8 @@
 					</li>
 				</ul>
 				<t>
-				Both signatures must verify for the composite signature
-				to verify.
+				Both signatures must verify for the composite
+				signature to verify.
 				</t>
 				</section>
 				<section><name>ssh-mldsa87-p384</name>
@@ -469,8 +474,8 @@
 					</li>
 				</ul>
 				<t>
-				Both signatures must verify for the composite signature
-				to verify.
+				Both signatures must verify for the composite
+				signature to verify.
 				</t>
 				</section>
 			</section>
