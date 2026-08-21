@@ -73,7 +73,7 @@ Table of Contents
        4.2.1.  Signature contexts  . . . . . . . . . . . . . . . . .   6
        4.2.2.  Signature Generation  . . . . . . . . . . . . . . . .   6
    5.  Security Considerations . . . . . . . . . . . . . . . . . . .   8
-   6.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   8
+   6.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   9
    7.  References  . . . . . . . . . . . . . . . . . . . . . . . . .   9
      7.1.  Normative References  . . . . . . . . . . . . . . . . . .   9
      7.2.  Informative References  . . . . . . . . . . . . . . . . .  10
@@ -430,18 +430,18 @@ Internet-Draft         SSH PQ Composite Signatures           August 2026
    The security considerations of [I-D.ietf-lamps-pq-composite-sigs]
    apply here.
 
-   The security of this composite scheme depends on the strength of both
-   component algorithms.  An adversary must break both ML-DSA and the
-   Elliptic Curve algorithm to forge a signature.
+   The security of this composite scheme depends on the security of both
+   component algorithms.  An adversary must forge both ML-DSA and
+   Elliptic Curve signatures in order to forge a composite signature.
 
    Implementations MUST NOT reuse component key material between
    composite and non-composite keys, or between multiple composite keys.
+   See [I-D.ietf-lamps-pq-composite-sigs] section 9.3.
 
-6.  IANA Considerations
-
-   IANA is requested to register the algorithm names "ssh-
-   mldsa44-ed25519" and "ssh-mldsa87-p384" in the "Public Key Algorithm
-   Names" registry ([IANA-PUBKEYS]).
+   If neither of the component algorithms are broken, both ssh-
+   mldsa44-ed25519 and ssh-mldsa87-p384 are Existentially Unforgeable
+   under Chosen-Message Attack (EUF-CMA), since ML-DSA, Ed25519, and
+   ECDSA are all EUF-CMA and SHA-512 is collision-resistant.  This
 
 
 
@@ -449,6 +449,27 @@ Miller                  Expires 22 February 2027                [Page 8]
 
 Internet-Draft         SSH PQ Composite Signatures           August 2026
 
+
+   property will be degraded against particular adversary classes if
+   either of of the constituent signature algorithms is broken.  If ML-
+   DSA is broken then the composite will not be EUF-CMA against quantum
+   adversaries.  Similarly, if the classical signature scheme is broken
+   then the composite will not be EUF-CMA against classical adversaries.
+   See [I-D.ietf-lamps-pq-composite-sigs] section 9.2.1.
+
+   This composite scheme is not Strongly Unforgeable under Chosen-
+   Message Attack (SUF-CMA).  Systems that rely on this property SHOULD
+   NOT use this scheme.
+
+   This composite scheme provides Weak Non-Separability (WNS) for both
+   components due to evidence of the composite in the Prefix in `M'`.
+   See [I-D.ietf-lamps-pq-composite-sigs] section 9.2.3.
+
+6.  IANA Considerations
+
+   IANA is requested to register the algorithm names "ssh-
+   mldsa44-ed25519" and "ssh-mldsa87-p384" in the "Public Key Algorithm
+   Names" registry ([IANA-PUBKEYS]).
 
 7.  References
 
@@ -476,6 +497,15 @@ Internet-Draft         SSH PQ Composite Signatures           August 2026
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
               May 2017, <https://www.rfc-editor.org/info/rfc8174>.
 
+
+
+
+
+Miller                  Expires 22 February 2027                [Page 9]
+
+Internet-Draft         SSH PQ Composite Signatures           August 2026
+
+
    [I-D.ietf-lamps-pq-composite-sigs]
               Ounsworth, M., Gray, J., Pala, M., Klaußner, J., and S.
               Fluhrer, "Composite Module-Lattice-Based Digital Signature
@@ -495,16 +525,6 @@ Internet-Draft         SSH PQ Composite Signatures           August 2026
               Signature Standard (DSS)", FIPS PUB 186-5,
               DOI 10.6028/NIST.FIPS.186-5, February 2023,
               <https://doi.org/10.6028/NIST.FIPS.186-5>.
-
-
-
-
-
-
-Miller                  Expires 22 February 2027                [Page 9]
-
-Internet-Draft         SSH PQ Composite Signatures           August 2026
-
 
    [SP.800-186]
               National Institute of Standards and Technology,
@@ -534,6 +554,14 @@ Author's Address
    Damien Miller
    OpenSSH
    Email: djm@openssh.com
+
+
+
+Miller                  Expires 22 February 2027               [Page 10]
+
+Internet-Draft         SSH PQ Composite Signatures           August 2026
+
+
    URI:   https://www.openssh.com/
 
 
@@ -557,4 +585,32 @@ Author's Address
 
 
 
-Miller                  Expires 22 February 2027               [Page 10]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Miller                  Expires 22 February 2027               [Page 11]

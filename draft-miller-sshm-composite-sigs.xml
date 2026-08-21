@@ -490,20 +490,28 @@
 	</t>
 	<t>
 	The security of this composite scheme depends on the security of both
-	component algorithms. An adversary must forge both ML-DSA and Elliptic Curve
+	component algorithms.
+	An adversary must forge both ML-DSA and Elliptic Curve
 	signatures in order to forge a composite signature.
 	</t>
 	<t>
 	Implementations MUST NOT reuse component key material between
 	composite and non-composite keys, or between multiple composite
-	keys. See <xref target="I-D.ietf-lamps-pq-composite-sigs" /> section 9.3.
+	keys. See
+	<xref target="I-D.ietf-lamps-pq-composite-sigs" /> section 9.3.
 	</t>
 	<t>
 	If neither of the component algorithms are broken, both
-	ssh-mldsa44-ed25519 and ssh-mldsa87-p384 are Existentially Unforgeable under
-	Chosen-Message Attack (EUF-CMA), since ML-DSA, Ed25519, and ECDSA are all
-	EUF-CMA and SHA-512 is collision-resistant. If one of the component
-	algorithms are broken. See
+	ssh-mldsa44-ed25519 and ssh-mldsa87-p384 are Existentially Unforgeable
+	under Chosen-Message Attack (EUF-CMA), since ML-DSA, Ed25519, and ECDSA
+	are all EUF-CMA and SHA-512 is collision-resistant.
+	This property will be degraded against particular adversary classes
+	if either of of the constituent signature algorithms is broken.
+	If ML-DSA is broken then the composite will not be
+	EUF-CMA against quantum adversaries.
+	Similarly, if the classical signature scheme is broken then the
+	composite will not be EUF-CMA against classical adversaries.
+	See
 	<xref target="I-D.ietf-lamps-pq-composite-sigs" /> section 9.2.1.
 	</t>
 	<t>
