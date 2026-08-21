@@ -115,20 +115,20 @@
 		Keys are generated using the process specified in
 		<xref target="I-D.ietf-lamps-pq-composite-sigs" section="3.1" />.
 		ML-DSA and Elliptic Curve keys are generated separately and the
-		results from each are combined to form the composite key. Public key
-		concatenation follows
+		results from each are combined to form the composite key.
+		Public key concatenation follows
 		<xref target="I-D.ietf-lamps-pq-composite-sigs" section="4.1" />.
-		The private keys are also concatenated together, but the ML-DSA
-		and EdDSA private key is represented by its seed, while the ECDSA
-		private key is the private key integer. Private key concatenation
-		follows
+		The private keys are also concatenated together, where
+		the ML-DSA and EdDSA private keys are represented by their
+		seeds, but the ECDSA private key is the private key integer.
+		Private key concatenation follows
 		<xref target="I-D.ietf-lamps-pq-composite-sigs" section="4.2" />.
 		</t>
 		<t>
 		ML-DSA key generation uses the ML-DSA.KeyGen_internal algorithm
 		defined in <xref target="FIPS204" /> section 6.1 and not the
-		ML-DSA.KeyGen algorithm, as the former allows the private key seed to
-		be emitted.
+		ML-DSA.KeyGen algorithm, as only the former allows the
+		private key seed to be emitted.
 		</t>
 		<section><name>ssh-mldsa44-ed25519</name>
 			<t>
@@ -140,8 +140,9 @@
 				<t>
 				The public keys from the ML-DSA and Ed25519 key
 				generation algorithms are combined by simple
-				concatenation to form the composite public key. It
-				consists of the raw ML-DSA-44 public key (1312 bytes)
+				concatenation to form the composite public key.
+				The composite public key consists of the
+				raw ML-DSA-44 public key (1312 bytes)
 				and the Ed25519 public key (32 bytes):
 				</t>
 				<sourcecode>
@@ -156,9 +157,10 @@
 			</section>
 			<section anchor="privkey-ed"><name>Composite raw private key</name>
 				<t>
-				The composite private key is a concatenation of the
-				private key seeds from the respective key generation
-				algorithms. Each seed is 32 bytes:
+				The composite private key is a concatenation
+				of the private key seeds from the respective
+				key generation algorithms.
+				Each seed is 32 bytes:
 				</t>
 				<sourcecode>
     byte[32]  mldsa_seed
@@ -174,17 +176,19 @@
 		<section><name>ssh-mldsa87-p384</name>
 			<t>
 			For the ssh-mldsa87-p384 algorithm, ECDSA key generation
-			is described in <xref target="FIPS.186-5"/> Appendix A.2 using
-			the Curve P-384 domain parameters from
-			<xref target="SP.800-186"/> section G.1.3.
+			is described in <xref target="FIPS.186-5"/>
+			Appendix A.2 using the Curve P-384 domain parameters
+			from <xref target="SP.800-186"/> section G.1.3.
 			</t>
 
 			<section anchor="pubkey-ec"><name>Composite raw public key</name>
 				<t>
-				The public keys from the ML-DSA and ECDSA key generation
-				algorithms are combined by simple concatenation to form
-				the composite public key. It consists of the raw
-				ML-DSA-87 public key (2592 bytes) and the uncompressed
+				The public keys from the ML-DSA and ECDSA
+				key generation algorithms are combined by
+				simple concatenation to form the composite
+				public key.
+				It consists of the raw ML-DSA-87 public
+				key (2592 bytes) and the uncompressed
 				ECDSA public key "Q":
 				</t>
 				<sourcecode>
@@ -567,5 +571,12 @@
 			</reference>
 		</references>
 	</references>
+
+<section anchor="Acknowledgements" numbered="false"><name>Acknowledgements</name>
+	<t>
+	Cindy Lin offered valuable feedback on this document.
+	</t>
+</section>
+
 </back>
 </rfc>

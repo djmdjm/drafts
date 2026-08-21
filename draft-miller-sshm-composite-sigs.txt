@@ -4,8 +4,8 @@
 
 Secure Shell (SSHM)                                            D. Miller
 Internet-Draft                                                   OpenSSH
-Intended status: Standards Track                            24 July 2026
-Expires: 25 January 2027
+Intended status: Standards Track                          21 August 2026
+Expires: 22 February 2027
 
 
                 Post-Quantum Composite Signatures in SSH
@@ -35,7 +35,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 25 January 2027.
+   This Internet-Draft will expire on 22 February 2027.
 
 Copyright Notice
 
@@ -53,9 +53,9 @@ Copyright Notice
 
 
 
-Miller                   Expires 25 January 2027                [Page 1]
+Miller                  Expires 22 February 2027                [Page 1]
 
-Internet-Draft         SSH PQ Composite Signatures             July 2026
+Internet-Draft         SSH PQ Composite Signatures           August 2026
 
 
 Table of Contents
@@ -69,7 +69,7 @@ Table of Contents
        4.1.2.  ssh-mldsa87-p384  . . . . . . . . . . . . . . . . . .   4
        4.1.3.  SSH Public Key Format . . . . . . . . . . . . . . . .   5
        4.1.4.  SSH Private Key Format  . . . . . . . . . . . . . . .   5
-     4.2.  Signatures  . . . . . . . . . . . . . . . . . . . . . . .   6
+     4.2.  Signatures  . . . . . . . . . . . . . . . . . . . . . . .   5
        4.2.1.  Signature contexts  . . . . . . . . . . . . . . . . .   6
        4.2.2.  Signature Generation  . . . . . . . . . . . . . . . .   6
    5.  Security Considerations . . . . . . . . . . . . . . . . . . .   8
@@ -77,6 +77,7 @@ Table of Contents
    7.  References  . . . . . . . . . . . . . . . . . . . . . . . . .   9
      7.1.  Normative References  . . . . . . . . . . . . . . . . . .   9
      7.2.  Informative References  . . . . . . . . . . . . . . . . .  10
+   Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .  10
    Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .  10
 
 1.  Introduction
@@ -108,10 +109,9 @@ Table of Contents
 
 
 
-
-Miller                   Expires 25 January 2027                [Page 2]
+Miller                  Expires 22 February 2027                [Page 2]
 
-Internet-Draft         SSH PQ Composite Signatures             July 2026
+Internet-Draft         SSH PQ Composite Signatures           August 2026
 
 
 2.  Requirements Language
@@ -139,22 +139,23 @@ Internet-Draft         SSH PQ Composite Signatures             July 2026
 4.1.  Key generation
 
    Keys are generated using the process specified in Section 3.1 of
-   [I-D.ietf-lamps-pq-composite-sigs].  Specifically, ML-DSA and
-   Elliptic Curve keys are generated separately and the resultant public
-   keys from each are combined to form the composite public key.  ML-DSA
-   private keys are always represented in wire formats as seeds and not
-   as expanded keys.
+   [I-D.ietf-lamps-pq-composite-sigs].  ML-DSA and Elliptic Curve keys
+   are generated separately and the results from each are combined to
+   form the composite key.  Public key concatenation follows Section 4.1
+   of [I-D.ietf-lamps-pq-composite-sigs].  The private keys are also
+   concatenated together, where the ML-DSA and EdDSA private keys are
+   represented by their seeds, but the ECDSA private key is the private
+   key integer.  Private key concatenation follows Section 4.2 of
+   [I-D.ietf-lamps-pq-composite-sigs].
 
-   ML-DSA key generation uses the ML-DSA.KeyGen_internal algorithm as
-   defined in [FIPS204] section 6.1 and not the usual ML-DSA.KeyGen
-   algorithm, as the latter emits an expanded private key and not the
-   required seed.
+   ML-DSA key generation uses the ML-DSA.KeyGen_internal algorithm
+   defined in [FIPS204] section 6.1 and not the ML-DSA.KeyGen algorithm,
+   as only the former allows the private key seed to be emitted.
 
 4.1.1.  ssh-mldsa44-ed25519
 
    For the ssh-mldsa44-ed25519 algorithm, Ed25519 key generation is
-   described in Section 5.1.5 of [RFC8032].  Ed25519 private keys are
-   also represented as seeds in wire formats.
+   described in Section 5.1.5 of [RFC8032].
 
 
 
@@ -164,19 +165,17 @@ Internet-Draft         SSH PQ Composite Signatures             July 2026
 
 
 
-
-Miller                   Expires 25 January 2027                [Page 3]
+Miller                  Expires 22 February 2027                [Page 3]
 
-Internet-Draft         SSH PQ Composite Signatures             July 2026
+Internet-Draft         SSH PQ Composite Signatures           August 2026
 
 
 4.1.1.1.  Composite raw public key
 
-   The resultant public keys from the respective ML-DSA and Ed25519 key
-   generation algorithms are combined by simple concatenation to form a
-   composite public key.  Specifically, it consists of the raw ML-DSA-44
-   public key (1312 bytes) and the Ed25519 public key (32 bytes), for a
-   total of 1344 bytes:
+   The public keys from the ML-DSA and Ed25519 key generation algorithms
+   are combined by simple concatenation to form the composite public
+   key.  The composite public key consists of the raw ML-DSA-44 public
+   key (1312 bytes) and the Ed25519 public key (32 bytes):
 
        byte[1312] mldsa_pk
        byte[32]   ed25519_pk
@@ -186,9 +185,9 @@ Internet-Draft         SSH PQ Composite Signatures             July 2026
 
 4.1.1.2.  Composite raw private key
 
-   The composite private key is also a concatenation, but its elements
-   are the private key seeds for the respective algorithms.  Each of
-   these seeds is 32 bytes.
+   The composite private key is a concatenation of the private key seeds
+   from the respective key generation algorithms.  Each seed is 32
+   bytes:
 
        byte[32]  mldsa_seed
        byte[32]  ed25519_seed
@@ -198,16 +197,16 @@ Internet-Draft         SSH PQ Composite Signatures             July 2026
 
 4.1.2.  ssh-mldsa87-p384
 
-   For ssh-mldsa87-p384, ECDSA key generation is specified in
-   Appendix A.2 of [FIPS.186-5] using the Curve P-384 domain parameters
-   specified in section G.1.3 of [SP.800-186].
+   For the ssh-mldsa87-p384 algorithm, ECDSA key generation is described
+   in [FIPS.186-5] Appendix A.2 using the Curve P-384 domain parameters
+   from [SP.800-186] section G.1.3.
 
 4.1.2.1.  Composite raw public key
 
-   The resultant public keys from the respective ML-DSA and ECDSA key
-   generation algorithms are combined to form a composite public key.
-   Specifically, it consists of the raw ML-DSA-87 public key (2592
-   bytes) and the ECDSA public key 'Q'.
+   The public keys from the ML-DSA and ECDSA key generation algorithms
+   are combined by simple concatenation to form the composite public
+   key.  It consists of the raw ML-DSA-87 public key (2592 bytes) and
+   the uncompressed ECDSA public key "Q":
 
        byte[2592] mldsa_pk
        string     Q
@@ -215,21 +214,17 @@ Internet-Draft         SSH PQ Composite Signatures             July 2026
    This combination is referred to as
    "composite_mldsa87_p384_public_key" henceforth in this document.
 
-
-
-
-
-
-
-Miller                   Expires 25 January 2027                [Page 4]
-
-Internet-Draft         SSH PQ Composite Signatures             July 2026
-
-
 4.1.2.2.  Composite raw private key
 
-   The composite private key is similarly constructed from the ML-DSA
-   seed alongside the ECDSA private key "d".
+   The composite private key is a concatenation of the ML-DSA seed (32
+   bytes) and the ECDSA private key "d".
+
+
+
+Miller                  Expires 22 February 2027                [Page 4]
+
+Internet-Draft         SSH PQ Composite Signatures           August 2026
+
 
        byte[32]  mldsa_seed
        mpint     d
@@ -274,15 +269,18 @@ Internet-Draft         SSH PQ Composite Signatures             July 2026
    This private key serialisation may also be used as the basis of on-
    disk key formats, though these are beyond the scope of this document.
 
-
-
-
-Miller                   Expires 25 January 2027                [Page 5]
-
-Internet-Draft         SSH PQ Composite Signatures             July 2026
-
-
 4.2.  Signatures
+
+
+
+
+
+
+
+Miller                  Expires 22 February 2027                [Page 5]
+
+Internet-Draft         SSH PQ Composite Signatures           August 2026
+
 
 4.2.1.  Signature contexts
 
@@ -331,14 +329,14 @@ Internet-Draft         SSH PQ Composite Signatures             July 2026
 
    The ML-DSA and Ed25519 signatures are then calculated as:
 
-
-
-Miller                   Expires 25 January 2027                [Page 6]
-
-Internet-Draft         SSH PQ Composite Signatures             July 2026
-
-
    *  mldsa_sig = ML-DSA-44.Sign(mldsa_sk, M', ctx=Label)
+
+
+
+Miller                  Expires 22 February 2027                [Page 6]
+
+Internet-Draft         SSH PQ Composite Signatures           August 2026
+
 
    *  ed25519_sig = Ed25519.Sign(ed25519_sk, M')
 
@@ -389,9 +387,11 @@ Internet-Draft         SSH PQ Composite Signatures             July 2026
 
 
 
-Miller                   Expires 25 January 2027                [Page 7]
+
+
+Miller                  Expires 22 February 2027                [Page 7]
 
-Internet-Draft         SSH PQ Composite Signatures             July 2026
+Internet-Draft         SSH PQ Composite Signatures           August 2026
 
 
 4.2.2.4.  Signature Verification
@@ -445,9 +445,9 @@ Internet-Draft         SSH PQ Composite Signatures             July 2026
 
 
 
-Miller                   Expires 25 January 2027                [Page 8]
+Miller                  Expires 22 February 2027                [Page 8]
 
-Internet-Draft         SSH PQ Composite Signatures             July 2026
+Internet-Draft         SSH PQ Composite Signatures           August 2026
 
 
 6.  IANA Considerations
@@ -501,9 +501,9 @@ Internet-Draft         SSH PQ Composite Signatures             July 2026
 
 
 
-Miller                   Expires 25 January 2027                [Page 9]
+Miller                  Expires 22 February 2027                [Page 9]
 
-Internet-Draft         SSH PQ Composite Signatures             July 2026
+Internet-Draft         SSH PQ Composite Signatures           August 2026
 
 
    [FIPS.186-5]
@@ -531,6 +531,10 @@ Internet-Draft         SSH PQ Composite Signatures             July 2026
               IANA, "Public Key Algorithm Names",
               <https://www.iana.org/assignments/ssh-parameters/>.
 
+Acknowledgements
+
+   Cindy Lin offered valuable feedback on this document.
+
 Author's Address
 
    Damien Miller
@@ -553,8 +557,4 @@ Author's Address
 
 
 
-
-
-
-
-Miller                   Expires 25 January 2027               [Page 10]
+Miller                  Expires 22 February 2027               [Page 10]
