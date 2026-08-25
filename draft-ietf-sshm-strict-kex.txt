@@ -4,8 +4,8 @@
 
 Internet Engineering Task Force                                D. Miller
 Internet-Draft                                                   OpenSSH
-Intended status: Standards Track                        18 November 2026
-Expires: 22 May 2027
+Intended status: Standards Track                        17 November 2026
+Expires: 21 May 2027
 
 
                         SSH Strict KEX extension
@@ -32,7 +32,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 22 May 2027.
+   This Internet-Draft will expire on 21 May 2027.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Miller                     Expires 22 May 2027                  [Page 1]
+Miller                     Expires 21 May 2027                  [Page 1]
 
 Internet-Draft          SSH Strict KEX extension           November 2026
 
@@ -65,7 +65,7 @@ Table of Contents
    2.  Terrapin Attack . . . . . . . . . . . . . . . . . . . . . . .   3
      2.1.  Protocol background . . . . . . . . . . . . . . . . . . .   3
      2.2.  Attack Mechanics  . . . . . . . . . . . . . . . . . . . .   4
-     2.3.  Attack Impact . . . . . . . . . . . . . . . . . . . . . .   5
+     2.3.  Attack Impact . . . . . . . . . . . . . . . . . . . . . .   6
    3.  Strict KEX  . . . . . . . . . . . . . . . . . . . . . . . . .   7
      3.1.  Signaling support for strict KEX  . . . . . . . . . . . .   7
      3.2.  Disallowing non-KEX messages in initial KEX . . . . . . .   8
@@ -77,7 +77,7 @@ Table of Contents
    7.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  12
      7.1.  Normative References  . . . . . . . . . . . . . . . . . .  12
      7.2.  Informative References  . . . . . . . . . . . . . . . . .  13
-   Acknowledgments . . . . . . . . . . . . . . . . . . . . . . . . .  13
+   Acknowledgments . . . . . . . . . . . . . . . . . . . . . . . . .  14
    Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .  14
 
 1.  Introduction
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Miller                     Expires 22 May 2027                  [Page 2]
+Miller                     Expires 21 May 2027                  [Page 2]
 
 Internet-Draft          SSH Strict KEX extension           November 2026
 
@@ -165,7 +165,7 @@ Internet-Draft          SSH Strict KEX extension           November 2026
 
 
 
-Miller                     Expires 22 May 2027                  [Page 3]
+Miller                     Expires 21 May 2027                  [Page 3]
 
 Internet-Draft          SSH Strict KEX extension           November 2026
 
@@ -221,7 +221,7 @@ Internet-Draft          SSH Strict KEX extension           November 2026
 
 
 
-Miller                     Expires 22 May 2027                  [Page 4]
+Miller                     Expires 21 May 2027                  [Page 4]
 
 Internet-Draft          SSH Strict KEX extension           November 2026
 
@@ -242,8 +242,9 @@ Internet-Draft          SSH Strict KEX extension           November 2026
    sequence number with the client's expectation.
 
    Successfully performing this attack also depends on the symmetric
-   cryptography in use, and it is not practical to achieve for many
-   potential algorithm choices.
+   cryptography in use.  While it is not practical to achieve for some
+   potential algorithm choices, other popular and widely-deployed
+   algorithms are subject to attack.
 
    Any CBC mode cipher or CTR mode cipher used with the original SSH
    encrypt-and-MAC construction is immune to this (with cryptographic
@@ -255,18 +256,31 @@ Internet-Draft          SSH Strict KEX extension           November 2026
    However, this attack is possible for a number of vendor extension
    algorithms, some very popular across SSH implementations.
 
-   The chacha20-poly1305@openssh.com AEAD uses the sequence number as an
-   initialisation vector (IV) to generate its per-packet MAC key and is
-   otherwise stateless between packets.  This AEAD is vulnerable as
-   there is no state other than the IV to desynchronise.  At the time of
-   publication of the Terrapin attack, this mode was the most popular
-   default cipher for SSH servers ([TERRAPIN] table 2).
+   The chacha20-poly1305 AEAD [I-D.ietf-sshm-chacha20-poly1305] uses the
+   sequence number as an initialisation vector (IV) to generate its per-
+   packet MAC key and is otherwise stateless between packets.  This AEAD
+   is vulnerable as there is no state other than the IV to
+   desynchronise.  At the time of publication of the Terrapin attack,
+   this mode was the most popular default cipher for SSH servers
+   ([TERRAPIN] table 2).
 
-   The *-etm@openssh.com MAC modes when used with CBC mode ciphers can
-   be exploited with high probability as the desynchronisation in the
-   keystream is limited to the block following the deletion only.  CTR
-   mode ciphers used with this MAC mode cannot practically be exploited
-   as the keystream is permanently desynchronised after the deletion.
+   The *-etm@openssh.com MAC modes are a widely-deployed vendor
+   extension that changes the SSH transport from "Encrypt and MAC" tocw
+   "Encrypt then MAC" when selected.  These modes can be exploited with
+   high probability when a CBC mode cipher is also selected as the
+   desynchronisation in the keystream is limited to the block following
+   the deletion only.  CTR mode ciphers used with this MAC mode cannot
+   practically be exploited as the keystream is permanently
+   desynchronised after the deletion.
+
+
+
+
+
+Miller                     Expires 21 May 2027                  [Page 5]
+
+Internet-Draft          SSH Strict KEX extension           November 2026
+
 
 2.3.  Attack Impact
 
@@ -274,13 +288,6 @@ Internet-Draft          SSH Strict KEX extension           November 2026
    insertion of packets prior to the completion of the initial key
    exchange and 2) selective deletion of one or more consecutive packets
    from the initial encrypted SSH transport.
-
-
-
-Miller                     Expires 22 May 2027                  [Page 5]
-
-Internet-Draft          SSH Strict KEX extension           November 2026
-
 
    Insertion of additional packets should be harmless, as
    implementations would be expected to either ignore them or terminate
@@ -326,14 +333,7 @@ Internet-Draft          SSH Strict KEX extension           November 2026
 
 
 
-
-
-
-
-
-
-
-Miller                     Expires 22 May 2027                  [Page 6]
+Miller                     Expires 21 May 2027                  [Page 6]
 
 Internet-Draft          SSH Strict KEX extension           November 2026
 
@@ -389,7 +389,7 @@ Internet-Draft          SSH Strict KEX extension           November 2026
 
 
 
-Miller                     Expires 22 May 2027                  [Page 7]
+Miller                     Expires 21 May 2027                  [Page 7]
 
 Internet-Draft          SSH Strict KEX extension           November 2026
 
@@ -445,7 +445,7 @@ Internet-Draft          SSH Strict KEX extension           November 2026
 
 
 
-Miller                     Expires 22 May 2027                  [Page 8]
+Miller                     Expires 21 May 2027                  [Page 8]
 
 Internet-Draft          SSH Strict KEX extension           November 2026
 
@@ -501,7 +501,7 @@ Internet-Draft          SSH Strict KEX extension           November 2026
 
 
 
-Miller                     Expires 22 May 2027                  [Page 9]
+Miller                     Expires 21 May 2027                  [Page 9]
 
 Internet-Draft          SSH Strict KEX extension           November 2026
 
@@ -557,7 +557,7 @@ Internet-Draft          SSH Strict KEX extension           November 2026
 
 
 
-Miller                     Expires 22 May 2027                 [Page 10]
+Miller                     Expires 21 May 2027                 [Page 10]
 
 Internet-Draft          SSH Strict KEX extension           November 2026
 
@@ -613,7 +613,7 @@ Internet-Draft          SSH Strict KEX extension           November 2026
 
 
 
-Miller                     Expires 22 May 2027                 [Page 11]
+Miller                     Expires 21 May 2027                 [Page 11]
 
 Internet-Draft          SSH Strict KEX extension           November 2026
 
@@ -669,7 +669,7 @@ Internet-Draft          SSH Strict KEX extension           November 2026
 
 
 
-Miller                     Expires 22 May 2027                 [Page 12]
+Miller                     Expires 21 May 2027                 [Page 12]
 
 Internet-Draft          SSH Strict KEX extension           November 2026
 
@@ -698,6 +698,14 @@ Internet-Draft          SSH Strict KEX extension           November 2026
               <https://datatracker.ietf.org/doc/html/draft-ietf-sshm-
               mlkem-hybrid-kex-00>.
 
+   [I-D.ietf-sshm-chacha20-poly1305]
+              Miller, D., Tatham, S., and S. Josefsson, "Secure Shell
+              (SSH) authenticated encryption cipher: chacha20-poly1305",
+              Work in Progress, Internet-Draft, draft-ietf-sshm-
+              chacha20-poly1305-04, 26 May 2026,
+              <https://datatracker.ietf.org/doc/html/draft-ietf-sshm-
+              chacha20-poly1305-04>.
+
 7.2.  Informative References
 
    [RFC7942]  Sheffer, Y. and A. Farrel, "Improving Awareness of Running
@@ -713,22 +721,20 @@ Internet-Draft          SSH Strict KEX extension           November 2026
               Attack: Breaking SSH Channel Integrity By Sequence Number
               Manipulation", 2024, <https://arxiv.org/abs/2312.12422>.
 
+
+
+
+
+Miller                     Expires 21 May 2027                 [Page 13]
+
+Internet-Draft          SSH Strict KEX extension           November 2026
+
+
 Acknowledgments
 
    Thanks to Fabian Bäumer, Marcus Brinkmann and Jörg Schwenk for
    identifying the Terrapin attack and consulting on the countermeasures
    described in this document.
-
-
-
-
-
-
-
-Miller                     Expires 22 May 2027                 [Page 13]
-
-Internet-Draft          SSH Strict KEX extension           November 2026
-
 
    These changes were developed with assistance from Darren Tucker,
    Markus Friedl and Theo de Raadt from the OpenSSH project.
@@ -775,10 +781,4 @@ Author's Address
 
 
 
-
-
-
-
-
-
-Miller                     Expires 22 May 2027                 [Page 14]
+Miller                     Expires 21 May 2027                 [Page 14]

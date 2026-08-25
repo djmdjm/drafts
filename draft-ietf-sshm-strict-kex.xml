@@ -200,8 +200,9 @@
 	</t>
 	<t>
 	Successfully performing this attack also
-	depends on the symmetric cryptography in use, and it is not practical
-	to achieve for many potential algorithm choices.
+	depends on the symmetric cryptography in use. While it is not practical
+	to achieve for some potential algorithm choices, other popular and
+	widely-deployed algorithms are subject to attack.
 	</t>
 	<t>
 	Any CBC mode cipher or CTR mode cipher used with the original SSH
@@ -216,7 +217,9 @@
 	algorithms, some very popular across SSH implementations.
 	</t>
 	<t>
-	The chacha20-poly1305@openssh.com AEAD uses the sequence number as an
+	The chacha20-poly1305 AEAD
+	<xref target="I-D.ietf-sshm-chacha20-poly1305" />
+	uses the sequence number as an
 	initialisation vector (IV) to generate its per-packet MAC key and
 	is otherwise stateless between packets. This AEAD is vulnerable as
 	there is no state other than the IV to desynchronise. At the time
@@ -224,8 +227,11 @@
 	default cipher for SSH servers (<xref target="TERRAPIN" /> table 2).
 	</t>
 	<t>
-	The *-etm@openssh.com MAC modes when used with CBC mode ciphers
-	can be exploited with high probability as the desynchronisation
+	The *-etm@openssh.com MAC modes are a widely-deployed vendor extension
+	that changes the SSH transport from "Encrypt and MAC" tocw
+	 "Encrypt then MAC" when selected.
+	These modes can be exploited with high probability when a CBC mode
+	cipher is also selected as the desynchronisation
 	in the keystream is limited to the block following the deletion
 	only.
 	CTR mode ciphers used with this MAC mode cannot practically be
@@ -651,6 +657,7 @@
 		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8446.xml" />
 		<xi:include href="https://datatracker.ietf.org/doc/bibxml3/draft-ietf-sshm-ntruprime-ssh-01.xml" />
 		<xi:include href="https://datatracker.ietf.org/doc/bibxml3/draft-ietf-sshm-mlkem-hybrid-kex-00.xml" />
+		<xi:include href="https://datatracker.ietf.org/doc/bibxml3/draft-ietf-sshm-chacha20-poly1305-04.xml" />
 	</references>
 
 	<references><name>Informative References</name>
