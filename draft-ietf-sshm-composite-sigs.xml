@@ -41,6 +41,12 @@
 		adversaries.
 		</t>
 	</abstract>
+	<note removeInRFC="true">
+		<t>
+		In the IANA considerations section, please replace
+		"thisRFC" with "RFC" and the assigned number, when known.
+		</t>
+	</note>
 </front>
 
 <middle>
@@ -130,7 +136,7 @@
 		ML-DSA.KeyGen algorithm, as only the former allows the
 		private key seed to be emitted.
 		</t>
-		<section><name>ssh-mldsa44-ed25519</name>
+		<section anchor="ssh-mldsa44-ed25519"><name>ssh-mldsa44-ed25519</name>
 			<t>
 			For the ssh-mldsa44-ed25519 algorithm,
 			Ed25519 key generation is described in
@@ -173,7 +179,7 @@
 				</t>
 			</section>
 		</section>
-		<section><name>ssh-mldsa87-p384</name>
+		<section anchor="ssh-mldsa87-p384"><name>ssh-mldsa87-p384</name>
 			<t>
 			For the ssh-mldsa87-p384 algorithm, ECDSA key generation
 			is described in <xref target="FIPS.186-5"/>
@@ -532,8 +538,31 @@
 	"ssh-mldsa44-ed25519" and "ssh-mldsa87-p384" in the
 	"Public Key Algorithm Names" registry (<xref target="IANA-PUBKEYS" />).
 	</t>
+	<table>
+		<thead>
+		<tr>
+			<th>Public Key Algorithm Name</th>
+			<th>Public Key Format</th>
+			<th>Reference</th>
+			<th>Note</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>ssh-mldsa44-ed25519</td>
+			<td>ssh-mldsa44-ed25519</td>
+			<td>thisrfc</td>
+			<td><xref target="ssh-mldsa44-ed25519"/></td>
+		</tr>
+		<tr>
+			<td>ssh-mldsa87-p384</td>
+			<td>ssh-mldsa87-p384</td>
+			<td>thisrfc</td>
+			<td><xref target="ssh-mldsa87-p384"/></td>
+		</tr>
+	</tbody>
+	</table>
 </section>
-
 </middle>
 
 <back>

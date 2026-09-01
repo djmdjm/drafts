@@ -4,8 +4,8 @@
 
 Secure Shell (SSHM)                                            D. Miller
 Internet-Draft                                                   OpenSSH
-Intended status: Standards Track                          22 August 2026
-Expires: 23 February 2027
+Intended status: Standards Track                        2 September 2026
+Expires: 6 March 2027
 
 
                 Post-Quantum Composite Signatures in SSH
@@ -19,6 +19,13 @@ Abstract
    Algorithm (ML-DSA) with Elliptic Curve signature algorithms (Ed25519
    and ECDSA, respectively) to provide security against both quantum and
    classical adversaries.
+
+Note
+
+   This note is to be removed before publishing as an RFC.
+
+   In the IANA considerations section, please replace "thisRFC" with
+   "RFC" and the assigned number, when known.
 
 Status of This Memo
 
@@ -35,12 +42,21 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 23 February 2027.
+   This Internet-Draft will expire on 6 March 2027.
 
 Copyright Notice
 
    Copyright (c) 2026 IETF Trust and the persons identified as the
    document authors.  All rights reserved.
+
+
+
+
+
+Miller                    Expires 6 March 2027                  [Page 1]
+
+Internet-Draft         SSH PQ Composite Signatures        September 2026
+
 
    This document is subject to BCP 78 and the IETF Trust's Legal
    Provisions Relating to IETF Documents (https://trustee.ietf.org/
@@ -50,13 +66,6 @@ Copyright Notice
    extracted from this document must include Revised BSD License text as
    described in Section 4.e of the Trust Legal Provisions and are
    provided without warranty as described in the Revised BSD License.
-
-
-
-Miller                  Expires 23 February 2027                [Page 1]
-
-Internet-Draft         SSH PQ Composite Signatures           August 2026
-
 
 Table of Contents
 
@@ -77,8 +86,8 @@ Table of Contents
    7.  References  . . . . . . . . . . . . . . . . . . . . . . . . .   9
      7.1.  Normative References  . . . . . . . . . . . . . . . . . .   9
      7.2.  Informative References  . . . . . . . . . . . . . . . . .  10
-   Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .  10
-   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .  10
+   Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .  11
+   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .  11
 
 1.  Introduction
 
@@ -97,22 +106,19 @@ Table of Contents
    alone, should a vulnerability be discovered in the post-quantum
    algorithm or its implementation.
 
+
+
+
+Miller                    Expires 6 March 2027                  [Page 2]
+
+Internet-Draft         SSH PQ Composite Signatures        September 2026
+
+
    This document specifies two composite signature schemes for SSH,
    mapping the COMPSIG-MLDSA44-Ed25519-SHA512 and COMPSIG-MLDSA87-ECDSA-
    P384-SHA512 schemes defined in [I-D.ietf-lamps-pq-composite-sigs] to
    the SSH protocol [RFC4253] using the SSH algorithm identifiers ssh-
    mldsa44-ed25519 and ssh-mldsa87-p384 respectively.
-
-
-
-
-
-
-
-Miller                  Expires 23 February 2027                [Page 2]
-
-Internet-Draft         SSH PQ Composite Signatures           August 2026
-
 
 2.  Requirements Language
 
@@ -159,15 +165,9 @@ Internet-Draft         SSH PQ Composite Signatures           August 2026
 
 
 
-
-
-
-
-
-
-Miller                  Expires 23 February 2027                [Page 3]
+Miller                    Expires 6 March 2027                  [Page 3]
 
-Internet-Draft         SSH PQ Composite Signatures           August 2026
+Internet-Draft         SSH PQ Composite Signatures        September 2026
 
 
 4.1.1.1.  Composite raw public key
@@ -221,9 +221,9 @@ Internet-Draft         SSH PQ Composite Signatures           August 2026
 
 
 
-Miller                  Expires 23 February 2027                [Page 4]
+Miller                    Expires 6 March 2027                  [Page 4]
 
-Internet-Draft         SSH PQ Composite Signatures           August 2026
+Internet-Draft         SSH PQ Composite Signatures        September 2026
 
 
        byte[32]  mldsa_seed
@@ -277,9 +277,9 @@ Internet-Draft         SSH PQ Composite Signatures           August 2026
 
 
 
-Miller                  Expires 23 February 2027                [Page 5]
+Miller                    Expires 6 March 2027                  [Page 5]
 
-Internet-Draft         SSH PQ Composite Signatures           August 2026
+Internet-Draft         SSH PQ Composite Signatures        September 2026
 
 
 4.2.1.  Signature contexts
@@ -333,9 +333,9 @@ Internet-Draft         SSH PQ Composite Signatures           August 2026
 
 
 
-Miller                  Expires 23 February 2027                [Page 6]
+Miller                    Expires 6 March 2027                  [Page 6]
 
-Internet-Draft         SSH PQ Composite Signatures           August 2026
+Internet-Draft         SSH PQ Composite Signatures        September 2026
 
 
    *  ed25519_sig = Ed25519.Sign(ed25519_sk, M')
@@ -389,9 +389,9 @@ Internet-Draft         SSH PQ Composite Signatures           August 2026
 
 
 
-Miller                  Expires 23 February 2027                [Page 7]
+Miller                    Expires 6 March 2027                  [Page 7]
 
-Internet-Draft         SSH PQ Composite Signatures           August 2026
+Internet-Draft         SSH PQ Composite Signatures        September 2026
 
 
 4.2.2.4.  Signature Verification
@@ -445,9 +445,9 @@ Internet-Draft         SSH PQ Composite Signatures           August 2026
 
 
 
-Miller                  Expires 23 February 2027                [Page 8]
+Miller                    Expires 6 March 2027                  [Page 8]
 
-Internet-Draft         SSH PQ Composite Signatures           August 2026
+Internet-Draft         SSH PQ Composite Signatures        September 2026
 
 
    property will be degraded against particular adversary classes if
@@ -471,6 +471,19 @@ Internet-Draft         SSH PQ Composite Signatures           August 2026
    mldsa44-ed25519" and "ssh-mldsa87-p384" in the "Public Key Algorithm
    Names" registry ([IANA-PUBKEYS]).
 
+    +=====================+=====================+===========+=========+
+    | Public Key          | Public Key Format   | Reference | Note    |
+    | Algorithm Name      |                     |           |         |
+    +=====================+=====================+===========+=========+
+    | ssh-mldsa44-ed25519 | ssh-mldsa44-ed25519 | thisrfc   | Section |
+    |                     |                     |           | 4.1.1   |
+    +---------------------+---------------------+-----------+---------+
+    | ssh-mldsa87-p384    | ssh-mldsa87-p384    | thisrfc   | Section |
+    |                     |                     |           | 4.1.2   |
+    +---------------------+---------------------+-----------+---------+
+
+                                  Table 1
+
 7.  References
 
 7.1.  Normative References
@@ -484,6 +497,15 @@ Internet-Draft         SSH PQ Composite Signatures           August 2026
               Protocol Architecture", RFC 4251, DOI 10.17487/RFC4251,
               January 2006, <https://www.rfc-editor.org/info/rfc4251>.
 
+
+
+
+
+Miller                    Expires 6 March 2027                  [Page 9]
+
+Internet-Draft         SSH PQ Composite Signatures        September 2026
+
+
    [RFC4253]  Ylonen, T. and C. Lonvick, Ed., "The Secure Shell (SSH)
               Transport Layer Protocol", RFC 4253, DOI 10.17487/RFC4253,
               January 2006, <https://www.rfc-editor.org/info/rfc4253>.
@@ -496,15 +518,6 @@ Internet-Draft         SSH PQ Composite Signatures           August 2026
    [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
               May 2017, <https://www.rfc-editor.org/info/rfc8174>.
-
-
-
-
-
-Miller                  Expires 23 February 2027                [Page 9]
-
-Internet-Draft         SSH PQ Composite Signatures           August 2026
-
 
    [I-D.ietf-lamps-pq-composite-sigs]
               Ounsworth, M., Gray, J., Pala, M., Klaußner, J., and S.
@@ -541,6 +554,14 @@ Internet-Draft         SSH PQ Composite Signatures           August 2026
               2025, <https://datatracker.ietf.org/doc/html/draft-ietf-
               sshm-ssh-agent-15>.
 
+
+
+
+Miller                    Expires 6 March 2027                 [Page 10]
+
+Internet-Draft         SSH PQ Composite Signatures        September 2026
+
+
    [IANA-PUBKEYS]
               IANA, "Public Key Algorithm Names",
               <https://www.iana.org/assignments/ssh-parameters/>.
@@ -554,14 +575,6 @@ Author's Address
    Damien Miller
    OpenSSH
    Email: djm@openssh.com
-
-
-
-Miller                  Expires 23 February 2027               [Page 10]
-
-Internet-Draft         SSH PQ Composite Signatures           August 2026
-
-
    URI:   https://www.openssh.com/
 
 
@@ -600,17 +613,4 @@ Internet-Draft         SSH PQ Composite Signatures           August 2026
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-Miller                  Expires 23 February 2027               [Page 11]
+Miller                    Expires 6 March 2027                 [Page 11]
