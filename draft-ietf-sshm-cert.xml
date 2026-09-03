@@ -148,7 +148,11 @@
 			intended to authenticate. In the case of user
 			certificates, these will typically be user names,
 			whereas for host certificates they will be host names
-			and/or numerical addresses.
+			and/or numerical addresses. Implementations SHOULD
+			enforce a maximum number of principals and/or a
+			maximum principal length, to avoid resource exhaustion
+			when parsing or processing certificates from
+			untrusted sources.
 			</t>
 			<t>
 			The "valid after" and "valid before" field represent
