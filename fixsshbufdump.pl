@@ -11,6 +11,11 @@ while (my $line = <>) {
 		#print "H $hex\n";
 		#print "T $txt\n";
 		$hex =~ s/(\S\S)\s+(\S\S)\s+/$1$2 /g;
+		$txt =~ s/&/&amp;/g;
+		$txt =~ s/</&lt;/g;
+		$txt =~ s/>/&gt;/g;
+		$txt =~ s/"/&quot;/g;
+		$txt =~ s/'/&apos;/g;
 		printf "    %04x: %-40s %s\n", $addr + 0, $hex, $txt;
 	} elsif (my ($addr) = $line =~ /^buffer len.*$/) {
 		# Ok
