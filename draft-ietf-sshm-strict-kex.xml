@@ -74,7 +74,7 @@
 	and the encrypted post-KEX transport.
 	</t>
 	<t>
-	In response to this, many SSH implementation deployed the
+	In response to this, many SSH implementations deployed the
 	modifications to the SSH transport protocol and KEX sub-protocol
 	described in this document, collectively referred to as "strict KEX".
 	These modifications provide a minimally invasive but comprehensive
@@ -108,7 +108,7 @@
 	Each SSH transport packet has an explicit type and length, but an
 	implicit sequence number.
 	The sequence number plays a number of roles in the protocol, but
-	is does not appear on the wire and is not explicitly checked.
+	it does not appear on the wire and is not explicitly checked.
 	Moreover, the sequence number was not originally specified to ever
 	be explicitly reset on the completion of KEX.
 	</t>
@@ -126,7 +126,7 @@
 	KEX completes when both endpoints perform key derivation, send the
 	SSH_MSG_NEWKEYS message and take the derived keys into use to prepare
 	the symmetric cipher+MAC or AEAD for the transport. This key derivation
-	depends on an "exchange hash" that is made over main values exchanged
+	depends on an "exchange hash" that is made over the main values exchanged
 	or derived during the early protocol: banners, SSH_MSG_KEXINIT packet
 	bodies, DH/ECDH/KEM public values and the shared secret derived by the
 	negotiated key agreement method. However, this hash is only taken over
@@ -138,12 +138,12 @@
 	<section><name>Attack Mechanics</name>
 	<t>
 	The Terrapin attack exploits these preconditions to offer an on-path
-	adversary (a.k.a MITM) two unexpected and undesirable capabilities:
+	adversary (a.k.a. MITM) two unexpected and undesirable capabilities:
 	1) the ability to insert messages into the initial key exchange without
-	detection and 2) the ability to selectively delete of one or more
+	detection and 2) the ability to selectively delete one or more
 	consecutive messages from the beginning of the post-KEX transport
 	protocol, despite this supposedly being confidential and
-	integrity-protected by the transport's symmetric cryptography
+	integrity-protected by the transport's symmetric cryptography.
 	</t>
 	<t>
 	To perform this attack, an on-path adversary injects one or more
@@ -166,7 +166,7 @@
 	</t>
 	<t>
 	To demonstrate this attack, first consider the following sequence of
-	packets, which are fairly typical for a SSH server to send to a client
+	packets, which are fairly typical for an SSH server to send to a client
 	during the initial phase of the transport protocol. It lists the
 	sequence numbers as sent by the server and those expected by the client.
 	</t>
@@ -175,8 +175,8 @@
     sent_seq=1       SSH_MSG_KEX_ECDH_REPLY    expected_seq=1
     sent_seq=2       SSH_MSG_NEWKEYS           expected_seq=2
              ---- encrypted transport begins ----
-    send_seq=3       SSH2_MSG_EXT_INFO         expected_seq=3
-    sent_seq=4       SSH2_MSG_SERVICE_ACCEPT   expected_seq=4
+    sent_seq=3       SSH_MSG_EXT_INFO          expected_seq=3
+    sent_seq=4       SSH_MSG_SERVICE_ACCEPT    expected_seq=4
 	</sourcecode>
 	<t>
 	Following is an example of a Terrapin attack on this transport:
@@ -187,15 +187,15 @@
     sent_seq=1       SSH_MSG_KEX_ECDH_REPLY    expected_seq=2
     sent_seq=2       SSH_MSG_NEWKEYS           expected_seq=3
              ---- encrypted transport begins ----
-    ATTACKER DELETE  SSH2_MSG_EXT_INFO         [client doesn't see]
-    sent_seq=4       SSH2_MSG_SERVICE_ACCEPT   expected_seq=4
+    ATTACKER DELETE  SSH_MSG_EXT_INFO          [client doesn't see]
+    sent_seq=4       SSH_MSG_SERVICE_ACCEPT    expected_seq=4
 	</sourcecode>
 	<t>
 	Note how the attacker is able to desynchronise the client's sequence
-	number by inserting a SSH_MSG_IGNORE message. This insertion is not
+	number by inserting an SSH_MSG_IGNORE message. This insertion is not
 	detectable prior to the commencement of the encrypted transport
 	because sequence numbers are implicit and not checkable.
-	The deletion is not similarly detectable because it resynchronises
+	The deletion is similarly not detectable because it resynchronises
 	the sequence number with the client's expectation.
 	</t>
 	<t>
@@ -208,11 +208,11 @@
 	encrypt-and-MAC construction is immune to this (with cryptographic
 	probability), as the message deletion will desynchronise the
 	ciphertext stream. AES-GCM <xref target="RFC5647"/> is also immune
-	to this as it uses an internal instance counter, that does effectively
+	to this as it uses an internal instance counter, which does effectively
 	reset when KEX completes, instead of the SSH transport sequence number.
 	</t>
 	<t>
-	However this attack is possible for a number of vendor extension
+	However, this attack is possible for a number of vendor extension
 	algorithms, some very popular across SSH implementations.
 	</t>
 	<t>
@@ -228,7 +228,7 @@
 	can be exploited with high probability as the desynchronisation
 	in the keystream is limited to the block following the deletion
 	only.
-	CTR mode ciphers used with this MAC mode can not practically be
+	CTR mode ciphers used with this MAC mode cannot practically be
 	exploited as the keystream is permanently desynchronised after the
 	deletion.
 	</t>
@@ -257,17 +257,17 @@
 	</t>
 	<t>
 	For the client, typically the first messages of the
-	encrypted transport are an optional SSH_MSG_EXT_INFO followed by a
+	encrypted transport are an optional SSH_MSG_EXT_INFO followed by an
 	SSH_MSG_SERVICE_REQUEST to initiate user authentication. If the
 	SSH_MSG_EXT_INFO was sent by the client, then its deletion by a
 	successful Terrapin attack would not be noticed by the server.
 	However, deleting the SSH_MSG_SERVICE_REQUEST would almost certainly
 	cause the connection to fail, as the user authentication phase that is
-	necessary for all popular SSH implementation would never be initiated.
+	necessary for all popular SSH implementations would never be initiated.
 	</t>
 	<t>
 	The server follows a very similar pattern for its early messages over
-	the encrypted transport: an optional SSH_MSG_EXT_INFO followed by a
+	the encrypted transport: an optional SSH_MSG_EXT_INFO followed by an
 	SSH_MSG_SERVICE_ACCEPT reply to the client's request to start user
 	authentication. Again, the SSH_MSG_EXT_INFO is the only message that
 	could be safely deleted. Most client implementations expect the
@@ -276,7 +276,7 @@
 	</t>
 	<t>
 	So the Terrapin attack practically allows, subject to implementation
-	and symmetric algorithm choice, the ability to delete a SSH_MSG_EXT_INFO
+	and symmetric algorithm choice, the ability to delete an SSH_MSG_EXT_INFO
 	from either the client, server or both.
 	</t>
 	<t>
@@ -286,13 +286,13 @@
 	in the initial SSH key exchange. This information is passed as an array
 	of { key, value } pairs, with several keys defined in
 	<xref target="RFC8308" section="3" />.
-	In addition to these, some SSH implementation use this mechanism to
+	In addition to these, some SSH implementations use this mechanism to
 	signal support for vendor extensions.
 	</t>
 	<t>
 	Of the fields defined by <xref target="RFC8308"/>, the "server-sig-algs"
 	option is the most
-	relevant to this attack. Deleting this field in a SSH_MSG_EXT_INFO sent
+	relevant to this attack. Deleting this field in an SSH_MSG_EXT_INFO sent
 	by the server could conceivably cause the client to use a weaker
 	signature algorithm during user authentication, though it is difficult
 	to see whether this would have any real-world impact as the signature
@@ -300,8 +300,8 @@
 	of the encrypted SSH transport protocol.
 	</t>
 	<t>
-	An OpenSSH vendor extension, ping@openssh.com is somewhat more
-	interesting as an attack target. This key in a SSH_MSG_EXT_INFO message
+	An OpenSSH vendor extension, ping@openssh.com, is somewhat more
+	interesting as an attack target. This key in an SSH_MSG_EXT_INFO message
 	signals support for a transport-level echo mechanism used by OpenSSH
 	as part of a defence against keystroke timing traffic analysis. Deleting
 	the SSH_MSG_EXT_INFO that signals the presence of this feature would
@@ -326,7 +326,7 @@
 	arbitrary messages to change the sequence number.
 	</t>
 	<t>
-	Resetting the sequence number after KEX completes eliminates the key
+	Resetting the sequence number after KEX completes prevents the key
 	piece of implicit transport state that Terrapin depends upon from
 	persisting from the period before the connection is confidential and
 	integrity-protected to after.
@@ -342,13 +342,13 @@
 		</t>
 		<t>
 		Specifically, a client indicates support for this extension by
-		including either the standard "kex-strict-c" identifier and/or
+		including the standard "kex-strict-c" identifier and/or
 		the pre-standard "kex-strict-c-v00@openssh.com" identifier
 		in the kex_algorithms field of the initial SSH_MSG_KEXINIT
 		packet.
 		</t>
 		<t>
-		Similarly, a server indicates support by including either
+		Similarly, a server indicates support by including
 		the standard "kex-strict-s" identifier and/or the
 		pre-standard "kex-strict-s-v00@openssh.com" identifier in its
 		kex_algorithms field.
@@ -367,7 +367,7 @@
 		enable the protocol changes below.
 		</t>
 		<t>
-		SSH implementations MUST NOT enable Strict KEX if one offers
+		SSH implementations MUST NOT enable strict KEX if one offers
 		only the standard name (i.e. "kex-strict-[cs]") and the other
 		offers only the pre-standard name
 		("kex-strict-[cs]-v00@openssh.com").
@@ -375,7 +375,7 @@
 		<t>
 		Implementations seeking these protections with maximum
 		interoperability SHOULD offer both the standard and
-		pre-standard names, as support for Strict KEX is widely
+		pre-standard names, as support for strict KEX is widely
 		deployed under the pre-standard names.
 		</t>
 		<t>
@@ -405,14 +405,14 @@
 			SSH_MSG_KEX_DH_GEX_GROUP,
 			SSH_MSG_KEX_DH_GEX_INIT and SSH_MSG_KEX_DH_GEX_REPLY
 			for the
-			Diffie Hellman group exchange
+			Diffie-Hellman group exchange
 			diffie-hellman-group-exchange-* algorithms
 			(<xref target="RFC4419" section="5" />).
 			</t></li>
 			<li><t>
 			SSH_MSG_KEX_ECDH_INIT and SSH_MSG_KEX_ECDH_REPLY for
 			ECDH KEX algorithms defined in
-			(<xref target="RFC5656" section="7.1" />) and the
+			<xref target="RFC5656" section="7.1" /> and the
 			hybrid Streamlined NTRUPrime/X25519 post-quantum
 			KEM (<xref target="I-D.ietf-sshm-ntruprime-ssh" />).
 			</t></li>
@@ -423,8 +423,8 @@
 			</t></li>
 		</ul>
 		<t>
-			Because the message that signals support for strict
-			KEX is enabled by the SSH_MSG_KEXINIT message,
+			Because support for strict KEX is signaled by the
+			SSH_MSG_KEXINIT message,
 			implementations MUST verify that the SSH_MSG_KEXINIT
 			was the first message received from the peer.
 			Additionally, implementations MUST ensure that the
@@ -437,7 +437,7 @@
 		</t>
 		<t>
 			Finally, implementations MUST additionally ensure that
-			any message permitted during KEX can be only accepted the
+			any message permitted during KEX can only be accepted the
 			expected number of times. For example, for ECDH KEX,
 			the SSH_MSG_KEX_ECDH_INIT will only be sent a single
 			time by a well-behaved client. A server implementing
@@ -458,7 +458,7 @@
 		</t>
 		<t>
 		Likewise, the expected sequence number for packets received
-		from the peer MUST be reset after a SSH_MSG_NEWKEYS is
+		from the peer MUST be reset after an SSH_MSG_NEWKEYS is
 		received.
 		</t>
 		<t>
@@ -466,7 +466,7 @@
 		SSH_MSG_UNIMPLEMENTED reply
 		(<xref target="RFC4253" section="11.4" />) to unrecognised
 		messages. There is no special handling of the sequence number
-		in this packet when strict KEX is active - it will use the
+		in this packet when strict KEX is active - it will use
 		the same sequence number as the transport packets.
 		I.e. if the first packet sent by an endpoint after
 		SSH_MSG_NEWKEYS was unrecognised, then the sequence number
@@ -477,7 +477,7 @@
 		in which packet elicited SSH_MSG_UNIMPLEMENTED.
 		The last paragraphs of
 		<xref target="RFC4253" section="7.1" />
-		require endpoints drain most non-KEX messages before
+		require endpoints to drain most non-KEX messages before
 		synchronously completing key exchange, and strict KEX requires
 		sequence number reset only on SSH_MSG_NEWKEYS (which cannot
 		be unrecognised), so there is no possibility of an unrecognised
@@ -528,7 +528,7 @@
 	The susceptibility of the original SSH protocol to the Terrapin
 	attack may serve as a demonstration of the danger of retaining
 	implicit state across protocol security boundaries - here, from the
-	unencypted pre-KEX transport to the post-KEX encrypted transport,
+	unencrypted pre-KEX transport to the post-KEX encrypted transport -
 	and also show the desirability of authenticating all messages
 	sent by all parties in the process of key agreement, e.g. using
 	a mechanism like TLS 1.3's Transcript Hash
@@ -588,8 +588,8 @@
 		<dt>Dropbear</dt>
 		<dd>
 		<t>
-		Dropbear is a SSH client and server implementation for Unix-
-		like systems. It has supported the strict KEX extension
+		Dropbear is an SSH client and server implementation for
+		Unix-like systems. It has supported the strict KEX extension
 		since 2023.
 		</t>
 		<t>
@@ -600,7 +600,7 @@
 		<dt>Paramiko</dt>
 		<dd>
 		<t>
-		Paramiko is a SSH client and server implementation in the
+		Paramiko is an SSH client and server implementation in the
 		Python programming language. It has supported the strict KEX
 		modifications since 2023.
 		</t>
@@ -623,7 +623,7 @@
 		<dt>Russh</dt>
 		<dd>
 		<t>
-		Russsh has implemented strict KEX since 2023.
+		Russh has implemented strict KEX since 2023.
 		</t>
 		<t>
 		Website: https://github.com/Eugeny/russh
@@ -677,7 +677,7 @@
 
 <section anchor="Acknowledgments" numbered="false"><name>Acknowledgments</name>
 	<t>
-	Thanks Fabian B&#228;umer, Marcus Brinkmann and J&#246;rg Schwenk
+	Thanks to Fabian B&#228;umer, Marcus Brinkmann and J&#246;rg Schwenk
 	for identifying the Terrapin attack and consulting on the
 	countermeasures described in this document.
 	</t>
