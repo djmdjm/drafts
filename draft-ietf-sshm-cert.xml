@@ -389,7 +389,7 @@
     string              value
 		</sourcecode>
 		<t>
-		"key" should be a UTF-8 encoded string that identifies the
+		"key" is a UTF-8 encoded string that identifies the
 		option being encoded. Available keys for extensions and for
 		critical options sections are listed below, but implementations
 		may add their own options using the domain-qualified naming
@@ -398,7 +398,8 @@
 		<t>
 		The contents and format of "value" are specific to each option
 		or extension. Key/value pairs MUST be ordered lexically by key
-		name.
+		name and keys MUST be unique to avoid ambiguity
+		of interpretation.
 		</t>
 		<t>
 		A common pattern for flag-type options is for the
