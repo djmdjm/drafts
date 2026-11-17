@@ -4,12 +4,12 @@
 
 Internet Engineering Task Force                                D. Miller
 Internet-Draft                                                   OpenSSH
-Intended status: Standards Track                        18 November 2026
-Expires: 22 May 2027
+Intended status: Standards Track                        17 November 2026
+Expires: 21 May 2027
 
 
                          SSH Certificate Format
-                        draft-ietf-sshm-cert-02
+                        draft-ietf-sshm-cert-04
 
 Abstract
 
@@ -32,7 +32,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 22 May 2027.
+   This Internet-Draft will expire on 21 May 2027.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Miller                     Expires 22 May 2027                  [Page 1]
+Miller                     Expires 21 May 2027                  [Page 1]
 
 Internet-Draft           SSH Certificate Format            November 2026
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Miller                     Expires 22 May 2027                  [Page 2]
+Miller                     Expires 21 May 2027                  [Page 2]
 
 Internet-Draft           SSH Certificate Format            November 2026
 
@@ -165,7 +165,7 @@ Internet-Draft           SSH Certificate Format            November 2026
 
 
 
-Miller                     Expires 22 May 2027                  [Page 3]
+Miller                     Expires 21 May 2027                  [Page 3]
 
 Internet-Draft           SSH Certificate Format            November 2026
 
@@ -221,7 +221,7 @@ Internet-Draft           SSH Certificate Format            November 2026
 
 
 
-Miller                     Expires 22 May 2027                  [Page 4]
+Miller                     Expires 21 May 2027                  [Page 4]
 
 Internet-Draft           SSH Certificate Format            November 2026
 
@@ -277,7 +277,7 @@ Internet-Draft           SSH Certificate Format            November 2026
 
 
 
-Miller                     Expires 22 May 2027                  [Page 5]
+Miller                     Expires 21 May 2027                  [Page 5]
 
 Internet-Draft           SSH Certificate Format            November 2026
 
@@ -333,7 +333,7 @@ Internet-Draft           SSH Certificate Format            November 2026
 
 
 
-Miller                     Expires 22 May 2027                  [Page 6]
+Miller                     Expires 21 May 2027                  [Page 6]
 
 Internet-Draft           SSH Certificate Format            November 2026
 
@@ -389,7 +389,7 @@ Internet-Draft           SSH Certificate Format            November 2026
 
 
 
-Miller                     Expires 22 May 2027                  [Page 7]
+Miller                     Expires 21 May 2027                  [Page 7]
 
 Internet-Draft           SSH Certificate Format            November 2026
 
@@ -426,14 +426,15 @@ Internet-Draft           SSH Certificate Format            November 2026
        string              key
        string              value
 
-   "key" should be a UTF-8 encoded string that identifies the option
-   being encoded.  Available keys for extensions and for critical
-   options sections are listed below, but implementations may add their
-   own options using the domain-qualified naming convention defined in
+   "key" is a UTF-8 encoded string that identifies the option being
+   encoded.  Available keys for extensions and for critical options
+   sections are listed below, but implementations may add their own
+   options using the domain-qualified naming convention defined in
    Section 4.2 of [RFC4251].
 
    The contents and format of "value" are specific to each option or
-   extension.  Key/value pairs MUST be ordered lexically by key name.
+   extension.  Key/value pairs MUST be ordered lexically by key name and
+   keys MUST be unique to avoid ambiguity of interpretation.
 
    A common pattern for flag-type options is for the value to be the
    empty string.  For example, this is a complete extensions section
@@ -444,8 +445,7 @@ Internet-Draft           SSH Certificate Format            November 2026
 
 
 
-
-Miller                     Expires 22 May 2027                  [Page 8]
+Miller                     Expires 21 May 2027                  [Page 8]
 
 Internet-Draft           SSH Certificate Format            November 2026
 
@@ -471,7 +471,7 @@ Internet-Draft           SSH Certificate Format            November 2026
    that contains a flag option "foo@example.com" and a string-valued
    option "force-command" with the value "sftp".
 
-     00000038                           # Critical options len=56
+     00000034                           # Critical options len=52
        0000000f                         # 1st key string len=15
          666f6f406578616d706c652e636f6d #   "foo@example.com"
        00000000                         # 1st value string len=0
@@ -501,7 +501,7 @@ Internet-Draft           SSH Certificate Format            November 2026
 
 
 
-Miller                     Expires 22 May 2027                  [Page 9]
+Miller                     Expires 21 May 2027                  [Page 9]
 
 Internet-Draft           SSH Certificate Format            November 2026
 
@@ -557,7 +557,7 @@ Internet-Draft           SSH Certificate Format            November 2026
 
 
 
-Miller                     Expires 22 May 2027                 [Page 10]
+Miller                     Expires 21 May 2027                 [Page 10]
 
 Internet-Draft           SSH Certificate Format            November 2026
 
@@ -603,9 +603,9 @@ Internet-Draft           SSH Certificate Format            November 2026
 
    verify-required  Valid for key types that support user verification
       assertions in their signatures (such as FIDO-backed keys).  This
-      option indicates that signatures made with this certificate
-      require this assertion to be present in the signature and that
-      servers MUST refuse authentication if it is absent.  Note that no
+      option indicates that signatures made with this certificate MUST
+      include this assertion to be present in the signature and that
+      verifiers MUST refuse the signature if it is absent.  Note that no
       such key types are currently standardised, but some SSH
       implementations support them as vendor extensions.
 
@@ -613,7 +613,7 @@ Internet-Draft           SSH Certificate Format            November 2026
 
 
 
-Miller                     Expires 22 May 2027                 [Page 11]
+Miller                     Expires 21 May 2027                 [Page 11]
 
 Internet-Draft           SSH Certificate Format            November 2026
 
@@ -669,7 +669,7 @@ Internet-Draft           SSH Certificate Format            November 2026
 
 
 
-Miller                     Expires 22 May 2027                 [Page 12]
+Miller                     Expires 21 May 2027                 [Page 12]
 
 Internet-Draft           SSH Certificate Format            November 2026
 
@@ -725,7 +725,7 @@ Internet-Draft           SSH Certificate Format            November 2026
 
 
 
-Miller                     Expires 22 May 2027                 [Page 13]
+Miller                     Expires 21 May 2027                 [Page 13]
 
 Internet-Draft           SSH Certificate Format            November 2026
 
@@ -781,7 +781,7 @@ Internet-Draft           SSH Certificate Format            November 2026
 
 
 
-Miller                     Expires 22 May 2027                 [Page 14]
+Miller                     Expires 21 May 2027                 [Page 14]
 
 Internet-Draft           SSH Certificate Format            November 2026
 
@@ -837,7 +837,7 @@ Internet-Draft           SSH Certificate Format            November 2026
 
 
 
-Miller                     Expires 22 May 2027                 [Page 15]
+Miller                     Expires 21 May 2027                 [Page 15]
 
 Internet-Draft           SSH Certificate Format            November 2026
 
@@ -893,7 +893,7 @@ Internet-Draft           SSH Certificate Format            November 2026
 
 
 
-Miller                     Expires 22 May 2027                 [Page 16]
+Miller                     Expires 21 May 2027                 [Page 16]
 
 Internet-Draft           SSH Certificate Format            November 2026
 
@@ -949,7 +949,7 @@ Internet-Draft           SSH Certificate Format            November 2026
 
 
 
-Miller                     Expires 22 May 2027                 [Page 17]
+Miller                     Expires 21 May 2027                 [Page 17]
 
 Internet-Draft           SSH Certificate Format            November 2026
 
@@ -1005,7 +1005,7 @@ Internet-Draft           SSH Certificate Format            November 2026
 
 
 
-Miller                     Expires 22 May 2027                 [Page 18]
+Miller                     Expires 21 May 2027                 [Page 18]
 
 Internet-Draft           SSH Certificate Format            November 2026
 
@@ -1061,7 +1061,7 @@ Internet-Draft           SSH Certificate Format            November 2026
 
 
 
-Miller                     Expires 22 May 2027                 [Page 19]
+Miller                     Expires 21 May 2027                 [Page 19]
 
 Internet-Draft           SSH Certificate Format            November 2026
 
@@ -1117,7 +1117,7 @@ Internet-Draft           SSH Certificate Format            November 2026
 
 
 
-Miller                     Expires 22 May 2027                 [Page 20]
+Miller                     Expires 21 May 2027                 [Page 20]
 
 Internet-Draft           SSH Certificate Format            November 2026
 
@@ -1173,7 +1173,7 @@ Internet-Draft           SSH Certificate Format            November 2026
 
 
 
-Miller                     Expires 22 May 2027                 [Page 21]
+Miller                     Expires 21 May 2027                 [Page 21]
 
 Internet-Draft           SSH Certificate Format            November 2026
 
@@ -1229,7 +1229,7 @@ Internet-Draft           SSH Certificate Format            November 2026
 
 
 
-Miller                     Expires 22 May 2027                 [Page 22]
+Miller                     Expires 21 May 2027                 [Page 22]
 
 Internet-Draft           SSH Certificate Format            November 2026
 
@@ -1285,7 +1285,7 @@ Annotated example
 
 
 
-Miller                     Expires 22 May 2027                 [Page 23]
+Miller                     Expires 21 May 2027                 [Page 23]
 
 Internet-Draft           SSH Certificate Format            November 2026
 
@@ -1341,7 +1341,7 @@ Internet-Draft           SSH Certificate Format            November 2026
 
 
 
-Miller                     Expires 22 May 2027                 [Page 24]
+Miller                     Expires 21 May 2027                 [Page 24]
 
 Internet-Draft           SSH Certificate Format            November 2026
 
@@ -1397,7 +1397,7 @@ Internet-Draft           SSH Certificate Format            November 2026
 
 
 
-Miller                     Expires 22 May 2027                 [Page 25]
+Miller                     Expires 21 May 2027                 [Page 25]
 
 Internet-Draft           SSH Certificate Format            November 2026
 
@@ -1453,7 +1453,7 @@ Example ssh-ed25519-cert
 
 
 
-Miller                     Expires 22 May 2027                 [Page 26]
+Miller                     Expires 21 May 2027                 [Page 26]
 
 Internet-Draft           SSH Certificate Format            November 2026
 
@@ -1509,7 +1509,7 @@ Internet-Draft           SSH Certificate Format            November 2026
 
 
 
-Miller                     Expires 22 May 2027                 [Page 27]
+Miller                     Expires 21 May 2027                 [Page 27]
 
 Internet-Draft           SSH Certificate Format            November 2026
 
@@ -1565,7 +1565,7 @@ Example ssh-rsa-cert
 
 
 
-Miller                     Expires 22 May 2027                 [Page 28]
+Miller                     Expires 21 May 2027                 [Page 28]
 
 Internet-Draft           SSH Certificate Format            November 2026
 
@@ -1621,7 +1621,7 @@ Internet-Draft           SSH Certificate Format            November 2026
 
 
 
-Miller                     Expires 22 May 2027                 [Page 29]
+Miller                     Expires 21 May 2027                 [Page 29]
 
 Internet-Draft           SSH Certificate Format            November 2026
 
@@ -1677,7 +1677,7 @@ Internet-Draft           SSH Certificate Format            November 2026
 
 
 
-Miller                     Expires 22 May 2027                 [Page 30]
+Miller                     Expires 21 May 2027                 [Page 30]
 
 Internet-Draft           SSH Certificate Format            November 2026
 
@@ -1733,7 +1733,7 @@ Internet-Draft           SSH Certificate Format            November 2026
 
 
 
-Miller                     Expires 22 May 2027                 [Page 31]
+Miller                     Expires 21 May 2027                 [Page 31]
 
 Internet-Draft           SSH Certificate Format            November 2026
 
@@ -1789,7 +1789,7 @@ Internet-Draft           SSH Certificate Format            November 2026
 
 
 
-Miller                     Expires 22 May 2027                 [Page 32]
+Miller                     Expires 21 May 2027                 [Page 32]
 
 Internet-Draft           SSH Certificate Format            November 2026
 
@@ -1845,7 +1845,7 @@ Internet-Draft           SSH Certificate Format            November 2026
 
 
 
-Miller                     Expires 22 May 2027                 [Page 33]
+Miller                     Expires 21 May 2027                 [Page 33]
 
 Internet-Draft           SSH Certificate Format            November 2026
 
@@ -1901,7 +1901,7 @@ Example ecdsa-sha2-nistp256-cert
 
 
 
-Miller                     Expires 22 May 2027                 [Page 34]
+Miller                     Expires 21 May 2027                 [Page 34]
 
 Internet-Draft           SSH Certificate Format            November 2026
 
@@ -1957,7 +1957,7 @@ Internet-Draft           SSH Certificate Format            November 2026
 
 
 
-Miller                     Expires 22 May 2027                 [Page 35]
+Miller                     Expires 21 May 2027                 [Page 35]
 
 Internet-Draft           SSH Certificate Format            November 2026
 
@@ -2013,7 +2013,7 @@ Author's Address
 
 
 
-Miller                     Expires 22 May 2027                 [Page 36]
+Miller                     Expires 21 May 2027                 [Page 36]
 
 Internet-Draft           SSH Certificate Format            November 2026
 
@@ -2069,4 +2069,4 @@ Internet-Draft           SSH Certificate Format            November 2026
 
 
 
-Miller                     Expires 22 May 2027                 [Page 37]
+Miller                     Expires 21 May 2027                 [Page 37]
