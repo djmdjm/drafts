@@ -59,7 +59,7 @@
 	Secure Shell (SSH) is a cryptographic protocol for secure remote
 	connections and login over untrusted networks.
 	The SSH transport layer <xref target="RFC4253" /> includes server
-	authentication though a public key signature.
+	authentication through a public key signature.
 	The signature algorithm used for this authentication is negotiated
 	between the client and server at the start of the key agreement
 	subprotocol, and the final message sent by the server at the completion
@@ -69,7 +69,7 @@
 	<t>
 	Excluding certified keys such as "pgp-sign-rsa"
 	(<xref target="RFC4253" section="6.6" />) or OpenSSH certificates
-	(<xref target="I-D.miller-ssh-cert" />), the SSH protocol does not
+	(<xref target="I-D.ietf-sshm-cert" />), the SSH protocol does not
 	specify any way for a client to learn the host keys of a server.
 	Public keys may be shared out-of-band but are more commonly learned
 	for a given server the first time a client connects to it and
@@ -101,8 +101,8 @@
 	<t>
 	This extension takes the form of a pair of global requests
 	(<xref target="RFC4254" section="4" />): "hostkeys", sent by a
-	server to advertise its set of keys and "hostkeys-prove", which
-	may be sent by a client to request a server prove possession of
+	server to advertise its set of keys, and "hostkeys-prove", which
+	may be sent by a client to request that a server prove possession of
 	the private keys corresponding to one or more of these keys.
 	</t>
 	<t>
@@ -111,7 +111,7 @@
 	using a message defined for the SSH connection protocol
 	(<xref target="RFC4254" />), a notionally higher protocol layer.
 	The reason for this is that the transport protocol lacks a defined
-	extension message type and because some SSH protocol implementation
+	extension message type and because some SSH protocol implementations
 	will terminate the connection when a transport message of unsupported
 	type is received, whereas connection protocol global requests are
 	explicitly specified to gracefully fail when an endpoint does not
@@ -139,7 +139,7 @@
 	<t>
 	These messages may only be sent
 	after the SSH authentication subprotocol (<xref target="RFC4252"/>)
-	has has completed, as signalled by the server sending
+	has completed, as signalled by the server sending
 	SSH_MSG_USERAUTH_SUCCESS. They MUST NOT be sent prior to the
 	completion of user authentication.
 	</t>
@@ -147,7 +147,7 @@
 	Messages described here use the standard SSH protocol wire encoding
 	types defined in <xref target="RFC4251" section="5" />.
 	</t>
-	<section anchor="hostkeys" title="hostkeys advertisment">
+	<section anchor="hostkeys" title="hostkeys advertisement">
 		<t>
 		This message is sent by a server to inform a client of the
 		public keys it supports. It is typically sent
@@ -158,7 +158,7 @@
 		<sourcecode>
     byte             SSH_MSG_GLOBAL_REQUEST
     string           "hostkeys" or "hostkeys-00@openssh.com"
-    char             0 /* do not want reply */
+    boolean          FALSE /* do not want reply */
     string[]         hostkeys
 		</sourcecode>
 		<t>
@@ -175,13 +175,13 @@
 		the advertised set, it MAY delete or disable the key locally.
 		In cases where the server advertised new, additional host keys
 		that the client had not previously recorded, the client SHOULD
-		request the server prove possession of the corresponding private
-		key using the following request.
+		request that the server prove possession of the corresponding private
+		keys using the following request.
 		</t>
 	</section>
 	<section anchor="prove" title="hostkeys-prove request">
 		<t>
-		This message is sent by a client to request a server prove
+		This message is sent by a client to request that a server prove
 		possession of the private key material corresponding to
 		one or more public keys. It is typically sent after a client
 		has received a "hostkeys" advertisement to request private key
@@ -190,19 +190,19 @@
 		<sourcecode>
     byte             SSH_MSG_GLOBAL_REQUEST
     string           "hostkeys-prove"
-    char             1 /* do want reply */
+    boolean          TRUE /* do want reply */
     string[]         hostkeys
 		</sourcecode>
 		<t>
 		Where "hostkeys" consists of one or more public key blobs
 		encoded as described in <xref target="pubkeyblob" />.
-		All hostkeys in this request MUST BE unique; no key may be
+		All hostkeys in this request MUST be unique; no key may be
 		repeated.
 		</t>
 		<t>
 		A server MUST reply to this request either with the success
-		message defined below or a SSH_MSG_REQUEST_FAILURE if the server
-		(in case of failure or unwillness to service the request).
+		message defined below or with an SSH_MSG_REQUEST_FAILURE
+		(in case of failure or unwillingness to service the request).
 		If a client receives such a failure, it MUST NOT trust any new
 		keys provided in the initial "hostkeys" message.
 		</t>
@@ -214,7 +214,7 @@
     string[]         signatures
 		</sourcecode>
 		<t>
-		Where "signatures" consists signatures made by the requested
+		Where "signatures" consists of signatures made by the requested
 		"hostkeys". The number of signatures present MUST be identical
 		to the number of host keys requested and they MUST appear in
 		identical order to their counterpart host keys.
@@ -222,8 +222,8 @@
 		<t>
 		Each signature is made by signing the following structure with
 		the corresponding key and using the signature algorithm and
-		encoding as it is specified for SSH (e.g.
-		<xref target="RFC5656" section="3.1.1" /> for "ecdsa-sha2-*
+		encoding as specified for SSH (e.g.
+		<xref target="RFC5656" section="3.1.1" /> for "ecdsa-sha2-*"
 		keys).
 		Note that RSA host keys, which unlike other key types used in
 		SSH can support multiple signature algorithms, have additional
@@ -257,27 +257,27 @@
 			"ssh-rsa" (RSA-SHA1), "rsa-sha2-256" or "rsa-sha2-512".
 			</t>
 			<t>
-			If a RSA signature algorithm was selected during
+			If an RSA signature algorithm was selected during
 			initial key agreement, then the same algorithm MUST
 			be used for signing hostkey proofs for any RSA keys
 			the server supports. An exception to this is if
 			"ssh-rsa" (i.e. the insecure RSA-SHA1 mode) was
 			negotiated, in which case the "hostkeys-prove"
-			request MUST fail and the server shall return a
+			request MUST fail and the server shall return an
 			SSH_MSG_REQUEST_FAILURE.
 			</t>
 			<t>
 			To avoid this situation, a server MAY skip advertising
 			hostkeys when "ssh-rsa" is the negotiated host key
-			signature algorithm. Alternately a server MAY exclude
-			RSA host keys from the "hostkeys" advertisment message
+			signature algorithm. Alternately, a server MAY exclude
+			RSA host keys from the "hostkeys" advertisement message
 			if other host key types are available.
 			</t>
 			<t>
 			If a non-RSA host key signature algorithm was selected
 			during initial key agreement, then either of the
 			"rsa-sha2-256" or "rsa-sha2-512" signature algorithms
-			may be used to sign a proof for a RSA host key.
+			may be used to sign a proof for an RSA host key.
 			</t>
 		</section>
 		<section anchor="legacy-proof" title="Legacy vendor-specific hostkey proof request">
@@ -294,12 +294,12 @@
 			<sourcecode>
     byte             SSH_MSG_GLOBAL_REQUEST
     string           "hostkeys-prove-00@openssh.com"
-    char             1 /* do want reply */
+    boolean          TRUE /* do want reply */
     string[]         hostkeys
 			</sourcecode>
 			<t>
 			When accepting a hostkey proof request that uses the
-			vendor-specifc name, clients and server MUST generate
+			vendor-specific name, clients and servers MUST generate
 			and verify signatures over a structure that also uses
 			the vendor-specific name:
 			</t>
@@ -312,7 +312,7 @@
 	</section>
 	<section anchor="pubkeyblob" title="Public key encoding">
 		<t>
-		In this extension, keys are encoded as strings using the
+		In this extension, keys are encoded as strings using
 		the standard SSH wire encoding for public keys. SSH protocol
 		key encodings are defined in
 		<xref target="RFC4253" /> for "ssh-rsa" and "ssh-dss" keys,
@@ -323,7 +323,7 @@
 	</section>
 	<section anchor="adv" title="Advertising support for this extension">
 		<t>
-		Support for this extension may be advertised by a SSH
+		Support for this extension may be advertised by an SSH
 		protocol server using the <xref target="RFC8308" /> extension
 		mechanism using the name "hostkeys" in the
 		SSH_MSG_EXT_INFO message.
@@ -343,14 +343,14 @@
 		<xref target="RFC4254" /> to be gracefully ignored by an
 		endpoint that does not support them, implementations MAY
 		opportunistically use this extension via the vendor-specific
-		names in the absence of an <xref target="RFC8308" />
-		advertisement using the vendor-specific names mentioned above.
+		names mentioned above in the absence of an
+		<xref target="RFC8308" /> advertisement.
 		</t>
 		<t>
-		Likewise, clients and server MAY implement the vendor-specific
+		Likewise, clients and servers MAY implement the vendor-specific
 		names in addition to the ones described here (though note the
 		special handling required for proof messages in
-		<xref target="legacy-proof" />). However, if a
+		<xref target="legacy-proof" />). However, if
 		an endpoint advertises support for this extension via the
 		EXT_INFO mechanism, the peer SHOULD use the standard global
 		request names to invoke it instead of the vendor-specific names.
@@ -412,7 +412,7 @@
 </thead>
 <tbody>
 <tr><td>hostkeys</td><td>thisrfc, <xref target="hostkeys" /></td></tr>
-<tr><td>hostkeys-prove-0</td><td>thisrfc, <xref target="prove" /></td></tr>
+<tr><td>hostkeys-prove</td><td>thisrfc, <xref target="prove" /></td></tr>
 </tbody>
 </table>
 	</section>
@@ -442,11 +442,11 @@
 	</t>
 	<section title="Trusting keys">
 		<t>
-	This mechanism cannot be used to estabish trust in a SSH server where
-	it no key was previously trusted. Specifically, if a client learned a
+	This mechanism cannot be used to establish trust in an SSH server where
+	no key was previously trusted. Specifically, if a client learned a
 	host key from an on-path adversary rather than the intended destination
 	host, then this extension cannot improve this situation. Keys learned
-	though this mechanism can never be more trustworthy than the key used
+	through this mechanism can never be more trustworthy than the key used
 	to establish the SSH transport session.
 		</t>
 	</section>
@@ -459,9 +459,9 @@
 	verifying private key possession proofs.
 		</t>
 		<t>
-	Supporting the advertisment
+	Supporting the advertisement
 	component alone, or recording host keys without checking their private
-	key possession proofs allows an attack where a malicious server
+	key possession proofs, allows an attack where a malicious server
 	advertises a host key for a different legitimate server. If that host
 	key is recorded and subsequently used by a client when connecting to the
 	malicious server, then the malicious server could forward the connection
@@ -472,9 +472,9 @@
 	</section>
 	<section title="Denial of service">
 		<t>
-	This extension may require servers perform additional cryptographic
+	This extension may require servers to perform additional cryptographic
 	signature operations, and require clients to perform additional
-	verification operations. Implementation should enforce some limit on
+	verification operations. Implementations should enforce some limit on
 	the maximum number of keys they will accept for both the "hostkeys" and
 	"hostkeys-prove" messages.
 		</t>
@@ -489,7 +489,7 @@
 	</section>
 	<section title="Timing attack considerations">
 		<t>
-	This mechanism provides a way for a SSH client to request additional
+	This mechanism provides a way for an SSH client to request additional
 	signatures using the host private keys. In doing so, it magnifies the
 	attack surface for observing timing discrepancies in the signature
 	operation. Although a malicious client has little control over the
@@ -532,7 +532,7 @@
 		<dd>
 		<t>
 		OpenSSH is the originating implementation of this extension and
-		has supported them since 2015.
+		has supported it since 2015.
 		</t>
 		<t>
 		Website: https://www.openssh.com/
@@ -551,10 +551,10 @@
 		</t>
 		</dd>
 
-		<dt>Github</dt>
+		<dt>GitHub</dt>
 		<dd>
 		<t>
-		The SSH implementation used by Github supports this extension.
+		The SSH implementation used by GitHub supports this extension.
 		</t>
 		<t>
 		Website: https://github.com/
@@ -564,7 +564,7 @@
 		<dt>Russh</dt>
 		<dd>
 		<t>
-		Russsh has implemented this extension since 2023.
+		Russh has implemented this extension since 2023.
 		</t>
 		<t>
 		Website: https://github.com/Eugeny/russh
@@ -574,7 +574,7 @@
 		<dt>Apache Mina</dt>
 		<dd>
 		<t>
-		The Apache Mina ssh implementation has supported this extension
+		The Apache Mina SSH implementation has supported this extension
 		since 2015.
 		</t>
 		<t>
@@ -599,14 +599,14 @@
 		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.4253.xml" />
 		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.4254.xml" />
 		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.5656.xml" />
-		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.7942.xml" />
 		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8174.xml" />
 		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8308.xml" />
 		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8709.xml" />
-		<xi:include href="https://datatracker.ietf.org/doc/bibxml3/draft-miller-ssh-cert-03.xml" />
+		<xi:include href="https://datatracker.ietf.org/doc/bibxml3/draft-ietf-sshm-cert-01.xml" />
 	</references>
 
 	<references><name>Informative References</name>
+		<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.7942.xml" />
 			<reference anchor="IANA-SSH-GLOBALREQS" target="https://www.iana.org/assignments/ssh-parameters/"><front>
 			<title>Connection Protocol Global Request Names</title>
 			<author>
