@@ -4,8 +4,8 @@
 
 Secure Shell (SSHM)                                            D. Miller
 Internet-Draft                                                   OpenSSH
-Intended status: Standards Track                        17 November 2026
-Expires: 21 May 2027
+Intended status: Standards Track                        18 November 2026
+Expires: 22 May 2027
 
 
                 Post-Quantum Composite Signatures in SSH
@@ -42,7 +42,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 21 May 2027.
+   This Internet-Draft will expire on 22 May 2027.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Miller                     Expires 21 May 2027                  [Page 1]
+Miller                     Expires 22 May 2027                  [Page 1]
 
 Internet-Draft         SSH PQ Composite Signatures         November 2026
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Miller                     Expires 21 May 2027                  [Page 2]
+Miller                     Expires 22 May 2027                  [Page 2]
 
 Internet-Draft         SSH PQ Composite Signatures         November 2026
 
@@ -165,7 +165,7 @@ Internet-Draft         SSH PQ Composite Signatures         November 2026
 
 
 
-Miller                     Expires 21 May 2027                  [Page 3]
+Miller                     Expires 22 May 2027                  [Page 3]
 
 Internet-Draft         SSH PQ Composite Signatures         November 2026
 
@@ -221,7 +221,7 @@ Internet-Draft         SSH PQ Composite Signatures         November 2026
 
 
 
-Miller                     Expires 21 May 2027                  [Page 4]
+Miller                     Expires 22 May 2027                  [Page 4]
 
 Internet-Draft         SSH PQ Composite Signatures         November 2026
 
@@ -277,7 +277,7 @@ Internet-Draft         SSH PQ Composite Signatures         November 2026
 
 
 
-Miller                     Expires 21 May 2027                  [Page 5]
+Miller                     Expires 22 May 2027                  [Page 5]
 
 Internet-Draft         SSH PQ Composite Signatures         November 2026
 
@@ -333,7 +333,7 @@ Internet-Draft         SSH PQ Composite Signatures         November 2026
 
 
 
-Miller                     Expires 21 May 2027                  [Page 6]
+Miller                     Expires 22 May 2027                  [Page 6]
 
 Internet-Draft         SSH PQ Composite Signatures         November 2026
 
@@ -389,7 +389,7 @@ Internet-Draft         SSH PQ Composite Signatures         November 2026
 
 
 
-Miller                     Expires 21 May 2027                  [Page 7]
+Miller                     Expires 22 May 2027                  [Page 7]
 
 Internet-Draft         SSH PQ Composite Signatures         November 2026
 
@@ -445,7 +445,7 @@ Internet-Draft         SSH PQ Composite Signatures         November 2026
 
 
 
-Miller                     Expires 21 May 2027                  [Page 8]
+Miller                     Expires 22 May 2027                  [Page 8]
 
 Internet-Draft         SSH PQ Composite Signatures         November 2026
 
@@ -501,7 +501,7 @@ Internet-Draft         SSH PQ Composite Signatures         November 2026
 
 
 
-Miller                     Expires 21 May 2027                  [Page 9]
+Miller                     Expires 22 May 2027                  [Page 9]
 
 Internet-Draft         SSH PQ Composite Signatures         November 2026
 
@@ -530,7 +530,8 @@ Internet-Draft         SSH PQ Composite Signatures         November 2026
      estragon.example.org IN SSHFP TBA 2 \
        2eb99bdc32f68032042d5e9865fac1b6a90496ffe7f5f1099c46822fa2287928
        ; ssh-mldsa87-p384 host key SSHFP record.
-       ; XXX TODO ssh-mldsa87-p384 XXX
+     estragon.example.org IN SSHFP TBA 2 \
+       db7feec102ec9bad805f2a068069c5a324ab928e9bca04ce20c4742c9b893cdd
 
    XXX Please replace "TBA" with the assigned IANA SSHFP algorithm
    identifiers for the respective algorithms.  XXX
@@ -553,15 +554,15 @@ Internet-Draft         SSH PQ Composite Signatures         November 2026
    under Chosen-Message Attack (EUF-CMA), since ML-DSA, Ed25519, and
    ECDSA are all EUF-CMA and SHA-512 is collision-resistant.  This
    property will be degraded against particular adversary classes if
-   either of of the constituent signature algorithms is broken.  If ML-
 
 
 
-Miller                     Expires 21 May 2027                 [Page 10]
+Miller                     Expires 22 May 2027                 [Page 10]
 
 Internet-Draft         SSH PQ Composite Signatures         November 2026
 
 
+   either of of the constituent signature algorithms is broken.  If ML-
    DSA is broken then the composite will not be EUF-CMA against quantum
    adversaries.  Similarly, if the classical signature scheme is broken
    then the composite will not be EUF-CMA against classical adversaries.
@@ -612,8 +613,7 @@ Internet-Draft         SSH PQ Composite Signatures         November 2026
 
 
 
-
-Miller                     Expires 21 May 2027                 [Page 11]
+Miller                     Expires 22 May 2027                 [Page 11]
 
 Internet-Draft         SSH PQ Composite Signatures         November 2026
 
@@ -669,7 +669,7 @@ Internet-Draft         SSH PQ Composite Signatures         November 2026
 
 
 
-Miller                     Expires 21 May 2027                 [Page 12]
+Miller                     Expires 22 May 2027                 [Page 12]
 
 Internet-Draft         SSH PQ Composite Signatures         November 2026
 
@@ -725,7 +725,7 @@ Internet-Draft         SSH PQ Composite Signatures         November 2026
 
 
 
-Miller                     Expires 21 May 2027                 [Page 13]
+Miller                     Expires 22 May 2027                 [Page 13]
 
 Internet-Draft         SSH PQ Composite Signatures         November 2026
 
@@ -781,7 +781,7 @@ Example key
 
 
 
-Miller                     Expires 21 May 2027                 [Page 14]
+Miller                     Expires 22 May 2027                 [Page 14]
 
 Internet-Draft         SSH PQ Composite Signatures         November 2026
 
@@ -837,7 +837,7 @@ Public key
 
 
 
-Miller                     Expires 21 May 2027                 [Page 15]
+Miller                     Expires 22 May 2027                 [Page 15]
 
 Internet-Draft         SSH PQ Composite Signatures         November 2026
 
@@ -893,7 +893,7 @@ Internet-Draft         SSH PQ Composite Signatures         November 2026
 
 
 
-Miller                     Expires 21 May 2027                 [Page 16]
+Miller                     Expires 22 May 2027                 [Page 16]
 
 Internet-Draft         SSH PQ Composite Signatures         November 2026
 
@@ -949,7 +949,7 @@ Private key
 
 
 
-Miller                     Expires 21 May 2027                 [Page 17]
+Miller                     Expires 22 May 2027                 [Page 17]
 
 Internet-Draft         SSH PQ Composite Signatures         November 2026
 
@@ -1005,7 +1005,7 @@ Internet-Draft         SSH PQ Composite Signatures         November 2026
 
 
 
-Miller                     Expires 21 May 2027                 [Page 18]
+Miller                     Expires 22 May 2027                 [Page 18]
 
 Internet-Draft         SSH PQ Composite Signatures         November 2026
 
@@ -1061,7 +1061,7 @@ Public key
 
 
 
-Miller                     Expires 21 May 2027                 [Page 19]
+Miller                     Expires 22 May 2027                 [Page 19]
 
 Internet-Draft         SSH PQ Composite Signatures         November 2026
 
@@ -1117,7 +1117,7 @@ Internet-Draft         SSH PQ Composite Signatures         November 2026
 
 
 
-Miller                     Expires 21 May 2027                 [Page 20]
+Miller                     Expires 22 May 2027                 [Page 20]
 
 Internet-Draft         SSH PQ Composite Signatures         November 2026
 
@@ -1173,7 +1173,7 @@ Internet-Draft         SSH PQ Composite Signatures         November 2026
 
 
 
-Miller                     Expires 21 May 2027                 [Page 21]
+Miller                     Expires 22 May 2027                 [Page 21]
 
 Internet-Draft         SSH PQ Composite Signatures         November 2026
 
@@ -1229,7 +1229,7 @@ Private key
 
 
 
-Miller                     Expires 21 May 2027                 [Page 22]
+Miller                     Expires 22 May 2027                 [Page 22]
 
 Internet-Draft         SSH PQ Composite Signatures         November 2026
 
@@ -1285,7 +1285,7 @@ Internet-Draft         SSH PQ Composite Signatures         November 2026
 
 
 
-Miller                     Expires 21 May 2027                 [Page 23]
+Miller                     Expires 22 May 2027                 [Page 23]
 
 Internet-Draft         SSH PQ Composite Signatures         November 2026
 
@@ -1341,7 +1341,7 @@ Internet-Draft         SSH PQ Composite Signatures         November 2026
 
 
 
-Miller                     Expires 21 May 2027                 [Page 24]
+Miller                     Expires 22 May 2027                 [Page 24]
 
 Internet-Draft         SSH PQ Composite Signatures         November 2026
 
@@ -1397,7 +1397,7 @@ Internet-Draft         SSH PQ Composite Signatures         November 2026
 
 
 
-Miller                     Expires 21 May 2027                 [Page 25]
+Miller                     Expires 22 May 2027                 [Page 25]
 
 Internet-Draft         SSH PQ Composite Signatures         November 2026
 
@@ -1453,4 +1453,4 @@ Author's Address
 
 
 
-Miller                     Expires 21 May 2027                 [Page 26]
+Miller                     Expires 22 May 2027                 [Page 26]
