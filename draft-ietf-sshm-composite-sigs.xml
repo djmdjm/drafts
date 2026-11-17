@@ -812,6 +812,7 @@
 		</references>
 
 		<references><name>Informative References</name>
+			<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.7942.xml" />
 			<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.9987.xml" />
 			<xi:include href="https://datatracker.ietf.org/doc/bibxml3/draft-ietf-sshm-ssh-agent-15.xml" />
 			<reference anchor="IANA-PUBKEYS" target="https://www.iana.org/assignments/ssh-parameters/" quoteTitle="true" derivedAnchor="IANA-PUBKEYS">
