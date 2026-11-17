@@ -576,7 +576,8 @@
   estragon.example.org IN SSHFP TBA 2 \
     2eb99bdc32f68032042d5e9865fac1b6a90496ffe7f5f1099c46822fa2287928
     ; ssh-mldsa87-p384 host key SSHFP record.
-    ; XXX TODO ssh-mldsa87-p384 XXX
+  estragon.example.org IN SSHFP TBA 2 \
+    db7feec102ec9bad805f2a068069c5a324ab928e9bca04ce20c4742c9b893cdd
 	</sourcecode>
 	<t>
 	XXX Please replace "TBA" with the assigned IANA SSHFP algorithm
