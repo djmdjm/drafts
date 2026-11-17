@@ -9,7 +9,7 @@ Expires: 22 May 2027
 
 
                    Host key update mechanism for SSH
-                   draft-ietf-sshm-hostkey-update-01
+                   draft-ietf-sshm-hostkey-update-02
 
 Abstract
 
@@ -63,7 +63,7 @@ Table of Contents
    1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   2
      1.1.  Requirements Language . . . . . . . . . . . . . . . . . .   4
    2.  Protocol  . . . . . . . . . . . . . . . . . . . . . . . . . .   4
-     2.1.  hostkeys advertisment . . . . . . . . . . . . . . . . . .   4
+     2.1.  hostkeys advertisement  . . . . . . . . . . . . . . . . .   4
      2.2.  hostkeys-prove request  . . . . . . . . . . . . . . . . .   5
        2.2.1.  Special handling for RSA host keys  . . . . . . . . .   6
        2.2.2.  Legacy vendor-specific hostkey proof request  . . . .   6
@@ -93,7 +93,7 @@ Table of Contents
 
    Secure Shell (SSH) is a cryptographic protocol for secure remote
    connections and login over untrusted networks.  The SSH transport
-   layer [RFC4253] includes server authentication though a public key
+   layer [RFC4253] includes server authentication through a public key
    signature.  The signature algorithm used for this authentication is
    negotiated between the client and server at the start of the key
    agreement subprotocol, and the final message sent by the server at
@@ -115,7 +115,7 @@ Internet-Draft      Host key update mechanism for SSH      November 2026
 
 
    Excluding certified keys such as "pgp-sign-rsa" (Section 6.6 of
-   [RFC4253]) or OpenSSH certificates ([I-D.miller-ssh-cert]), the SSH
+   [RFC4253]) or OpenSSH certificates ([I-D.ietf-sshm-cert]), the SSH
    protocol does not specify any way for a client to learn the host keys
    of a server.  Public keys may be shared out-of-band but are more
    commonly learned for a given server the first time a client connects
@@ -144,16 +144,16 @@ Internet-Draft      Host key update mechanism for SSH      November 2026
 
    This extension takes the form of a pair of global requests (Section 4
    of [RFC4254]): "hostkeys", sent by a server to advertise its set of
-   keys and "hostkeys-prove", which may be sent by a client to request a
-   server prove possession of the private keys corresponding to one or
-   more of these keys.
+   keys, and "hostkeys-prove", which may be sent by a client to request
+   that a server prove possession of the private keys corresponding to
+   one or more of these keys.
 
    Although this extension addresses a missing feature of the SSH
    transport protocol ([RFC4253]), it is implemented using a message
    defined for the SSH connection protocol ([RFC4254]), a notionally
    higher protocol layer.  The reason for this is that the transport
    protocol lacks a defined extension message type and because some SSH
-   protocol implementation will terminate the connection when a
+   protocol implementations will terminate the connection when a
    transport message of unsupported type is received, whereas connection
    protocol global requests are explicitly specified to gracefully fail
    when an endpoint does not support them.
@@ -185,14 +185,14 @@ Internet-Draft      Host key update mechanism for SSH      November 2026
    of type SSH_MSG_GLOBAL_REQUEST (Section 4 of [RFC4254]).
 
    These messages may only be sent after the SSH authentication
-   subprotocol ([RFC4252]) has has completed, as signalled by the server
+   subprotocol ([RFC4252]) has completed, as signalled by the server
    sending SSH_MSG_USERAUTH_SUCCESS.  They MUST NOT be sent prior to the
    completion of user authentication.
 
    Messages described here use the standard SSH protocol wire encoding
    types defined in Section 5 of [RFC4251].
 
-2.1.  hostkeys advertisment
+2.1.  hostkeys advertisement
 
    This message is sent by a server to inform a client of the public
    keys it supports.  It is typically sent immediately after user
@@ -202,7 +202,7 @@ Internet-Draft      Host key update mechanism for SSH      November 2026
 
        byte             SSH_MSG_GLOBAL_REQUEST
        string           "hostkeys" or "hostkeys-00@openssh.com"
-       char             0 /* do not want reply */
+       boolean          FALSE /* do not want reply */
        string[]         hostkeys
 
    Where "hostkeys" consists of one or more public key blobs encoded as
@@ -215,8 +215,8 @@ Internet-Draft      Host key update mechanism for SSH      November 2026
    but that key is no longer in the advertised set, it MAY delete or
    disable the key locally.  In cases where the server advertised new,
    additional host keys that the client had not previously recorded, the
-   client SHOULD request the server prove possession of the
-   corresponding private key using the following request.
+   client SHOULD request that the server prove possession of the
+   corresponding private keys using the following request.
 
 
 
@@ -228,41 +228,41 @@ Internet-Draft      Host key update mechanism for SSH      November 2026
 
 2.2.  hostkeys-prove request
 
-   This message is sent by a client to request a server prove possession
-   of the private key material corresponding to one or more public keys.
-   It is typically sent after a client has received a "hostkeys"
-   advertisement to request private key possession proofs only for keys
-   it has not seen before.
+   This message is sent by a client to request that a server prove
+   possession of the private key material corresponding to one or more
+   public keys.  It is typically sent after a client has received a
+   "hostkeys" advertisement to request private key possession proofs
+   only for keys it has not seen before.
 
        byte             SSH_MSG_GLOBAL_REQUEST
        string           "hostkeys-prove"
-       char             1 /* do want reply */
+       boolean          TRUE /* do want reply */
        string[]         hostkeys
 
    Where "hostkeys" consists of one or more public key blobs encoded as
-   described in Section 2.3.  All hostkeys in this request MUST BE
+   described in Section 2.3.  All hostkeys in this request MUST be
    unique; no key may be repeated.
 
    A server MUST reply to this request either with the success message
-   defined below or a SSH_MSG_REQUEST_FAILURE if the server (in case of
-   failure or unwillness to service the request).  If a client receives
-   such a failure, it MUST NOT trust any new keys provided in the
-   initial "hostkeys" message.
+   defined below or with an SSH_MSG_REQUEST_FAILURE (in case of failure
+   or unwillingness to service the request).  If a client receives such
+   a failure, it MUST NOT trust any new keys provided in the initial
+   "hostkeys" message.
 
    On success, the server returns the following message:
 
        byte             SSH_MSG_REQUEST_SUCCESS
        string[]         signatures
 
-   Where "signatures" consists signatures made by the requested
+   Where "signatures" consists of signatures made by the requested
    "hostkeys".  The number of signatures present MUST be identical to
    the number of host keys requested and they MUST appear in identical
    order to their counterpart host keys.
 
    Each signature is made by signing the following structure with the
    corresponding key and using the signature algorithm and encoding as
-   it is specified for SSH (e.g.  Section 3.1.1 of [RFC5656] for "ecdsa-
-   sha2-* keys).  Note that RSA host keys, which unlike other key types
+   specified for SSH (e.g.  Section 3.1.1 of [RFC5656] for "ecdsa-
+   sha2-*" keys).  Note that RSA host keys, which unlike other key types
    used in SSH can support multiple signature algorithms, have
    additional rules described below in Section 2.2.1.
 
@@ -295,21 +295,21 @@ Internet-Draft      Host key update mechanism for SSH      November 2026
    key agreement via the algorithm names "ssh-rsa" (RSA-SHA1), "rsa-
    sha2-256" or "rsa-sha2-512".
 
-   If a RSA signature algorithm was selected during initial key
+   If an RSA signature algorithm was selected during initial key
    agreement, then the same algorithm MUST be used for signing hostkey
    proofs for any RSA keys the server supports.  An exception to this is
    if "ssh-rsa" (i.e. the insecure RSA-SHA1 mode) was negotiated, in
    which case the "hostkeys-prove" request MUST fail and the server
-   shall return a SSH_MSG_REQUEST_FAILURE.
+   shall return an SSH_MSG_REQUEST_FAILURE.
 
    To avoid this situation, a server MAY skip advertising hostkeys when
    "ssh-rsa" is the negotiated host key signature algorithm.
-   Alternately a server MAY exclude RSA host keys from the "hostkeys"
-   advertisment message if other host key types are available.
+   Alternately, a server MAY exclude RSA host keys from the "hostkeys"
+   advertisement message if other host key types are available.
 
    If a non-RSA host key signature algorithm was selected during initial
    key agreement, then either of the "rsa-sha2-256" or "rsa-sha2-512"
-   signature algorithms may be used to sign a proof for a RSA host key.
+   signature algorithms may be used to sign a proof for an RSA host key.
 
 2.2.2.  Legacy vendor-specific hostkey proof request
 
@@ -322,11 +322,11 @@ Internet-Draft      Host key update mechanism for SSH      November 2026
 
        byte             SSH_MSG_GLOBAL_REQUEST
        string           "hostkeys-prove-00@openssh.com"
-       char             1 /* do want reply */
+       boolean          TRUE /* do want reply */
        string[]         hostkeys
 
-   When accepting a hostkey proof request that uses the vendor-specifc
-   name, clients and server MUST generate and verify signatures over a
+   When accepting a hostkey proof request that uses the vendor-specific
+   name, clients and servers MUST generate and verify signatures over a
    structure that also uses the vendor-specific name:
 
 
@@ -344,17 +344,17 @@ Internet-Draft      Host key update mechanism for SSH      November 2026
 
 2.3.  Public key encoding
 
-   In this extension, keys are encoded as strings using the the standard
-   SSH wire encoding for public keys.  SSH protocol key encodings are
+   In this extension, keys are encoded as strings using the standard SSH
+   wire encoding for public keys.  SSH protocol key encodings are
    defined in [RFC4253] for "ssh-rsa" and "ssh-dss" keys, in [RFC5656]
    for "ecdsa-sha2-*" keys and in [RFC8709] for "ssh-ed25519" and "ssh-
    ed448" keys.
 
 2.4.  Advertising support for this extension
 
-   Support for this extension may be advertised by a SSH protocol server
-   using the [RFC8308] extension mechanism using the name "hostkeys" in
-   the SSH_MSG_EXT_INFO message.
+   Support for this extension may be advertised by an SSH protocol
+   server using the [RFC8308] extension mechanism using the name
+   "hostkeys" in the SSH_MSG_EXT_INFO message.
 
        string           "hostkeys"
        string           "0" (version)
@@ -366,13 +366,12 @@ Internet-Draft      Host key update mechanism for SSH      November 2026
    As global request messages are required by [RFC4254] to be gracefully
    ignored by an endpoint that does not support them, implementations
    MAY opportunistically use this extension via the vendor-specific
-   names in the absence of an [RFC8308] advertisement using the vendor-
-   specific names mentioned above.
+   names mentioned above in the absence of an [RFC8308] advertisement.
 
-   Likewise, clients and server MAY implement the vendor-specific names
+   Likewise, clients and servers MAY implement the vendor-specific names
    in addition to the ones described here (though note the special
    handling required for proof messages in Section 2.2.2).  However, if
-   a an endpoint advertises support for this extension via the EXT_INFO
+   an endpoint advertises support for this extension via the EXT_INFO
    mechanism, the peer SHOULD use the standard global request names to
    invoke it instead of the vendor-specific names.
 
@@ -380,6 +379,7 @@ Internet-Draft      Host key update mechanism for SSH      November 2026
 
    There are two motivating applications for this extension: graceful
    host key rotation and signature algorithm agility.
+
 
 
 
@@ -428,13 +428,13 @@ Internet-Draft      Host key update mechanism for SSH      November 2026
    Connection Protocol Global Request Names [IANA-SSH-GLOBALREQS] under
    Secure Shell (SSH) Protocol Parameters [RFC4250].
 
-                +==================+======================+
-                | Request Type     | Reference            |
-                +==================+======================+
-                | hostkeys         | thisrfc, Section 2.1 |
-                +------------------+----------------------+
-                | hostkeys-prove-0 | thisrfc, Section 2.2 |
-                +------------------+----------------------+
+                 +================+======================+
+                 | Request Type   | Reference            |
+                 +================+======================+
+                 | hostkeys       | thisrfc, Section 2.1 |
+                 +----------------+----------------------+
+                 | hostkeys-prove | thisrfc, Section 2.2 |
+                 +----------------+----------------------+
 
                                   Table 1
 
@@ -472,12 +472,12 @@ Internet-Draft      Host key update mechanism for SSH      November 2026
 
 5.1.  Trusting keys
 
-   This mechanism cannot be used to estabish trust in a SSH server where
-   it no key was previously trusted.  Specifically, if a client learned
-   a host key from an on-path adversary rather than the intended
+   This mechanism cannot be used to establish trust in an SSH server
+   where no key was previously trusted.  Specifically, if a client
+   learned a host key from an on-path adversary rather than the intended
    destination host, then this extension cannot improve this situation.
-   Keys learned though this mechanism can never be more trustworthy than
-   the key used to establish the SSH transport session.
+   Keys learned through this mechanism can never be more trustworthy
+   than the key used to establish the SSH transport session.
 
 5.2.  Dangers of ignoring proof of private key possession
 
@@ -487,9 +487,9 @@ Internet-Draft      Host key update mechanism for SSH      November 2026
    support for both messages and MUST NOT record new host keys without
    verifying private key possession proofs.
 
-   Supporting the advertisment component alone, or recording host keys
-   without checking their private key possession proofs allows an attack
-   where a malicious server advertises a host key for a different
+   Supporting the advertisement component alone, or recording host keys
+   without checking their private key possession proofs, allows an
+   attack where a malicious server advertises a host key for a different
    legitimate server.  If that host key is recorded and subsequently
    used by a client when connecting to the malicious server, then the
    malicious server could forward the connection to the legitimate
@@ -508,11 +508,11 @@ Internet-Draft      Host key update mechanism for SSH      November 2026
 
 5.3.  Denial of service
 
-   This extension may require servers perform additional cryptographic
-   signature operations, and require clients to perform additional
-   verification operations.  Implementation should enforce some limit on
-   the maximum number of keys they will accept for both the "hostkeys"
-   and "hostkeys-prove" messages.
+   This extension may require servers to perform additional
+   cryptographic signature operations, and require clients to perform
+   additional verification operations.  Implementations should enforce
+   some limit on the maximum number of keys they will accept for both
+   the "hostkeys" and "hostkeys-prove" messages.
 
 5.4.  Weak signature algorithms
 
@@ -523,7 +523,7 @@ Internet-Draft      Host key update mechanism for SSH      November 2026
 
 5.5.  Timing attack considerations
 
-   This mechanism provides a way for a SSH client to request additional
+   This mechanism provides a way for an SSH client to request additional
    signatures using the host private keys.  In doing so, it magnifies
    the attack surface for observing timing discrepancies in the
    signature operation.  Although a malicious client has little control
@@ -566,7 +566,7 @@ Internet-Draft      Host key update mechanism for SSH      November 2026
    protocol, all using the vendor-specific names described above.
 
    OpenSSH  OpenSSH is the originating implementation of this extension
-      and has supported them since 2015.
+      and has supported it since 2015.
 
       Website: https://www.openssh.com/
 
@@ -576,16 +576,16 @@ Internet-Draft      Host key update mechanism for SSH      November 2026
 
       Website: https://github.com/ronf/asyncssh
 
-   Github  The SSH implementation used by Github supports this
+   GitHub  The SSH implementation used by GitHub supports this
       extension.
 
       Website: https://github.com/
 
-   Russh  Russsh has implemented this extension since 2023.
+   Russh  Russh has implemented this extension since 2023.
 
       Website: https://github.com/Eugeny/russh
 
-   Apache Mina  The Apache Mina ssh implementation has supported this
+   Apache Mina  The Apache Mina SSH implementation has supported this
       extension since 2015.
 
       Website: https://mina.apache.org/
@@ -635,11 +635,6 @@ Internet-Draft      Host key update mechanism for SSH      November 2026
               RFC 5656, DOI 10.17487/RFC5656, December 2009,
               <https://www.rfc-editor.org/info/rfc5656>.
 
-   [RFC7942]  Sheffer, Y. and A. Farrel, "Improving Awareness of Running
-              Code: The Implementation Status Section", BCP 205,
-              RFC 7942, DOI 10.17487/RFC7942, July 2016,
-              <https://www.rfc-editor.org/info/rfc7942>.
-
    [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
               May 2017, <https://www.rfc-editor.org/info/rfc8174>.
@@ -653,13 +648,18 @@ Internet-Draft      Host key update mechanism for SSH      November 2026
               RFC 8709, DOI 10.17487/RFC8709, February 2020,
               <https://www.rfc-editor.org/info/rfc8709>.
 
-   [I-D.miller-ssh-cert]
+   [I-D.ietf-sshm-cert]
               Miller, D., "SSH Certificate Format", Work in Progress,
-              Internet-Draft, draft-miller-ssh-cert-03, 13 August 2025,
-              <https://datatracker.ietf.org/doc/html/draft-miller-ssh-
-              cert-03>.
+              Internet-Draft, draft-ietf-sshm-cert-01, 14 June 2026,
+              <https://datatracker.ietf.org/doc/html/draft-ietf-sshm-
+              cert-01>.
 
 7.2.  Informative References
+
+   [RFC7942]  Sheffer, Y. and A. Farrel, "Improving Awareness of Running
+              Code: The Implementation Status Section", BCP 205,
+              RFC 7942, DOI 10.17487/RFC7942, July 2016,
+              <https://www.rfc-editor.org/info/rfc7942>.
 
    [IANA-SSH-GLOBALREQS]
               IANA, "Connection Protocol Global Request Names",
