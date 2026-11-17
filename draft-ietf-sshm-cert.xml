@@ -106,7 +106,7 @@
 			</sourcecode>
 			<t>
 			The "key type" string identifies the certificate type,
-			e.g. "ssh-ed25519-cert" identifies an ED25519
+			e.g. "ssh-ed25519-cert" identifies an Ed25519
 			certificate. The valid certificate types are listed
 			below.
 			</t>
@@ -123,7 +123,7 @@
 			<t>
 			The "certificate role" field indicates the role of the
 			certificate, either SSH2_CERT_TYPE_USER for user
-			authentication certificates or SSH2_CERT_TYPE_HOST
+			authentication certificates or SSH2_CERT_TYPE_HOST for host
 			authentication certificates.
 			</t>
 			<t>
@@ -155,14 +155,14 @@
 			untrusted sources.
 			</t>
 			<t>
-			The "valid after" and "valid before" field represent
+			The "valid after" and "valid before" fields represent
 			a validity interval for the certificate with each
 			field being interpreted as a number of seconds since
 			the Unix epoch (00:00:00 UTC on 1 January 1970) except
 			for two special values. A zero value in the
 			"valid after" field indicates that the certificate
 			is valid from any time to the "valid before" date.
-			A all-1s (i.e. 0xFFFFFFFFFFFFFFFF) value in the
+			An all-1s (i.e. 0xFFFFFFFFFFFFFFFF) value in the
 			"valid before" field indicates that the certificate has
 			no end expiry date.
 			</t>
@@ -192,7 +192,7 @@
 			<t>
 			The "signature key" field contains the certification
 			authority (CA) key used to sign the certificate, encoded
-			as a SSH public key blob.
+			as an SSH public key blob.
 			Implementations MUST NOT accept certificate keys
 			as CA keys.
 			</t>
@@ -236,7 +236,7 @@
     string              signature
 			</sourcecode>
 			<t>
-			The "p", "q", "g" values are the DSA domain
+			The "p", "q" and "g" values are the DSA domain
 			parameters. "y" is the public key value.
 			These values are as defined by Section 4.1 of
 			<xref target="FIPS.186-4"/>.
@@ -248,7 +248,7 @@
 			"ecdsa-sha2-nistp256-cert",
 			"ecdsa-sha2-nistp384-cert" and
 			"ecdsa-sha2-nistp521-cert".
-			They respectively certify "ecdsa-sha2-nistp256",
+			They certify "ecdsa-sha2-nistp256",
 			"ecdsa-sha2-nistp384" and "ecdsa-sha2-nistp521"
 			respectively, as defined by
 			<xref target="RFC5656" section="3.1" />.
@@ -316,7 +316,7 @@
 		<section anchor="rsacert"><name>RSA certificates</name>
 			<t>
 			RSA certificates have type "ssh-rsa-cert".
-			These certify RSA, as defined in
+			These certify RSA keys, as defined in
 			<xref target="RFC4253" section="6.6"/>.
 			This format is equivalent to the vendor extension
 			"ssh-rsa-cert-v01@openssh.com".
@@ -367,7 +367,7 @@
 		</section>
 		<section><name>Other certificate formats</name>
 			<t>
-			SSH clients and server clients MAY support additional
+			SSH clients and servers MAY support additional
 			key types not documented here. Vendor-specific key types
 			should use the domain-qualified naming convention
 			defined in <xref target="RFC4251" section="4.2" />.
@@ -416,10 +416,10 @@
 		For options whose values encode textual values, it is common
 		for the value to contain a nested string. For example, the
 		following is a complete critical options section that sets
-		a string-values option "force-command" to the value "sftp".
+		a string-valued option "force-command" to the value "sftp".
 		</t>
 		<sourcecode>
-  0000001d                           # Criticial options len=29
+  0000001d                           # Critical options len=29
     0000000d                         # 1st key string len=13
       666f7263652d636f6d6d616e64     #   "force-command"
     00000008                         # 1st value string len=8
@@ -429,10 +429,10 @@
 		<t>
 		Finally, the following is an example of a critical options
 		section that contains a flag option "foo@example.com" and
-		a string-valued option "force-command" with a the value "sftp".
+		a string-valued option "force-command" with the value "sftp".
 		</t>
 		<sourcecode>
-  00000038                           # Criticial options len=56
+  00000038                           # Critical options len=56
     0000000f                         # 1st key string len=15
       666f6f406578616d706c652e636f6d #   "foo@example.com"
     00000000                         # 1st value string len=0
@@ -469,7 +469,7 @@
 			do not assert user-presence should be accepted,
 			reversing the default behaviour of refusing such
 			signatures. Note that no such key types are currently
-			standardised, but some SSH implementation support them
+			standardised, but some SSH implementations support them
 			as vendor extensions.
 			</t>
 			<t>
@@ -484,8 +484,8 @@
 			Indicates that sessions authenticated with this
 			certificate may request authentication agent forwarding
 			<xref target="I-D.ietf-sshm-ssh-agent" />. Certificates
-			that lack this extension MUST not permit this protocol
-			feature be enabled on SSH server implementations that
+			that lack this extension MUST NOT permit this protocol
+			feature to be enabled on SSH server implementations that
 			support it.
 			</t>
 			<t>
@@ -498,13 +498,13 @@
 			<dd>
 			<t>
 			Indicates that sessions authenticated with this
-			certificate may request authentication TCP forwarding
+			certificate may request TCP forwarding
 			using the "tcpip-forward" and/or "direct-tcpip"
 			SSH channel requests defined in
 			<xref target="RFC4254" section="7" />.
 			Certificates
-			that lack this extension MUST not permit these protocol
-			features be enabled on SSH server implementations that
+			that lack this extension MUST NOT permit these protocol
+			features to be enabled on SSH server implementations that
 			support them.
 			</t>
 			<t>
@@ -521,8 +521,8 @@
 			using the "pty-req" SSH channel request defined in
 			<xref target="RFC4254" section="6.2" />.
 			Certificates
-			that lack this extension MUST not permit this protocol
-			feature be enabled on SSH server implementations that
+			that lack this extension MUST NOT permit this protocol
+			feature to be enabled on SSH server implementations that
 			support it.
 			</t>
 			<t>
@@ -537,9 +537,9 @@
 			Indicates that sessions authenticated with this
 			certificate may execute optional SSH-specific user
 			initialisation scripts (e.g. "~/.ssh/rc").
-			Certificates that lack this extension MUST not
-			process these scripts on SSH server implementations
-			that support them.
+			Certificates that lack this extension MUST NOT
+			permit execution of these scripts on SSH server
+			implementations that support them.
 			</t>
 			<t>
 			This is a flag-type option. Its value is the
@@ -555,8 +555,8 @@
 			using the "x11-req" SSH channel request defined in
 			<xref target="RFC4254" section="6.3" />.
 			Certificates
-			that lack this extension MUST not permit this protocol
-			feature be enabled on SSH server implementations that
+			that lack this extension MUST NOT permit this protocol
+			feature to be enabled on SSH server implementations that
 			support it.
 			</t>
 			<t>
@@ -624,11 +624,11 @@
 			Valid for key types that support user verification
 			assertions in their signatures (such as FIDO-backed
 			keys). This option indicates that signatures made
-			with this certificate that must require this assertion
+			with this certificate require this assertion
 			to be present in the signature and that servers
 			MUST refuse authentication if it is absent.
 			Note that no such key types are currently
-			standardised, but some SSH implementation support them
+			standardised, but some SSH implementations support them
 			as vendor extensions.
 			</t>
 			<t>
@@ -639,7 +639,7 @@
 
 		</dl>
 		<t>
-		SSH implementations may define additional vendor extensions
+		SSH implementations may define additional vendor critical options
 		using the domain-qualified naming convention defined in
 		<xref target="RFC4251" section="4.2" />.
 		</t>
@@ -647,9 +647,9 @@
 	<section><name>Private certificate format</name>
 		<t>
 		For cases where a certificate and its associated private key
-		must be serialised, such as adding one to a SSH authentication
+		must be serialised, such as adding one to an SSH authentication
 		agent <xref target="I-D.ietf-sshm-ssh-agent" />, the following
-		format is used;
+		format is used:
 		</t>
 		<sourcecode>
     string              key type
@@ -741,12 +741,12 @@
 
 <section><name>Using certificates</name>
 	<t>
-	Certificates may be appear and be used any place in the SSH protocol
+	Certificates may appear and be used any place in the SSH protocol
 	where plain keys are used.
 	In particular, they may be used for server authentication or for
 	user public-key authentication.
 	For each of these cases, the certificate, encoded as per
-	<xref target="fmt" /> appears in place of the encoded key.
+	<xref target="fmt" />, appears in place of the encoded key.
 	</t>
 	<section title="Accepting certificates">
 		<t>
@@ -767,19 +767,19 @@
 		certificate, implementations:
 		</t>
 		<ul>
-			<li><t>MUST check that the certificate is well-formed</t></li>
-			<li><t>MUST ensure that no unsupported critical options are present</t></li>
-			<li><t>MUST check that the "certificate role" matches the intended decision type (user or host authentication)</t></li>
-			<li><t>MUST check the time against the certificate validity interval</t></li>
-			<li><t>MUST verify that at least one of the listed certificate principals is accepted</t></li>
+			<li><t>MUST check that the certificate is well-formed.</t></li>
+			<li><t>MUST ensure that no unsupported critical options are present.</t></li>
+			<li><t>MUST check that the "certificate role" matches the intended decision type (user or host authentication).</t></li>
+			<li><t>MUST check the time against the certificate validity interval.</t></li>
+			<li><t>MUST verify that at least one of the listed certificate principals is accepted.</t></li>
 			<li><t>MUST perform any additional authorisation operations required by critical options.</t></li>
 		</ul>
 	</section>
 	<section title="Certificate signatures">
 		<t>
 		When signatures are required, they are made and formatted using
-		the same rules for the underlying plain key type. For example, a
-		"ssh-rsa-cert" could produce signatures of types "ssh-rsa" using
+		the same rules as for the underlying plain key type. For example, an
+		"ssh-rsa-cert" could produce signatures of type "ssh-rsa" using
 		the rules from <xref target="RFC4253" section="6.6" />, or
 		"rsa-sha2-256" or "rsa-sha2-512" using the rules from
 		<xref target="RFC8332" section="3" />.
@@ -791,11 +791,11 @@
 		as part of the initial key exchange or for subsequent
 		re-exchange. To use a certificate host key, its key type name
 		(e.g. "ssh-ed25519-cert") must appear in the
-		server_host_key_algorithms of the SSH_MSG_KEXINIT
+		server_host_key_algorithms field of the SSH_MSG_KEXINIT message
 		(<xref target="RFC5656" section="7.1" />).
 		If negotiated by both the server and the client, then
 		a certificate of the agreed type may take the place
-		of the plain host key in the final reply message. For example
+		of the plain host key in the final reply message. For example,
 		in ECDH host authentication
 		(<xref target="RFC5656" section="4" />),
 		host authentication occurs in the
@@ -808,14 +808,14 @@
     string              the signature on the exchange hash
 		</sourcecode>
 		<t>
-		Certificates used for host authentication MUST have
+		Certificates used for host authentication MUST have a
 		"certificate role" of SSH2_CERT_TYPE_HOST. Other certificate
 		types MUST NOT be accepted.
 		</t>
 		<t>
 		Certificate host keys list hostnames and/or IP addresses for
 		the host in their "principals" section. Clients MUST match
-		the hostname or address thay are using for the host against
+		the hostname or address they are using for the host against
 		the principals in this list and refuse to authorise the
 		certificate if it is absent.
 		</t>
@@ -824,7 +824,7 @@
 		certificate to a plain public key and process it accordingly,
 		if they are unable to verify the certificate. This allows
 		recovery from the situation where the endpoints negotiate
-		use of a cerificate host key but the client is not able to
+		use of a certificate host key but the client is not able to
 		authorise the certificate contents, perhaps because the CA
 		is not trusted or because the host name the client is using
 		does not match any in the certificate.
@@ -832,8 +832,8 @@
 	</section>
 	<section title="Use in user authentication">
 		<t>
-		For user public key authentication
-		No prior negotiation is needed to send a user
+		For user public key authentication,
+		no prior negotiation is needed to send a user
 		authentication attempt that contains a certificate, though
 		clients may wish to filter the ones they send against the
 		server's list of accepted publickey authentication signature
@@ -841,9 +841,9 @@
 		<xref target="RFC8308" /> SSH_MSG_EXT_INFO mechanism.
 		</t>
 		<t>
-		Certificates used for user authentication MUST have
+		Certificates used for user authentication MUST have a
 		"certificate role" of SSH2_CERT_TYPE_USER. Other certificate
-		types MUST not be accepted.
+		types MUST NOT be accepted.
 		</t>
 		<t>
 		Certificate keys for user authentication list one or more
@@ -859,7 +859,7 @@
 		<t>
 		To make a user authentication attempt using a certificate
 		user key, the certificate takes the place of the plain
-		public key in a SSH_MSG_USERAUTH_REQUEST message.
+		public key in an SSH_MSG_USERAUTH_REQUEST message.
 		For example:
 		</t>
 		<sourcecode>
@@ -889,14 +889,14 @@
 
 <section anchor="IANA"><name>IANA Considerations</name>
 	<t>
-	This format requires creation of one new registry and additions to an
+	This format requires creation of three new registries and additions to an
 	existing registry.
 	</t>
 	<section title="Additions to SSH key type registry">
 		<t>
 		IANA is requested to insert the following entries into the
 		table Public Key Algorithm Names
-		<xref target="IANA-SSH-KEYTYPES" /> under
+		<xref target="IANA-SSH-KEYTYPES" /> under the
 		Secure Shell (SSH) Protocol Parameters registry group
 		<xref target="RFC4250" />.
 		</t>
@@ -919,7 +919,7 @@
 	</section>
 	<section title="New registry: Certificate Extension Identifiers">
 		<t>
-		This registry, titled "Certificate Extension Identifiers"
+		This registry, titled "Certificate Extension Identifiers",
 		records identifiers for certificate extensions.
 		It should be created in the Secure Shell (SSH) Protocol
 		Parameters registry group <xref target="RFC4250" />.
@@ -942,15 +942,15 @@
 		</tbody>
 		</table>
 	</section>
-	<section title="New registry: Certificate Criticial Option Identifiers">
+	<section title="New registry: Certificate Critical Option Identifiers">
 		<t>
-		This registry, titled "Certificate Critical Option Identifiers"
+		This registry, titled "Certificate Critical Option Identifiers",
 		records identifiers for certificate critical options.
 		It should be created in the Secure Shell (SSH) Protocol
 		Parameters registry group <xref target="RFC4250" />.
 		Its initial state should consist of the
 		following names.
-		Future names allocations shall occur via
+		Future name allocations shall occur via
 		EXPERT REVIEW as per <xref target="RFC8126" />.
 		</t>
 		<table>
@@ -966,13 +966,13 @@
 	</section>
 	<section title="New registry: Certificate Type Numbers">
 		<t>
-		This registry, titled "Certificate Type Numbers"
+		This registry, titled "Certificate Type Numbers",
 		records the numbers used to indicate the types of certificates.
 		It should be created in the Secure Shell (SSH) Protocol
 		Parameters registry group <xref target="RFC4250" />.
 		Its initial state should consist of the
 		following numbers.
-		Future message number allocations shall occur via
+		Future number allocations shall occur via
 		EXPERT REVIEW as per <xref target="RFC8126" />.
 		</t>
 <table>
@@ -991,7 +991,7 @@
 	<t>
 	The security of any public key certificate system depends ultimately
 	on the certification authority (CA). If the certification authority
-	can be pursuaded by an attacker to sign certificates that are not
+	can be persuaded by an attacker to sign certificates that are not
 	intended, or if the private key material for the CA is leaked to an
 	attacker, then the attacker gains the ability to create improper
 	certificates that will be accepted by all endpoints that trust the CA.
@@ -1014,10 +1014,10 @@
 	all SSH key and signature types are currently recommended for use.
 	Specifically, the DSA key type (and associated certificate format)
 	SHOULD NOT be used as the algorithm, as instantiated in SSH, is
-	unacceptable weak as it uses a fixed 1024 bit key length, which is
+	unacceptably weak as it uses a fixed 1024-bit key length, which is
 	insufficient, and requires
 	the use of SHA1, which is known to be broken, as a signature hash.
-	Similarly the original "ssh-rsa" signature type also uses SHA1 as a
+	Similarly, the original "ssh-rsa" signature type also uses SHA1 as a
 	signature hash and so SHOULD NOT be used.
 	SSH clients, servers and other tools processing SSH certificates
 	SHOULD implement allowlists of accepted key and signature types and
@@ -1042,15 +1042,15 @@
 	This document does not specify how SSH clients or servers come
 	to trust CA keys. It is RECOMMENDED that implementations define a
 	clear mechanism to define trust of a CA public key and its desired
-	scope. For example, a SSH client SHOULD allow trusting a CA key for
+	scope. For example, an SSH client SHOULD allow trusting a CA key for
 	only a defined set of domain names such as subdomains of an
 	organisation's TLD.
 	Any limits that a client or server places on the scope of a trusted
 	CA key MUST compose sensibly and safely with restrictions specified
-	within certificates issued from that CA. For example, if a SSH server
+	within certificates issued from that CA. For example, if an SSH server
 	supports trusting a CA key but selectively disallows SSH TCP/IP port
 	forwarding (<xref target="RFC4254" section="7" />), then the
-	"permit-port-forwarding" critical option would not be expected to
+	"permit-port-forwarding" extension would not be expected to
 	re-enable it.
 	</t>
 </section>
@@ -1140,7 +1140,7 @@
 		<dt>Paramiko</dt>
 		<dd>
 		<t>
-		The Paramiko library has supported this format since 2017
+		The Paramiko library has supported this format since 2017.
 		</t>
 		<t>
 		Website: https://www.paramiko.org/
@@ -1182,7 +1182,7 @@
 	<t>
 		Additionally, Google's HIBA system <xref target="HIBA" /> builds
 		on top of the OpenSSH certificate format to perform
-		centralised authorisation for pool of target hosts.
+		centralised authorisation for a pool of target hosts.
 	</t>
 </section>
 </middle>
@@ -1267,7 +1267,7 @@
 <section anchor="appendix_example" numbered="false"><name>Annotated example</name>
 	<t>
 	This is an example of a hex-encoded certificate for an
-	ecdsa-sha2-nistp256-cert public key, signed by a ssh-ed25519
+	ecdsa-sha2-nistp256-cert public key, signed by an ssh-ed25519
 	certificate authority.
 	</t>
 	<sourcecode>
@@ -1327,7 +1327,7 @@
     uint32              certificate role
     # 009d-00b3: 0000 0013 6a6f ... 7267
     string              identifier "josef.k@example.org"
-    # 00b4-00d5: 0000 001e 0000 0007 ... 0790
+    # 00b4-00d5: 0000 001e 0000 0007 ... 2e6b
     string              principals
         # 00b8-00c2: 0000 0007 6a6f 7365 662e 6b
         string          principal[0] = "josef.k"
@@ -1345,7 +1345,7 @@
         string          value[0]
             # 00ff-0109: 0000 0007 6578 6563 7574 65
             string      "execute"
-    # 010a-0190: 0000 0082 0000 0015 ... 7263
+    # 010a-018f: 0000 0082 0000 0015 ... 0000
     string              extensions
         # 010e-0126: 0000 0015 7065 ... 6e67
         string          key[0] = "permit-X11-forwarding"
@@ -1355,7 +1355,7 @@
         string          key[1] = "permit-agent-forwarding"
         # 0146-0149: 0000 0000
         string          value[1] = (empty)
-        # 014a-0163 0000 0016 7065 ... 6e67
+        # 014a-0163: 0000 0016 7065 ... 6e67
         string          key[2] = "permit-port-forwarding"
         # 0164-0167: 0000 0000
         string          value[2] = (empty)
@@ -1387,9 +1387,9 @@
 	On each line, the first four characters before the colon represent
 	a hexadecimal offset from the start of the certificate. This is
 	followed by up to sixteen bytes of data, also encoded as hexadecimal.
-	Only the final line of data may have fewer than sixteen characters
+	Only the final line of data may have fewer than sixteen bytes
 	present.
-	Finally at the end of the line is an ASCII rendering of that line's
+	Finally, at the end of the line is an ASCII rendering of that line's
 	data, with non-printable characters replaced by '.'.
 	</t>
 	<section numbered="false"><name>Example ssh-ed25519-cert</name>
