@@ -10,7 +10,7 @@
 <rfc
   xmlns:xi="http://www.w3.org/2001/XInclude"
   category="std"
-  docName="draft-ietf-sshm-cert-03"
+  docName="draft-ietf-sshm-cert-04"
   ipr="trust200902"
   obsoletes=""
   updates=""
@@ -28,7 +28,7 @@
 
 <front>
 	<title>SSH Certificate Format</title>
-	<seriesInfo name="Internet-Draft" value="draft-ietf-sshm-cert-03"/>
+	<seriesInfo name="Internet-Draft" value="draft-ietf-sshm-cert-04"/>
 	<author fullname="Damien Miller" initials="D." surname="Miller">
 		<organization>OpenSSH</organization>
 		<address>
@@ -623,10 +623,11 @@
 			<t>
 			Valid for key types that support user verification
 			assertions in their signatures (such as FIDO-backed
-			keys). This option indicates that signatures made
-			with this certificate require this assertion
-			to be present in the signature and that servers
-			MUST refuse authentication if it is absent.
+			keys).
+			This option indicates that signatures made
+			with this certificate MUST include this assertion
+			to be present in the signature and that verifiers
+			MUST refuse the signature if it is absent.
 			Note that no such key types are currently
 			standardised, but some SSH implementations support them
 			as vendor extensions.
