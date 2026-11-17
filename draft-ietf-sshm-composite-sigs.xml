@@ -700,6 +700,62 @@
 		</tbody>
 		</table>
 	</section>
+      </section>
+
+<section anchor="implstatus"><name>Implementation Status</name>
+	<t>
+	This section records the status of known implementations of the
+	protocol defined by this specification at the time of posting of
+	this Internet-Draft, and is based on a proposal described in
+	<xref target="RFC7942" />. The description of implementations in
+	this section is intended to assist the IETF in its decision processes
+	in progressing drafts to RFCs. Please note that the listing of any
+	individual implementation here does not imply endorsement by the
+	IETF. Furthermore, no effort has been spent to verify the
+	information presented here that was supplied by IETF contributors.
+	This is not intended as, and must not be construed to be, a
+	catalog of available implementations or their features. Readers
+	are advised to note that other implementations may exist.
+	</t>
+	<t>
+	According to <xref target="RFC7942" />, "this will allow reviewers
+	and working groups to assign due consideration to documents that
+	have the benefit of running code, which may serve as evidence of
+	valuable experimentation and feedback that have made the implemented
+	protocols more mature. It is up to the individual working groups
+	to use this information as they see fit".
+	</t>
+	<t>
+	The following example projects maintain an implementation of this
+	protocol, all using the vendor-specific names described above.
+	</t>
+	<dl>
+		<dt>OpenSSH</dt>
+		<dd>
+		<t>
+		OpenSSH added support for the ssh-mldsa44-ed25519 algorithm
+		in 2026.
+		</t>
+		<t>
+		Website: https://www.openssh.com/
+		</t>
+		</dd>
+
+		<dt>Bitvise</dt>
+		<dd>
+		<t>
+		Bitvise offers client and servers of the SSHv2 protocol.
+		It added support for the ssh-mldsa44-ed25519 algorithm in
+		2026.
+		</t>
+		<t>
+		Website: https://bitvise.com
+		</t>
+		</dd>
+	</dl>
+	<t>
+		This list is not exhaustive.
+	</t>
 </section>
 </middle>
 
