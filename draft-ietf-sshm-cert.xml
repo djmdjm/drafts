@@ -757,6 +757,12 @@
 		as soon as the certificate is received.
 		</t>
 		<t>
+		Implementations SHOULD check that cryptographic values included
+		in certificates are of expected size and/or are otherwise
+		consistent and well-formed. This is likely to assist in avoiding
+		denial-of-service and other attacks.
+		</t>
+		<t>
 		When making authentication or authorisation decisions with a
 		certificate, implementations:
 		</t>
