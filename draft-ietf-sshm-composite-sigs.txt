@@ -4,12 +4,12 @@
 
 Secure Shell (SSHM)                                            D. Miller
 Internet-Draft                                                   OpenSSH
-Intended status: Standards Track                        4 September 2026
-Expires: 8 March 2027
+Intended status: Standards Track                        17 November 2026
+Expires: 21 May 2027
 
 
                 Post-Quantum Composite Signatures in SSH
-                   draft-ietf-sshm-composite-sigs-00
+                   draft-ietf-sshm-composite-sigs-01
 
 Abstract
 
@@ -42,7 +42,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 8 March 2027.
+   This Internet-Draft will expire on 21 May 2027.
 
 Copyright Notice
 
@@ -53,9 +53,9 @@ Copyright Notice
 
 
 
-Miller                    Expires 8 March 2027                  [Page 1]
+Miller                     Expires 21 May 2027                  [Page 1]
 
-Internet-Draft         SSH PQ Composite Signatures        September 2026
+Internet-Draft         SSH PQ Composite Signatures         November 2026
 
 
    This document is subject to BCP 78 and the IETF Trust's Legal
@@ -89,18 +89,19 @@ Table of Contents
    8.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  11
      8.1.  Public Key Algorithm Names  . . . . . . . . . . . . . . .  11
      8.2.  SSHFP RR Types for public key algorithms  . . . . . . . .  11
-   9.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  12
-     9.1.  Normative References  . . . . . . . . . . . . . . . . . .  12
-     9.2.  Informative References  . . . . . . . . . . . . . . . . .  13
+   9.  Implementation Status . . . . . . . . . . . . . . . . . . . .  12
+   10. References  . . . . . . . . . . . . . . . . . . . . . . . . .  12
+     10.1.  Normative References . . . . . . . . . . . . . . . . . .  13
+     10.2.  Informative References . . . . . . . . . . . . . . . . .  14
    Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .  14
    Example key . . . . . . . . . . . . . . . . . . . . . . . . . . .  14
-     ssh-mldsa44-ed25519 . . . . . . . . . . . . . . . . . . . . . .  14
-       Public key  . . . . . . . . . . . . . . . . . . . . . . . . .  14
-       Private key . . . . . . . . . . . . . . . . . . . . . . . . .  16
-     ssh-mldsa87-p384  . . . . . . . . . . . . . . . . . . . . . . .  18
-       Public key  . . . . . . . . . . . . . . . . . . . . . . . . .  18
-       Private key . . . . . . . . . . . . . . . . . . . . . . . . .  18
-   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .  18
+     ssh-mldsa44-ed25519 . . . . . . . . . . . . . . . . . . . . . .  15
+       Public key  . . . . . . . . . . . . . . . . . . . . . . . . .  15
+       Private key . . . . . . . . . . . . . . . . . . . . . . . . .  17
+     ssh-mldsa87-p384  . . . . . . . . . . . . . . . . . . . . . . .  19
+       Public key  . . . . . . . . . . . . . . . . . . . . . . . . .  19
+       Private key . . . . . . . . . . . . . . . . . . . . . . . . .  22
+   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .  26
 
 
 
@@ -108,10 +109,9 @@ Table of Contents
 
 
 
-
-Miller                    Expires 8 March 2027                  [Page 2]
+Miller                     Expires 21 May 2027                  [Page 2]
 
-Internet-Draft         SSH PQ Composite Signatures        September 2026
+Internet-Draft         SSH PQ Composite Signatures         November 2026
 
 
 1.  Introduction
@@ -165,9 +165,9 @@ Internet-Draft         SSH PQ Composite Signatures        September 2026
 
 
 
-Miller                    Expires 8 March 2027                  [Page 3]
+Miller                     Expires 21 May 2027                  [Page 3]
 
-Internet-Draft         SSH PQ Composite Signatures        September 2026
+Internet-Draft         SSH PQ Composite Signatures         November 2026
 
 
 4.1.  Key generation
@@ -221,9 +221,9 @@ Internet-Draft         SSH PQ Composite Signatures        September 2026
 
 
 
-Miller                    Expires 8 March 2027                  [Page 4]
+Miller                     Expires 21 May 2027                  [Page 4]
 
-Internet-Draft         SSH PQ Composite Signatures        September 2026
+Internet-Draft         SSH PQ Composite Signatures         November 2026
 
 
 4.1.2.  ssh-mldsa87-p384
@@ -277,9 +277,9 @@ Internet-Draft         SSH PQ Composite Signatures        September 2026
 
 
 
-Miller                    Expires 8 March 2027                  [Page 5]
+Miller                     Expires 21 May 2027                  [Page 5]
 
-Internet-Draft         SSH PQ Composite Signatures        September 2026
+Internet-Draft         SSH PQ Composite Signatures         November 2026
 
 
        string    key_type_name
@@ -333,9 +333,9 @@ Internet-Draft         SSH PQ Composite Signatures        September 2026
 
 
 
-Miller                    Expires 8 March 2027                  [Page 6]
+Miller                     Expires 21 May 2027                  [Page 6]
 
-Internet-Draft         SSH PQ Composite Signatures        September 2026
+Internet-Draft         SSH PQ Composite Signatures         November 2026
 
 
    *  ctx: The context string.
@@ -389,12 +389,12 @@ Internet-Draft         SSH PQ Composite Signatures        September 2026
 
 
 
-Miller                    Expires 8 March 2027                  [Page 7]
+Miller                     Expires 21 May 2027                  [Page 7]
 
-Internet-Draft         SSH PQ Composite Signatures        September 2026
+Internet-Draft         SSH PQ Composite Signatures         November 2026
 
 
-       byte[4896] mldsa_sig
+       byte[4627] mldsa_sig
        mpint      r
        mpint      s
 
@@ -445,9 +445,9 @@ Internet-Draft         SSH PQ Composite Signatures        September 2026
 
 
 
-Miller                    Expires 8 March 2027                  [Page 8]
+Miller                     Expires 21 May 2027                  [Page 8]
 
-Internet-Draft         SSH PQ Composite Signatures        September 2026
+Internet-Draft         SSH PQ Composite Signatures         November 2026
 
 
    Both signatures must verify for the composite signature to verify.
@@ -501,9 +501,9 @@ Internet-Draft         SSH PQ Composite Signatures        September 2026
 
 
 
-Miller                    Expires 8 March 2027                  [Page 9]
+Miller                     Expires 21 May 2027                  [Page 9]
 
-Internet-Draft         SSH PQ Composite Signatures        September 2026
+Internet-Draft         SSH PQ Composite Signatures         November 2026
 
 
    Where "composite_private_key" is the composite private key, either
@@ -557,9 +557,9 @@ Internet-Draft         SSH PQ Composite Signatures        September 2026
 
 
 
-Miller                    Expires 8 March 2027                 [Page 10]
+Miller                     Expires 21 May 2027                 [Page 10]
 
-Internet-Draft         SSH PQ Composite Signatures        September 2026
+Internet-Draft         SSH PQ Composite Signatures         November 2026
 
 
    DSA is broken then the composite will not be EUF-CMA against quantum
@@ -613,9 +613,9 @@ Internet-Draft         SSH PQ Composite Signatures        September 2026
 
 
 
-Miller                    Expires 8 March 2027                 [Page 11]
+Miller                     Expires 21 May 2027                 [Page 11]
 
-Internet-Draft         SSH PQ Composite Signatures        September 2026
+Internet-Draft         SSH PQ Composite Signatures         November 2026
 
 
            +=======+=====================+====================+
@@ -628,9 +628,53 @@ Internet-Draft         SSH PQ Composite Signatures        September 2026
 
                                  Table 2
 
-9.  References
+9.  Implementation Status
 
-9.1.  Normative References
+   This section records the status of known implementations of the
+   protocol defined by this specification at the time of posting of this
+   Internet-Draft, and is based on a proposal described in [RFC7942].
+   The description of implementations in this section is intended to
+   assist the IETF in its decision processes in progressing drafts to
+   RFCs.  Please note that the listing of any individual implementation
+   here does not imply endorsement by the IETF.  Furthermore, no effort
+   has been spent to verify the information presented here that was
+   supplied by IETF contributors.  This is not intended as, and must not
+   be construed to be, a catalog of available implementations or their
+   features.  Readers are advised to note that other implementations may
+   exist.
+
+   According to [RFC7942], "this will allow reviewers and working groups
+   to assign due consideration to documents that have the benefit of
+   running code, which may serve as evidence of valuable experimentation
+   and feedback that have made the implemented protocols more mature.
+   It is up to the individual working groups to use this information as
+   they see fit".
+
+   The following example projects maintain an implementation of this
+   protocol, all using the vendor-specific names described above.
+
+   OpenSSH  OpenSSH added support for the ssh-mldsa44-ed25519 algorithm
+      in 2026.
+
+      Website: https://www.openssh.com/
+
+   Bitvise  Bitvise offers client and servers of the SSHv2 protocol.  It
+      added support for the ssh-mldsa44-ed25519 algorithm in 2026.
+
+      Website: https://bitvise.com
+
+   This list is not exhaustive.
+
+10.  References
+
+
+
+Miller                     Expires 21 May 2027                 [Page 12]
+
+Internet-Draft         SSH PQ Composite Signatures         November 2026
+
+
+10.1.  Normative References
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -659,21 +703,6 @@ Internet-Draft         SSH PQ Composite Signatures        September 2026
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
               May 2017, <https://www.rfc-editor.org/info/rfc8174>.
 
-
-
-
-
-
-
-
-
-
-
-Miller                    Expires 8 March 2027                 [Page 12]
-
-Internet-Draft         SSH PQ Composite Signatures        September 2026
-
-
    [I-D.ietf-lamps-pq-composite-sigs]
               Ounsworth, M., Gray, J., Pala, M., Klaußner, J., and S.
               Fluhrer, "Composite Module-Lattice-Based Digital Signature
@@ -694,6 +723,13 @@ Internet-Draft         SSH PQ Composite Signatures        September 2026
               FIPS 204, DOI 10.6028/nist.fips.204, August 2024,
               <https://doi.org/10.6028/nist.fips.204>.
 
+
+
+Miller                     Expires 21 May 2027                 [Page 13]
+
+Internet-Draft         SSH PQ Composite Signatures         November 2026
+
+
    [FIPS.186-5]
               National Institute of Standards and Technology, "Digital
               Signature Standard (DSS)", FIPS PUB 186-5,
@@ -707,7 +743,12 @@ Internet-Draft         SSH PQ Composite Signatures        September 2026
               800-186, DOI 10.6028/NIST.SP.800-186, February 2023,
               <https://doi.org/10.6028/NIST.SP.800-186>.
 
-9.2.  Informative References
+10.2.  Informative References
+
+   [RFC7942]  Sheffer, Y. and A. Farrel, "Improving Awareness of Running
+              Code: The Implementation Status Section", BCP 205,
+              RFC 7942, DOI 10.17487/RFC7942, July 2016,
+              <https://www.rfc-editor.org/info/rfc7942>.
 
    [RFC9987]  Miller, D., "Secure Shell (SSH) Agent Protocol", RFC 9987,
               DOI 10.17487/RFC9987, May 2026,
@@ -723,13 +764,6 @@ Internet-Draft         SSH PQ Composite Signatures        September 2026
               IANA, "Public Key Algorithm Names",
               <https://www.iana.org/assignments/ssh-parameters/>.
 
-
-
-Miller                    Expires 8 March 2027                 [Page 13]
-
-Internet-Draft         SSH PQ Composite Signatures        September 2026
-
-
    [IANA-SSHFP]
               IANA, "SSHFP RR Types for public key algorithms",
               <https://www.iana.org/assignments/dns-sshfp-rr-
@@ -737,11 +771,20 @@ Internet-Draft         SSH PQ Composite Signatures        September 2026
 
 Acknowledgements
 
-   Cindy Lin offered valuable feedback on this document.
+   Cindy Lin and Denis Bider offered valuable feedback on this document.
 
 Example key
 
    This section contains example keypairs for each specified algorithm.
+
+
+
+
+
+Miller                     Expires 21 May 2027                 [Page 14]
+
+Internet-Draft         SSH PQ Composite Signatures         November 2026
+
 
 ssh-mldsa44-ed25519
 
@@ -778,14 +821,6 @@ Public key
        0120: 6143 77b2 db45 f03a 1205 cb55 1148 9110  aCw..E.:...U.H..
        0130: 9f61 abfb a1f6 a7b6 ea1f 6e2b fd51 e02a  .a........n+.Q.*
        0140: 0c4b fd42 fc21 ba56 be90 a114 b38d c2e8  .K.B.!.V........
-
-
-
-Miller                    Expires 8 March 2027                 [Page 14]
-
-Internet-Draft         SSH PQ Composite Signatures        September 2026
-
-
        0150: c94a 641a 73b0 4ac8 0171 c5fc 7668 74a7  .Jd.s.J..q..vht.
        0160: 40d2 0e86 1d46 da05 de73 9a1e c119 68db  @....F...s....h.
        0170: cbf1 e2d1 e089 4df9 1fcc 97db ccf6 ed44  ......M........D
@@ -799,6 +834,14 @@ Internet-Draft         SSH PQ Composite Signatures        September 2026
        01f0: a45d 83e3 d271 5878 3ceb 0e60 add6 9f06  .]...qXx<..`....
        0200: 838c acb0 a607 7111 6f81 a149 b459 3b49  ......q.o..I.Y;I
        0210: 46bc bb1f 86f4 8bdb 0241 0016 f9c5 1c16  F........A......
+
+
+
+Miller                     Expires 21 May 2027                 [Page 15]
+
+Internet-Draft         SSH PQ Composite Signatures         November 2026
+
+
        0220: 5a89 bb2c 8e0b f55c c1c2 daf9 76bf 039d  Z..,...\....v...
        0230: 81a1 443b f07a e633 8a3f 1252 cf33 5679  ..D;.z.3.?.R.3Vy
        0240: 32df 5483 873b cf4b 10f5 2ede 6cf4 fd8e  2.T..;.K....l...
@@ -834,14 +877,6 @@ Internet-Draft         SSH PQ Composite Signatures        September 2026
        0420: b4d0 bbe0 f994 15b9 6d0c 4415 f31e 01e2  ........m.D.....
        0430: d888 b7b0 5771 cfb9 94af 838d 6f3d 804b  ....Wq......o=.K
        0440: b915 65ed 7a2e 5217 1809 2eb5 b790 1593  ..e.z.R.........
-
-
-
-Miller                    Expires 8 March 2027                 [Page 15]
-
-Internet-Draft         SSH PQ Composite Signatures        September 2026
-
-
        0450: a0c9 67b9 9740 ab5e 4810 d369 d5fc 5a50  ..g..@.^H..i..ZP
        0460: dfb7 e542 7fb9 b35a 1302 e188 ca39 ed40  ...B...Z.....9.@
        0470: 04c0 44f5 2a0a 272f 9705 e87d b21a 6f9f  ..D.*.'/...}..o.
@@ -855,6 +890,14 @@ Internet-Draft         SSH PQ Composite Signatures        September 2026
        04f0: 4ef7 8e4e bea8 1eab 1f29 f27f 5067 f1df  N..N.....)..Pg..
        0500: 366c 9ca6 9bf0 043f 8966 6241 f792 5b6c  6l.....?.fbA..[l
        0510: a869 85c8 6434 78ae ac4d 5fd9 2099 9d6c  .i..d4x..M_. ..l
+
+
+
+Miller                     Expires 21 May 2027                 [Page 16]
+
+Internet-Draft         SSH PQ Composite Signatures         November 2026
+
+
        0520: 15f3 1e46 b598 e67e 3197 c826 98d6 2c30  ...F...~1..&..,0
        0530: ccd2 acd3 bc96 0d12 6d5c e0fb e05d ba15  ........m\...]..
        0540: f3a8 a117 1efd 5dfc e297 d15a e47b c071  ......]....Z.{.q
@@ -890,14 +933,6 @@ Private key
        0190: 6fc9 a860 cbf7 a7e2 0382 c71b f7ed 7743  o..`..........wC
        01a0: a7b3 fd43 fcc7 b370 b161 5537 505e 5d57  ...C...p.aU7P^]W
        01b0: f8b4 a649 fbb1 f00f 4804 3c2a f4ab f0de  ...I....H.<*....
-
-
-
-Miller                    Expires 8 March 2027                 [Page 16]
-
-Internet-Draft         SSH PQ Composite Signatures        September 2026
-
-
        01c0: 5aed bda2 820b ce65 3c06 0b49 b6dd 079b  Z......e<..I....
        01d0: a53e 6ef7 b110 29f2 5c65 d619 58ae 88eb  .>n...).\e..X...
        01e0: 2579 ae39 1999 cee1 ea32 60b0 c56a 7579  %y.9.....2`..juy
@@ -911,6 +946,14 @@ Internet-Draft         SSH PQ Composite Signatures        September 2026
        0260: 637d e4d5 ed60 f1e4 f07e 6785 06cd 7542  c}...`...~g...uB
        0270: e248 3d77 3b71 2fce 2cb2 ab2d 7a82 0fdc  .H=w;q/.,..-z...
        0280: c788 d85e c449 9019 23ae ad4c 77ad c02a  ...^.I..#..Lw..*
+
+
+
+Miller                     Expires 21 May 2027                 [Page 17]
+
+Internet-Draft         SSH PQ Composite Signatures         November 2026
+
+
        0290: 475e 4737 a9af e764 00dc ac0d 9bed 1fa6  G^G7...d........
        02a0: 9e13 aa24 3912 a5b5 6ee8 dcec d33c b26f  ...$9...n....<.o
        02b0: c2a0 0be4 d2ed be1d 8d29 86e0 d0d9 0345  .........).....E
@@ -946,14 +989,6 @@ Internet-Draft         SSH PQ Composite Signatures        September 2026
        0490: e246 88f8 8718 b021 a951 32c9 91e9 6b97  .F.....!.Q2...k.
        04a0: 4f39 562e 04ff cf92 9fa4 4791 51a4 88e6  O9V.......G.Q...
        04b0: 9ee5 b45e edba bcb0 ee44 8ceb 5ee8 340c  ...^.....D..^.4.
-
-
-
-Miller                    Expires 8 March 2027                 [Page 17]
-
-Internet-Draft         SSH PQ Composite Signatures        September 2026
-
-
        04c0: 754d be75 d3be 7c5c 222d 5921 5d21 a7c3  uM.u..|\"-Y!]!..
        04d0: 8b8f 6618 9f8b 200a 349d 3e9f 6677 2ae6  ..f... .4.>.fw*.
        04e0: 299d 8f43 3bb3 d767 ca5a 5691 16d7 ae56  )..C;..g.ZV....V
@@ -967,17 +1002,438 @@ Internet-Draft         SSH PQ Composite Signatures        September 2026
        0560: 0fd8 08e0 3d87 f54b 8c1e 0ea2 e69e 91f6  ....=..K........
        0570: d131 4d33 e0d2 42d1 0be4 3021 7b5e da54  .1M3..B...0!{^.T
        0580: 11f8 c34d 9866 92b5 4cda 494d a722 e143  ...M.f..L.IM.".C
+
+
+
+Miller                     Expires 21 May 2027                 [Page 18]
+
+Internet-Draft         SSH PQ Composite Signatures         November 2026
+
+
        0590: 7616 5fb4 49e0 fe91 3006 6488 3c6f 68     v._.I...0.d.<oh
 
 ssh-mldsa87-p384
 
+   This example key is generated from the seed:
+
+       68 92 e5 d6 80 2b 31 b0 f8 e2 f1 ff 55 41 84 aa
+       0f 2c 54 68 8d a7 59 6c 12 c5 55 61 7e 7c 8e 54
+       95 37 4a 69 aa d6 21 a5 35 34 d7 11 fc 4c 39 4b
+       a4 30 35 29 98 20 91 bf d2 1a c4 6a 48 92 a2 e3
+       4d a5 e4 37 8a 0c 38 51 da 64 4e 19 be 64 e6 d2
+
+   Which is the 80-byte output of SHAKE256("We have time to grow old.
+   The air is full of our cries", 640), where the first 32 bytes are
+   mldsa_seed and the remaining 48 bytes are the big-endian ECDSA
+   private key d.
+
 Public key
 
-   XXX TODO XXX
+       0000: 0000 0010 7373 682d 6d6c 6473 6138 372d  ....ssh-mldsa87-
+       0010: 7033 3834 0000 0a85 d3d4 aa12 58b1 468e  p384........X.F.
+       0020: ce4c c77d 40cf b367 ee2d 20f7 3ffc 2173  .L.}@..g.- .?.!s
+       0030: 20d0 e8ad 622a e929 b813 bf74 20b3 b802  ...b*.)...t ...
+       0040: a6a8 e159 939f 5fd7 84a9 dd93 dfc9 094c  ...Y.._........L
+       0050: 7733 2158 fade 5557 a54c eedd fa9e 7a70  w3!X..UW.L....zp
+       0060: 9400 da78 df25 10a7 f054 7211 5ac4 2b18  ...x.%...Tr.Z.+.
+       0070: bada 6d42 df1b 6b48 4c5c f936 1160 2881  ..mB..kHL\.6.`(.
+       0080: f281 a55b e1f3 72e2 0c91 c2b7 2ff3 7cab  ...[..r...../.|.
+       0090: d497 714d ebc4 53db 0ee4 a6af ee49 292f  ..qM..S......I)/
+       00a0: 4db2 00fd cbc3 d679 77ab d76d 110d 1c14  M......yw..m....
+       00b0: e504 4a7b 95f6 6622 05aa aecf 17fc 2e07  ..J{..f"........
+       00c0: cebd 176c f998 8c19 743b ae9c 3dbc c858  ...l....t;..=..X
+       00d0: f4e6 63ef 47c9 1f1b 7f7a 784c 7ba9 a2a5  ..c.G....zxL{...
+       00e0: dc16 453f 61ce b045 1503 2e17 eb95 e856  ..E?a..E.......V
+       00f0: 0759 26ce 2b04 26bb 85f9 8f1b 4607 36f9  .Y&.+.&.....F.6.
+       0100: 0ef4 9a5b 9a6a 77ca a130 897a 04b1 abc1  ...[.jw..0.z....
+       0110: c485 8e8e 0bfc 85b6 72a1 700a e4d2 52c2  ........r.p...R.
+       0120: 15af 2eea 7b9b 9f9e 96c2 87c1 f21d b8d8  ....{...........
+       0130: 3205 2ce4 8804 ca20 82d3 e6c7 7e40 638f  2.,.... ....~@c.
+       0140: 674a 8993 be1e 766c 16f9 6c15 6de0 daf8  gJ....vl..l.m...
+       0150: 24cd 0533 d9a2 ada3 c296 a177 eb88 d293  $..3.......w....
+       0160: 49e0 1f5f 459d 2813 a941 1292 5101 1939  I.._E.(..A..Q..9
+       0170: a8a0 884b a4ae 0bdf 1817 1a1d 6547 5120  ...K........eGQ
+       0180: d6b6 5a8b 1a94 a477 07c1 ff9a 8f29 5a3f  ..Z....w.....)Z?
+       0190: 5360 9ca4 51cf 001e 04c5 505e db8b f106  S`..Q.....P^....
+       01a0: 06f4 8d14 d006 cb6b 88eb c71d b295 708c  .......k......p.
+       01b0: 4604 8fff 6cae 5e83 9e0b 2a65 e778 318c  F...l.^...*e.x1.
+       01c0: ef82 8b79 d90f e386 a8d1 33b9 2be2 1ed7  ...y......3.+...
+
+
+
+Miller                     Expires 21 May 2027                 [Page 19]
+
+Internet-Draft         SSH PQ Composite Signatures         November 2026
+
+
+       01d0: a5ff 8d4e 3095 c6b7 9ccb 1d8b 8c01 903c  ...N0..........<
+       01e0: d339 3c92 a927 8f90 b030 43a4 2b2d a94c  .9<..'...0C.+-.L
+       01f0: 6147 7fc8 8b6c afe6 d057 ad52 4bfd c5a7  aG...l...W.RK...
+       0200: 4f1a a546 7215 6b6c ef52 f03c 9fb2 6491  O..Fr.kl.R.<..d.
+       0210: 5965 4970 7485 e40d 1a49 8a5e b10c da2f  YeIpt....I.^.../
+       0220: 5b57 88e0 370f f4cc 58e6 b3d3 5af0 690f  [W..7...X...Z.i.
+       0230: 8200 a58b 0633 4d71 5e5f 7ebe 5a3f 295f  .....3Mq^_~.Z?)_
+       0240: 1d96 476f 402d 8563 77a7 8a01 03aa 54de  ..Go@-.cw.....T.
+       0250: 1b51 9925 7e17 1cf6 1c15 804b 1316 0095  .Q.%~......K....
+       0260: 546f 5600 1a5b ad6f c68b c13f 95c7 0772  ToV..[.o...?...r
+       0270: c671 355d 0f7b 9c15 7df2 a33d 9f1a 485e  .q5].{..}..=..H^
+       0280: ce7a 7ba2 b3b1 3b6e 31c1 81e0 32df 38f0  .z{...;n1...2.8.
+       0290: b294 eb70 1453 b8d7 1640 a5e6 e36f 5e7b  ...p.S...@...o^{
+       02a0: 6a34 9b0a 7e37 d487 293f 8cf8 ce1b 1c53  j4..~7..)?.....S
+       02b0: 3f7a dcb4 8cef 76f9 b527 6653 c50c b14e  ?z....v..'fS...N
+       02c0: 8fde 31af c18d 2337 aa0f f239 e927 9c1a  ..1...#7...9.'..
+       02d0: 7879 65e5 aea2 e41c 1e8e 348a c120 7a56  xye.......4.. zV
+       02e0: c0e2 cb7a 5bc5 49b4 c185 7e62 d7ea e667  ...z[.I...~b...g
+       02f0: e6e8 b9d1 f0eb 41ba 0925 2a97 65c2 6d1e  ......A..%*.e.m.
+       0300: 1621 fb9d 79ce a48e 7393 9280 5950 7fcf  .!..y...s...YP..
+       0310: 9883 bd03 e3b7 ee84 4a56 6cd2 f6d7 77eb  ........JVl...w.
+       0320: a87f 8907 dcd6 da8e 3d67 c087 2acc b975  ........=g..*..u
+       0330: 163f c496 9532 b865 11dc 067f 8d41 1122  .?...2.e.....A."
+       0340: b947 73a0 f49c 0653 974c 2615 f370 59f6  .Gs....S.L&..pY.
+       0350: bcc1 269d cbd9 e18b 0273 3629 d863 a7e8  ..&......s6).c..
+       0360: 189d 717a 4d65 34f8 2966 bde1 ed0d 4e56  ..qzMe4.)f....NV
+       0370: ae69 51f1 b9cb e469 be87 c2ef 86fd c068  .iQ....i.......h
+       0380: cbd6 fd5d b60d d4ea 2db8 7939 e253 b83f  ...]....-.y9.S.?
+       0390: bb13 39dd 1304 13ea 1e1b 36b7 3bd7 e6ef  ..9.......6.;...
+       03a0: 2a00 bed9 07c2 a623 7b25 0787 fb62 c145  *......#{%...b.E
+       03b0: 84aa 047f 09e4 eeec c5a9 ebbe 8495 b65c  ...............\
+       03c0: 7617 e577 f575 d114 bb3e 4807 3ba4 b383  v..w.u...>H.;...
+       03d0: 7082 8e99 33cc 1853 9138 8c87 ed69 219a  p...3..S.8...i!.
+       03e0: 269a 8d7b 23d2 15aa 0959 e23e 5282 7616  &..{#....Y.>R.v.
+       03f0: eb8b 8d5c e59e d3c8 c5a6 9b4e 230e b7df  ...\.......N#...
+       0400: 5750 ccc4 e3a6 72b6 cf1d eeef f917 575e  WP....r.......W^
+       0410: 6716 72c9 3986 ab8d bf4b b2ba d60e fef4  g.r.9....K......
+       0420: def4 4ec4 ef4c be06 5707 d278 a73d 23d0  ..N..L..W..x.=#.
+       0430: 65a3 b859 659c 823d 10a3 f5f7 6cf3 5ffb  e..Ye..=....l._.
+       0440: 782d 76d5 d4de 380c e341 0745 1d5d a90e  x-v...8..A.E.]..
+       0450: 52c0 cd86 e1ae 487a e3c7 e947 8006 a12e  R.....Hz...G....
+       0460: 8ec6 ddd3 9c21 cc55 0fe1 ad8d 9c93 d262  .....!.U.......b
+       0470: 3526 4140 e86d 54af d461 d26a d07e 9e74  5&A@.mT..a.j.~.t
+       0480: de53 120f ab97 247b fa67 4503 cc61 9ddd  .S....${.gE..a..
+       0490: cf9c 9bc2 651f b532 535e 0b06 c3cb a1fc  ....e..2S^......
+       04a0: c9dc 4cad bea0 fc47 017d 8699 c45b 926a  ..L....G.}...[.j
+       04b0: e4e1 6b21 43dc 20a3 0c0a 23ea 901c d082  ..k!C. ...#.....
+       04c0: c314 d3cc f149 a59f 9654 5a65 fea2 8f87  .....I...TZe....
+
+
+
+Miller                     Expires 21 May 2027                 [Page 20]
+
+Internet-Draft         SSH PQ Composite Signatures         November 2026
+
+
+       04d0: 2ad5 34b7 fedc 8121 9cc4 8cc5 98e8 d21d  *.4....!........
+       04e0: 0127 41ad 52dd cce1 2cdd 41da 0362 9dc9  .'A.R...,.A..b..
+       04f0: d4c6 7c78 1760 63ec 589a e3dc 8605 2717  ..|x.`c.X.....'.
+       0500: 8af0 76d9 802e 9a28 711f 42fe 88ac b9ad  ..v....(q.B.....
+       0510: dc4c 6e0a 7318 a56b 3f6c ee33 fa0b f0e1  .Ln.s..k?l.3....
+       0520: 657e aeba f2e0 72e4 34da 3afb 4e33 2de4  e~....r.4.:.N3-.
+       0530: 84e2 5e7f 439c 4117 ef2d 8dc1 2fbd 827f  ..^.C.A..-../...
+       0540: 8f7f 020c f2b0 a611 35f5 9552 bf44 f0af  ........5..R.D..
+       0550: 7ef9 d448 fc22 7774 dfec 70ba 51ef 4d84  ~..H."wt..p.Q.M.
+       0560: 2af0 5b79 5466 1a5e c48c 6435 d0ff 75b2  *.[yTf.^..d5..u.
+       0570: 40d5 c44d caf2 bd40 2911 16b9 124d 0e5f  @..M...@)....M._
+       0580: 086f b3ee 505f f3cd 0336 bb3c 19fa f67f  .o..P_...6.<....
+       0590: 8809 787a e4c4 f1fa 0846 ef08 d20d e672  ..xz.....F.....r
+       05a0: 9b80 19c0 87df 614d a3fd 3313 1233 e70e  ......aM..3..3..
+       05b0: 0d27 333f 4053 309c c233 cb8f 7bfe 36c4  .'3?@S0..3..{.6.
+       05c0: 3b28 a259 116f b155 b5ac 44dd 33c2 576d  ;(.Y.o.U..D.3.Wm
+       05d0: c733 6123 7bcb 17ac ff34 c6b3 dfe0 6142  .3a#{....4....aB
+       05e0: b3b3 7863 afa7 bb81 2f43 4785 d231 89c4  ..xc..../CG..1..
+       05f0: 007b 13db 8be8 f112 57f8 6e2f 1123 efd9  .{......W.n/.#..
+       0600: 0308 6f76 0092 b58a 0c7b efc3 2b88 c6b4  ..ov.....{..+...
+       0610: 5810 27c3 47d3 41ad 82dd 4080 5814 43e6  X.'.G.A...@.X.C.
+       0620: 5f06 e345 4a97 c6d2 a39f d757 eff0 8317  _..EJ......W....
+       0630: 124c e99d 473a 305c 66de 124b a9b9 1780  .L..G:0\f..K....
+       0640: 6786 a65f aaaa 5bbe 6ad3 3e55 7255 7280  g.._..[.j.>UrUr.
+       0650: e136 45b3 9ca8 91d9 108b 3b46 ff26 8538  .6E.......;F.&.8
+       0660: b832 3530 5779 ff38 089d 0ac0 3d17 b2a8  .250Wy.8....=...
+       0670: 857b 552c 16bd 8e7f 0f89 f2d9 5f3b e622  .{U,........_;."
+       0680: 1c04 559c 06d7 5b31 9c5e 478c 7b27 b3a2  ..U...[1.^G.{'..
+       0690: d872 26ec aa92 daaa 20fe 4246 3535 afe2  .r&..... .BF55..
+       06a0: 984d 0297 b4d3 f3da 3caa 7e1d 1c7e 1d3a  .M......<.~..~.:
+       06b0: 7e9f dfdf 0979 dbe9 82c0 c165 6573 edad  ~....y.....ees..
+       06c0: 3433 fdfd b273 cbad 880f 0310 d7f2 eb2a  43...s.........*
+       06d0: ac62 a73c 4747 51e6 edc9 6625 c9ec b5e4  .b.<GGQ...f%....
+       06e0: ebe6 989f 2d55 3bec d582 518c 5112 e589  ....-U;...Q.Q...
+       06f0: f62f 5d39 c5b0 f4bd dc79 d179 3123 9b7b  ./]9.....y.y1#.{
+       0700: 6d12 9134 7922 4077 aa3d 7e3a 7cf1 43a6  m..4y"@w.=~:|.C.
+       0710: d13a 1518 1d70 6c69 a859 4c4d b97a b58d  .:...pli.YLM.z..
+       0720: 5bb5 81c8 5ff7 a23b d404 80ff eee7 1148  [..._..;.......H
+       0730: ecdd 450d 77a8 a3db b232 d58b 4648 2430  ..E.w....2..FH$0
+       0740: 8a6b 1ec0 c1cb 2089 3221 3c27 8d8e 4a60  .k.... .2!<'..J`
+       0750: 6e6b 0306 8298 7380 9b89 a5dd 39bc ab10  nk....s.....9...
+       0760: 031d 5c61 efcc 2285 58c5 bf01 40c7 a00d  ..\a..".X...@...
+       0770: 6ed6 12a5 4f2a 6a3a ab3f b163 a335 6802  n...O*j:.?.c.5h.
+       0780: 580c 92ff 7e41 72ed 04d4 0240 3407 1e8a  X...~Ar....@4...
+       0790: 09f4 04a1 c359 e034 238e db5f eb7f 3f7e  .....Y.4#.._..?~
+       07a0: 53dd c51a 34aa f636 38ac 4668 409f e2c0  S...4..68.Fh@...
+       07b0: 969b d9d7 c8ee 80cc 1c9d 1f1f 729c 082d  ............r..-
+       07c0: 4056 5c80 af1c d6d2 625f 38e3 bed8 00eb  @V\.....b_8.....
+
+
+
+Miller                     Expires 21 May 2027                 [Page 21]
+
+Internet-Draft         SSH PQ Composite Signatures         November 2026
+
+
+       07d0: 554a c63b 00b6 2231 1a95 d28d af83 ea23  UJ.;.."1.......#
+       07e0: f6bc d89c 67ed 6374 0e9b 4f59 3633 8833  ....g.ct..OY63.3
+       07f0: eec6 d1b8 f768 7231 8dbd 3198 a186 e4f7  .....hr1..1.....
+       0800: 74b6 7594 2032 e349 289d 0f1d 6269 ce15  t.u. 2.I(...bi..
+       0810: c1e1 df81 8242 5b20 c9e1 7074 5b9f 2942  .....B[ ..pt[.)B
+       0820: 610d 3feb 419b d252 27f8 f14c bab9 0151  a.?.A..R'..L...Q
+       0830: 7755 cad2 41ab e0af 1aff 8a44 02ca 5fdc  wU..A......D.._.
+       0840: cf0f c517 483e 0b2f 77df d99b 500e d97d  ....H>./w...P..}
+       0850: 1275 a425 c465 3288 a914 92f0 0cba 85eb  .u.%.e2.........
+       0860: 876a 8e4a ca7a 8701 e23a 2fa0 1b81 b1e5  .j.J.z...:/.....
+       0870: 892b 77ea 35c6 b424 e0ea ad7a af10 ba25  .+w.5..$...z...%
+       0880: 3228 d632 cb47 71d7 e1e4 a29a 5e0f 0d66  2(.2.Gq.....^..f
+       0890: de1a 8a28 3473 c6b3 879f 0241 e8e3 7de5  ...(4s.....A..}.
+       08a0: df60 f4b7 a200 aebb 9b0f 2098 8163 95ae  .`........ ..c..
+       08b0: 285f 6ba9 f60a 8786 dd34 e03a 5ccf 5886  (_k......4.:\.X.
+       08c0: 4ae0 c9a1 f731 5c10 c688 735b fd1a 0739  J....1\...s[...9
+       08d0: fbdc a590 1735 5a57 bc31 196a fa5d dcd3  .....5ZW.1.j.]..
+       08e0: 3401 ff97 85b2 142a 5585 dfd0 4583 5acc  4......*U...E.Z.
+       08f0: 879a 5678 b412 9fbd 047b 81e3 cf8a 65b8  ..Vx.....{....e.
+       0900: 5344 171c da91 a876 b275 ff0e d427 8846  SD.....v.u...'.F
+       0910: 8feb 084b ca36 9d56 151c a8a1 4369 d1bd  ...K.6.V....Ci..
+       0920: fbc2 2501 0dc4 8f64 0889 f5f9 1e11 1884  ..%....d........
+       0930: 22c3 fb76 d0d3 6b7a 478b 0705 ab03 60c2  "..v..kzG.....`.
+       0940: 42d1 b7c6 19a5 9db0 1702 e18d 77a0 ddb9  B...........w...
+       0950: 49dd b510 a8f8 441b a1bc c043 58a7 94ca  I.....D....CX...
+       0960: ca7e 192b d3f6 ea6d e451 0e52 d80e 6a1b  .~.+...m.Q.R..j.
+       0970: b411 88eb 2946 ad09 2d30 d547 6cfc 2b2c  ....)F..-0.Gl.+,
+       0980: 7612 b12e 9ca7 1f09 965e 75ea cbf2 dea4  v........^u.....
+       0990: f6e0 9d9b bcce 658f 2203 06a6 c572 c0d2  ......e."....r..
+       09a0: 35b9 1953 e1d3 914c 6363 e077 908c 0f1f  5..S...Lcc.w....
+       09b0: 57fd 7d1e d59b 761f 5480 df43 43f4 9cb7  W.}...v.T..CC...
+       09c0: 6a53 0fe6 bbe7 4018 6126 eb3a 7a91 3b14  jS....@.a&.:z.;.
+       09d0: b72e c500 c92c ea9b 70db 258e a03a 7c0b  .....,..p.%..:|.
+       09e0: bb4f 04a3 f422 9574 3b34 7e8f 3150 7178  .O...".t;4~.1Pqx
+       09f0: 214f ee39 79e0 1532 953c 2d5b 4d0a e6ea  !O.9y..2.<-[M...
+       0a00: c697 285b e47e f661 976c da6b baf9 77fb  ..([.~.a.l.k..w.
+       0a10: aaa3 d161 b16a a236 c65e c3fb 197c 2fe0  ...a.j.6.^...|/.
+       0a20: 7e11 792f 04a5 ff74 ab2b accf af2a 5c09  ~.y/...t.+...*\.
+       0a30: 165e c637 2305 a29b 0000 0061 0414 0e8b  .^.7#......a....
+       0a40: 240a 0448 86ae 4e97 04da c6be 8c8d a605  $..H..N.........
+       0a50: ce96 2639 1866 8e5a 63a1 12e0 9b12 86f8  ..&9.f.Zc.......
+       0a60: 2e26 7901 8996 c6a7 bbcf 4e31 b86b 4808  .&y.......N1.kH.
+       0a70: e8a7 e95a 794a c62d 758e 3f2b ef36 d576  ...ZyJ.-u.?+.6.v
+       0a80: dea5 0296 8cd5 276a a48e 4a44 e90f ef7b  ......'j..JD...{
+       0a90: 3f17 2af0 30b8 f399 a045 b22d 69           ?.*.0....E.-i
 
 Private key
 
-   XXX TODO XXX
+
+
+
+Miller                     Expires 21 May 2027                 [Page 22]
+
+Internet-Draft         SSH PQ Composite Signatures         November 2026
+
+
+       0000: 0000 0010 7373 682d 6d6c 6473 6138 372d  ....ssh-mldsa87-
+       0010: 7033 3834 0000 0a85 d3d4 aa12 58b1 468e  p384........X.F.
+       0020: ce4c c77d 40cf b367 ee2d 20f7 3ffc 2173  .L.}@..g.- .?.!s
+       0030: 20d0 e8ad 622a e929 b813 bf74 20b3 b802  ...b*.)...t ...
+       0040: a6a8 e159 939f 5fd7 84a9 dd93 dfc9 094c  ...Y.._........L
+       0050: 7733 2158 fade 5557 a54c eedd fa9e 7a70  w3!X..UW.L....zp
+       0060: 9400 da78 df25 10a7 f054 7211 5ac4 2b18  ...x.%...Tr.Z.+.
+       0070: bada 6d42 df1b 6b48 4c5c f936 1160 2881  ..mB..kHL\.6.`(.
+       0080: f281 a55b e1f3 72e2 0c91 c2b7 2ff3 7cab  ...[..r...../.|.
+       0090: d497 714d ebc4 53db 0ee4 a6af ee49 292f  ..qM..S......I)/
+       00a0: 4db2 00fd cbc3 d679 77ab d76d 110d 1c14  M......yw..m....
+       00b0: e504 4a7b 95f6 6622 05aa aecf 17fc 2e07  ..J{..f"........
+       00c0: cebd 176c f998 8c19 743b ae9c 3dbc c858  ...l....t;..=..X
+       00d0: f4e6 63ef 47c9 1f1b 7f7a 784c 7ba9 a2a5  ..c.G....zxL{...
+       00e0: dc16 453f 61ce b045 1503 2e17 eb95 e856  ..E?a..E.......V
+       00f0: 0759 26ce 2b04 26bb 85f9 8f1b 4607 36f9  .Y&.+.&.....F.6.
+       0100: 0ef4 9a5b 9a6a 77ca a130 897a 04b1 abc1  ...[.jw..0.z....
+       0110: c485 8e8e 0bfc 85b6 72a1 700a e4d2 52c2  ........r.p...R.
+       0120: 15af 2eea 7b9b 9f9e 96c2 87c1 f21d b8d8  ....{...........
+       0130: 3205 2ce4 8804 ca20 82d3 e6c7 7e40 638f  2.,.... ....~@c.
+       0140: 674a 8993 be1e 766c 16f9 6c15 6de0 daf8  gJ....vl..l.m...
+       0150: 24cd 0533 d9a2 ada3 c296 a177 eb88 d293  $..3.......w....
+       0160: 49e0 1f5f 459d 2813 a941 1292 5101 1939  I.._E.(..A..Q..9
+       0170: a8a0 884b a4ae 0bdf 1817 1a1d 6547 5120  ...K........eGQ
+       0180: d6b6 5a8b 1a94 a477 07c1 ff9a 8f29 5a3f  ..Z....w.....)Z?
+       0190: 5360 9ca4 51cf 001e 04c5 505e db8b f106  S`..Q.....P^....
+       01a0: 06f4 8d14 d006 cb6b 88eb c71d b295 708c  .......k......p.
+       01b0: 4604 8fff 6cae 5e83 9e0b 2a65 e778 318c  F...l.^...*e.x1.
+       01c0: ef82 8b79 d90f e386 a8d1 33b9 2be2 1ed7  ...y......3.+...
+       01d0: a5ff 8d4e 3095 c6b7 9ccb 1d8b 8c01 903c  ...N0..........<
+       01e0: d339 3c92 a927 8f90 b030 43a4 2b2d a94c  .9<..'...0C.+-.L
+       01f0: 6147 7fc8 8b6c afe6 d057 ad52 4bfd c5a7  aG...l...W.RK...
+       0200: 4f1a a546 7215 6b6c ef52 f03c 9fb2 6491  O..Fr.kl.R.<..d.
+       0210: 5965 4970 7485 e40d 1a49 8a5e b10c da2f  YeIpt....I.^.../
+       0220: 5b57 88e0 370f f4cc 58e6 b3d3 5af0 690f  [W..7...X...Z.i.
+       0230: 8200 a58b 0633 4d71 5e5f 7ebe 5a3f 295f  .....3Mq^_~.Z?)_
+       0240: 1d96 476f 402d 8563 77a7 8a01 03aa 54de  ..Go@-.cw.....T.
+       0250: 1b51 9925 7e17 1cf6 1c15 804b 1316 0095  .Q.%~......K....
+       0260: 546f 5600 1a5b ad6f c68b c13f 95c7 0772  ToV..[.o...?...r
+       0270: c671 355d 0f7b 9c15 7df2 a33d 9f1a 485e  .q5].{..}..=..H^
+       0280: ce7a 7ba2 b3b1 3b6e 31c1 81e0 32df 38f0  .z{...;n1...2.8.
+       0290: b294 eb70 1453 b8d7 1640 a5e6 e36f 5e7b  ...p.S...@...o^{
+       02a0: 6a34 9b0a 7e37 d487 293f 8cf8 ce1b 1c53  j4..~7..)?.....S
+       02b0: 3f7a dcb4 8cef 76f9 b527 6653 c50c b14e  ?z....v..'fS...N
+       02c0: 8fde 31af c18d 2337 aa0f f239 e927 9c1a  ..1...#7...9.'..
+       02d0: 7879 65e5 aea2 e41c 1e8e 348a c120 7a56  xye.......4.. zV
+       02e0: c0e2 cb7a 5bc5 49b4 c185 7e62 d7ea e667  ...z[.I...~b...g
+       02f0: e6e8 b9d1 f0eb 41ba 0925 2a97 65c2 6d1e  ......A..%*.e.m.
+
+
+
+Miller                     Expires 21 May 2027                 [Page 23]
+
+Internet-Draft         SSH PQ Composite Signatures         November 2026
+
+
+       0300: 1621 fb9d 79ce a48e 7393 9280 5950 7fcf  .!..y...s...YP..
+       0310: 9883 bd03 e3b7 ee84 4a56 6cd2 f6d7 77eb  ........JVl...w.
+       0320: a87f 8907 dcd6 da8e 3d67 c087 2acc b975  ........=g..*..u
+       0330: 163f c496 9532 b865 11dc 067f 8d41 1122  .?...2.e.....A."
+       0340: b947 73a0 f49c 0653 974c 2615 f370 59f6  .Gs....S.L&..pY.
+       0350: bcc1 269d cbd9 e18b 0273 3629 d863 a7e8  ..&......s6).c..
+       0360: 189d 717a 4d65 34f8 2966 bde1 ed0d 4e56  ..qzMe4.)f....NV
+       0370: ae69 51f1 b9cb e469 be87 c2ef 86fd c068  .iQ....i.......h
+       0380: cbd6 fd5d b60d d4ea 2db8 7939 e253 b83f  ...]....-.y9.S.?
+       0390: bb13 39dd 1304 13ea 1e1b 36b7 3bd7 e6ef  ..9.......6.;...
+       03a0: 2a00 bed9 07c2 a623 7b25 0787 fb62 c145  *......#{%...b.E
+       03b0: 84aa 047f 09e4 eeec c5a9 ebbe 8495 b65c  ...............\
+       03c0: 7617 e577 f575 d114 bb3e 4807 3ba4 b383  v..w.u...>H.;...
+       03d0: 7082 8e99 33cc 1853 9138 8c87 ed69 219a  p...3..S.8...i!.
+       03e0: 269a 8d7b 23d2 15aa 0959 e23e 5282 7616  &..{#....Y.>R.v.
+       03f0: eb8b 8d5c e59e d3c8 c5a6 9b4e 230e b7df  ...\.......N#...
+       0400: 5750 ccc4 e3a6 72b6 cf1d eeef f917 575e  WP....r.......W^
+       0410: 6716 72c9 3986 ab8d bf4b b2ba d60e fef4  g.r.9....K......
+       0420: def4 4ec4 ef4c be06 5707 d278 a73d 23d0  ..N..L..W..x.=#.
+       0430: 65a3 b859 659c 823d 10a3 f5f7 6cf3 5ffb  e..Ye..=....l._.
+       0440: 782d 76d5 d4de 380c e341 0745 1d5d a90e  x-v...8..A.E.]..
+       0450: 52c0 cd86 e1ae 487a e3c7 e947 8006 a12e  R.....Hz...G....
+       0460: 8ec6 ddd3 9c21 cc55 0fe1 ad8d 9c93 d262  .....!.U.......b
+       0470: 3526 4140 e86d 54af d461 d26a d07e 9e74  5&A@.mT..a.j.~.t
+       0480: de53 120f ab97 247b fa67 4503 cc61 9ddd  .S....${.gE..a..
+       0490: cf9c 9bc2 651f b532 535e 0b06 c3cb a1fc  ....e..2S^......
+       04a0: c9dc 4cad bea0 fc47 017d 8699 c45b 926a  ..L....G.}...[.j
+       04b0: e4e1 6b21 43dc 20a3 0c0a 23ea 901c d082  ..k!C. ...#.....
+       04c0: c314 d3cc f149 a59f 9654 5a65 fea2 8f87  .....I...TZe....
+       04d0: 2ad5 34b7 fedc 8121 9cc4 8cc5 98e8 d21d  *.4....!........
+       04e0: 0127 41ad 52dd cce1 2cdd 41da 0362 9dc9  .'A.R...,.A..b..
+       04f0: d4c6 7c78 1760 63ec 589a e3dc 8605 2717  ..|x.`c.X.....'.
+       0500: 8af0 76d9 802e 9a28 711f 42fe 88ac b9ad  ..v....(q.B.....
+       0510: dc4c 6e0a 7318 a56b 3f6c ee33 fa0b f0e1  .Ln.s..k?l.3....
+       0520: 657e aeba f2e0 72e4 34da 3afb 4e33 2de4  e~....r.4.:.N3-.
+       0530: 84e2 5e7f 439c 4117 ef2d 8dc1 2fbd 827f  ..^.C.A..-../...
+       0540: 8f7f 020c f2b0 a611 35f5 9552 bf44 f0af  ........5..R.D..
+       0550: 7ef9 d448 fc22 7774 dfec 70ba 51ef 4d84  ~..H."wt..p.Q.M.
+       0560: 2af0 5b79 5466 1a5e c48c 6435 d0ff 75b2  *.[yTf.^..d5..u.
+       0570: 40d5 c44d caf2 bd40 2911 16b9 124d 0e5f  @..M...@)....M._
+       0580: 086f b3ee 505f f3cd 0336 bb3c 19fa f67f  .o..P_...6.<....
+       0590: 8809 787a e4c4 f1fa 0846 ef08 d20d e672  ..xz.....F.....r
+       05a0: 9b80 19c0 87df 614d a3fd 3313 1233 e70e  ......aM..3..3..
+       05b0: 0d27 333f 4053 309c c233 cb8f 7bfe 36c4  .'3?@S0..3..{.6.
+       05c0: 3b28 a259 116f b155 b5ac 44dd 33c2 576d  ;(.Y.o.U..D.3.Wm
+       05d0: c733 6123 7bcb 17ac ff34 c6b3 dfe0 6142  .3a#{....4....aB
+       05e0: b3b3 7863 afa7 bb81 2f43 4785 d231 89c4  ..xc..../CG..1..
+       05f0: 007b 13db 8be8 f112 57f8 6e2f 1123 efd9  .{......W.n/.#..
+
+
+
+Miller                     Expires 21 May 2027                 [Page 24]
+
+Internet-Draft         SSH PQ Composite Signatures         November 2026
+
+
+       0600: 0308 6f76 0092 b58a 0c7b efc3 2b88 c6b4  ..ov.....{..+...
+       0610: 5810 27c3 47d3 41ad 82dd 4080 5814 43e6  X.'.G.A...@.X.C.
+       0620: 5f06 e345 4a97 c6d2 a39f d757 eff0 8317  _..EJ......W....
+       0630: 124c e99d 473a 305c 66de 124b a9b9 1780  .L..G:0\f..K....
+       0640: 6786 a65f aaaa 5bbe 6ad3 3e55 7255 7280  g.._..[.j.>UrUr.
+       0650: e136 45b3 9ca8 91d9 108b 3b46 ff26 8538  .6E.......;F.&.8
+       0660: b832 3530 5779 ff38 089d 0ac0 3d17 b2a8  .250Wy.8....=...
+       0670: 857b 552c 16bd 8e7f 0f89 f2d9 5f3b e622  .{U,........_;."
+       0680: 1c04 559c 06d7 5b31 9c5e 478c 7b27 b3a2  ..U...[1.^G.{'..
+       0690: d872 26ec aa92 daaa 20fe 4246 3535 afe2  .r&..... .BF55..
+       06a0: 984d 0297 b4d3 f3da 3caa 7e1d 1c7e 1d3a  .M......<.~..~.:
+       06b0: 7e9f dfdf 0979 dbe9 82c0 c165 6573 edad  ~....y.....ees..
+       06c0: 3433 fdfd b273 cbad 880f 0310 d7f2 eb2a  43...s.........*
+       06d0: ac62 a73c 4747 51e6 edc9 6625 c9ec b5e4  .b.<GGQ...f%....
+       06e0: ebe6 989f 2d55 3bec d582 518c 5112 e589  ....-U;...Q.Q...
+       06f0: f62f 5d39 c5b0 f4bd dc79 d179 3123 9b7b  ./]9.....y.y1#.{
+       0700: 6d12 9134 7922 4077 aa3d 7e3a 7cf1 43a6  m..4y"@w.=~:|.C.
+       0710: d13a 1518 1d70 6c69 a859 4c4d b97a b58d  .:...pli.YLM.z..
+       0720: 5bb5 81c8 5ff7 a23b d404 80ff eee7 1148  [..._..;.......H
+       0730: ecdd 450d 77a8 a3db b232 d58b 4648 2430  ..E.w....2..FH$0
+       0740: 8a6b 1ec0 c1cb 2089 3221 3c27 8d8e 4a60  .k.... .2!<'..J`
+       0750: 6e6b 0306 8298 7380 9b89 a5dd 39bc ab10  nk....s.....9...
+       0760: 031d 5c61 efcc 2285 58c5 bf01 40c7 a00d  ..\a..".X...@...
+       0770: 6ed6 12a5 4f2a 6a3a ab3f b163 a335 6802  n...O*j:.?.c.5h.
+       0780: 580c 92ff 7e41 72ed 04d4 0240 3407 1e8a  X...~Ar....@4...
+       0790: 09f4 04a1 c359 e034 238e db5f eb7f 3f7e  .....Y.4#.._..?~
+       07a0: 53dd c51a 34aa f636 38ac 4668 409f e2c0  S...4..68.Fh@...
+       07b0: 969b d9d7 c8ee 80cc 1c9d 1f1f 729c 082d  ............r..-
+       07c0: 4056 5c80 af1c d6d2 625f 38e3 bed8 00eb  @V\.....b_8.....
+       07d0: 554a c63b 00b6 2231 1a95 d28d af83 ea23  UJ.;.."1.......#
+       07e0: f6bc d89c 67ed 6374 0e9b 4f59 3633 8833  ....g.ct..OY63.3
+       07f0: eec6 d1b8 f768 7231 8dbd 3198 a186 e4f7  .....hr1..1.....
+       0800: 74b6 7594 2032 e349 289d 0f1d 6269 ce15  t.u. 2.I(...bi..
+       0810: c1e1 df81 8242 5b20 c9e1 7074 5b9f 2942  .....B[ ..pt[.)B
+       0820: 610d 3feb 419b d252 27f8 f14c bab9 0151  a.?.A..R'..L...Q
+       0830: 7755 cad2 41ab e0af 1aff 8a44 02ca 5fdc  wU..A......D.._.
+       0840: cf0f c517 483e 0b2f 77df d99b 500e d97d  ....H>./w...P..}
+       0850: 1275 a425 c465 3288 a914 92f0 0cba 85eb  .u.%.e2.........
+       0860: 876a 8e4a ca7a 8701 e23a 2fa0 1b81 b1e5  .j.J.z...:/.....
+       0870: 892b 77ea 35c6 b424 e0ea ad7a af10 ba25  .+w.5..$...z...%
+       0880: 3228 d632 cb47 71d7 e1e4 a29a 5e0f 0d66  2(.2.Gq.....^..f
+       0890: de1a 8a28 3473 c6b3 879f 0241 e8e3 7de5  ...(4s.....A..}.
+       08a0: df60 f4b7 a200 aebb 9b0f 2098 8163 95ae  .`........ ..c..
+       08b0: 285f 6ba9 f60a 8786 dd34 e03a 5ccf 5886  (_k......4.:\.X.
+       08c0: 4ae0 c9a1 f731 5c10 c688 735b fd1a 0739  J....1\...s[...9
+       08d0: fbdc a590 1735 5a57 bc31 196a fa5d dcd3  .....5ZW.1.j.]..
+       08e0: 3401 ff97 85b2 142a 5585 dfd0 4583 5acc  4......*U...E.Z.
+       08f0: 879a 5678 b412 9fbd 047b 81e3 cf8a 65b8  ..Vx.....{....e.
+
+
+
+Miller                     Expires 21 May 2027                 [Page 25]
+
+Internet-Draft         SSH PQ Composite Signatures         November 2026
+
+
+       0900: 5344 171c da91 a876 b275 ff0e d427 8846  SD.....v.u...'.F
+       0910: 8feb 084b ca36 9d56 151c a8a1 4369 d1bd  ...K.6.V....Ci..
+       0920: fbc2 2501 0dc4 8f64 0889 f5f9 1e11 1884  ..%....d........
+       0930: 22c3 fb76 d0d3 6b7a 478b 0705 ab03 60c2  "..v..kzG.....`.
+       0940: 42d1 b7c6 19a5 9db0 1702 e18d 77a0 ddb9  B...........w...
+       0950: 49dd b510 a8f8 441b a1bc c043 58a7 94ca  I.....D....CX...
+       0960: ca7e 192b d3f6 ea6d e451 0e52 d80e 6a1b  .~.+...m.Q.R..j.
+       0970: b411 88eb 2946 ad09 2d30 d547 6cfc 2b2c  ....)F..-0.Gl.+,
+       0980: 7612 b12e 9ca7 1f09 965e 75ea cbf2 dea4  v........^u.....
+       0990: f6e0 9d9b bcce 658f 2203 06a6 c572 c0d2  ......e."....r..
+       09a0: 35b9 1953 e1d3 914c 6363 e077 908c 0f1f  5..S...Lcc.w....
+       09b0: 57fd 7d1e d59b 761f 5480 df43 43f4 9cb7  W.}...v.T..CC...
+       09c0: 6a53 0fe6 bbe7 4018 6126 eb3a 7a91 3b14  jS....@.a&.:z.;.
+       09d0: b72e c500 c92c ea9b 70db 258e a03a 7c0b  .....,..p.%..:|.
+       09e0: bb4f 04a3 f422 9574 3b34 7e8f 3150 7178  .O...".t;4~.1Pqx
+       09f0: 214f ee39 79e0 1532 953c 2d5b 4d0a e6ea  !O.9y..2.<-[M...
+       0a00: c697 285b e47e f661 976c da6b baf9 77fb  ..([.~.a.l.k..w.
+       0a10: aaa3 d161 b16a a236 c65e c3fb 197c 2fe0  ...a.j.6.^...|/.
+       0a20: 7e11 792f 04a5 ff74 ab2b accf af2a 5c09  ~.y/...t.+...*\.
+       0a30: 165e c637 2305 a29b 0000 0061 0414 0e8b  .^.7#......a....
+       0a40: 240a 0448 86ae 4e97 04da c6be 8c8d a605  $..H..N.........
+       0a50: ce96 2639 1866 8e5a 63a1 12e0 9b12 86f8  ..&9.f.Zc.......
+       0a60: 2e26 7901 8996 c6a7 bbcf 4e31 b86b 4808  .&y.......N1.kH.
+       0a70: e8a7 e95a 794a c62d 758e 3f2b ef36 d576  ...ZyJ.-u.?+.6.v
+       0a80: dea5 0296 8cd5 276a a48e 4a44 e90f ef7b  ......'j..JD...{
+       0a90: 3f17 2af0 30b8 f399 a045 b22d 6900 0000  ?.*.0....E.-i...
+       0aa0: 5568 92e5 d680 2b31 b0f8 e2f1 ff55 4184  Uh....+1.....UA.
+       0ab0: aa0f 2c54 688d a759 6c12 c555 617e 7c8e  ..,Th..Yl..Ua~|.
+       0ac0: 5400 0000 3100 9537 4a69 aad6 21a5 3534  T...1..7Ji..!.54
+       0ad0: d711 fc4c 394b a430 3529 9820 91bf d21a  ...L9K.05). ....
+       0ae0: c46a 4892 a2e3 4da5 e437 8a0c 3851 da64  .jH...M..7..8Q.d
+       0af0: 4e19 be64 e6d2                           N..d..
 
 Author's Address
 
@@ -997,12 +1453,4 @@ Author's Address
 
 
 
-
-
-
-
-
-
-
-
-Miller                    Expires 8 March 2027                 [Page 18]
+Miller                     Expires 21 May 2027                 [Page 26]
