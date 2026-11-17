@@ -403,7 +403,7 @@
 				mldsa_sig, r, and s in this order.
 				</t>
 				<sourcecode>
-    byte[4896] mldsa_sig
+    byte[4627] mldsa_sig
     mpint      r
     mpint      s
 				</sourcecode>
@@ -775,7 +775,7 @@
 
 <section anchor="Acknowledgements" numbered="false"><name>Acknowledgements</name>
 	<t>
-	Cindy Lin offered valuable feedback on this document.
+	Cindy Lin and Denis Bider offered valuable feedback on this document.
 	</t>
 </section>
 
