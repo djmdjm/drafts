@@ -10,7 +10,7 @@
 <rfc
   xmlns:xi="http://www.w3.org/2001/XInclude"
   category="std"
-  docName="draft-ietf-sshm-cert-02"
+  docName="draft-ietf-sshm-cert-03"
   ipr="trust200902"
   obsoletes=""
   updates=""
@@ -28,7 +28,7 @@
 
 <front>
 	<title>SSH Certificate Format</title>
-	<seriesInfo name="Internet-Draft" value="draft-ietf-sshm-cert-02"/>
+	<seriesInfo name="Internet-Draft" value="draft-ietf-sshm-cert-03"/>
 	<author fullname="Damien Miller" initials="D." surname="Miller">
 		<organization>OpenSSH</organization>
 		<address>
@@ -432,7 +432,7 @@
 		a string-valued option "force-command" with the value "sftp".
 		</t>
 		<sourcecode>
-  00000038                           # Critical options len=56
+  00000034                           # Critical options len=52
     0000000f                         # 1st key string len=15
       666f6f406578616d706c652e636f6d #   "foo@example.com"
     00000000                         # 1st value string len=0
